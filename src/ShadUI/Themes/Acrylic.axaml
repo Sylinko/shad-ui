@@ -8,6 +8,7 @@
     <Color x:Key="BorderColor">#3DFFFFFF</Color>
 
     <Color x:Key="CardBackgroundColor">#15000000</Color>
+    <Color x:Key="SecondaryCardBackgroundColor">#99000000</Color>
     <Color x:Key="SidebarBackgroundColor">#15000000</Color>
     <Color x:Key="TitleBarBackgroundColor">#15000000</Color>
     <Color x:Key="PopupBackgroundColor">#5A5A5D</Color>

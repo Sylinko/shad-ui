@@ -46,4 +46,10 @@
       </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Lucide.Avalonia">
+        <HintPath>C:\Users\DearVa\.nuget\packages\lucide.avalonia\0.1.30\lib\net8.0\Lucide.Avalonia.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
