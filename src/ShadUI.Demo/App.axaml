@@ -1,24 +1,47 @@
-<Application
-    RequestedThemeVariant="Default"
+﻿<Application
     x:Class="ShadUI.Demo.App"
     xmlns="https://github.com/avaloniaui"
-    xmlns:themes="clr-namespace:ShadUI.Themes;assembly=ShadUI"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:demo="clr-namespace:ShadUI.Demo"
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+    RequestedThemeVariant="Default">
+    <Application.DataTemplates>
+        <demo:ViewLocator />
+    </Application.DataTemplates>
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon Icon="/Assets/favicon.ico" ToolTipText="ShadUI App">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <!--  added spaces to have a wider menu  -->
+                        <NativeMenuItem Header="Open            " />
+                        <NativeMenuItem Header="About" />
+                        <NativeMenuItemSeparator />
+                        <NativeMenuItem Header="Exit" />
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
+        </TrayIcons>
+    </TrayIcon.Icons>
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
-                <ResourceInclude Source="Themes/Light.axaml" x:Key="Light" />
-                <ResourceInclude Source="Themes/Dark.axaml" x:Key="Dark" />
+                <ResourceInclude x:Key="Light" Source="Themes/Light.axaml" />
+                <ResourceInclude x:Key="Dark" Source="Themes/Dark.axaml" />
             </ResourceDictionary.ThemeDictionaries>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="Controls/Index.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
+        <FontFamily x:Key="JetbrainsFont">avares://shadui-app/Assets/Fonts#Jetbrains</FontFamily>
+        <FontFamily x:Key="ManropeFont">avares://shadui-app/Assets/Fonts#Manrope</FontFamily>
+        <FontFamily x:Key="LucideIcon">avares://shadui-app/Assets/Fonts#lucide</FontFamily>
+        <FontFamily x:Key="ShadUIIcon">avares://shadui-app/Assets/Fonts#shadui</FontFamily>
         <x:Double x:Key="ControlContentThemeFontSize">12</x:Double>
     </Application.Resources>
     <Application.Styles>
-        <themes:ShadTheme />
+        <shadui:ShadTheme />
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+        <StyleInclude Source="avares://shadui-app/Styles/Index.axaml" />
     </Application.Styles>
 </Application>

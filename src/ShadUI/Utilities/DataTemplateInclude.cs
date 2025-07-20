@@ -31,7 +31,7 @@ public class DataTemplateInclude : IDataTemplate
             if (_loaded != null) return _loaded;
 
             _isLoading = true;
-            _loaded = (DataTemplates) AvaloniaXamlLoader.Load(Source);
+            _loaded = (DataTemplates)AvaloniaXamlLoader.Load(Source);
             _isLoading = false;
 
             return _loaded;
@@ -52,8 +52,7 @@ public class DataTemplateInclude : IDataTemplate
     /// <returns>true if the template can be used for the specified data; otherwise, false.</returns>
     public bool Match(object? data)
     {
-        if (_isLoading || Loaded == null)
-            return false;
+        if (_isLoading || Loaded == null) return false;
 
         return Loaded.Any(dt => dt.Match(data));
     }
@@ -65,8 +64,7 @@ public class DataTemplateInclude : IDataTemplate
     /// <returns>A new control instance if a matching template is found; otherwise, null.</returns>
     public Control? Build(object? data)
     {
-        if (_isLoading || Loaded == null)
-            return null;
+        if (_isLoading || Loaded == null) return null;
 
         return Loaded.FirstOrDefault(dt => dt.Match(data))?.Build(data);
     }

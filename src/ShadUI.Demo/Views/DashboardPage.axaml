@@ -1,429 +1,468 @@
 ﻿<UserControl
-    d:DesignHeight="450"
-    d:DesignWidth="870"
-    mc:Ignorable="d"
     x:Class="ShadUI.Demo.Views.DashboardPage"
-    x:DataType="viewModels:DashboardViewModel"
     xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:avalonia="clr-namespace:LiveChartsCore.SkiaSharpView.Avalonia;assembly=LiveChartsCore.SkiaSharpView.Avalonia"
-    xmlns:breakpoints="clr-namespace:ShadUI.Breakpoints;assembly=ShadUI"
-    xmlns:controls="clr-namespace:ShadUI.Controls;assembly=ShadUI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dashboard="clr-namespace:ShadUI.Demo.Controls.Dashboard"
-    xmlns:lucide="clr-namespace:LucideAvalonia;assembly=LucideAvalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:ShadUI.Demo.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <DockPanel>
-        <StackPanel
-            DockPanel.Dock="Top"
-            Margin="48,24,48,0"
-            MaxWidth="1536">
-            <TextBlock Classes="h3" Text="Dashboard" />
-        </StackPanel>
+    d:DesignHeight="450"
+    d:DesignWidth="870"
+    x:DataType="viewModels:DashboardViewModel"
+    mc:Ignorable="d">
+    <DockPanel LastChildFill="True">
+        <Grid
+            MaxWidth="{StaticResource PageMaxWidth}"
+            Margin="{StaticResource PageMargin}"
+            ColumnDefinitions="* Auto"
+            DockPanel.Dock="Top">
+            <TextBlock
+                Grid.Column="0"
+                Classes="h2"
+                Text="Dashboard" />
+            <Button
+                Grid.Column="1"
+                Width="28"
+                Height="28"
+                Background="{DynamicResource GhostHoverColor}"
+                Classes="Icon"
+                Command="{Binding NextPageCommand}">
+                <Viewbox Margin="6">
+                    <TextBlock Classes="LucideIcon" Text="&#57421;" />
+                </Viewbox>
+            </Button>
+        </Grid>
         <ScrollViewer>
-            <TabControl Margin="48,24" MaxWidth="1536">
-                <TabControl.Items>
-                    <TabItem Header="Overview">
-                        <StackPanel>
-                            <breakpoints:ViewPort>
-                                <breakpoints:View Breakpoint="MdAndUp">
-                                    <UniformGrid Columns="4" Margin="-8,0">
-                                        <dashboard:OverviewCard
-                                            Hint="+180.1% from last month"
-                                            Title="Total Revenue"
-                                            Value="$45,231.89">
-                                            <dashboard:OverviewCard.Icon>
-                                                <lucide:Lucide
-                                                    Height="16"
-                                                    Icon="DollarSign"
-                                                    StrokeBrush="{DynamicResource MutedColor}"
-                                                    Width="16" />
-                                            </dashboard:OverviewCard.Icon>
-                                        </dashboard:OverviewCard>
-                                        <dashboard:OverviewCard
-                                            Hint="-20.1% from last month"
-                                            Title="Subscriptions"
-                                            Value="+2350">
-                                            <dashboard:OverviewCard.Icon>
-                                                <lucide:Lucide
-                                                    Height="16"
-                                                    Icon="Users"
-                                                    StrokeBrush="{DynamicResource MutedColor}"
-                                                    Width="16" />
-                                            </dashboard:OverviewCard.Icon>
-                                        </dashboard:OverviewCard>
-                                        <dashboard:OverviewCard
-                                            Hint="+19% from last month"
-                                            Title="Sales"
-                                            Value="+12,234">
-                                            <dashboard:OverviewCard.Icon>
-                                                <lucide:Lucide
-                                                    Height="16"
-                                                    Icon="CreditCard"
-                                                    StrokeBrush="{DynamicResource MutedColor}"
-                                                    Width="16" />
-                                            </dashboard:OverviewCard.Icon>
-                                        </dashboard:OverviewCard>
-                                        <dashboard:OverviewCard
-                                            Hint="+201 since last hour"
-                                            Title="Active Now"
-                                            Value="+573">
-                                            <dashboard:OverviewCard.Icon>
-                                                <lucide:Lucide
-                                                    Height="16"
-                                                    Icon="Activity"
-                                                    StrokeBrush="{DynamicResource MutedColor}"
-                                                    Width="16" />
-                                            </dashboard:OverviewCard.Icon>
-                                        </dashboard:OverviewCard>
-                                    </UniformGrid>
-                                </breakpoints:View>
-                                <breakpoints:View Breakpoint="MdAndDown">
-                                    <UniformGrid Columns="2" Margin="-8,0">
-                                        <dashboard:OverviewCard
-                                            Hint="+180.1% from last month"
-                                            Title="Total Revenue"
-                                            Value="$45,231.89">
-                                            <dashboard:OverviewCard.Icon>
-                                                <lucide:Lucide
-                                                    Height="16"
-                                                    Icon="DollarSign"
-                                                    StrokeBrush="{DynamicResource MutedColor}"
-                                                    Width="16" />
-                                            </dashboard:OverviewCard.Icon>
-                                        </dashboard:OverviewCard>
-                                        <dashboard:OverviewCard
-                                            Hint="-20.1% from last month"
-                                            Title="Subscriptions"
-                                            Value="+2350">
-                                            <dashboard:OverviewCard.Icon>
-                                                <lucide:Lucide
-                                                    Height="16"
-                                                    Icon="Users"
-                                                    StrokeBrush="{DynamicResource MutedColor}"
-                                                    Width="16" />
-                                            </dashboard:OverviewCard.Icon>
-                                        </dashboard:OverviewCard>
-                                        <dashboard:OverviewCard
-                                            Hint="+19% from last month"
-                                            Title="Sales"
-                                            Value="+12,234">
-                                            <dashboard:OverviewCard.Icon>
-                                                <lucide:Lucide
-                                                    Height="16"
-                                                    Icon="CreditCard"
-                                                    StrokeBrush="{DynamicResource MutedColor}"
-                                                    Width="16" />
-                                            </dashboard:OverviewCard.Icon>
-                                        </dashboard:OverviewCard>
-                                        <dashboard:OverviewCard
-                                            Hint="+201 since last hour"
-                                            Title="Active Now"
-                                            Value="+573">
-                                            <dashboard:OverviewCard.Icon>
-                                                <lucide:Lucide
-                                                    Height="16"
-                                                    Icon="Activity"
-                                                    StrokeBrush="{DynamicResource MutedColor}"
-                                                    Width="16" />
-                                            </dashboard:OverviewCard.Icon>
-                                        </dashboard:OverviewCard>
-                                    </UniformGrid>
-                                </breakpoints:View>
-                            </breakpoints:ViewPort>
-                            <breakpoints:ViewPort>
-                                <breakpoints:View Breakpoint="MdAndUp">
-                                    <Grid ColumnDefinitions="3* 2*" Margin="-8,0">
-                                        <Border
-                                            Background="{DynamicResource CardBackgroundColor}"
-                                            BorderBrush="{DynamicResource BorderColor}"
-                                            BorderThickness="1"
-                                            BoxShadow="0 2 4 0 #20000000"
-                                            CornerRadius="{DynamicResource 2XlCornerRadius}"
-                                            Margin="8">
-                                            <DockPanel>
-                                                <TextBlock
-                                                    DockPanel.Dock="Top"
-                                                    FontSize="16"
-                                                    FontWeight="DemiBold"
-                                                    Margin="24,24,24,12"
-                                                    Text="Overview" />
-                                                <avalonia:CartesianChart
-                                                    Margin="12,0,12,12"
-                                                    Name="CartesianChart1"
-                                                    Series="{Binding Series}"
-                                                    TooltipTextPaint="{Binding TooltipTextPaint}"
-                                                    TooltipTextSize="14"
-                                                    XAxes="{Binding XAxes}"
-                                                    YAxes="{Binding YAxes}" />
-                                            </DockPanel>
-                                        </Border>
-                                        <Border
-                                            Background="{DynamicResource CardBackgroundColor}"
-                                            BorderBrush="{DynamicResource BorderColor}"
-                                            BorderThickness="1"
-                                            BoxShadow="0 2 4 0 #20000000"
-                                            CornerRadius="{DynamicResource 2XlCornerRadius}"
-                                            Grid.Column="1"
-                                            Margin="8">
-                                            <DockPanel>
-                                                <StackPanel
-                                                    DockPanel.Dock="Top"
-                                                    Margin="24"
-                                                    Spacing="8">
+            <StackPanel
+                MaxWidth="{StaticResource PageMaxWidth}"
+                Margin="48,0,48,24"
+                Spacing="16">
+                <StackPanel
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal"
+                    Spacing="8">
+                    <CalendarDatePicker shadui:ControlAssist.Label="From" SelectedDate="{x:Static system:DateTime.Today}" />
+                    <CalendarDatePicker shadui:ControlAssist.Label="To" SelectedDate="{x:Static system:DateTime.Today}" />
+                    <Button
+                        VerticalAlignment="Bottom"
+                        Classes="Primary"
+                        Content="Download">
+                        <shadui:ButtonAssist.Icon>
+                            <TextBlock
+                                Margin="0,0,6,0"
+                                Classes="LucideIcon"
+                                Text="&#57526;" />
+                        </shadui:ButtonAssist.Icon>
+                    </Button>
+                </StackPanel>
+
+                <TabControl>
+                    <TabControl.Items>
+                        <TabItem Header="Overview">
+                            <StackPanel>
+                                <shadui:BreakpointViewPort>
+                                    <shadui:BreakpointView Breakpoint="MdAndUp">
+                                        <UniformGrid Margin="-6,0" Columns="4">
+                                            <dashboard:OverviewCard
+                                                Title="Total Revenue"
+                                                Hint="+180.1% from last month"
+                                                Value="$45,231.89">
+                                                <dashboard:OverviewCard.Icon>
                                                     <TextBlock
+                                                        Margin="0"
+                                                        Classes="LucideIcon"
+                                                        Foreground="{DynamicResource MutedColor}"
+                                                        Text="&#57525;" />
+                                                </dashboard:OverviewCard.Icon>
+                                            </dashboard:OverviewCard>
+                                            <dashboard:OverviewCard
+                                                Title="Subscriptions"
+                                                Hint="-20.1% from last month"
+                                                Value="+2350">
+                                                <dashboard:OverviewCard.Icon>
+                                                    <TextBlock
+                                                        Margin="0"
+                                                        Classes="LucideIcon"
+                                                        Foreground="{DynamicResource MutedColor}"
+                                                        Text="&#57764;" />
+                                                </dashboard:OverviewCard.Icon>
+                                            </dashboard:OverviewCard>
+                                            <dashboard:OverviewCard
+                                                Title="Sales"
+                                                Hint="+19% from last month"
+                                                Value="+12,234">
+                                                <dashboard:OverviewCard.Icon>
+                                                    <TextBlock
+                                                        Margin="0"
+                                                        Classes="LucideIcon"
+                                                        Foreground="{DynamicResource MutedColor}"
+                                                        Text="&#57518;" />
+                                                </dashboard:OverviewCard.Icon>
+                                            </dashboard:OverviewCard>
+                                            <dashboard:OverviewCard
+                                                Title="Active Now"
+                                                Hint="+201 since last hour"
+                                                Value="+573">
+                                                <dashboard:OverviewCard.Icon>
+                                                    <TextBlock
+                                                        Margin="0"
+                                                        Classes="LucideIcon"
+                                                        Foreground="{DynamicResource MutedColor}"
+                                                        Text="&#57400;" />
+                                                </dashboard:OverviewCard.Icon>
+                                            </dashboard:OverviewCard>
+                                        </UniformGrid>
+                                    </shadui:BreakpointView>
+                                    <shadui:BreakpointView Breakpoint="MdAndDown">
+                                        <UniformGrid Margin="-6,0" Columns="2">
+                                            <dashboard:OverviewCard
+                                                Title="Total Revenue"
+                                                Hint="+180.1% from last month"
+                                                Value="$45,231.89">
+                                                <dashboard:OverviewCard.Icon>
+                                                    <TextBlock
+                                                        Margin="0"
+                                                        Classes="LucideIcon"
+                                                        Foreground="{DynamicResource MutedColor}"
+                                                        Text="&#57525;" />
+                                                </dashboard:OverviewCard.Icon>
+                                            </dashboard:OverviewCard>
+                                            <dashboard:OverviewCard
+                                                Title="Subscriptions"
+                                                Hint="-20.1% from last month"
+                                                Value="+2350">
+                                                <dashboard:OverviewCard.Icon>
+                                                    <TextBlock
+                                                        Margin="0"
+                                                        Classes="LucideIcon"
+                                                        Foreground="{DynamicResource MutedColor}"
+                                                        Text="&#57764;" />
+                                                </dashboard:OverviewCard.Icon>
+                                            </dashboard:OverviewCard>
+                                            <dashboard:OverviewCard
+                                                Title="Sales"
+                                                Hint="+19% from last month"
+                                                Value="+12,234">
+                                                <dashboard:OverviewCard.Icon>
+                                                    <TextBlock
+                                                        Margin="0"
+                                                        Classes="LucideIcon"
+                                                        Foreground="{DynamicResource MutedColor}"
+                                                        Text="&#57518;" />
+                                                </dashboard:OverviewCard.Icon>
+                                            </dashboard:OverviewCard>
+                                            <dashboard:OverviewCard
+                                                Title="Active Now"
+                                                Hint="+201 since last hour"
+                                                Value="+573">
+                                                <dashboard:OverviewCard.Icon>
+                                                    <TextBlock
+                                                        Margin="0"
+                                                        Classes="LucideIcon"
+                                                        Foreground="{DynamicResource MutedColor}"
+                                                        Text="&#57400;" />
+                                                </dashboard:OverviewCard.Icon>
+                                            </dashboard:OverviewCard>
+                                        </UniformGrid>
+                                    </shadui:BreakpointView>
+                                </shadui:BreakpointViewPort>
+                                <shadui:BreakpointViewPort>
+                                    <shadui:BreakpointView Breakpoint="MdAndUp">
+                                        <Grid Margin="-8,0" ColumnDefinitions="3* 2*">
+                                            <Border
+                                                Margin="8"
+                                                Background="{DynamicResource CardBackgroundColor}"
+                                                BorderBrush="{DynamicResource BorderColor}"
+                                                BorderThickness="1"
+                                                BoxShadow="{DynamicResource Shadow}"
+                                                CornerRadius="{DynamicResource 2XlCornerRadius}">
+                                                <DockPanel>
+                                                    <TextBlock
+                                                        Margin="24,24,24,12"
+                                                        DockPanel.Dock="Top"
                                                         FontSize="16"
                                                         FontWeight="DemiBold"
-                                                        Text="Recent Sales" />
-                                                    <TextBlock Classes="Caption Muted" Text="You made 265 sales this month." />
-                                                </StackPanel>
-                                                <StackPanel Margin="24,0,24,24" Spacing="24">
-                                                    <Grid ColumnDefinitions="Auto * Auto">
-                                                        <controls:Avatar
-                                                            CornerRadius="18"
-                                                            Height="36"
-                                                            Source="../Assets/Sales/01.png"
-                                                            VerticalAlignment="Center"
-                                                            Width="36" />
-                                                        <StackPanel Grid.Column="1" Margin="8,0">
-                                                            <TextBlock Classes="Small" Text="Olivia Martin" />
-                                                            <TextBlock Classes="Caption Muted" Text="olivia.martin@email.com" />
-                                                        </StackPanel>
+                                                        Text="Overview" />
+                                                    <avalonia:CartesianChart
+                                                        Name="CartesianChart1"
+                                                        Margin="12,0,12,12"
+                                                        Series="{Binding Series}"
+                                                        TooltipTextPaint="{Binding TooltipTextPaint}"
+                                                        TooltipTextSize="14"
+                                                        XAxes="{Binding XAxes}"
+                                                        YAxes="{Binding YAxes}" />
+                                                </DockPanel>
+                                            </Border>
+                                            <Border
+                                                Grid.Column="1"
+                                                Margin="8"
+                                                Background="{DynamicResource CardBackgroundColor}"
+                                                BorderBrush="{DynamicResource BorderColor}"
+                                                BorderThickness="1"
+                                                BoxShadow="{DynamicResource Shadow}"
+                                                CornerRadius="{DynamicResource 2XlCornerRadius}">
+                                                <DockPanel>
+                                                    <StackPanel
+                                                        Margin="24"
+                                                        DockPanel.Dock="Top"
+                                                        Spacing="8">
                                                         <TextBlock
                                                             FontSize="16"
                                                             FontWeight="DemiBold"
-                                                            Grid.Column="2"
-                                                            Text="+$1,999.00"
-                                                            VerticalAlignment="Center" />
-                                                    </Grid>
-                                                    <Grid ColumnDefinitions="Auto * Auto">
-                                                        <controls:Avatar
-                                                            CornerRadius="18"
-                                                            Height="36"
-                                                            Source="../Assets/Sales/02.png"
-                                                            VerticalAlignment="Center"
-                                                            Width="36" />
-                                                        <StackPanel Grid.Column="1" Margin="8,0">
-                                                            <TextBlock Classes="Small" Text="Jackson Lee" />
-                                                            <TextBlock Classes="Caption Muted" Text="jackson.lee@email.com" />
-                                                        </StackPanel>
-                                                        <TextBlock
-                                                            FontSize="16"
-                                                            FontWeight="DemiBold"
-                                                            Grid.Column="2"
-                                                            Text="+$39.00"
-                                                            VerticalAlignment="Center" />
-                                                    </Grid>
-                                                    <Grid ColumnDefinitions="Auto * Auto">
-                                                        <controls:Avatar
-                                                            CornerRadius="18"
-                                                            Height="36"
-                                                            Source="../Assets/Sales/03.png"
-                                                            VerticalAlignment="Center"
-                                                            Width="36" />
-                                                        <StackPanel Grid.Column="1" Margin="8,0">
-                                                            <TextBlock Classes="Small" Text="Isabella Nguyen" />
-                                                            <TextBlock Classes="Caption Muted" Text="isabella.nguyen@email.com" />
-                                                        </StackPanel>
-                                                        <TextBlock
-                                                            FontSize="16"
-                                                            FontWeight="DemiBold"
-                                                            Grid.Column="2"
-                                                            Text="+$299.00"
-                                                            VerticalAlignment="Center" />
-                                                    </Grid>
-                                                    <Grid ColumnDefinitions="Auto * Auto">
-                                                        <controls:Avatar
-                                                            CornerRadius="18"
-                                                            Height="36"
-                                                            Source="../Assets/Sales/04.png"
-                                                            VerticalAlignment="Center"
-                                                            Width="36" />
-                                                        <StackPanel Grid.Column="1" Margin="8,0">
-                                                            <TextBlock Classes="Small" Text="William Kim" />
-                                                            <TextBlock Classes="Caption Muted" Text="will@email.com" />
-                                                        </StackPanel>
-                                                        <TextBlock
-                                                            FontSize="16"
-                                                            FontWeight="DemiBold"
-                                                            Grid.Column="2"
-                                                            Text="+$99.00"
-                                                            VerticalAlignment="Center" />
-                                                    </Grid>
-                                                    <Grid ColumnDefinitions="Auto * Auto">
-                                                        <controls:Avatar
-                                                            CornerRadius="18"
-                                                            Height="36"
-                                                            Source="../Assets/Sales/05.png"
-                                                            VerticalAlignment="Center"
-                                                            Width="36" />
-                                                        <StackPanel Grid.Column="1" Margin="8,0">
-                                                            <TextBlock Classes="Small" Text="Sofia Davis" />
-                                                            <TextBlock Classes="Caption Muted" Text="sofia.davis@email.com" />
-                                                        </StackPanel>
-                                                        <TextBlock
-                                                            FontSize="16"
-                                                            FontWeight="DemiBold"
-                                                            Grid.Column="2"
-                                                            Text="+$39.00"
-                                                            VerticalAlignment="Center" />
-                                                    </Grid>
-                                                </StackPanel>
-                                            </DockPanel>
-                                        </Border>
-                                    </Grid>
-                                </breakpoints:View>
-                                <breakpoints:View Breakpoint="MdAndDown">
-                                    <Grid Margin="-8,0" RowDefinitions="* *">
-                                        <Border
-                                            Background="{DynamicResource CardBackgroundColor}"
-                                            BorderBrush="{DynamicResource BorderColor}"
-                                            BorderThickness="1"
-                                            BoxShadow="0 2 4 0 #20000000"
-                                            CornerRadius="{DynamicResource 2XlCornerRadius}"
-                                            Margin="8"
-                                            MinHeight="360">
-                                            <DockPanel>
-                                                <TextBlock
-                                                    DockPanel.Dock="Top"
-                                                    FontSize="16"
-                                                    FontWeight="DemiBold"
-                                                    Margin="24,24,24,12"
-                                                    Text="Overview" />
-                                                <avalonia:CartesianChart
-                                                    Margin="12,0,12,12"
-                                                    Name="CartesianChart2"
-                                                    Series="{Binding Series}"
-                                                    TooltipTextPaint="{Binding TooltipTextPaint}"
-                                                    TooltipTextSize="14"
-                                                    XAxes="{Binding XAxes}"
-                                                    YAxes="{Binding YAxes}" />
-                                            </DockPanel>
-                                        </Border>
-                                        <Border
-                                            Background="{DynamicResource CardBackgroundColor}"
-                                            BorderBrush="{DynamicResource BorderColor}"
-                                            BorderThickness="1"
-                                            BoxShadow="0 2 4 0 #20000000"
-                                            CornerRadius="{DynamicResource 2XlCornerRadius}"
-                                            Grid.Row="1"
-                                            Margin="8">
-                                            <DockPanel>
-                                                <StackPanel
-                                                    DockPanel.Dock="Top"
-                                                    Margin="24"
-                                                    Spacing="8">
+                                                            Text="Recent Sales" />
+                                                        <TextBlock Classes="Caption Muted" Text="You made 265 sales this month." />
+                                                    </StackPanel>
+                                                    <StackPanel Margin="24,0,24,24" Spacing="24">
+                                                        <Grid ColumnDefinitions="Auto * Auto">
+                                                            <shadui:Avatar
+                                                                Width="36"
+                                                                Height="36"
+                                                                VerticalAlignment="Center"
+                                                                CornerRadius="18"
+                                                                Source="../Assets/Sales/01.png" />
+                                                            <StackPanel Grid.Column="1" Margin="8,0">
+                                                                <TextBlock Classes="Small" Text="Olivia Martin" />
+                                                                <TextBlock Classes="Caption Muted" Text="olivia.martin@email.com" />
+                                                            </StackPanel>
+                                                            <TextBlock
+                                                                Grid.Column="2"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                FontWeight="DemiBold"
+                                                                Text="+$1,999.00" />
+                                                        </Grid>
+                                                        <Grid ColumnDefinitions="Auto * Auto">
+                                                            <shadui:Avatar
+                                                                Width="36"
+                                                                Height="36"
+                                                                VerticalAlignment="Center"
+                                                                CornerRadius="18"
+                                                                Source="../Assets/Sales/02.png" />
+                                                            <StackPanel Grid.Column="1" Margin="8,0">
+                                                                <TextBlock Classes="Small" Text="Jackson Lee" />
+                                                                <TextBlock Classes="Caption Muted" Text="jackson.lee@email.com" />
+                                                            </StackPanel>
+                                                            <TextBlock
+                                                                Grid.Column="2"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                FontWeight="DemiBold"
+                                                                Text="+$39.00" />
+                                                        </Grid>
+                                                        <Grid ColumnDefinitions="Auto * Auto">
+                                                            <shadui:Avatar
+                                                                Width="36"
+                                                                Height="36"
+                                                                VerticalAlignment="Center"
+                                                                CornerRadius="18"
+                                                                Source="../Assets/Sales/03.png" />
+                                                            <StackPanel Grid.Column="1" Margin="8,0">
+                                                                <TextBlock Classes="Small" Text="Isabella Nguyen" />
+                                                                <TextBlock Classes="Caption Muted" Text="isabella.nguyen@email.com" />
+                                                            </StackPanel>
+                                                            <TextBlock
+                                                                Grid.Column="2"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                FontWeight="DemiBold"
+                                                                Text="+$299.00" />
+                                                        </Grid>
+                                                        <Grid ColumnDefinitions="Auto * Auto">
+                                                            <shadui:Avatar
+                                                                Width="36"
+                                                                Height="36"
+                                                                VerticalAlignment="Center"
+                                                                CornerRadius="18"
+                                                                Source="../Assets/Sales/04.png" />
+                                                            <StackPanel Grid.Column="1" Margin="8,0">
+                                                                <TextBlock Classes="Small" Text="William Kim" />
+                                                                <TextBlock Classes="Caption Muted" Text="will@email.com" />
+                                                            </StackPanel>
+                                                            <TextBlock
+                                                                Grid.Column="2"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                FontWeight="DemiBold"
+                                                                Text="+$99.00" />
+                                                        </Grid>
+                                                        <Grid ColumnDefinitions="Auto * Auto">
+                                                            <shadui:Avatar
+                                                                Width="36"
+                                                                Height="36"
+                                                                VerticalAlignment="Center"
+                                                                CornerRadius="18"
+                                                                Source="../Assets/Sales/05.png" />
+                                                            <StackPanel Grid.Column="1" Margin="8,0">
+                                                                <TextBlock Classes="Small" Text="Sofia Davis" />
+                                                                <TextBlock Classes="Caption Muted" Text="sofia.davis@email.com" />
+                                                            </StackPanel>
+                                                            <TextBlock
+                                                                Grid.Column="2"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                FontWeight="DemiBold"
+                                                                Text="+$39.00" />
+                                                        </Grid>
+                                                    </StackPanel>
+                                                </DockPanel>
+                                            </Border>
+                                        </Grid>
+                                    </shadui:BreakpointView>
+                                    <shadui:BreakpointView Breakpoint="MdAndDown">
+                                        <Grid Margin="-8,0" RowDefinitions="* *">
+                                            <Border
+                                                MinHeight="360"
+                                                Margin="8"
+                                                Background="{DynamicResource CardBackgroundColor}"
+                                                BorderBrush="{DynamicResource BorderColor}"
+                                                BorderThickness="1"
+                                                BoxShadow="{DynamicResource Shadow}"
+                                                CornerRadius="{DynamicResource 2XlCornerRadius}">
+                                                <DockPanel>
                                                     <TextBlock
+                                                        Margin="24,24,24,12"
+                                                        DockPanel.Dock="Top"
                                                         FontSize="16"
                                                         FontWeight="DemiBold"
-                                                        Text="Recent Sales" />
-                                                    <TextBlock Classes="Caption Muted" Text="You made 265 sales this month." />
-                                                </StackPanel>
-                                                <StackPanel Margin="24,0,24,24" Spacing="24">
-                                                    <Grid ColumnDefinitions="Auto * Auto">
-                                                        <controls:Avatar
-                                                            CornerRadius="18"
-                                                            Height="36"
-                                                            Source="../Assets/Sales/01.png"
-                                                            VerticalAlignment="Center"
-                                                            Width="36" />
-                                                        <StackPanel Grid.Column="1" Margin="8,0">
-                                                            <TextBlock Classes="Small" Text="Olivia Martin" />
-                                                            <TextBlock Classes="Caption Muted" Text="olivia.martin@email.com" />
-                                                        </StackPanel>
+                                                        Text="Overview" />
+                                                    <avalonia:CartesianChart
+                                                        Name="CartesianChart2"
+                                                        Margin="12,0,12,12"
+                                                        Series="{Binding Series}"
+                                                        TooltipTextPaint="{Binding TooltipTextPaint}"
+                                                        TooltipTextSize="14"
+                                                        XAxes="{Binding XAxes}"
+                                                        YAxes="{Binding YAxes}" />
+                                                </DockPanel>
+                                            </Border>
+                                            <Border
+                                                Grid.Row="1"
+                                                Margin="8"
+                                                Background="{DynamicResource CardBackgroundColor}"
+                                                BorderBrush="{DynamicResource BorderColor}"
+                                                BorderThickness="1"
+                                                BoxShadow="{DynamicResource Shadow}"
+                                                CornerRadius="{DynamicResource 2XlCornerRadius}">
+                                                <DockPanel>
+                                                    <StackPanel
+                                                        Margin="24"
+                                                        DockPanel.Dock="Top"
+                                                        Spacing="8">
                                                         <TextBlock
                                                             FontSize="16"
                                                             FontWeight="DemiBold"
-                                                            Grid.Column="2"
-                                                            Text="+$1,999.00"
-                                                            VerticalAlignment="Center" />
-                                                    </Grid>
-                                                    <Grid ColumnDefinitions="Auto * Auto">
-                                                        <controls:Avatar
-                                                            CornerRadius="18"
-                                                            Height="36"
-                                                            Source="../Assets/Sales/02.png"
-                                                            VerticalAlignment="Center"
-                                                            Width="36" />
-                                                        <StackPanel Grid.Column="1" Margin="8,0">
-                                                            <TextBlock Classes="Small" Text="Jackson Lee" />
-                                                            <TextBlock Classes="Caption Muted" Text="jackson.lee@email.com" />
-                                                        </StackPanel>
-                                                        <TextBlock
-                                                            FontSize="16"
-                                                            FontWeight="DemiBold"
-                                                            Grid.Column="2"
-                                                            Text="+$39.00"
-                                                            VerticalAlignment="Center" />
-                                                    </Grid>
-                                                    <Grid ColumnDefinitions="Auto * Auto">
-                                                        <controls:Avatar
-                                                            CornerRadius="18"
-                                                            Height="36"
-                                                            Source="../Assets/Sales/03.png"
-                                                            VerticalAlignment="Center"
-                                                            Width="36" />
-                                                        <StackPanel Grid.Column="1" Margin="8,0">
-                                                            <TextBlock Classes="Small" Text="Isabella Nguyen" />
-                                                            <TextBlock Classes="Caption Muted" Text="isabella.nguyen@email.com" />
-                                                        </StackPanel>
-                                                        <TextBlock
-                                                            FontSize="16"
-                                                            FontWeight="DemiBold"
-                                                            Grid.Column="2"
-                                                            Text="+$299.00"
-                                                            VerticalAlignment="Center" />
-                                                    </Grid>
-                                                    <Grid ColumnDefinitions="Auto * Auto">
-                                                        <controls:Avatar
-                                                            CornerRadius="18"
-                                                            Height="36"
-                                                            Source="../Assets/Sales/04.png"
-                                                            VerticalAlignment="Center"
-                                                            Width="36" />
-                                                        <StackPanel Grid.Column="1" Margin="8,0">
-                                                            <TextBlock Classes="Small" Text="William Kim" />
-                                                            <TextBlock Classes="Caption Muted" Text="will@email.com" />
-                                                        </StackPanel>
-                                                        <TextBlock
-                                                            FontSize="16"
-                                                            FontWeight="DemiBold"
-                                                            Grid.Column="2"
-                                                            Text="+$99.00"
-                                                            VerticalAlignment="Center" />
-                                                    </Grid>
-                                                    <Grid ColumnDefinitions="Auto * Auto">
-                                                        <controls:Avatar
-                                                            CornerRadius="18"
-                                                            Height="36"
-                                                            Source="../Assets/Sales/05.png"
-                                                            VerticalAlignment="Center"
-                                                            Width="36" />
-                                                        <StackPanel Grid.Column="1" Margin="8,0">
-                                                            <TextBlock Classes="Small" Text="Sofia Davis" />
-                                                            <TextBlock Classes="Caption Muted" Text="sofia.davis@email.com" />
-                                                        </StackPanel>
-                                                        <TextBlock
-                                                            FontSize="16"
-                                                            FontWeight="DemiBold"
-                                                            Grid.Column="2"
-                                                            Text="+$39.00"
-                                                            VerticalAlignment="Center" />
-                                                    </Grid>
-                                                </StackPanel>
-                                            </DockPanel>
-                                        </Border>
-                                    </Grid>
-                                </breakpoints:View>
-                            </breakpoints:ViewPort>
-                        </StackPanel>
-                    </TabItem>
-                    <TabItem Header="Analytics" IsEnabled="False" />
-                    <TabItem Header="Reports" IsEnabled="False" />
-                    <TabItem Header="Notifications" IsEnabled="False" />
-                </TabControl.Items>
-            </TabControl>
+                                                            Text="Recent Sales" />
+                                                        <TextBlock Classes="Caption Muted" Text="You made 265 sales this month." />
+                                                    </StackPanel>
+                                                    <StackPanel Margin="24,0,24,24" Spacing="24">
+                                                        <Grid ColumnDefinitions="Auto * Auto">
+                                                            <shadui:Avatar
+                                                                Width="36"
+                                                                Height="36"
+                                                                VerticalAlignment="Center"
+                                                                CornerRadius="18"
+                                                                Source="../Assets/Sales/01.png" />
+                                                            <StackPanel Grid.Column="1" Margin="8,0">
+                                                                <TextBlock Classes="Small" Text="Olivia Martin" />
+                                                                <TextBlock Classes="Caption Muted" Text="olivia.martin@email.com" />
+                                                            </StackPanel>
+                                                            <TextBlock
+                                                                Grid.Column="2"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                FontWeight="DemiBold"
+                                                                Text="+$1,999.00" />
+                                                        </Grid>
+                                                        <Grid ColumnDefinitions="Auto * Auto">
+                                                            <shadui:Avatar
+                                                                Width="36"
+                                                                Height="36"
+                                                                VerticalAlignment="Center"
+                                                                CornerRadius="18"
+                                                                Source="../Assets/Sales/02.png" />
+                                                            <StackPanel Grid.Column="1" Margin="8,0">
+                                                                <TextBlock Classes="Small" Text="Jackson Lee" />
+                                                                <TextBlock Classes="Caption Muted" Text="jackson.lee@email.com" />
+                                                            </StackPanel>
+                                                            <TextBlock
+                                                                Grid.Column="2"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                FontWeight="DemiBold"
+                                                                Text="+$39.00" />
+                                                        </Grid>
+                                                        <Grid ColumnDefinitions="Auto * Auto">
+                                                            <shadui:Avatar
+                                                                Width="36"
+                                                                Height="36"
+                                                                VerticalAlignment="Center"
+                                                                CornerRadius="18"
+                                                                Source="../Assets/Sales/03.png" />
+                                                            <StackPanel Grid.Column="1" Margin="8,0">
+                                                                <TextBlock Classes="Small" Text="Isabella Nguyen" />
+                                                                <TextBlock Classes="Caption Muted" Text="isabella.nguyen@email.com" />
+                                                            </StackPanel>
+                                                            <TextBlock
+                                                                Grid.Column="2"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                FontWeight="DemiBold"
+                                                                Text="+$299.00" />
+                                                        </Grid>
+                                                        <Grid ColumnDefinitions="Auto * Auto">
+                                                            <shadui:Avatar
+                                                                Width="36"
+                                                                Height="36"
+                                                                VerticalAlignment="Center"
+                                                                CornerRadius="18"
+                                                                Source="../Assets/Sales/04.png" />
+                                                            <StackPanel Grid.Column="1" Margin="8,0">
+                                                                <TextBlock Classes="Small" Text="William Kim" />
+                                                                <TextBlock Classes="Caption Muted" Text="will@email.com" />
+                                                            </StackPanel>
+                                                            <TextBlock
+                                                                Grid.Column="2"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                FontWeight="DemiBold"
+                                                                Text="+$99.00" />
+                                                        </Grid>
+                                                        <Grid ColumnDefinitions="Auto * Auto">
+                                                            <shadui:Avatar
+                                                                Width="36"
+                                                                Height="36"
+                                                                VerticalAlignment="Center"
+                                                                CornerRadius="18"
+                                                                Source="../Assets/Sales/05.png" />
+                                                            <StackPanel Grid.Column="1" Margin="8,0">
+                                                                <TextBlock Classes="Small" Text="Sofia Davis" />
+                                                                <TextBlock Classes="Caption Muted" Text="sofia.davis@email.com" />
+                                                            </StackPanel>
+                                                            <TextBlock
+                                                                Grid.Column="2"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="16"
+                                                                FontWeight="DemiBold"
+                                                                Text="+$39.00" />
+                                                        </Grid>
+                                                    </StackPanel>
+                                                </DockPanel>
+                                            </Border>
+                                        </Grid>
+                                    </shadui:BreakpointView>
+                                </shadui:BreakpointViewPort>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem Header="Analytics" IsEnabled="False" />
+                        <TabItem Header="Reports" IsEnabled="False" />
+                        <TabItem Header="Notifications" IsEnabled="False" />
+                    </TabControl.Items>
+                </TabControl>
+            </StackPanel>
+
         </ScrollViewer>
     </DockPanel>
 </UserControl>

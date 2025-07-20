@@ -1,49 +1,49 @@
 ﻿<ResourceDictionary
     xmlns="https://github.com/avaloniaui"
-    xmlns:dashboard="clr-namespace:ShadUI.Demo.Controls.Dashboard"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dashboard="clr-namespace:ShadUI.Demo.Controls.Dashboard">
     <Design.PreviewWith>
         <Border Width="768">
             <UniformGrid Columns="4">
                 <dashboard:OverviewCard
-                    Hint="-20.1% from last month"
                     Title="Total Revenue"
+                    Hint="-20.1% from last month"
                     Value="$45,231.89" />
                 <dashboard:OverviewCard
-                    Hint="-20.1% from last month"
                     Title="Total Revenue"
+                    Hint="-20.1% from last month"
                     Value="$45,231.89" />
                 <dashboard:OverviewCard
-                    Hint="-20.1% from last month"
                     Title="Total Revenue"
+                    Hint="-20.1% from last month"
                     Value="$45,231.89" />
                 <dashboard:OverviewCard
-                    Hint="-20.1% from last month"
                     Title="Total Revenue"
+                    Hint="-20.1% from last month"
                     Value="$45,231.89" />
             </UniformGrid>
         </Border>
     </Design.PreviewWith>
-    <ControlTheme TargetType="dashboard:OverviewCard" x:Key="OverviewCardTheme">
+    <ControlTheme x:Key="OverviewCardTheme" TargetType="dashboard:OverviewCard">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
                     <Border
+                        MinWidth="150"
+                        Margin="8"
                         Background="{DynamicResource CardBackgroundColor}"
                         BorderBrush="{DynamicResource BorderColor}"
                         BorderThickness="1"
-                        BoxShadow="0 2 4 0 #20000000"
-                        CornerRadius="{DynamicResource 2XlCornerRadius}"
-                        Margin="8"
-                        MinWidth="150">
+                        BoxShadow="{DynamicResource Shadow}"
+                        CornerRadius="{DynamicResource 2XlCornerRadius}">
                         <StackPanel Margin="24">
                             <Grid ColumnDefinitions="* Auto">
                                 <TextBlock Classes="Small" Text="{TemplateBinding Title}" />
-                                <ContentPresenter Content="{TemplateBinding Icon}" Grid.Column="1" />
+                                <ContentPresenter Grid.Column="1" Content="{TemplateBinding Icon}" />
                             </Grid>
                             <TextBlock
-                                Classes="h3"
                                 Margin="0,12,0,2"
+                                Classes="h3"
                                 Text="{TemplateBinding Value}"
                                 TextWrapping="Wrap" />
                             <TextBlock
@@ -58,7 +58,7 @@
     </ControlTheme>
 
     <ControlTheme
+        x:Key="{x:Type dashboard:OverviewCard}"
         BasedOn="{StaticResource OverviewCardTheme}"
-        TargetType="dashboard:OverviewCard"
-        x:Key="{x:Type dashboard:OverviewCard}" />
+        TargetType="dashboard:OverviewCard" />
 </ResourceDictionary>

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data.Converters;
-using ShadUI.Breakpoints;
 
-namespace ShadUI.Converters;
+// ReSharper disable once CheckNamespace
+namespace ShadUI;
 
 /// <summary>
 ///     Converts the width and breakpoint to a visibility value.

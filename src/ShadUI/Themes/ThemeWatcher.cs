@@ -4,7 +4,8 @@ using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.Threading;
 
-namespace ShadUI.Themes;
+// ReSharper disable once CheckNamespace
+namespace ShadUI;
 
 /// <summary>
 ///     Watches and manages theme changes in the application, providing access to current theme colors
@@ -51,51 +52,40 @@ public class ThemeWatcher
     ///     Retrieves the current theme colors from the application resources.
     /// </summary>
     /// <returns>A new <see cref="ThemeColors" /> instance containing all theme color values.</returns>
-    private ThemeColors GetThemeColors() =>
-        new()
+    private ThemeColors GetThemeColors()
+    {
+        return new ThemeColors
         {
-            // Base Colors
+            // Basic Colors
             ForegroundColor = TryGetColor("ForegroundColor"),
             ForegroundLeadColor = TryGetColor("ForegroundLeadColor"),
             BackgroundColor = TryGetColor("BackgroundColor"),
             MutedColor = TryGetColor("MutedColor"),
             BorderColor = TryGetColor("BorderColor"),
-            // Window Related Colors
-            CardBackgroundColor = TryGetColor("CardBackgroundColor"),
-            SidebarBackgroundColor = TryGetColor("SidebarBackgroundColor"),
-            TitleBarBackgroundColor = TryGetColor("TitleBarBackgroundColor"),
-            PopupBackgroundColor = TryGetColor("PopupBackgroundColor"),
-            WindowButtonHoverColor = TryGetColor("WindowButtonHoverColor"),
-            // Switch Colors
-            SwitchForegroundColor = TryGetColor("SwitchForegroundColor"),
-            SwitchBackgroundColor = TryGetColor("SwitchBackgroundColor"),
-            // Primary Colors
+            BorderColor60 = TryGetColor("BorderColor60"),
+            BorderColor30 = TryGetColor("BorderColor30"),
+            OutlineColor = TryGetColor("OutlineColor"),
+            GhostColor = TryGetColor("GhostColor"),
+            GhostHoverColor = TryGetColor("GhostHoverColor"),
+            GhostHoverColor50 = TryGetColor("GhostHoverColor50"),
+
+            // Theme Colors
             PrimaryColor = TryGetColor("PrimaryColor"),
             PrimaryColor75 = TryGetColor("PrimaryColor75"),
             PrimaryColor50 = TryGetColor("PrimaryColor50"),
             PrimaryColor10 = TryGetColor("PrimaryColor10"),
             PrimaryForegroundColor = TryGetColor("PrimaryForegroundColor"),
-            // Secondary Colors
             SecondaryColor = TryGetColor("SecondaryColor"),
             SecondaryColor75 = TryGetColor("SecondaryColor75"),
             SecondaryColor50 = TryGetColor("SecondaryColor50"),
             SecondaryForegroundColor = TryGetColor("SecondaryForegroundColor"),
-            // Destructive Colors
             DestructiveColor = TryGetColor("DestructiveColor"),
             DestructiveColor75 = TryGetColor("DestructiveColor75"),
             DestructiveColor50 = TryGetColor("DestructiveColor50"),
+            DestructiveColor10 = TryGetColor("DestructiveColor10"),
             DestructiveForegroundColor = TryGetColor("DestructiveForegroundColor"),
-            // Special Colors
-            TabItemSelectedColor = TryGetColor("TabItemSelectedColor"),
-            TabItemsBackgroundColor = TryGetColor("TabItemsBackgroundColor"),
-            OutlineColor = TryGetColor("OutlineColor"),
-            GhostColor = TryGetColor("GhostColor"),
-            GhostHoverColor = TryGetColor("GhostHoverColor"),
-            // Overlay Colors
-            BusyAreaOverlayColor = TryGetColor("BusyAreaOverlayColor"),
-            DialogOverlayColor = TryGetColor("DialogOverlayColor"),
-            DialogBackgroundColor = TryGetColor("DialogBackgroundColor"),
-            // Status Colors
+
+            // Notification Colors
             InfoColor = TryGetColor("InfoColor"),
             InfoColor60 = TryGetColor("InfoColor60"),
             InfoColor20 = TryGetColor("InfoColor20"),
@@ -115,8 +105,24 @@ public class ThemeWatcher
             ErrorColor60 = TryGetColor("ErrorColor60"),
             ErrorColor20 = TryGetColor("ErrorColor20"),
             ErrorColor10 = TryGetColor("ErrorColor10"),
-            ErrorColor5 = TryGetColor("ErrorColor5")
+            ErrorColor5 = TryGetColor("ErrorColor5"),
+
+            // Specific Control Colors
+            BusyAreaOverlayColor = TryGetColor("BusyAreaOverlayColor"),
+            CardBackgroundColor = TryGetColor("CardBackgroundColor"),
+            DialogOverlayColor = TryGetColor("DialogOverlayColor"),
+            DialogBackgroundColor = TryGetColor("DialogBackgroundColor"),
+            TitleBarBackgroundColor = TryGetColor("TitleBarBackgroundColor"),
+            PopupBackgroundColor = TryGetColor("PopupBackgroundColor"),
+            WindowBackgroundColor = TryGetColor("WindowBackgroundColor"),
+            WindowButtonHoverColor = TryGetColor("WindowButtonHoverColor"),
+            SidebarBackgroundColor = TryGetColor("SidebarBackgroundColor"),
+            SwitchBackgroundColor = TryGetColor("SwitchBackgroundColor"),
+            SwitchForegroundColor = TryGetColor("SwitchForegroundColor"),
+            TabItemSelectedColor = TryGetColor("TabItemSelectedColor"),
+            TabItemsBackgroundColor = TryGetColor("TabItemsBackgroundColor")
         };
+    }
 
     /// <summary>
     ///     Attempts to find a color resource by its key in the application resources.
@@ -126,7 +132,10 @@ public class ThemeWatcher
     private Color TryGetColor(string resourceKey)
     {
         if (_app.TryFindResource(resourceKey, _app.ActualThemeVariant, out var resource) && resource is Color color)
+        {
             return color;
+        }
+
         return default;
     }
 

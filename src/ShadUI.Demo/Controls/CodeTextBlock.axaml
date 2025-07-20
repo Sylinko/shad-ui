@@ -1,12 +1,11 @@
-<ResourceDictionary
+﻿<ResourceDictionary
     xmlns="https://github.com/avaloniaui"
-    xmlns:content="clr-namespace:ShadUI.Contents;assembly=ShadUI"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ShadUI.Demo.Controls"
     xmlns:editor="https://github.com/avaloniaui/avaloniaedit"
-    xmlns:extensions="clr-namespace:ShadUI.Extensions;assembly=ShadUI"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI">
     <Design.PreviewWith>
-        <Border Height="250" Width="500">
+        <Border Width="500" Height="250">
             <controls:CodeTextBlock>
                 <Run Text="&lt;controls:Window.Hosts&gt;" />
                 <LineBreak />
@@ -19,10 +18,7 @@
         </Border>
     </Design.PreviewWith>
 
-    <ControlTheme TargetType="controls:CodeTextBlock" x:Key="{x:Type controls:CodeTextBlock}">
-        <ControlTheme.Resources>
-            <FontFamily x:Key="JetbrainsFont">avares://ShadUI.Demo/Assets/Fonts#Jetbrains</FontFamily>
-        </ControlTheme.Resources>
+    <ControlTheme x:Key="{x:Type controls:CodeTextBlock}" TargetType="controls:CodeTextBlock">
         <Setter Property="Padding" Value="8" />
         <Setter Property="MinHeight" Value="50" />
         <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}" />
@@ -33,51 +29,38 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border
+                    Padding="{TemplateBinding Padding}"
                     Background="{TemplateBinding Background}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="{TemplateBinding CornerRadius}"
-                    Padding="{TemplateBinding Padding}">
+                    CornerRadius="{TemplateBinding CornerRadius}">
                     <Panel>
                         <editor:TextEditor
+                            Name="PART_Editor"
+                            MinHeight="{TemplateBinding MinHeight}"
+                            MaxHeight="{TemplateBinding MaxHeight}"
+                            Margin="{TemplateBinding Padding}"
                             FontFamily="{StaticResource JetbrainsFont}"
                             HorizontalScrollBarVisibility="Auto"
-                            Margin="{TemplateBinding Padding}"
-                            MaxHeight="{TemplateBinding MaxHeight}"
-                            MinHeight="{TemplateBinding MinHeight}"
-                            Name="PART_Editor"
                             ShowLineNumbers="False"
                             VerticalScrollBarVisibility="Auto" />
                         <Button
-                            CornerRadius="6"
-                            Height="28"
-                            HorizontalAlignment="Right"
-                            HorizontalContentAlignment="Center"
-                            Margin="0,8,8,0"
-                            MaxHeight="{TemplateBinding MaxHeight}"
                             Name="PART_ClipBoardButton"
+                            Margin="8"
+                            Padding="8"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="Top"
-                            VerticalContentAlignment="Center"
-                            Width="28">
-                            <Button.Styles>
-                                <Style Selector="Button:pointerover">
-                                    <Setter Property="Background" Value="{DynamicResource CodeForegroundColor50}" />
-                                </Style>
-                            </Button.Styles>
-                            <extensions:ButtonAssist.Icon>
+                            shadui:ButtonAssist.HoverBackground="{DynamicResource CodeForegroundColor50}">
+                            <Viewbox Width="16" Height="16">
                                 <PathIcon
-                                    Data="{x:Static content:Icons.ClipBoard}"
-                                    Foreground="#FAFAFA"
                                     Name="PART_ClipBoardIcon"
-                                    Width="12" />
-                            </extensions:ButtonAssist.Icon>
+                                    Data="{x:Static shadui:Icons.ClipBoard}"
+                                    Foreground="#FAFAFA" />
+                            </Viewbox>
                         </Button>
                     </Panel>
                 </Border>
             </ControlTemplate>
         </Setter>
-        <Style Selector="^ /template/ Button#PART_ClipBoardButton">
-            <Setter Property="Background" Value="Transparent" />
-        </Style>
     </ControlTheme>
 </ResourceDictionary>

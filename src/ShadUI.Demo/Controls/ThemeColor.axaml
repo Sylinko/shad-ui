@@ -1,0 +1,52 @@
+﻿<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:ShadUI.Demo.Controls"
+    xmlns:converters="clr-namespace:ShadUI.Demo.Converters">
+    <Design.PreviewWith>
+        <Panel Width="500" Height="100">
+            <controls:ThemeColor />
+        </Panel>
+    </Design.PreviewWith>
+    <ControlTheme x:Key="{x:Type controls:ThemeColor}" TargetType="controls:ThemeColor">
+        <Setter Property="Background" Value="{DynamicResource BackgroundColor}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource MdCornerRadius}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="A" />
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="B" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        x:Name="Border"
+                        Width="36"
+                        Height="36"
+                        Margin="8,0"
+                        VerticalAlignment="Center"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}" />
+                    <SelectableTextBlock
+                        Grid.Column="1"
+                        Margin="8,0"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        FontWeight="Medium"
+                        Text="{Binding #Border.Background, Converter={x:Static converters:BrushConverters.ToHex}}" />
+                    <SelectableTextBlock
+                        Grid.Column="2"
+                        Margin="8,0"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        FontWeight="Medium"
+                        Text="{TemplateBinding Title}" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

@@ -1,19 +1,20 @@
 ﻿<Styles
-    x:Class="ShadUI.Themes.ShadTheme"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:themes="clr-namespace:ShadUI.Themes">
-    <Styles.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="avares://ShadUI/Controls/Index.axaml" />
-            </ResourceDictionary.MergedDictionaries>
-            <ResourceDictionary.ThemeDictionaries>
-                <ResourceInclude Source="/Themes/Light.axaml" x:Key="Light" />
-                <ResourceInclude Source="/Themes/Dark.axaml" x:Key="Dark" />
-                <ResourceInclude Source="/Themes/Acrylic.axaml" x:Key="{x:Static themes:ThemeVariants.Acrylic}" />
-            </ResourceDictionary.ThemeDictionaries>
-        </ResourceDictionary>
-    </Styles.Resources>
-    <StyleInclude Source="avares://ShadUI/Styles/Index.axaml" />
+  x:Class="ShadUI.ShadTheme"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:themes="clr-namespace:ShadUI.Themes">
+  <Styles.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://ShadUI/Controls/Constants.axaml" />
+        <ResourceInclude Source="avares://ShadUI/Controls/Resources.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceInclude x:Key="{x:Static themes:ThemeVariants.Light}" Source="/Themes/Light.axaml" />
+        <ResourceInclude x:Key="{x:Static themes:ThemeVariants.Dark}" Source="/Themes/Dark.axaml" />
+        <ResourceInclude x:Key="{x:Static themes:ThemeVariants.Acrylic}" Source="/Themes/Acrylic.axaml" />
+      </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+  </Styles.Resources>
+  <StyleInclude Source="avares://ShadUI/Controls/Styles.axaml" />
 </Styles>

@@ -1,0 +1,134 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Width="400" Padding="8">
+            <StackPanel Spacing="8">
+                <TabControl>
+                    <TabItem Header="Preview">
+                        <Border
+                            Height="100"
+                            Padding="12"
+                            BorderBrush="{DynamicResource BorderColor}"
+                            BorderThickness="1"
+                            CornerRadius="{DynamicResource LgCornerRadius}">
+                            <TextBlock
+                                FontSize="20"
+                                Foreground="Black"
+                                Text="Content" />
+                        </Border>
+                    </TabItem>
+                    <TabItem Header="Code">
+                        <Border
+                            Height="100"
+                            Padding="12"
+                            BorderBrush="{DynamicResource BorderColor}"
+                            BorderThickness="1"
+                            CornerRadius="{DynamicResource LgCornerRadius}" />
+                    </TabItem>
+                    <TabItem Header="Disabled" IsEnabled="False" />
+                </TabControl>
+                <TabControl>
+                    <TabItem Header="Preview">
+                        <Border
+                            Height="100"
+                            Padding="12"
+                            BorderBrush="{DynamicResource BorderColor}"
+                            BorderThickness="1"
+                            CornerRadius="{DynamicResource LgCornerRadius}">
+                            <TextBlock
+                                FontSize="20"
+                                Foreground="Black"
+                                Text="Content" />
+                        </Border>
+                    </TabItem>
+                    <TabItem Header="Code">
+                        <Border
+                            Height="100"
+                            Padding="12"
+                            BorderBrush="{DynamicResource BorderColor}"
+                            BorderThickness="1"
+                            CornerRadius="{DynamicResource LgCornerRadius}" />
+                    </TabItem>
+                    <TabItem Header="Disabled" IsEnabled="False" />
+                </TabControl>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <ControlTheme x:Key="TabControlTheme" TargetType="TabControl">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+        <Setter Property="Background" Value="{DynamicResource BackgroundColor}" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="4" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}">
+                    <StackPanel Spacing="8">
+                        <LayoutTransformControl Name="LayoutTransform" DockPanel.Dock="{TemplateBinding TabStripPlacement}">
+                            <Border
+                                Padding="2,4,2,0"
+                                HorizontalAlignment="Left"
+                                Background="{DynamicResource TabItemsBackgroundColor}"
+                                CornerRadius="{DynamicResource LgCornerRadius}">
+                                <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}" />
+                            </Border>
+                        </LayoutTransformControl>
+                        <ContentPresenter
+                            Name="PART_SelectedContentHost"
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding SelectedContent}"
+                            ContentTemplate="{TemplateBinding SelectedContentTemplate}" />
+                    </StackPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^[TabStripPlacement=Left] /template/ LayoutTransformControl#LayoutTransform">
+            <Setter Property="LayoutTransform" Value="rotate(-90deg)" />
+            <Style Selector="^ ItemsPresenter#PART_ItemsPresenter WrapPanel">
+                <Setter Property="Orientation" Value="Horizontal" />
+                <Setter Property="FlowDirection" Value="{DynamicResource FlowDirectionOpposite}" />
+            </Style>
+        </Style>
+        <Style Selector="^[TabStripPlacement=Right] /template/ LayoutTransformControl#LayoutTransform">
+            <Setter Property="LayoutTransform" Value="rotate(90deg)" />
+            <Style Selector="^ ItemsPresenter#PART_ItemsPresenter WrapPanel">
+                <Setter Property="Orientation" Value="Horizontal" />
+            </Style>
+        </Style>
+        <Style Selector="^[TabStripPlacement=Top] /template/ ItemsPresenter#PART_ItemsPresenter">
+            <Setter Property="Margin" Value="{DynamicResource TabControlTopPlacementItemMargin}" />
+        </Style>
+        <Style Selector="^.HorizontalTabs">
+            <Style Selector="^[TabStripPlacement=Left] /template/ LayoutTransformControl#LayoutTransform">
+                <Setter Property="LayoutTransform" Value="rotate(0)" />
+                <Style Selector="^ ItemsPresenter#PART_ItemsPresenter WrapPanel">
+                    <Setter Property="Orientation" Value="Vertical" />
+                    <Setter Property="FlowDirection" Value="{DynamicResource FlowDirectionOpposite}" />
+                </Style>
+            </Style>
+            <Style Selector="^[TabStripPlacement=Right] /template/ LayoutTransformControl#LayoutTransform">
+                <Setter Property="LayoutTransform" Value="rotate(0)" />
+                <Style Selector="^ ItemsPresenter#PART_ItemsPresenter WrapPanel">
+                    <Setter Property="Orientation" Value="Vertical" />
+                </Style>
+            </Style>
+        </Style>
+    </ControlTheme>
+
+    <ControlTheme
+        x:Key="{x:Type TabControl}"
+        BasedOn="{StaticResource TabControlTheme}"
+        TargetType="TabControl" />
+</ResourceDictionary>

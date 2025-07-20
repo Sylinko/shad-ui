@@ -1,11 +1,11 @@
 ﻿<ResourceDictionary
     xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ShadUI.Demo.Controls"
-    xmlns:shadui="clr-namespace:ShadUI.Controls;assembly=ShadUI"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI">
     <Design.PreviewWith>
         <StackPanel Spacing="32">
-            <controls:ControlBlock Language="xaml" Title="Basic Tab">
+            <controls:ControlBlock Title="Basic Tab">
                 <TabControl>
                     <TabControl.Items>
                         <TabItem Header="Preview">
@@ -17,7 +17,7 @@
                             </shadui:Card>
                         </TabItem>
                         <TabItem Header="Code">
-                            <controls:CodeTextBlock Language="xaml">
+                            <controls:CodeTextBlock>
                                 <Run Text="&lt;TextBlock TextWrapping=&quot;Wrap&quot; Classes=&quot;h&quot;" />
                                 <LineBreak />
                                 <Run Text="           Text=&quot;Taxing Laughter: The Joke Tax Chronicles&quot;/&gt;" />
@@ -28,7 +28,7 @@
             </controls:ControlBlock>
         </StackPanel>
     </Design.PreviewWith>
-    <ControlTheme TargetType="TabItem" x:Key="TabItemTheme">
+    <ControlTheme x:Key="TabItemTheme" TargetType="TabItem">
         <Setter Property="FontSize" Value="14" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{DynamicResource ForegroundLeadColor}" />
@@ -38,41 +38,41 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border
+                    Name="PART_LayoutRoot"
+                    Padding="{TemplateBinding Padding}"
                     Background="{TemplateBinding Background}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="{TemplateBinding CornerRadius}"
-                    Name="PART_LayoutRoot"
-                    Padding="{TemplateBinding Padding}">
+                    CornerRadius="{TemplateBinding CornerRadius}">
                     <StackPanel>
                         <ContentPresenter
+                            Name="PART_HeaderPresenter"
+                            Padding="16,8"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            HorizontalContentAlignment="Center"
                             Content="{TemplateBinding Header}"
                             ContentTemplate="{TemplateBinding HeaderTemplate}"
                             Foreground="{TemplateBinding Foreground}"
-                            HorizontalAlignment="Center"
-                            HorizontalContentAlignment="Center"
-                            Name="PART_HeaderPresenter"
-                            Padding="16,8"
-                            TextBlock.FontFamily="{TemplateBinding FontFamily}"
                             TextBlock.FontSize="{TemplateBinding FontSize}"
                             TextBlock.FontWeight="{TemplateBinding FontWeight}"
-                            TextBlock.Foreground="{TemplateBinding Foreground}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            TextBlock.Foreground="{TemplateBinding Foreground}">
                             <ContentPresenter.Transitions>
                                 <Transitions>
-                                    <BrushTransition Duration="0:0:0.1" Property="Foreground" />
+                                    <BrushTransition Property="Foreground" Duration="0:0:0.1" />
                                 </Transitions>
                             </ContentPresenter.Transitions>
                         </ContentPresenter>
                         <Border
+                            Name="PART_Underline"
+                            Height="2"
+                            Margin="16,0"
                             Background="{DynamicResource PrimaryColor}"
                             CornerRadius="{DynamicResource FullCornerRadius}"
-                            Height="2"
-                            Name="PART_Underline"
                             Opacity="0">
                             <Border.Transitions>
                                 <Transitions>
-                                    <DoubleTransition Duration="0:0:0.3" Property="Opacity" />
+                                    <DoubleTransition Property="Opacity" Duration="0:0:0.3" />
                                 </Transitions>
                             </Border.Transitions>
                         </Border>
@@ -108,7 +108,7 @@
             </Style>
         </Style>
     </ControlTheme>
-    <ControlTheme TargetType="TabControl" x:Key="TabControlTheme">
+    <ControlTheme x:Key="TabControlTheme" TargetType="TabControl">
         <Setter Property="Margin" Value="0" />
         <Setter Property="Padding" Value="0,16" />
         <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
@@ -116,26 +116,23 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border
+                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalAlignment}"
                     Background="{TemplateBinding Background}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="{TemplateBinding CornerRadius}"
-                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                    VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                    CornerRadius="{TemplateBinding CornerRadius}">
                     <DockPanel>
-                        <LayoutTransformControl DockPanel.Dock="{TemplateBinding TabStripPlacement}" Name="PART_LayoutTransform">
-                            <Panel>
-                                <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1" />
-                                <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}" Name="PART_ItemsPresenter" />
-                            </Panel>
+                        <LayoutTransformControl Name="PART_LayoutTransform" DockPanel.Dock="{TemplateBinding TabStripPlacement}">
+                            <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}" />
                         </LayoutTransformControl>
                         <ContentPresenter
-                            Content="{TemplateBinding SelectedContent}"
-                            ContentTemplate="{TemplateBinding SelectedContentTemplate}"
-                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            Margin="{TemplateBinding Padding}"
                             Name="PART_SelectedContentHost"
-                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding SelectedContent}"
+                            ContentTemplate="{TemplateBinding SelectedContentTemplate}" />
                     </DockPanel>
                 </Border>
             </ControlTemplate>
@@ -172,23 +169,36 @@
             </Style>
         </Style>
     </ControlTheme>
-    <ControlTheme TargetType="controls:ControlBlock" x:Key="{x:Type controls:ControlBlock}">
+    <ControlTheme x:Key="{x:Type controls:ControlBlock}" TargetType="controls:ControlBlock">
         <Setter Property="Template">
             <ControlTemplate>
                 <StackPanel Spacing="16">
                     <StackPanel IsVisible="{TemplateBinding Title, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                        <TextBlock Classes="h4" Text="{TemplateBinding Title}" />
-                        <Separator Margin="0,8,0,0" />
+                        <TextBlock
+                            Margin="16,0,0,0"
+                            Classes="h4"
+                            Text="{TemplateBinding Title}" />
                     </StackPanel>
                     <TabControl Theme="{StaticResource TabControlTheme}">
                         <TabControl.Items>
                             <TabItem Header="Preview" Theme="{StaticResource TabItemTheme}">
-                                <shadui:Card Padding="48">
+                                <shadui:Card Padding="48" Background="{DynamicResource WindowBackgroundColor}">
                                     <ContentPresenter Content="{TemplateBinding Content}" />
                                 </shadui:Card>
                             </TabItem>
-                            <TabItem Header="Code" Theme="{StaticResource TabItemTheme}">
-                                <controls:CodeTextBlock Language="{TemplateBinding Language}" Text="{TemplateBinding Code}" />
+                            <TabItem
+                                Header="XAML"
+                                IsVisible="{TemplateBinding Xaml,
+                                                            Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                Theme="{StaticResource TabItemTheme}">
+                                <controls:CodeTextBlock Language="xml" Text="{TemplateBinding Xaml}" />
+                            </TabItem>
+                            <TabItem
+                                Header="C#"
+                                IsVisible="{TemplateBinding CSharp,
+                                                            Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                Theme="{StaticResource TabItemTheme}">
+                                <controls:CodeTextBlock Language="cs" Text="{TemplateBinding CSharp}" />
                             </TabItem>
                         </TabControl.Items>
                     </TabControl>

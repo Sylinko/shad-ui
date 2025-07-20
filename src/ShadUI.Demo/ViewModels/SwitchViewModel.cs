@@ -1,48 +1,42 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System;
+using System.IO;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ShadUI.Demo.ViewModels;
 
-public sealed partial class SwitchViewModel : ViewModelBase
+[Page("switch")]
+public sealed partial class SwitchViewModel : ViewModelBase, INavigable
 {
-    [ObservableProperty]
-    private string _enableCode = """
-                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="8">
-                                     <ToggleSwitch>
-                                         <ToggleSwitch.OffContent>
-                                             <TextBlock Classes="Small" Text="Airplane Mode Off" VerticalAlignment="Center" />
-                                         </ToggleSwitch.OffContent>
-                                         <ToggleSwitch.OnContent>
-                                             <TextBlock Classes="Small" Text="Airplane Mode On" VerticalAlignment="Center" />
-                                         </ToggleSwitch.OnContent>
-                                     </ToggleSwitch>
-                                 </StackPanel>
-                                 """;
+    private readonly PageManager _pageManager;
+
+    public SwitchViewModel(PageManager pageManager)
+    {
+        _pageManager = pageManager;
+        var path = Path.Combine(AppContext.BaseDirectory, "views", "SwitchPage.axaml");
+        EnableCode = path.ExtractByLineRange(58, 76).CleanIndentation();
+        DisableCode = path.ExtractByLineRange(79, 97).CleanIndentation();
+        RightAlignedCode = path.ExtractByLineRange(100, 118).CleanIndentation();
+    }
+
+    [RelayCommand]
+    private void BackPage()
+    {
+        _pageManager.Navigate<SliderViewModel>();
+    }
+
+    [RelayCommand]
+    private void NextPage()
+    {
+        _pageManager.Navigate<TabControlViewModel>();
+    }
 
     [ObservableProperty]
-    private string _disableCode = """
-                                  <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="8">
-                                      <ToggleSwitch IsEnabled="False" IsChecked="True">
-                                          <ToggleSwitch.OffContent>
-                                              <TextBlock Classes="Small" Text="Airplane Mode Off" VerticalAlignment="Center" />
-                                          </ToggleSwitch.OffContent>
-                                          <ToggleSwitch.OnContent>
-                                              <TextBlock Classes="Small" Text="Airplane Mode On" VerticalAlignment="Center" />
-                                          </ToggleSwitch.OnContent>
-                                      </ToggleSwitch>
-                                  </StackPanel>
-                                  """;
+    private string _enableCode = string.Empty;
 
     [ObservableProperty]
-    private string _rightAlignedCode = """
-                                       <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="8">
-                                           <ToggleSwitch extensions:ToggleSwitchAssist.RightAlignedContent="True">
-                                               <ToggleSwitch.OffContent>
-                                                   <TextBlock Classes="Small" Text="Airplane Mode Off" VerticalAlignment="Center" />
-                                               </ToggleSwitch.OffContent>
-                                               <ToggleSwitch.OnContent>
-                                                   <TextBlock Classes="Small" Text="Airplane Mode On" VerticalAlignment="Center" />
-                                               </ToggleSwitch.OnContent>
-                                           </ToggleSwitch>
-                                       </StackPanel>
-                                       """;
+    private string _disableCode = string.Empty;
+
+    [ObservableProperty]
+    private string _rightAlignedCode = string.Empty;
 }

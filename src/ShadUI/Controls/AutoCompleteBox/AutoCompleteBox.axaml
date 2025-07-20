@@ -1,0 +1,300 @@
+﻿<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:shadui="clr-namespace:ShadUI"
+    xmlns:system="clr-namespace:System;assembly=netstandard"
+    x:ClassModifier="internal">
+    <Design.PreviewWith>
+        <StackPanel
+            Width="225"
+            Margin="12"
+            Spacing="8">
+            <AutoCompleteBox
+                Width="225"
+                shadui:ControlAssist.Hint="This is test"
+                shadui:ControlAssist.Label="Search"
+                Watermark="Search here...">
+                <AutoCompleteBox.InnerRightContent>
+                    <PathIcon
+                        Width="16"
+                        Data="{x:Static shadui:Icons.Search}"
+                        Opacity="0.75" />
+                </AutoCompleteBox.InnerRightContent>
+            </AutoCompleteBox>
+            <AutoCompleteBox
+                Width="225"
+                shadui:ControlAssist.Hint="This is test"
+                shadui:ControlAssist.Label="Search"
+                shadui:ElementAssist.Classes="Clearable"
+                Text="xxx"
+                Watermark="Search here...">
+                <AutoCompleteBox.InnerRightContent>
+                    <PathIcon
+                        Width="16"
+                        Data="{x:Static shadui:Icons.Search}"
+                        Opacity="0.75" />
+                </AutoCompleteBox.InnerRightContent>
+            </AutoCompleteBox>
+            <AutoCompleteBox
+                Width="225"
+                shadui:ControlAssist.Hint="This is test"
+                shadui:ControlAssist.Label="Search"
+                shadui:ControlAssist.ShowProgress="True"
+                Watermark="Search here...">
+                <AutoCompleteBox.InnerRightContent>
+                    <PathIcon
+                        Width="16"
+                        Data="{x:Static shadui:Icons.Search}"
+                        Opacity="0.75" />
+                </AutoCompleteBox.InnerRightContent>
+
+                <DataValidationErrors.Error>
+                    <system:Exception />
+                </DataValidationErrors.Error>
+            </AutoCompleteBox>
+        </StackPanel>
+    </Design.PreviewWith>
+
+    <StreamGeometry x:Key="TextBoxClearButtonData">M13.71,12.29c.39.39.39,1.03,0,1.42-.2.19-.45.29-.71.29s-.51-.1-.71-.29l-5.29-5.29L1.71,13.71c-.2.19-.45.29-.71.29s-.51-.1-.71-.29c-.39-.39-.39-1.03,0-1.42l5.29-5.29L.29,1.71C-.1,1.32-.1.68.29.29.68-.1,1.32-.1,1.71.29l5.29,5.29L12.29.29c.39-.39,1.03-.39,1.42,0,.39.39.39,1.03,0,1.42l-5.29,5.29,5.29,5.29Z</StreamGeometry>
+    <ControlTheme x:Key="ClearButtonTheme" TargetType="Button">
+        <Setter Property="Cursor" Value="Arrow" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        Padding="4"
+                        Background="Transparent"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <Path
+                            x:Name="PART_GlyphElement"
+                            Width="10"
+                            Height="10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Data="{StaticResource TextBoxClearButtonData}"
+                            Fill="{DynamicResource ForegroundColor}"
+                            Stretch="Uniform" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme x:Key="AutoCompleteBoxItem" TargetType="ListBoxItem">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+        <Setter Property="Padding" Value="10,8" />
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="CornerRadius" Value="{DynamicResource MdCornerRadius}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel MinHeight="{TemplateBinding MinHeight}" Margin="{TemplateBinding Margin}">
+                    <Border
+                        Name="BaseBackground"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Opacity="1" />
+                    <Border
+                        Name="HoverBackground"
+                        Background="{DynamicResource GhostHoverColor}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Opacity="0" />
+                    <Border
+                        Name="SelectionBackground"
+                        Background="{DynamicResource GhostColor}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Opacity="0" />
+                    <ContentPresenter
+                        Margin="{TemplateBinding Padding}"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}" />
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^ /template/ Border">
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.20" />
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="^:selected:not(:pointerover) /template/ Border#SelectionBackground">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+        <Style Selector="^:focus /template/ Border#HoverBackground">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+        <Style Selector="^:pointerover /template/ Border#HoverBackground">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+        <Style Selector="^:focus:pointerover /template/ Border#HoverBackground">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+        <Style Selector="^:not(:focus):not(:pointerover) /template/ Border#HoverBackground">
+            <Setter Property="Opacity" Value="0" />
+        </Style>
+    </ControlTheme>
+
+    <ControlTheme x:Key="{x:Type AutoCompleteBox}" TargetType="AutoCompleteBox">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Background" Value="{DynamicResource SelectionColor}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
+        <Setter Property="Padding" Value="12,4" />
+        <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}" />
+        <Setter Property="FocusAdorner" Value="{x:Null}" />
+        <Setter Property="MaxDropDownHeight" Value="244" />
+        <Setter Property="shadui:ControlAssist.ShowProgress" Value="False" />
+        <Setter Property="shadui:ControlAssist.MinHeight" Value="36" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel Background="Transparent">
+                    <DataValidationErrors>
+                        <StackPanel>
+                            <TextBlock
+                                Name="Label"
+                                Margin="0,0,0,6"
+                                Classes="Small"
+                                Cursor="Arrow"
+                                IsVisible="{TemplateBinding shadui:ControlAssist.Label,
+                                                            Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                Text="{TemplateBinding Watermark}" />
+                            <TextBox
+                                Name="PART_TextBox"
+                                Padding="{TemplateBinding Padding}"
+                                shadui:ControlAssist.MinHeight="{TemplateBinding shadui:ControlAssist.MinHeight}"
+                                shadui:ControlAssist.ShowProgress="{TemplateBinding shadui:ControlAssist.ShowProgress}"
+                                shadui:ElementAssist.Classes="{TemplateBinding shadui:ElementAssist.Classes}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CaretIndex="{TemplateBinding CaretIndex,
+                                                             Mode=TwoWay}"
+                                Classes="Clearable"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                FocusAdorner="{TemplateBinding FocusAdorner}"
+                                FontSize="{TemplateBinding FontSize}"
+                                FontWeight="{TemplateBinding FontWeight}"
+                                InnerLeftContent="{TemplateBinding InnerLeftContent}"
+                                InnerRightContent="{TemplateBinding InnerRightContent}"
+                                Watermark="{TemplateBinding Watermark}" />
+                            <TextBlock
+                                Margin="0,4,0,0"
+                                Classes="Caption Muted"
+                                Cursor="Arrow"
+                                IsVisible="{TemplateBinding shadui:ControlAssist.Hint,
+                                                            Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                Text="{TemplateBinding shadui:ControlAssist.Hint}" />
+                        </StackPanel>
+                    </DataValidationErrors>
+                    <Popup
+                        Name="PART_Popup"
+                        MinWidth="{CompiledBinding #PART_TextBox.Bounds.Width}"
+                        MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                        IsLightDismissEnabled="True"
+                        PlacementTarget="PART_TextBox"
+                        VerticalOffset="5">
+                        <LayoutTransformControl Name="LayoutTransform" RenderTransformOrigin="50%, 0%">
+                            <Border
+                                MinWidth="{CompiledBinding #PART_TextBox.Bounds.Width}"
+                                Margin="2,0,2,4"
+                                shadui:ScrollEventAssist.PreventScrollPropagation="True"
+                                Background="{DynamicResource CardBackgroundColor}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BoxShadow="{DynamicResource Shadow}"
+                                ClipToBounds="True"
+                                CornerRadius="{TemplateBinding CornerRadius}">
+                                <ListBox
+                                    Name="PART_SelectingItemsControl"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    FontFamily="{TemplateBinding FontFamily}"
+                                    FontSize="14"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    ItemContainerTheme="{StaticResource AutoCompleteBoxItem}"
+                                    ItemTemplate="{TemplateBinding ItemTemplate}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel Margin="3" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                </ListBox>
+                            </Border>
+                        </LayoutTransformControl>
+                    </Popup>
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover /template/ TextBox#PART_TextBox">
+            <Setter Property="Transitions">
+                <Setter.Value>
+                    <Transitions>
+                        <BrushTransition Property="BorderBrush" Duration="0:0:0.20" />
+                    </Transitions>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryColor}" />
+        </Style>
+        <Style Selector="^:focus /template/ TextBox#PART_TextBox">
+            <Setter Property="Transitions">
+                <Setter.Value>
+                    <Transitions>
+                        <BrushTransition Property="BorderBrush" Duration="0:0:0.20" />
+                    </Transitions>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryColor}" />
+        </Style>
+        <Style Selector="^:error">
+            <Style Selector="^/template/ TextBox#PART_TextBox">
+                <Setter Property="BorderBrush" Value="{DynamicResource ErrorColor}" />
+            </Style>
+            <Style Selector="^/template/ TextBlock#Label">
+                <Setter Property="Foreground" Value="{DynamicResource ErrorColor}" />
+            </Style>
+        </Style>
+        <Style Selector="^ /template/ TextBox#PART_TextBox">
+            <Setter Property="Cursor" Value="IBeam" />
+        </Style>
+        <Style Selector="^:disabled /template/ TextBox#PART_TextBox">
+            <Setter Property="Opacity" Value="0.5" />
+        </Style>
+        <Style Selector="^:dropdownopen">
+            <Style Selector="^ /template/ LayoutTransformControl#LayoutTransform">
+                <Style.Animations>
+                    <Animation
+                        Easing="SineEaseInOut"
+                        FillMode="Forward"
+                        Duration="0:0:0.15">
+                        <KeyFrame Cue="0%">
+                            <Setter Property="ScaleTransform.ScaleY" Value="0.9" />
+                            <Setter Property="ScaleTransform.ScaleX" Value="0.9" />
+                            <Setter Property="Opacity" Value="0" />
+                        </KeyFrame>
+                        <KeyFrame Cue="100%">
+                            <Setter Property="ScaleTransform.ScaleY" Value="1" />
+                            <Setter Property="ScaleTransform.ScaleX" Value="1" />
+                            <Setter Property="Opacity" Value="1" />
+                        </KeyFrame>
+                    </Animation>
+                </Style.Animations>
+            </Style>
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

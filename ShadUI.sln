@@ -16,6 +16,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repo", "repo", "{393D8447-A
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{BDF88755-E2E7-438D-A15D-DFDA0FB3836F}"
+	ProjectSection(SolutionItems) = preProject
+		docs\demo-01.gif = docs\demo-01.gif
+		docs\demo-02.gif = docs\demo-02.gif
+		docs\demo-03.gif = docs\demo-03.gif
+		docs\demo-04.gif = docs\demo-04.gif
+		docs\hero.png = docs\hero.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,8 +45,8 @@ Global
 		{7F5BD55E-CE7F-4746-A993-2C0ADD4152B7}.Debug|ARM.Build.0 = Debug|Any CPU
 		{7F5BD55E-CE7F-4746-A993-2C0ADD4152B7}.Debug|ARM64.ActiveCfg = Debug|Any CPU
 		{7F5BD55E-CE7F-4746-A993-2C0ADD4152B7}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{7F5BD55E-CE7F-4746-A993-2C0ADD4152B7}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7F5BD55E-CE7F-4746-A993-2C0ADD4152B7}.Debug|x64.Build.0 = Debug|Any CPU
+		{7F5BD55E-CE7F-4746-A993-2C0ADD4152B7}.Debug|x64.ActiveCfg = Release|x64
+		{7F5BD55E-CE7F-4746-A993-2C0ADD4152B7}.Debug|x64.Build.0 = Release|x64
 		{7F5BD55E-CE7F-4746-A993-2C0ADD4152B7}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{7F5BD55E-CE7F-4746-A993-2C0ADD4152B7}.Debug|x86.Build.0 = Debug|Any CPU
 		{7F5BD55E-CE7F-4746-A993-2C0ADD4152B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -56,8 +65,8 @@ Global
 		{7B2C2DCA-8E60-475C-A590-07CB1897FE31}.Debug|ARM.Build.0 = Debug|Any CPU
 		{7B2C2DCA-8E60-475C-A590-07CB1897FE31}.Debug|ARM64.ActiveCfg = Debug|Any CPU
 		{7B2C2DCA-8E60-475C-A590-07CB1897FE31}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{7B2C2DCA-8E60-475C-A590-07CB1897FE31}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7B2C2DCA-8E60-475C-A590-07CB1897FE31}.Debug|x64.Build.0 = Debug|Any CPU
+		{7B2C2DCA-8E60-475C-A590-07CB1897FE31}.Debug|x64.ActiveCfg = Release|x64
+		{7B2C2DCA-8E60-475C-A590-07CB1897FE31}.Debug|x64.Build.0 = Release|x64
 		{7B2C2DCA-8E60-475C-A590-07CB1897FE31}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{7B2C2DCA-8E60-475C-A590-07CB1897FE31}.Debug|x86.Build.0 = Debug|Any CPU
 		{7B2C2DCA-8E60-475C-A590-07CB1897FE31}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -78,8 +87,6 @@ Global
 		{FACFCC37-FB25-420A-89DF-CAC5915135C7}.Debug|ARM64.Build.0 = Debug|ARM64
 		{FACFCC37-FB25-420A-89DF-CAC5915135C7}.Debug|ARM64.Deploy.0 = Debug|ARM64
 		{FACFCC37-FB25-420A-89DF-CAC5915135C7}.Debug|x64.ActiveCfg = Release|x64
-		{FACFCC37-FB25-420A-89DF-CAC5915135C7}.Debug|x64.Build.0 = Release|x64
-		{FACFCC37-FB25-420A-89DF-CAC5915135C7}.Debug|x64.Deploy.0 = Release|x64
 		{FACFCC37-FB25-420A-89DF-CAC5915135C7}.Debug|x86.ActiveCfg = Debug|x86
 		{FACFCC37-FB25-420A-89DF-CAC5915135C7}.Debug|x86.Build.0 = Debug|x86
 		{FACFCC37-FB25-420A-89DF-CAC5915135C7}.Debug|x86.Deploy.0 = Debug|x86
@@ -106,5 +113,8 @@ Global
 		{7F5BD55E-CE7F-4746-A993-2C0ADD4152B7} = {EB1792AF-C6EF-490D-9F17-AE4E72F108DD}
 		{7B2C2DCA-8E60-475C-A590-07CB1897FE31} = {EB1792AF-C6EF-490D-9F17-AE4E72F108DD}
 		{FACFCC37-FB25-420A-89DF-CAC5915135C7} = {EB1792AF-C6EF-490D-9F17-AE4E72F108DD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5607F300-CEB5-47A3-AFF0-5FEA0CBBD9FF}
 	EndGlobalSection
 EndGlobal

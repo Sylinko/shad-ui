@@ -20,14 +20,17 @@ public abstract class ViewModelBase : ObservableObject, INotifyDataErrorInfo
     public IEnumerable GetErrors(string? propertyName)
     {
         if (string.IsNullOrEmpty(propertyName))
+        {
             return Array.Empty<string>();
+        }
 
         return _errors.TryGetValue(propertyName, out var errors)
             ? errors
             : Array.Empty<string>();
     }
 
-    protected void SetProperty<T>(ref T field, T value, bool validate = false, [CallerMemberName] string propertyName = null!)
+    protected void SetProperty<T>(ref T field, T value, bool validate = false,
+        [CallerMemberName] string propertyName = null!)
     {
         if (EqualityComparer<T>.Default.Equals(field, value)) return;
 
@@ -48,13 +51,18 @@ public abstract class ViewModelBase : ObservableObject, INotifyDataErrorInfo
 
         if (Validator.TryValidateProperty(value, validationContext, validationResults)) return;
 
-        foreach (var validationResult in validationResults) AddError(propertyName, validationResult.ErrorMessage ?? string.Empty);
+        foreach (var validationResult in validationResults)
+        {
+            AddError(propertyName, validationResult.ErrorMessage ?? string.Empty);
+        }
     }
 
     protected void AddError(string propertyName, string error)
     {
         if (!_errors.ContainsKey(propertyName))
+        {
             _errors[propertyName] = new List<string>();
+        }
 
         if (_errors[propertyName].Contains(error)) return;
 
@@ -82,7 +90,7 @@ public abstract class ViewModelBase : ObservableObject, INotifyDataErrorInfo
     protected void ValidateAllProperties()
     {
         var properties = GetType().GetProperties()
-            .Where(prop => prop.GetCustomAttributes(typeof(ValidationAttribute), true).Any());
+            .Where(prop => prop.GetCustomAttributes(typeof(ValidationAttribute), true).Length != 0);
 
         foreach (var property in properties)
         {

@@ -1,48 +1,49 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.IO;
 using System.Timers;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ShadUI.Demo.Validators;
-using ShadUI.Toasts;
+using ShadUI.Demo.ViewModels.Examples.Input;
 
 namespace ShadUI.Demo.ViewModels;
 
-public sealed partial class InputViewModel : ViewModelBase
+[Page("input")]
+public sealed partial class InputViewModel : ViewModelBase, INavigable
 {
-    private readonly ToastManager _toastManager;
+    private readonly PageManager _pageManager;
     private readonly Timer? _searchTimer;
 
-    public InputViewModel(ToastManager toastManager)
+    public InputViewModel(PageManager pageManager, FormInputViewModel inputForm)
     {
-        _toastManager = toastManager;
-        PropertyChanged += OnPropertyChanged;
-        ErrorsChanged += (_, _) => SubmitCommand.NotifyCanExecuteChanged();
+        _pageManager = pageManager;
+        InputForm = inputForm;
 
         _searchTimer = new Timer(500); // 500ms debounce
         _searchTimer.Elapsed += SearchTimerElapsed;
         _searchTimer.AutoReset = false;
+
+        var path = Path.Combine(AppContext.BaseDirectory, "views", "InputPage.axaml");
+        DefaultInputCode = path.ExtractByLineRange(58, 60).CleanIndentation();
+        DisabledCode = path.ExtractByLineRange(63, 66).CleanIndentation();
+        WithLabelCode = path.ExtractByLineRange(69, 73).CleanIndentation();
+        WithCustomLabelCode = path.ExtractByLineRange(76, 80).CleanIndentation();
+        SearchBoxCode = path.ExtractByLineRange(83, 95).CleanIndentation();
+        AutoCompleteBoxCode = path.ExtractByLineRange(98, 113).CleanIndentation();
+        TextAreaCode = path.ExtractByLineRange(116, 121).CleanIndentation();
+        FormValidationCode = path.ExtractByLineRange(124, 159).CleanIndentation();
     }
 
-    private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    [RelayCommand]
+    private void BackPage()
     {
-        SubmitCommand.NotifyCanExecuteChanged();
+        _pageManager.Navigate<DialogViewModel>();
+    }
 
-        if (e.PropertyName == nameof(SearchString))
-        {
-            if (SearchString.Length > 0)
-            {
-                IsSearching = true;
-                _searchTimer?.Stop();
-                _searchTimer?.Start();
-            }
-            else
-            {
-                _searchTimer?.Stop();
-                IsSearching = false;
-            }
-        }
+    [RelayCommand]
+    private void NextPage()
+    {
+        _pageManager.Navigate<MenuViewModel>();
     }
 
     private void SearchTimerElapsed(object? sender, ElapsedEventArgs e)
@@ -55,65 +56,19 @@ public sealed partial class InputViewModel : ViewModelBase
     }
 
     [ObservableProperty]
-    private string _defaultInputCode = """
-                                       <StackPanel>
-                                           <TextBox Width="225" Watermark="Insert here..." />
-                                       </StackPanel>
-                                       """;
+    private string _defaultInputCode = string.Empty;
 
     [ObservableProperty]
-    private string _disabledCode = """
-                                   <StackPanel>
-                                       <TextBox Width="225" IsEnabled="False" Watermark="Email" />
-                                   </StackPanel>
-                                   """;
+    private string _disabledCode = string.Empty;
 
     [ObservableProperty]
-    private string _withLabelCode = """
-                                    <StackPanel>
-                                        <TextBox Classes="Clearable" Width="225" UseFloatingWatermark="True" Watermark="Email" />
-                                    </StackPanel>
-                                    """;
+    private string _withLabelCode = string.Empty;
 
     [ObservableProperty]
-    private string _withCustomLabelCode = """
-                                          <StackPanel>
-                                              <TextBox Classes="Clearable" Width="225" extensions:ControlAssist.Label="Email"
-                                                       Watermark="user@example.com" />
-                                          </StackPanel>
-                                          """;
+    private string _withCustomLabelCode = string.Empty;
 
     [ObservableProperty]
-    private string _formValidationCode = """
-                                         <shadui:Card HorizontalAlignment="Center" Width="350">
-                                             <shadui:Card.Header>
-                                                 <StackPanel Spacing="4">
-                                                     <shadui:CardTitle FontSize="18">Creat new account</shadui:CardTitle>
-                                                     <shadui:CardDescription>Enter your account details</shadui:CardDescription>
-                                                 </StackPanel>
-                                             </shadui:Card.Header>
-                                             <StackPanel Spacing="16">
-                                                 <TextBox Classes="Clearable"
-                                                          extensions:ControlAssist.Label="Email"
-                                                          extensions:ControlAssist.Hint="This is your public display name."
-                                                          Watermark="user@example.com"
-                                                          Text="{Binding Email, Mode=TwoWay}" />
-                                                 <TextBox Classes="PasswordReveal"
-                                                          extensions:ControlAssist.Label="Password"
-                                                          PasswordChar="•"
-                                                          Watermark="Enter password"
-                                                          Text="{Binding Password, Mode=TwoWay}" />
-                                                 <TextBox Classes="PasswordReveal"
-                                                          PasswordChar="•"
-                                                          extensions:ControlAssist.Label="Confirm"
-                                                          Watermark="Confirm password"
-                                                          Text="{Binding ConfirmPassword, Mode=TwoWay}" />
-                                             </StackPanel>
-                                             <shadui:Card.Footer>
-                                                 <Button Classes="Primary" Command="{Binding SubmitCommand}">Submit</Button>
-                                             </shadui:Card.Footer>
-                                         </shadui:Card>
-                                         """;
+    private string _formValidationCode = string.Empty;
 
     [ObservableProperty]
     private string _searchString = string.Empty;
@@ -122,97 +77,37 @@ public sealed partial class InputViewModel : ViewModelBase
     private bool _isSearching;
 
     [ObservableProperty]
-    private string _searchBoxCode = """
-                                    <StackPanel>
-                                        <TextBox Classes="Clearable" Width="225"
-                                                 Text="{Binding SearchString, Mode=TwoWay}"
-                                                 extensions:ControlAssist.ShowProgress="{Binding IsSearching}"
-                                                 Watermark="Search here...">
-                                            <TextBox.InnerRightContent>
-                                                <PathIcon Data="{x:Static contents:Icons.Search}" Opacity="0.75" Width="16" />
-                                            </TextBox.InnerRightContent>
-                                        </TextBox>
-                                    </StackPanel>
-                                    """;
+    private string _searchBoxCode = string.Empty;
 
     [ObservableProperty]
-    private string[] _webFrameworks = ["Next.js", "Sveltekit", "Nuxt.js", "Remix", "Astro"];
+    private string[] _webFrameworks =
+    [
+        "Angular",
+        "Astro",
+        "Lit",
+        "Next.js",
+        "Nuxt.js",
+        "Preact",
+        "Qwik",
+        "React",
+        "Remix",
+        "SolidJS",
+        "Svelte",
+        "SvelteKit",
+        "Vue.js"
+    ];
 
     [ObservableProperty]
-    private string _autoCompleteBoxCode = """
-                                          <StackPanel>
-                                              <AutoCompleteBox
-                                                  FilterMode="Contains"
-                                                  ItemsSource="{Binding WebFrameworks}"
-                                                  Watermark="Search here..."
-                                                  Width="225"
-                                                  extensions:ControlAssist.Hint="Your favorite web framework"
-                                                  extensions:ControlAssist.Label="Search a framework"
-                                                  extensions:ElementAssist.Classes="Clearable">
-                                                  <AutoCompleteBox.InnerRightContent>
-                                                      <PathIcon
-                                                          Data="{x:Static contents:Icons.Search}"
-                                                          Opacity="0.75"
-                                                          Width="16" />
-                                                  </AutoCompleteBox.InnerRightContent>
-                                              </AutoCompleteBox>
-                                          </StackPanel>
-                                          """;
+    private string _autoCompleteBoxCode = string.Empty;
 
-    private string _email = string.Empty;
+    [ObservableProperty]
+    private string _textAreaCode = string.Empty;
 
-    [Required(ErrorMessage = "Email is required")]
-    [EmailValidation]
-    public string Email
-    {
-        get => _email;
-        set => SetProperty(ref _email, value, true);
-    }
-
-    private string _password = string.Empty;
-
-    [Required(ErrorMessage = "Password is required")]
-    [MinLength(8, ErrorMessage = "Password must be at least 8 characters long")]
-    public string Password
-    {
-        get => _password;
-        set => SetProperty(ref _password, value, true);
-    }
-
-    private string _confirmPassword = string.Empty;
-
-    [Required(ErrorMessage = "Confirm password is required")]
-    [IsMatchWith(nameof(Password), ErrorMessage = "Passwords do not match")]
-    public string ConfirmPassword
-    {
-        get => _confirmPassword;
-        set => SetProperty(ref _confirmPassword, value, true);
-    }
-
-    [RelayCommand(CanExecute = nameof(CanSubmit))]
-    private void Submit()
-    {
-        ClearAllErrors();
-        ValidateAllProperties();
-
-        if (HasErrors) return;
-
-        _toastManager.CreateToast("Form submitted")
-            .WithContent("Form submitted successfully!")
-            .DismissOnClick()
-            .ShowSuccess();
-
-        Initialize();
-    }
-
-    private bool CanSubmit() => !HasErrors;
+    [ObservableProperty]
+    private FormInputViewModel _inputForm;
 
     public void Initialize()
     {
-        Email = string.Empty;
-        Password = string.Empty;
-        ConfirmPassword = string.Empty;
-
-        ClearAllErrors();
+        InputForm.Initialize();
     }
 }

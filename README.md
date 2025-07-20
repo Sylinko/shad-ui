@@ -1,6 +1,6 @@
 # ShadUI ✨
 
-ShadUI is an **Avalonia-based Desktop UI Library** inspired by [shadcn/ui](https://ui.shadcn.com/)
+ShadUI (shad·UI /ˈʃæd juː aɪ/) is an **Avalonia-based Desktop UI Library** inspired by [shadcn/ui](https://ui.shadcn.com/)
 and [Suki UI Library](https://kikipoulet.github.io/SukiUI/).  
 Our goal is to deliver a modern, beautiful, and intuitive UI library for [Avalonia](https://avaloniaui.net/).
 
@@ -35,7 +35,7 @@ Include ShadTheme in your App.xaml:
 
 ```xml
 <Application
-    xmlns:themes="clr-namespace:ShadUI.Themes;assembly=ShadUI">
+    xmlns:themes="clr-namespace:ShadUI;assembly=ShadUI">
 
     <!-- other code -->
 
@@ -48,7 +48,9 @@ Include ShadTheme in your App.xaml:
 
 > Recommended: Use the `ShadUI.Controls.Window` instead of `Avalonia.Controls.Window` to get the full ShadUI experience.
 
-Install the [ShadUI App](https://apps.microsoft.com/detail/9N3358B0PHG4?hl=en-us&gl=PH&ocid=pdpshare) from Microsoft
+<img src="https://learn.microsoft.com/en-us/windows/apps/images/new-badge-dark.png" alt="App Screenshot" width="200"/>
+
+[Download](https://apps.microsoft.com/detail/9N3358B0PHG4?hl=en-us&gl=PH&ocid=pdpshare) ShadUI App from Microsoft
 Store for examples of how to use ShadUI controls.
 
 ## Features 🌟
@@ -89,6 +91,15 @@ of use.
 
 ---
 
+### 🧩 Composable Sidebar
+
+ShadUI provides a flexible and composable sidebar system that allows you to create dynamic navigation experiences with ease.
+
+![Sidebar Demo](https://raw.githubusercontent.com/accntech/shad-ui/main/docs/demo-05.gif)
+
+---
+
+
 ## Acknowledgments 💖
 
 ShadUI wouldn't be possible without the inspiration and contributions of the following projects and libraries:
@@ -96,13 +107,37 @@ ShadUI wouldn't be possible without the inspiration and contributions of the fol
 - [Avalonia](https://avaloniaui.net/): A cross-platform XAML-based UI framework with a robust styling system.
 - [shadcn/ui](https://ui.shadcn.com/) and [Suki UI Library](https://kikipoulet.github.io/SukiUI/): The foundation of our
   design principles and control ideas.
-- [Lucide Avalonia Icons](https://github.com/MarwanFr/LucideAvaloniaUI/): A collection of icons tailored for Avalonia
-  UI.
+- [Lucide Icons](https://lucide.dev/): A beautifully curated collection of icons that provides consistent, scalable vector icons for modern applications.
 - [Responsive.Avalonia](https://github.com/russkyc/responsive-avalonia): A library for building responsive layouts.
 - [LiveCharts](https://livecharts.dev/): A library for creating visually stunning charts.
 - [MvvmToolkit](https://github.com/CommunityToolkit): A framework for implementing the MVVM pattern efficiently.
+- [Jab](https://github.com/pakrym/jab): A fast compile-time dependency injection container without runtime dependencies.
+- [AvaloniaEdit.TextMate](https://github.com/AvaloniaUI/AvaloniaEdit/): A text editor component with syntax highlighting support for Avalonia applications.
+
+
+Thank you to all the amazing contributors who have helped make ShadUI what it is today!
+
+<a href="https://github.com/accntech/shad-ui/graphs/contributors">
+  <img width="150" src="https://contrib.rocks/image?repo=accntech/shad-ui" />
+</a>
 
 ---
+
+## Special Thanks 🙏
+
+We extend our heartfelt gratitude to these amazing platforms and tools that make ShadUI possible:
+
+<div align="center">
+  <img src="https://github.com/dotnet/brand/blob/main/logo/dotnet-logo.png?raw=true" alt=".NET" height="48"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img height="48px" src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" alt="JetBrains">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img height="48px" src="https://avatars.githubusercontent.com/u/139895814?s=48&v=4" alt="shadcn/ui logo">
+</div>
+
+- **.NET**: For providing the powerful C# language and cross-platform runtime that powers our applications
+- **JetBrains**: For providing free use of <a href="https://www.jetbrains.com/rider">Rider</a>, the IDE used in the development
+- **shadcn/ui**: For the beautiful design system and components that inspired ShadUI's visual foundation
 
 ## Contributing 🤝
 

@@ -1,0 +1,50 @@
+﻿<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:shadui="clr-namespace:ShadUI">
+    <Design.PreviewWith>
+        <StackPanel
+            Margin="24"
+            Orientation="Horizontal"
+            Spacing="16">
+            <shadui:Skeleton
+                Width="64"
+                Height="64"
+                CornerRadius="{DynamicResource FullCornerRadius}" />
+            <StackPanel VerticalAlignment="Center" Spacing="8">
+                <shadui:Skeleton
+                    Width="255"
+                    Height="28"
+                    HorizontalAlignment="Left" />
+                <shadui:Skeleton
+                    Width="200"
+                    Height="20"
+                    HorizontalAlignment="Left" />
+            </StackPanel>
+        </StackPanel>
+    </Design.PreviewWith>
+    <ControlTheme x:Key="{x:Type shadui:Skeleton}" TargetType="shadui:Skeleton">
+        <Setter Property="Background" Value="{DynamicResource PrimaryColor10}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}" />
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^ /template/ Border">
+            <Style.Animations>
+                <Animation IterationCount="Infinite" Duration="0:0:2">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="1.0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="50%">
+                        <Setter Property="Opacity" Value="0.5" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="1.0" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

@@ -1,146 +1,105 @@
 ﻿<UserControl
-    d:DesignWidth="800"
-    mc:Ignorable="d"
     x:Class="ShadUI.Demo.Views.TimePage"
-    x:DataType="viewModels:TimeViewModel"
     xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ShadUI.Demo.Controls"
     xmlns:converters="clr-namespace:ShadUI.Demo.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:extensions="clr-namespace:ShadUI.Extensions;assembly=ShadUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:shadui="clr-namespace:ShadUI.Controls;assembly=ShadUI"
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:viewModels="clr-namespace:ShadUI.Demo.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    d:DesignWidth="800"
+    x:DataType="viewModels:TimeViewModel"
+    mc:Ignorable="d">
     <DockPanel LastChildFill="True">
         <StackPanel
+            MaxWidth="{StaticResource PageMaxWidth}"
+            Margin="{StaticResource PageMargin}"
             DockPanel.Dock="Top"
-            Margin="48,24"
-            MaxWidth="1536">
-            <TextBlock Classes="h3" Text="Time Controls" />
+            Spacing="4">
+            <Grid ColumnDefinitions="* Auto">
+                <TextBlock Classes="h2" Text="Time Control" />
+                <StackPanel
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="8">
+                    <Button
+                        Width="28"
+                        Height="28"
+                        Background="{DynamicResource GhostHoverColor}"
+                        Classes="Icon"
+                        Command="{Binding BackPageCommand}">
+                        <Viewbox Margin="6">
+                            <TextBlock Classes="LucideIcon" Text="&#57420;" />
+                        </Viewbox>
+                    </Button>
+                    <Button
+                        Width="28"
+                        Height="28"
+                        Background="{DynamicResource GhostHoverColor}"
+                        Classes="Icon"
+                        Command="{Binding NextPageCommand}">
+                        <Viewbox Margin="6">
+                            <TextBlock Classes="LucideIcon" Text="&#57421;" />
+                        </Viewbox>
+                    </Button>
+                </StackPanel>
+            </Grid>
             <TextBlock
                 Classes="p"
-                HorizontalAlignment="Left"
-                Text="A comprehensive collection of time input and picker controls supporting both 12-hour and 24-hour formats."
+                Text="Time input and picker controls supporting both 12-hour and 24-hour formats."
                 TextWrapping="Wrap" />
         </StackPanel>
         <ScrollViewer>
-            <Panel Margin="48,24" MaxWidth="1536">
-                <StackPanel Spacing="32">
-                    <controls:ControlBlock
-                        Code="{Binding Hour12ClockTimePickerCode}"
-                        Language="xaml"
-                        Title="12Hour Clock Time Picker">
-                        <StackPanel>
-                            <TimePicker HorizontalAlignment="Center" />
-                        </StackPanel>
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding Hour24ClockTimePickerCode}"
-                        Language="xaml"
-                        Title="24Hour Clock Time Picker">
-                        <StackPanel>
-                            <TimePicker
-                                ClockIdentifier="24HourClock"
-                                HorizontalAlignment="Center"
-                                UseSeconds="True" />
-                        </StackPanel>
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding DisabledTimePickerCode}"
-                        Language="xaml"
-                        Title="Disabled Time Picker">
-                        <StackPanel>
-                            <TimePicker HorizontalAlignment="Center" IsEnabled="False" />
-                        </StackPanel>
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding FormTimePickerCode}"
-                        Language="xaml"
-                        Title="Time Picker Form Validation">
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                            <shadui:Card HorizontalAlignment="Center">
-                                <shadui:Card.Header>
-                                    <shadui:CardTitle>Create a schedule</shadui:CardTitle>
-                                </shadui:Card.Header>
-                                <StackPanel Spacing="16">
-                                    <TimePicker
-                                        SelectedTime="{Binding StartTime, Converter={x:Static converters:TimeOnlyToTimeSpanConverter.Instance}}"
-                                        Width="255"
-                                        extensions:ControlAssist.Hint="Set the beginning time"
-                                        extensions:ControlAssist.Label="Start Time" />
-                                    <TimePicker
-                                        SelectedTime="{Binding EndTime, Converter={x:Static converters:TimeOnlyToTimeSpanConverter.Instance}}"
-                                        Width="255"
-                                        extensions:ControlAssist.Hint="Set the cut-off time"
-                                        extensions:ControlAssist.Label="End Time" />
-                                </StackPanel>
-                                <shadui:Card.Footer>
-                                    <Button Classes="Primary" Command="{Binding SubmitTimeFormCommand}">
-                                        Submit
-                                    </Button>
-                                </shadui:Card.Footer>
-                            </shadui:Card>
-                        </ScrollViewer>
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding Hour12ClockTimeInputCode}"
-                        Language="xaml"
-                        Title="12HourClock Time Input">
-                        <StackPanel>
-                            <shadui:TimeInput HorizontalAlignment="Center" />
-                        </StackPanel>
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding Hour24ClockTimeInputCode}"
-                        Language="xaml"
-                        Title="24HourClock Time Input">
-                        <StackPanel>
-                            <shadui:TimeInput
-                                ClockIdentifier="24HourClock"
-                                HorizontalAlignment="Center"
-                                UseSeconds="True" />
-                        </StackPanel>
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding DisabledTimeInputCode}"
-                        Language="xaml"
-                        Title="Disabled Time Input">
-                        <StackPanel>
-                            <shadui:TimeInput HorizontalAlignment="Center" IsEnabled="False" />
-                        </StackPanel>
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding FormTimeInputCode}"
-                        Language="xaml"
-                        Title="Time Input Form Validation">
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                            <shadui:Card HorizontalAlignment="Center">
-                                <shadui:Card.Header>
-                                    <shadui:CardTitle>Create a schedule</shadui:CardTitle>
-                                </shadui:Card.Header>
-                                <StackPanel Spacing="16">
-                                    <shadui:TimeInput
-                                        Value="{Binding StartTime, Converter={x:Static converters:TimeOnlyToTimeSpanConverter.Instance}}"
-                                        Width="255"
-                                        extensions:ControlAssist.Hint="Set the beginning time"
-                                        extensions:ControlAssist.Label="Start Time" />
-                                    <shadui:TimeInput
-                                        Value="{Binding EndTime, Converter={x:Static converters:TimeOnlyToTimeSpanConverter.Instance}}"
-                                        Width="255"
-                                        extensions:ControlAssist.Hint="Set the cut-off time"
-                                        extensions:ControlAssist.Label="End Time" />
-                                </StackPanel>
-                                <shadui:Card.Footer>
-                                    <Button Classes="Primary" Command="{Binding SubmitTimeFormCommand}">
-                                        Submit
-                                    </Button>
-                                </shadui:Card.Footer>
-                            </shadui:Card>
-                        </ScrollViewer>
-                    </controls:ControlBlock>
-                </StackPanel>
-            </Panel>
+            <StackPanel
+                MaxWidth="{StaticResource PageMaxWidth}"
+                Margin="{StaticResource PageMargin}"
+                Spacing="32">
+                <controls:ControlBlock Title="12Hour Clock Time Picker" Xaml="{Binding Hour12ClockTimePickerCode}">
+                    <StackPanel>
+                        <TimePicker HorizontalAlignment="Center" />
+                    </StackPanel>
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="24Hour Clock Time Picker" Xaml="{Binding Hour24ClockTimePickerCode}">
+                    <TimePicker
+                        HorizontalAlignment="Center"
+                        ClockIdentifier="24HourClock"
+                        UseSeconds="True" />
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="Disabled Time Picker" Xaml="{Binding DisabledTimePickerCode}">
+                    <StackPanel>
+                        <TimePicker HorizontalAlignment="Center" IsEnabled="False" />
+                    </StackPanel>
+                </controls:ControlBlock>
+                <controls:ControlBlock
+                    Title="Time Picker Form Validation"
+                    CSharp="{Binding PickerForm.CSharpCode}"
+                    Xaml="{Binding PickerForm.XamlCode}">
+                    <ContentControl Content="{Binding PickerForm}" />
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="12HourClock Time Input" Xaml="{Binding Hour12ClockTimeInputCode}">
+                    <StackPanel>
+                        <shadui:TimeInput HorizontalAlignment="Center" />
+                    </StackPanel>
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="24HourClock Time Input" Xaml="{Binding Hour24ClockTimeInputCode}">
+                    <shadui:TimeInput
+                        HorizontalAlignment="Center"
+                        ClockIdentifier="24HourClock"
+                        UseSeconds="True" />
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="Disabled Time Input" Xaml="{Binding DisabledTimeInputCode}">
+                    <StackPanel>
+                        <shadui:TimeInput HorizontalAlignment="Center" IsEnabled="False" />
+                    </StackPanel>
+                </controls:ControlBlock>
+                <controls:ControlBlock
+                    Title="Time Input Form Validation"
+                    CSharp="{Binding InputForm.CSharpCode}"
+                    Xaml="{Binding InputForm.XamlCode}">
+                    <ContentControl Content="{Binding InputForm}" />
+                </controls:ControlBlock>
+            </StackPanel>
         </ScrollViewer>
     </DockPanel>
 </UserControl>

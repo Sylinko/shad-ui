@@ -1,0 +1,86 @@
+﻿<UserControl
+    x:Class="ShadUI.Demo.Views.ColorPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:ShadUI.Demo.Controls"
+    xmlns:converters="clr-namespace:ShadUI.Demo.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+    xmlns:viewModels="clr-namespace:ShadUI.Demo.ViewModels"
+    d:DesignWidth="800"
+    x:DataType="viewModels:ColorViewModel"
+    mc:Ignorable="d">
+    <DockPanel LastChildFill="True">
+        <StackPanel
+            MaxWidth="{StaticResource PageMaxWidth}"
+            Margin="{StaticResource PageMargin}"
+            DockPanel.Dock="Top"
+            Spacing="4">
+            <Grid ColumnDefinitions="* Auto">
+                <TextBlock Classes="h2" Text="Color" />
+                <StackPanel
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="8">
+                    <Button
+                        Width="28"
+                        Height="28"
+                        Background="{DynamicResource GhostHoverColor}"
+                        Classes="Icon"
+                        Command="{Binding BackPageCommand}">
+                        <Viewbox Margin="6">
+                            <TextBlock Classes="LucideIcon" Text="&#57420;" />
+                        </Viewbox>
+                    </Button>
+                    <Button
+                        Width="28"
+                        Height="28"
+                        Background="{DynamicResource GhostHoverColor}"
+                        Classes="Icon"
+                        Command="{Binding NextPageCommand}">
+                        <Viewbox Margin="6">
+                            <TextBlock Classes="LucideIcon" Text="&#57421;" />
+                        </Viewbox>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <TextBlock
+                Classes="p"
+                Text="Color component for picking and displaying colors."
+                TextWrapping="Wrap" />
+        </StackPanel>
+        <ScrollViewer>
+            <StackPanel
+                MaxWidth="{StaticResource PageMaxWidth}"
+                Margin="{StaticResource PageMargin}"
+                Spacing="32">
+                <controls:ControlBlock Title="Color View" Xaml="{Binding ColorViewCode}">
+                    <shadui:Card
+                        Padding="0"
+                        HorizontalAlignment="Center"
+                        HasShadow="True">
+                        <ColorView Color="{Binding SelectedColor, Converter={x:Static converters:StringToColor.Instance}, Mode=TwoWay}" />
+                    </shadui:Card>
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="Color Picker" Xaml="{Binding ColorPickerCode}">
+                    <ColorPicker
+                        Width="255"
+                        HorizontalAlignment="Center"
+                        shadui:ControlAssist.Hint="Choose your favorite color"
+                        shadui:ControlAssist.Label="Select a color"
+                        Color="{Binding SelectedColor, Converter={x:Static converters:StringToColor.Instance}, Mode=TwoWay}" />
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="Disabled Color Picker" Xaml="{Binding ColorPickerDisabledCode}">
+                    <ColorPicker
+                        Width="255"
+                        HorizontalAlignment="Center"
+                        shadui:ControlAssist.Hint="Choose your favorite color"
+                        shadui:ControlAssist.Label="Select a color"
+                        IsEnabled="False"
+                        Color="{Binding SelectedColor, Converter={x:Static converters:StringToColor.Instance}, Mode=TwoWay}" />
+                </controls:ControlBlock>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

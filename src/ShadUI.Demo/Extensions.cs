@@ -1,6 +1,5 @@
 ﻿using ShadUI.Demo.ViewModels;
 using ShadUI.Demo.Views;
-using ShadUI.Dialogs;
 
 namespace ShadUI.Demo;
 

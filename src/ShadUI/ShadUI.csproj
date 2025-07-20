@@ -24,10 +24,11 @@
 
     <ItemGroup>
         <PackageReference Include="Avalonia" />
-        <PackageReference Include="Avalonia.Skia" />
-        <PackageReference Include="MinVer"/>
+        <PackageReference Include="Avalonia.Controls.ColorPicker" />
         <PackageReference Include="Avalonia.Controls.DataGrid" />
+        <PackageReference Include="Avalonia.Skia" />
         <PackageReference Include="Avalonia.Themes.Simple" />
+        <PackageReference Include="MinVer"/>
     </ItemGroup>
 
     <PropertyGroup>
@@ -35,21 +36,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
-        <None Include="..\..\icon.png" Pack="true" PackagePath="\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Controls\ContentExpandControl.axaml.cs">
-        <DependentUpon>ContentExpandControl.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Lucide.Avalonia">
-        <HintPath>C:\Users\DearVa\.nuget\packages\lucide.avalonia\0.1.30\lib\net8.0\Lucide.Avalonia.dll</HintPath>
-      </Reference>
+        <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+        <None Include="..\..\icon.png" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
 </Project>

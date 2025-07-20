@@ -1,158 +1,132 @@
 ﻿<UserControl
-    d:DesignWidth="800"
-    mc:Ignorable="d"
     x:Class="ShadUI.Demo.Views.InputPage"
-    x:DataType="viewModels:InputViewModel"
     xmlns="https://github.com/avaloniaui"
-    xmlns:contents="clr-namespace:ShadUI.Contents;assembly=ShadUI"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ShadUI.Demo.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:extensions="clr-namespace:ShadUI.Extensions;assembly=ShadUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:shadui="clr-namespace:ShadUI.Controls;assembly=ShadUI"
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:viewModels="clr-namespace:ShadUI.Demo.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    d:DesignWidth="800"
+    x:DataType="viewModels:InputViewModel"
+    mc:Ignorable="d">
     <DockPanel LastChildFill="True">
         <StackPanel
+            MaxWidth="{StaticResource PageMaxWidth}"
+            Margin="{StaticResource PageMargin}"
             DockPanel.Dock="Top"
-            Margin="48,24"
-            MaxWidth="1536">
-            <TextBlock Classes="h3" Text="Inputs" />
+            Spacing="4">
+            <Grid ColumnDefinitions="* Auto">
+                <TextBlock Classes="h2" Text="Input" />
+                <StackPanel
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="8">
+                    <Button
+                        Width="28"
+                        Height="28"
+                        Background="{DynamicResource GhostHoverColor}"
+                        Classes="Icon"
+                        Command="{Binding BackPageCommand}">
+                        <Viewbox Margin="6">
+                            <TextBlock Classes="LucideIcon" Text="&#57420;" />
+                        </Viewbox>
+                    </Button>
+                    <Button
+                        Width="28"
+                        Height="28"
+                        Background="{DynamicResource GhostHoverColor}"
+                        Classes="Icon"
+                        Command="{Binding NextPageCommand}">
+                        <Viewbox Margin="6">
+                            <TextBlock Classes="LucideIcon" Text="&#57421;" />
+                        </Viewbox>
+                    </Button>
+                </StackPanel>
+            </Grid>
             <TextBlock
                 Classes="p"
-                HorizontalAlignment="Left"
                 Text="Displays a form input field or a component that looks like an input field."
                 TextWrapping="Wrap" />
         </StackPanel>
         <ScrollViewer>
-            <Panel Margin="48,24" MaxWidth="1536">
-                <StackPanel Spacing="32">
-
-                    <controls:ControlBlock
-                        Code="{Binding DefaultInputCode}"
-                        Language="xaml"
-                        Title="Default">
-                        <StackPanel>
-                            <TextBox Watermark="Email" Width="225" />
-                        </StackPanel>
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding DisabledCode}"
-                        Language="xaml"
-                        Title="Disabled">
-                        <StackPanel>
-                            <TextBox
-                                IsEnabled="False"
-                                Watermark="Email"
-                                Width="225" />
-                        </StackPanel>
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding WithLabelCode}"
-                        Language="xaml"
-                        Title="With Label">
-                        <StackPanel>
-                            <TextBox
-                                Classes="Clearable"
-                                UseFloatingWatermark="True"
-                                Watermark="Email"
-                                Width="225" />
-                        </StackPanel>
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding WithCustomLabelCode}"
-                        Language="xaml"
-                        Title="With Custom Label">
-                        <StackPanel>
-                            <TextBox
-                                Classes="Clearable"
-                                Watermark="user@example.com"
-                                Width="225"
-                                extensions:ControlAssist.Label="Email" />
-                        </StackPanel>
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding SearchBoxCode}"
-                        Language="xaml"
-                        Title="Search Box">
-                        <StackPanel>
-                            <TextBox
-                                Classes="Clearable"
-                                Text="{Binding SearchString, Mode=TwoWay}"
-                                Watermark="Search here..."
-                                Width="225"
-                                extensions:ControlAssist.ShowProgress="{Binding IsSearching}">
-                                <TextBox.InnerRightContent>
-                                    <PathIcon
-                                        Data="{x:Static contents:Icons.Search}"
-                                        Opacity="0.75"
-                                        Width="16" />
-                                </TextBox.InnerRightContent>
-                            </TextBox>
-                        </StackPanel>
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding AutoCompleteBoxCode}"
-                        Language="xaml"
-                        Title="Auto Complete Box">
-                        <StackPanel>
-                            <AutoCompleteBox
-                                FilterMode="Contains"
-                                ItemsSource="{Binding WebFrameworks}"
-                                Watermark="Search here..."
-                                Width="225"
-                                extensions:ControlAssist.Hint="Your favorite web framework"
-                                extensions:ControlAssist.Label="Search a framework"
-                                extensions:ElementAssist.Classes="Clearable">
-                                <AutoCompleteBox.InnerRightContent>
-                                    <PathIcon
-                                        Data="{x:Static contents:Icons.Search}"
-                                        Opacity="0.75"
-                                        Width="16" />
-                                </AutoCompleteBox.InnerRightContent>
-                            </AutoCompleteBox>
-                        </StackPanel>
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding FormValidationCode}"
-                        Language="xaml"
-                        Title="Form Validation">
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                            <shadui:Card HorizontalAlignment="Center" Width="350">
-                                <shadui:Card.Header>
-                                    <StackPanel Spacing="4">
-                                        <shadui:CardTitle FontSize="18">Creat new account</shadui:CardTitle>
-                                        <shadui:CardDescription>Enter your account details</shadui:CardDescription>
-                                    </StackPanel>
-                                </shadui:Card.Header>
-                                <StackPanel Spacing="16">
-                                    <TextBox
-                                        Classes="Clearable"
-                                        Text="{Binding Email, Mode=TwoWay}"
-                                        Watermark="user@example.com"
-                                        extensions:ControlAssist.Hint="This is your public display name."
-                                        extensions:ControlAssist.Label="Email" />
-                                    <TextBox
-                                        Classes="PasswordReveal"
-                                        PasswordChar="•"
-                                        Text="{Binding Password, Mode=TwoWay}"
-                                        Watermark="Enter password"
-                                        extensions:ControlAssist.Label="Password" />
-                                    <TextBox
-                                        Classes="PasswordReveal"
-                                        PasswordChar="•"
-                                        Text="{Binding ConfirmPassword, Mode=TwoWay}"
-                                        Watermark="Confirm password"
-                                        extensions:ControlAssist.Label="Confirm" />
-                                </StackPanel>
-                                <shadui:Card.Footer>
-                                    <Button Classes="Primary" Command="{Binding SubmitCommand}">Submit</Button>
-                                </shadui:Card.Footer>
-                            </shadui:Card>
-                        </ScrollViewer>
-                    </controls:ControlBlock>
-                </StackPanel>
-            </Panel>
+            <StackPanel
+                MaxWidth="{StaticResource PageMaxWidth}"
+                Margin="{StaticResource PageMargin}"
+                Spacing="32">
+                <controls:ControlBlock Title="Default" Xaml="{Binding DefaultInputCode}">
+                    <StackPanel>
+                        <TextBox Width="225" Watermark="Email" />
+                    </StackPanel>
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="Disabled" Xaml="{Binding DisabledCode}">
+                    <TextBox
+                        Width="225"
+                        IsEnabled="False"
+                        Watermark="Email" />
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="With Label" Xaml="{Binding WithLabelCode}">
+                    <TextBox
+                        Width="225"
+                        Classes="Clearable"
+                        UseFloatingWatermark="True"
+                        Watermark="Email" />
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="With Custom Label" Xaml="{Binding WithCustomLabelCode}">
+                    <TextBox
+                        Width="225"
+                        shadui:ControlAssist.Label="Email"
+                        Classes="Clearable"
+                        Watermark="user@example.com" />
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="Search Box" Xaml="{Binding SearchBoxCode}">
+                    <TextBox
+                        Width="225"
+                        shadui:ControlAssist.ShowProgress="{Binding IsSearching}"
+                        Classes="Clearable"
+                        Text="{Binding SearchString, Mode=TwoWay}"
+                        Watermark="Search here...">
+                        <TextBox.InnerRightContent>
+                            <PathIcon
+                                Width="16"
+                                Data="{x:Static shadui:Icons.Search}"
+                                Opacity="0.75" />
+                        </TextBox.InnerRightContent>
+                    </TextBox>
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="Auto Complete Box" Xaml="{Binding AutoCompleteBoxCode}">
+                    <AutoCompleteBox
+                        Width="225"
+                        shadui:ControlAssist.Hint="Your favorite web framework"
+                        shadui:ControlAssist.Label="Search a framework"
+                        shadui:ElementAssist.Classes="Clearable"
+                        Classes="Clearable"
+                        FilterMode="Contains"
+                        ItemsSource="{Binding WebFrameworks}"
+                        Watermark="Search here...">
+                        <AutoCompleteBox.InnerRightContent>
+                            <PathIcon
+                                Width="16"
+                                Data="{x:Static shadui:Icons.Search}"
+                                Opacity="0.75" />
+                        </AutoCompleteBox.InnerRightContent>
+                    </AutoCompleteBox>
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="Text Area" Xaml="{Binding TextAreaCode}">
+                    <TextBox
+                        Width="225"
+                        shadui:ControlAssist.Height="300"
+                        shadui:ControlAssist.Label="Description"
+                        AcceptsReturn="True"
+                        Watermark="Enter a long description here..." />
+                </controls:ControlBlock>
+                <controls:ControlBlock
+                    Title="Form Validation"
+                    CSharp="{Binding InputForm.CSharpCode}"
+                    Xaml="{Binding InputForm.XamlCode}">
+                    <ContentControl Content="{Binding InputForm}" />
+                </controls:ControlBlock>
+            </StackPanel>
         </ScrollViewer>
     </DockPanel>
 </UserControl>

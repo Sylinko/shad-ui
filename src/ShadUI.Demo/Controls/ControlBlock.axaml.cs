@@ -5,22 +5,22 @@ namespace ShadUI.Demo.Controls;
 
 public class ControlBlock : ContentControl
 {
-    public static readonly StyledProperty<string?> CodeProperty =
-        AvaloniaProperty.Register<CodeTextBlock, string?>(nameof(Code));
+    public static readonly StyledProperty<string?> XamlProperty =
+        AvaloniaProperty.Register<CodeTextBlock, string?>(nameof(Xaml));
 
-    public string? Code
+    public string? Xaml
     {
-        get => GetValue(CodeProperty);
-        set => SetValue(CodeProperty, value);
+        get => GetValue(XamlProperty);
+        set => SetValue(XamlProperty, value);
     }
 
-    public static readonly StyledProperty<string?> LanguageProperty =
-        AvaloniaProperty.Register<CodeTextBlock, string?>(nameof(Language), "xaml");
+    public static readonly StyledProperty<string> CSharpProperty = AvaloniaProperty.Register<ControlBlock, string>(
+        nameof(CSharp));
 
-    public string? Language
+    public string CSharp
     {
-        get => GetValue(LanguageProperty);
-        set => SetValue(LanguageProperty, value);
+        get => GetValue(CSharpProperty);
+        set => SetValue(CSharpProperty, value);
     }
 
     public static readonly StyledProperty<string?> TitleProperty =

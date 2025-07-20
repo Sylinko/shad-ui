@@ -1,0 +1,496 @@
+﻿<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:shadui="clr-namespace:ShadUI"
+    xmlns:system="clr-namespace:System;assembly=netstandard">
+    <Design.PreviewWith>
+        <Border Height="500" Padding="20">
+            <StackPanel VerticalAlignment="Center" Spacing="20">
+                <TimePicker />
+                <TimePicker UseSeconds="True" />
+                <TimePicker ClockIdentifier="24HourClock" />
+                <TimePicker IsEnabled="False" />
+                <TimePicker shadui:ControlAssist.Hint="Start time schedule" shadui:ControlAssist.Label="Start time" />
+                <TimePicker MaxWidth="255">
+                    <DataValidationErrors.Error>
+                        <system:Exception />
+                    </DataValidationErrors.Error>
+                </TimePicker>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <x:Double x:Key="TimePickerFlyoutPresenterItemHeight">40</x:Double>
+    <x:Double x:Key="TimePickerThemeMinWidth">242</x:Double>
+    <x:Double x:Key="TimePickerThemeMaxWidth">456</x:Double>
+
+    <ControlTheme x:Key="TimePickerFlyoutButton" TargetType="Button">
+        <Setter Property="RenderTransform" Value="none" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ContentPresenter
+                    Name="PART_ContentPresenter"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    Content="{TemplateBinding Content}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Foreground="{TemplateBinding Foreground}" />
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeControlHighBrush}" />
+            <Setter Property="TextElement.Foreground" Value="{TemplateBinding Foreground}" />
+        </Style>
+
+        <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background">
+                <SolidColorBrush Opacity="0.6" Color="{DynamicResource ThemeControlMidHighColor}" />
+            </Setter>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeControlLowBrush}" />
+            <Setter Property="TextElement.Foreground" Value="{TemplateBinding Foreground}" />
+        </Style>
+
+        <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Opacity" Value="0.5" />
+        </Style>
+    </ControlTheme>
+
+    <ControlTheme x:Key="{x:Type TimePicker}" TargetType="TimePicker">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+        <Setter Property="Background" Value="{DynamicResource SelectionColor}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="shadui:ControlAssist.MinHeight" Value="36" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <DataValidationErrors Focusable="False">
+                    <StackPanel Focusable="False">
+                        <TextBlock
+                            Name="Label"
+                            Margin="0,0,0,6"
+                            Classes="Small"
+                            IsVisible="{TemplateBinding shadui:ControlAssist.Label,
+                                                        Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                            Text="{TemplateBinding shadui:ControlAssist.Label}" />
+                        <Panel Name="LayoutRoot" Background="Transparent">
+                            <Border
+                                Name="PART_Background"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                Opacity="0">
+                                <Border.Transitions>
+                                    <Transitions>
+                                        <DoubleTransition Property="Opacity" Duration="0:0:0.20" />
+                                    </Transitions>
+                                </Border.Transitions>
+                            </Border>
+                            <Border
+                                Name="Border"
+                                Height="{TemplateBinding shadui:ControlAssist.Height}"
+                                MinHeight="{TemplateBinding shadui:ControlAssist.MinHeight}"
+                                Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}">
+                                <Button
+                                    Name="PART_FlyoutButton"
+                                    MinWidth="{DynamicResource TimePickerThemeMinWidth}"
+                                    MaxWidth="{DynamicResource TimePickerThemeMaxWidth}"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Background="Transparent"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    IsEnabled="{TemplateBinding IsEnabled}"
+                                    Theme="{StaticResource TimePickerFlyoutButton}">
+                                    <DockPanel Margin="{TemplateBinding Padding}" Background="Transparent">
+                                        <PathIcon
+                                            Name="PART_Icon"
+                                            Width="16"
+                                            Height="16"
+                                            Margin="12,0"
+                                            HorizontalAlignment="Right"
+                                            Data="{x:Static shadui:Icons.DateTime}"
+                                            DockPanel.Dock="Right"
+                                            Foreground="{DynamicResource MutedColor}" />
+                                        <Grid Name="PART_FlyoutButtonContentGrid" ColumnDefinitions="Auto Auto Auto Auto Auto Auto Auto">
+                                            <Border
+                                                Name="PART_FirstPickerHost"
+                                                Grid.Column="0"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                Background="Transparent">
+                                                <TextBlock
+                                                    Name="PART_HourTextBlock"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="{TemplateBinding FontSize}"
+                                                    FontWeight="{TemplateBinding FontWeight}"
+                                                    Text="{DynamicResource StringTimePickerHourText}" />
+                                            </Border>
+                                            <Rectangle
+                                                Name="PART_FirstColumnDivider"
+                                                Grid.Column="1"
+                                                Width="{TemplateBinding BorderThickness,
+                                                                        Converter={x:Static shadui:ThicknessConverters.ToLargest}}"
+                                                HorizontalAlignment="Center"
+                                                Fill="{TemplateBinding BorderBrush}" />
+                                            <Border
+                                                Name="PART_SecondPickerHost"
+                                                Grid.Column="2"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                Background="Transparent">
+                                                <TextBlock
+                                                    Name="PART_MinuteTextBlock"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="{TemplateBinding FontSize}"
+                                                    FontWeight="{TemplateBinding FontWeight}"
+                                                    Text="{DynamicResource StringTimePickerMinuteText}" />
+                                            </Border>
+                                            <Rectangle
+                                                Name="PART_SecondColumnDivider"
+                                                Grid.Column="3"
+                                                Width="{TemplateBinding BorderThickness,
+                                                                        Converter={x:Static shadui:ThicknessConverters.ToLargest}}"
+                                                HorizontalAlignment="Center"
+                                                Fill="{TemplateBinding BorderBrush}" />
+                                            <Border
+                                                Name="PART_ThirdPickerHost"
+                                                Grid.Column="4"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                Background="Transparent">
+                                                <TextBlock
+                                                    Name="PART_SecondTextBlock"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="{TemplateBinding FontSize}"
+                                                    FontWeight="{TemplateBinding FontWeight}"
+                                                    Text="{DynamicResource StringTimePickerSecondText}" />
+                                            </Border>
+                                            <Rectangle
+                                                Name="PART_ThirdColumnDivider"
+                                                Grid.Column="5"
+                                                Width="{TemplateBinding BorderThickness,
+                                                                        Converter={x:Static shadui:ThicknessConverters.ToLargest}}"
+                                                HorizontalAlignment="Center"
+                                                Fill="{TemplateBinding BorderBrush}" />
+                                            <Border
+                                                Name="PART_FourthPickerHost"
+                                                Grid.Column="6"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                Background="Transparent">
+                                                <TextBlock
+                                                    Name="PART_PeriodTextBlock"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="{TemplateBinding FontSize}"
+                                                    FontWeight="{TemplateBinding FontWeight}" />
+                                            </Border>
+                                        </Grid>
+                                    </DockPanel>
+                                </Button>
+                            </Border>
+                            <Popup
+                                Name="PART_Popup"
+                                IsLightDismissEnabled="True"
+                                Placement="Bottom"
+                                PlacementTarget="{TemplateBinding}"
+                                VerticalOffset="50"
+                                WindowManagerAddShadowHint="False">
+                                <TimePickerPresenter
+                                    Name="PART_PickerPresenter"
+                                    shadui:ScrollEventAssist.PreventScrollPropagation="True"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    FontFamily="{TemplateBinding FontFamily}">
+                                    <TimePickerPresenter.KeyBindings>
+                                        <KeyBinding Command="{CompiledBinding $parent[Popup].Close}" Gesture="Escape" />
+                                    </TimePickerPresenter.KeyBindings>
+                                </TimePickerPresenter>
+                            </Popup>
+                        </Panel>
+                        <TextBlock
+                            Margin="0,4,0,0"
+                            Classes="Caption Muted"
+                            IsVisible="{TemplateBinding shadui:ControlAssist.Hint,
+                                                        Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                            Text="{TemplateBinding shadui:ControlAssist.Hint}" />
+                    </StackPanel>
+                </DataValidationErrors>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:disabled /template/ Rectangle">
+            <Setter Property="Opacity" Value="0.50" />
+        </Style>
+
+        <Style Selector="^:hasnotime /template/ Button#PART_FlyoutButton TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource MutedColor}" />
+        </Style>
+
+        <Style Selector="^:pointerover">
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="BorderBrush" Duration="0:0:0.20" />
+                </Transitions>
+            </Setter>
+            <Setter Property="BorderBrush" Value="{DynamicResource OutlineColor}" />
+            <Style Selector="^ /template/ Border#PART_Background">
+                <Setter Property="Opacity" Value="1" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:error">
+            <Style Selector="^/template/ Border#Border">
+                <Setter Property="BorderBrush" Value="{DynamicResource ErrorColor}" />
+            </Style>
+            <Style Selector="^/template/ PathIcon#PART_Icon">
+                <Setter Property="Foreground" Value="{DynamicResource ErrorColor}" />
+            </Style>
+            <Style Selector="^/template/ TextBlock#Label">
+                <Setter Property="Foreground" Value="{DynamicResource ErrorColor}" />
+            </Style>
+        </Style>
+    </ControlTheme>
+
+    <!--  to override the default RepeatButton  -->
+    <ControlTheme x:Key="DateTimePickerUpButton" TargetType="RepeatButton">
+        <Setter Property="Height" Value="36" />
+    </ControlTheme>
+    <ControlTheme x:Key="SimpleDateTimePickerDownButton" TargetType="RepeatButton">
+        <Setter Property="Height" Value="36" />
+    </ControlTheme>
+
+    <ControlTheme x:Key="ListBoxItemTheme" TargetType="ListBoxItem">
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundColor}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="CornerRadius" Value="{DynamicResource MdCornerRadius}" />
+        <Setter Property="TextBlock.TextAlignment" Value="Center" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Padding="8,2"
+                    ClipToBounds="True"
+                    CornerRadius="{TemplateBinding CornerRadius}">
+                    <ContentPresenter
+                        Name="PART_ContentPresenter"
+                        Padding="{TemplateBinding Padding}"
+                        VerticalAlignment="Center"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="Center"
+                        Background="{TemplateBinding Background}"
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        CornerRadius="{TemplateBinding CornerRadius}" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:selected">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="^:pointerover:not(:selected)">
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.2" />
+                </Transitions>
+            </Setter>
+            <Setter Property="Background" Value="{DynamicResource GhostColor}" />
+        </Style>
+    </ControlTheme>
+
+    <ControlTheme x:Key="{x:Type TimePickerPresenter}" TargetType="TimePickerPresenter">
+        <Setter Property="Width" Value="262" />
+        <Setter Property="MinWidth" Value="262" />
+        <Setter Property="MaxHeight" Value="398" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}" />
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundColor}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Name="Background"
+                    MaxHeight="398"
+                    Margin="2,15"
+                    Padding="{DynamicResource DateTimeFlyoutBorderPadding}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BoxShadow="{DynamicResource Shadow}"
+                    CornerRadius="{TemplateBinding CornerRadius}">
+                    <Border.Styles>
+                        <Style Selector="RepeatButton">
+                            <Setter Property="Background" Value="Transparent" />
+                        </Style>
+                        <Style Selector="RepeatButton:pointerover">
+                            <Setter Property="Background" Value="Transparent" />
+                        </Style>
+                    </Border.Styles>
+                    <Grid Name="ContentPanel" RowDefinitions="*,Auto">
+                        <Grid Name="PART_PickerContainer" ColumnDefinitions="Auto Auto Auto Auto Auto Auto Auto">
+                            <Grid.OpacityMask>
+                                <LinearGradientBrush StartPoint="48%,0%" EndPoint="50%,100%">
+                                    <GradientStop Offset="0" />
+                                    <GradientStop Offset="0.5" Color="Black" />
+                                    <GradientStop Offset="1" />
+                                </LinearGradientBrush>
+                            </Grid.OpacityMask>
+                            <Grid.Styles>
+                                <Style Selector="DateTimePickerPanel &gt; ListBoxItem">
+                                    <Setter Property="Theme" Value="{StaticResource ListBoxItemTheme}" />
+                                </Style>
+                            </Grid.Styles>
+                            <Panel Name="PART_HourHost" Grid.Column="0">
+                                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+                                    <DateTimePickerPanel
+                                        Name="PART_HourSelector"
+                                        ItemHeight="40"
+                                        PanelType="Hour"
+                                        ShouldLoop="True" />
+                                </ScrollViewer>
+                                <RepeatButton Name="PART_HourUpButton" Theme="{StaticResource DateTimePickerUpButton}" />
+                                <RepeatButton Name="PART_HourDownButton" Theme="{StaticResource SimpleDateTimePickerDownButton}" />
+                            </Panel>
+
+                            <Panel Name="PART_MinuteHost" Grid.Column="2">
+                                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+                                    <DateTimePickerPanel
+                                        Name="PART_MinuteSelector"
+                                        ItemHeight="40"
+                                        PanelType="Minute"
+                                        ShouldLoop="True" />
+                                </ScrollViewer>
+                                <RepeatButton Name="PART_MinuteUpButton" Theme="{StaticResource DateTimePickerUpButton}" />
+                                <RepeatButton Name="PART_MinuteDownButton" Theme="{StaticResource SimpleDateTimePickerDownButton}" />
+                            </Panel>
+
+                            <Panel Name="PART_SecondHost" Grid.Column="4">
+                                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+                                    <DateTimePickerPanel
+                                        Name="PART_SecondSelector"
+                                        ItemHeight="40"
+                                        PanelType="Second"
+                                        ShouldLoop="True" />
+                                </ScrollViewer>
+                                <RepeatButton Name="PART_SecondUpButton" Theme="{StaticResource DateTimePickerUpButton}" />
+                                <RepeatButton Name="PART_SecondDownButton" Theme="{StaticResource SimpleDateTimePickerDownButton}" />
+                            </Panel>
+
+                            <Panel Name="PART_PeriodHost" Grid.Column="6">
+                                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+                                    <DateTimePickerPanel
+                                        Name="PART_PeriodSelector"
+                                        ItemHeight="40"
+                                        PanelType="TimePeriod"
+                                        ShouldLoop="False" />
+                                </ScrollViewer>
+                                <RepeatButton Name="PART_PeriodUpButton" Theme="{StaticResource DateTimePickerUpButton}" />
+                                <RepeatButton Name="PART_PeriodDownButton" Theme="{StaticResource SimpleDateTimePickerDownButton}" />
+                            </Panel>
+                            <Border
+                                Name="HighlightRect"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="7"
+                                Height="40"
+                                Margin="4,0"
+                                VerticalAlignment="Center"
+                                Background="{DynamicResource PrimaryColor10}"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                ZIndex="-1" />
+                            <Rectangle
+                                Name="PART_FirstSpacer"
+                                Grid.Column="1"
+                                Width="{TemplateBinding BorderThickness,
+                                                        Converter={x:Static shadui:ThicknessConverters.ToLargest}}"
+                                HorizontalAlignment="Center">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint="48%,0%" EndPoint="50%,100%">
+                                        <GradientStop Offset="0" Color="Transparent" />
+                                        <GradientStop Offset="0.5" Color="{DynamicResource BorderColor}" />
+                                        <GradientStop Offset="1" Color="Transparent" />
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <Rectangle
+                                Name="PART_SecondSpacer"
+                                Grid.Column="3"
+                                Width="{TemplateBinding BorderThickness,
+                                                        Converter={x:Static shadui:ThicknessConverters.ToLargest}}"
+                                HorizontalAlignment="Center">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint="48%,0%" EndPoint="50%,100%">
+                                        <GradientStop Offset="0" Color="Transparent" />
+                                        <GradientStop Offset="0.5" Color="{DynamicResource BorderColor}" />
+                                        <GradientStop Offset="1" Color="Transparent" />
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <Rectangle
+                                Name="PART_ThirdSpacer"
+                                Grid.Column="4"
+                                Width="{TemplateBinding BorderThickness,
+                                                        Converter={x:Static shadui:ThicknessConverters.ToLargest}}"
+                                HorizontalAlignment="Center">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint="48%,0%" EndPoint="50%,100%">
+                                        <GradientStop Offset="0" Color="Transparent" />
+                                        <GradientStop Offset="0.5" Color="{DynamicResource BorderColor}" />
+                                        <GradientStop Offset="1" Color="Transparent" />
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Grid>
+                        <Grid
+                            Name="AcceptDismissGrid"
+                            Grid.Row="1"
+                            ColumnDefinitions="*,*">
+                            <Rectangle
+                                Grid.ColumnSpan="2"
+                                Width="{TemplateBinding BorderThickness,
+                                                        Converter={x:Static shadui:ThicknessConverters.ToLargest}}"
+                                VerticalAlignment="Top"
+                                Fill="{TemplateBinding BorderBrush}"
+                                IsVisible="False" />
+                            <Button
+                                Name="PART_AcceptButton"
+                                Grid.Column="1"
+                                Margin="12,8"
+                                shadui:ElementAssist.FocusOnLoad="True"
+                                Classes="Outline">
+                                Apply
+                            </Button>
+                            <Button
+                                Name="PART_DismissButton"
+                                Grid.Column="0"
+                                Margin="12,8"
+                                Classes="Ghost">
+                                Dismiss
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^ /template/ Panel">
+            <Style Selector="^:pointerover RepeatButton">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

@@ -10,15 +10,11 @@ using Avalonia.Metadata;
 using Avalonia.Threading;
 using AvaloniaEdit;
 using AvaloniaEdit.TextMate;
-using ShadUI.Contents;
-using ShadUI.Demo.ViewModels;
-using ShadUI.Toasts;
 using TextMateSharp.Grammars;
-using Window = ShadUI.Controls.Window;
 
 namespace ShadUI.Demo.Controls;
 
-public class CodeTextBlock : UserControl
+public class CodeTextBlock : TemplatedControl
 {
     private readonly DispatcherTimer _timer;
     private InlineCollection? _inlines = new();
@@ -96,7 +92,9 @@ public class CodeTextBlock : UserControl
             // Set initial text if available
 
             if (Inlines?.Count > 0)
+            {
                 _editor.Text = Inlines.Text;
+            }
             else if (!string.IsNullOrEmpty(Text)) _editor.Text = Text;
         }
 
@@ -113,11 +111,17 @@ public class CodeTextBlock : UserControl
             if (clipboard == null) return;
             string? textToCopy;
             if (!string.IsNullOrEmpty(Text))
+            {
                 textToCopy = Text;
+            }
             else if (Inlines is { Count: > 0 })
+            {
                 textToCopy = Inlines.Text;
+            }
             else
+            {
                 return;
+            }
 
             await clipboard.SetTextAsync(textToCopy);
 
@@ -126,6 +130,7 @@ public class CodeTextBlock : UserControl
             // Show feedback that text was copied
             ShowCopyNotification();
             _clipboardIcon.Data = Icons.Check;
+
             _timer.Stop();
             _timer.Start();
         }

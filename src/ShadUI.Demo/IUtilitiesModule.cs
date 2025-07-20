@@ -1,6 +1,4 @@
 ﻿using Jab;
-using ShadUI.Dialogs;
-using ShadUI.Toasts;
 
 namespace ShadUI.Demo;
 

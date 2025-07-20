@@ -1,7 +1,8 @@
 ﻿using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 
-namespace ShadUI.Themes;
+// ReSharper disable once CheckNamespace
+namespace ShadUI;
 
 /// <summary>
 ///     The main theme for the application.

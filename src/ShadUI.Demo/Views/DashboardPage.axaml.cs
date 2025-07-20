@@ -2,7 +2,6 @@
 using Avalonia.Interactivity;
 using LiveChartsCore.Kernel;
 using ShadUI.Demo.ViewModels;
-using ShadUI.Themes;
 
 namespace ShadUI.Demo.Views;
 
@@ -12,13 +11,22 @@ public partial class DashboardPage : UserControl
     {
         InitializeComponent();
         Loaded += OnLoaded;
+        Unloaded += OnUnloaded;
     }
+
+    private void OnUnloaded(object? sender, RoutedEventArgs e)
+    {
+        _viewModel.ThemeWatcher.ThemeChanged -= OnThemeChanged;
+    }
+
+    private DashboardViewModel _viewModel = null!;
 
     private void OnLoaded(object? sender, RoutedEventArgs e)
     {
         if (DataContext is not DashboardViewModel vm) return;
 
-        vm.ThemeWatcher.ThemeChanged += OnThemeChanged;
+        _viewModel = vm;
+        _viewModel.ThemeWatcher.ThemeChanged += OnThemeChanged;
     }
 
     private void OnThemeChanged(object? sender, ThemeColors e)

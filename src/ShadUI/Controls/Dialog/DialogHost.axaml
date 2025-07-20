@@ -1,0 +1,134 @@
+﻿<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:shadui="clr-namespace:ShadUI">
+    <ControlTheme x:Key="DialogHostTheme" TargetType="shadui:DialogHost">
+        <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <Border
+                        Name="PART_DialogBackground"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Background="{DynamicResource DialogOverlayColor}"
+                        Opacity="0">
+                        <Border.Transitions>
+                            <Transitions>
+                                <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+                            </Transitions>
+                        </Border.Transitions>
+                    </Border>
+                    <Border
+                        Name="PART_TitleBar"
+                        Height="32"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Background="Transparent"
+                        IsVisible="False" />
+                    <Border
+                        Name="DialogContent"
+                        MinWidth="{TemplateBinding DialogMinWidth}"
+                        MaxWidth="{TemplateBinding DialogMaxWidth}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource DialogBackgroundColor}"
+                        BorderBrush="{DynamicResource BorderColor}"
+                        BorderThickness="1"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                        <Border.Transitions>
+                            <Transitions>
+                                <ThicknessTransition Property="Margin" Duration="0:0:0.15">
+                                    <ThicknessTransition.Easing>
+                                        <CircularEaseOut />
+                                    </ThicknessTransition.Easing>
+                                </ThicknessTransition>
+                                <DoubleTransition Property="Opacity" Duration="0:0:0.1" />
+                                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15">
+                                    <TransformOperationsTransition.Easing>
+                                        <CircularEaseOut />
+                                    </TransformOperationsTransition.Easing>
+                                </TransformOperationsTransition>
+                            </Transitions>
+                        </Border.Transitions>
+                        <Panel>
+                            <!--  add border for proper clip  -->
+                            <Border ClipToBounds="True" CornerRadius="{TemplateBinding CornerRadius}">
+                                <ContentControl
+                                    Name="PART_DialogContainer"
+                                    Content="{TemplateBinding Dialog}"
+                                    KeyboardNavigation.TabNavigation="Cycle" />
+                            </Border>
+                            <Button
+                                Name="PART_CloseButton"
+                                Width="24"
+                                Height="24"
+                                Margin="8"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                CornerRadius="{DynamicResource MdCornerRadius}"
+                                Cursor="Arrow"
+                                Focusable="False"
+                                HotKey="Escape"
+                                IsVisible="{TemplateBinding Dismissible}">
+                                <PathIcon
+                                    Width="10"
+                                    Height="10"
+                                    Data="{x:Static shadui:Icons.WindowClose}"
+                                    Foreground="{DynamicResource ForegroundColor}" />
+                            </Button>
+                        </Panel>
+                    </Border>
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^[IsDialogOpen=True]">
+            <Style Selector="^/template/ Border#PART_DialogBackground">
+                <Setter Property="Opacity" Value="0.80" />
+                <Setter Property="IsHitTestVisible" Value="True" />
+            </Style>
+            <Style Selector="^/template/ Border#PART_TitleBar">
+                <Setter Property="IsVisible" Value="True" />
+                <Setter Property="IsHitTestVisible" Value="True" />
+            </Style>
+            <Style Selector="^/template/ Border#DialogContent">
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="Opacity" Value="1" />
+                <Setter Property="IsHitTestVisible" Value="True" />
+                <Setter Property="RenderTransform" Value="scale(1)" />
+            </Style>
+        </Style>
+        <Style Selector="^[IsDialogOpen=False]">
+            <Style Selector="^[HasOpenDialog=True]">
+                <Style Selector="^/template/ Border#PART_DialogBackground">
+                    <Setter Property="Opacity" Value="0.80" />
+                    <Setter Property="IsHitTestVisible" Value="True" />
+                </Style>
+            </Style>
+            <Style Selector="^[HasOpenDialog=False]">
+                <Style Selector="^/template/ Border#PART_DialogBackground">
+                    <Setter Property="Opacity" Value="0" />
+                    <Setter Property="IsHitTestVisible" Value="False" />
+                </Style>
+            </Style>
+            <Style Selector="^ Border#PART_TitleBar">
+                <Setter Property="Opacity" Value="0" />
+                <Setter Property="IsHitTestVisible" Value="False" />
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+            <Style Selector="^/template/ Border#DialogContent">
+                <Setter Property="Opacity" Value="0" />
+                <Setter Property="IsHitTestVisible" Value="False" />
+                <Setter Property="RenderTransform" Value="scale(0.70)" />
+                <Setter Property="Margin" Value="0,50,0,0" />
+            </Style>
+            <Style Selector="^/template/ ContentControl#PART_DialogContainer">
+                <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+            </Style>
+        </Style>
+    </ControlTheme>
+    <ControlTheme
+        x:Key="{x:Type shadui:DialogHost}"
+        BasedOn="{StaticResource DialogHostTheme}"
+        TargetType="shadui:DialogHost" />
+</ResourceDictionary>

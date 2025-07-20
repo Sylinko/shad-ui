@@ -1,0 +1,256 @@
+﻿<UserControl
+    x:Class="ShadUI.Demo.Views.ButtonPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:ShadUI.Demo.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+    xmlns:viewModels="clr-namespace:ShadUI.Demo.ViewModels"
+    d:DesignWidth="800"
+    x:DataType="viewModels:ButtonViewModel"
+    mc:Ignorable="d">
+    <DockPanel LastChildFill="True">
+        <StackPanel
+            MaxWidth="{StaticResource PageMaxWidth}"
+            Margin="{StaticResource PageMargin}"
+            DockPanel.Dock="Top"
+            Spacing="4">
+            <Grid ColumnDefinitions="* Auto">
+                <TextBlock Classes="h2" Text="Button" />
+                <StackPanel
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="8">
+                    <Button
+                        Width="28"
+                        Height="28"
+                        Background="{DynamicResource GhostHoverColor}"
+                        Classes="Icon"
+                        Command="{Binding BackPageCommand}">
+                        <Viewbox Margin="6">
+                            <TextBlock Classes="LucideIcon" Text="&#57420;" />
+                        </Viewbox>
+                    </Button>
+                    <Button
+                        Width="28"
+                        Height="28"
+                        Background="{DynamicResource GhostHoverColor}"
+                        Classes="Icon"
+                        Command="{Binding NextPageCommand}">
+                        <Viewbox Margin="6">
+                            <TextBlock Classes="LucideIcon" Text="&#57421;" />
+                        </Viewbox>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <TextBlock
+                Classes="p"
+                Text="Displays a button component"
+                TextWrapping="Wrap" />
+        </StackPanel>
+        <ScrollViewer>
+            <StackPanel
+                MaxWidth="{StaticResource PageMaxWidth}"
+                Margin="{StaticResource PageMargin}"
+                Spacing="32">
+                <controls:ControlBlock Title="Primary" Xaml="{Binding PrimaryCode}">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button
+                            shadui:ButtonAssist.ShowProgress="{Binding IsBusy}"
+                            Classes="Primary"
+                            Command="{Binding SubmitCommand}"
+                            Content="Primary" />
+                        <Button
+                            shadui:ButtonAssist.ShowProgress="{Binding IsBusy}"
+                            Classes="Primary"
+                            Command="{Binding SubmitCommand}"
+                            Content="Edit">
+                            <shadui:ButtonAssist.Icon>
+                                <TextBlock
+                                    Margin="0,0,6,0"
+                                    Classes="LucideIcon"
+                                    Text="&#57849;" />
+                            </shadui:ButtonAssist.Icon>
+                        </Button>
+                        <Button
+                            Classes="Primary"
+                            Content="Disable"
+                            IsEnabled="False" />
+                    </StackPanel>
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="Secondary" Xaml="{Binding SecondaryCode}">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button
+                            shadui:ButtonAssist.ShowProgress="{Binding IsBusy}"
+                            Classes="Secondary"
+                            Command="{Binding SubmitCommand}"
+                            Content="Secondary" />
+                        <Button
+                            shadui:ButtonAssist.ShowProgress="{Binding IsBusy}"
+                            Classes="Secondary"
+                            Command="{Binding SubmitCommand}"
+                            Content="Edit">
+                            <shadui:ButtonAssist.Icon>
+                                <TextBlock
+                                    Margin="0,0,6,0"
+                                    Classes="LucideIcon"
+                                    Text="&#57849;" />
+                            </shadui:ButtonAssist.Icon>
+                        </Button>
+                        <Button
+                            Classes="Secondary"
+                            Content="Disable"
+                            IsEnabled="False" />
+                    </StackPanel>
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="Destructive" Xaml="{Binding DestructiveCode}">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button
+                            shadui:ButtonAssist.ShowProgress="{Binding IsBusy}"
+                            Classes="Destructive"
+                            Command="{Binding SubmitCommand}"
+                            Content="Destructive" />
+                        <Button
+                            shadui:ButtonAssist.ShowProgress="{Binding IsBusy}"
+                            Classes="Destructive"
+                            Command="{Binding SubmitCommand}"
+                            Content="Delete">
+                            <shadui:ButtonAssist.Icon>
+                                <TextBlock
+                                    Margin="0,0,6,0"
+                                    Classes="LucideIcon"
+                                    Text="&#57741;" />
+                            </shadui:ButtonAssist.Icon>
+                        </Button>
+                        <Button
+                            Classes="Destructive"
+                            Content="Disable"
+                            IsEnabled="False" />
+                    </StackPanel>
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="Outline" Xaml="{Binding OutlineCode}">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button
+                            shadui:ButtonAssist.ShowProgress="{Binding IsBusy}"
+                            Classes="Outline"
+                            Command="{Binding SubmitCommand}"
+                            Content="Outline" />
+                        <Button
+                            shadui:ButtonAssist.ShowProgress="{Binding IsBusy}"
+                            Classes="Outline"
+                            Command="{Binding SubmitCommand}"
+                            Content="Edit">
+                            <shadui:ButtonAssist.Icon>
+                                <TextBlock
+                                    Margin="0,0,6,0"
+                                    Classes="LucideIcon"
+                                    Text="&#57849;" />
+                            </shadui:ButtonAssist.Icon>
+                        </Button>
+                        <Button
+                            Classes="Outline"
+                            Content="Disable"
+                            IsEnabled="False" />
+                    </StackPanel>
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="Ghost" Xaml="{Binding GhostCode}">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button
+                            shadui:ButtonAssist.ShowProgress="{Binding IsBusy}"
+                            Classes="Ghost"
+                            Command="{Binding SubmitCommand}"
+                            Content="Ghost" />
+                        <Button
+                            shadui:ButtonAssist.ShowProgress="{Binding IsBusy}"
+                            Classes="Ghost"
+                            Command="{Binding SubmitCommand}"
+                            Content="Edit">
+                            <shadui:ButtonAssist.Icon>
+                                <TextBlock
+                                    Margin="0,0,6,0"
+                                    Classes="LucideIcon"
+                                    Text="&#57849;" />
+                            </shadui:ButtonAssist.Icon>
+                        </Button>
+                        <Button
+                            Classes="Ghost"
+                            Content="Disable"
+                            IsEnabled="False" />
+                    </StackPanel>
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="Icon" Xaml="{Binding IconCode}">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button
+                            shadui:ButtonAssist.ShowProgress="{Binding IsBusy}"
+                            BorderBrush="{DynamicResource BorderColor}"
+                            Classes="Icon"
+                            Command="{Binding SubmitCommand}">
+                            <shadui:ButtonAssist.Icon>
+                                <TextBlock
+                                    Margin="0,8"
+                                    Classes="LucideIcon"
+                                    Text="&#57849;" />
+                            </shadui:ButtonAssist.Icon>
+                        </Button>
+                        <Button
+                            BorderBrush="{DynamicResource BorderColor}"
+                            Classes="Icon"
+                            IsEnabled="False">
+                            <shadui:ButtonAssist.Icon>
+                                <TextBlock
+                                    Margin="0,8"
+                                    Classes="LucideIcon"
+                                    Text="&#57849;" />
+                            </shadui:ButtonAssist.Icon>
+                        </Button>
+                    </StackPanel>
+                </controls:ControlBlock>
+                <controls:ControlBlock Title="Destructive Icon" Xaml="{Binding DestructiveIconCode}">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button
+                            shadui:ButtonAssist.ShowProgress="{Binding IsBusy}"
+                            Classes="DestructiveIcon"
+                            Command="{Binding SubmitCommand}">
+                            <shadui:ButtonAssist.Icon>
+                                <TextBlock
+                                    Margin="0,8"
+                                    Classes="LucideIcon"
+                                    Text="&#57741;" />
+                            </shadui:ButtonAssist.Icon>
+                        </Button>
+                        <Button Classes="DestructiveIcon" IsEnabled="False">
+                            <shadui:ButtonAssist.Icon>
+                                <TextBlock
+                                    Margin="0,8"
+                                    Classes="LucideIcon"
+                                    Text="&#57741;" />
+                            </shadui:ButtonAssist.Icon>
+                        </Button>
+                    </StackPanel>
+                </controls:ControlBlock>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

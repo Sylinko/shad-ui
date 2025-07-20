@@ -1,8 +1,0 @@
-﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <SimpleTheme />
-    <StyleInclude Source="avares://ShadUI/Styles/Loading.axaml" />
-    <StyleInclude Source="avares://ShadUI/Styles/ScrollBar.axaml" />
-    <StyleInclude Source="avares://ShadUI/Styles/ScrollViewer.axaml" />
-    <StyleInclude Source="avares://ShadUI/Styles/Separator.axaml" />
-    <StyleInclude Source="avares://ShadUI/Styles/TextBlock.axaml" />
-</Styles>

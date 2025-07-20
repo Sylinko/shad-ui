@@ -1,0 +1,348 @@
+﻿<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Avalonia.Controls"
+    xmlns:primitives="using:Avalonia.Controls.Primitives"
+    xmlns:shadui="clr-namespace:ShadUI"
+    x:ClassModifier="internal">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="Common.axaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <ControlTheme x:Key="{x:Type ColorView}" TargetType="ColorView">
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="HexInputAlphaPosition" Value="Trailing" />
+        <Setter Property="Palette">
+            <controls:FluentColorPalette />
+        </Setter>
+        <Setter Property="Template">
+            <ControlTemplate TargetType="{x:Type ColorView}">
+                <Grid RowDefinitions="Auto,Auto">
+                    <TabControl
+                        Name="PART_TabControl"
+                        Grid.Row="0"
+                        Width="350"
+                        Height="338"
+                        Margin="12"
+                        FontFamily="{TemplateBinding FontFamily}"
+                        SelectedIndex="{Binding SelectedIndex, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                        <TabControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="0" Rows="1" />
+                            </ItemsPanelTemplate>
+                        </TabControl.ItemsPanel>
+                        <!--  Spectrum Tab  -->
+                        <TabItem IsVisible="{TemplateBinding IsColorSpectrumVisible}">
+                            <TabItem.Header>
+                                <Border Background="Transparent">
+                                    <PathIcon
+                                        Width="20"
+                                        Height="20"
+                                        Data="{x:Static shadui:Icons.Marker}" />
+                                </Border>
+                            </TabItem.Header>
+                            <Grid
+                                Height="248"
+                                Margin="12"
+                                RowDefinitions="*">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" MinWidth="32" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" MinWidth="32" />
+                                </Grid.ColumnDefinitions>
+                                <primitives:ColorSlider
+                                    Name="ColorSpectrumThirdComponentSlider"
+                                    Grid.Column="0"
+                                    Margin="0,0,12,0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Stretch"
+                                    AutomationProperties.Name="Third Component"
+                                    ColorComponent="{ReflectionBinding ThirdComponent,
+                                                                       ElementName=ColorSpectrum}"
+                                    ColorModel="Hsva"
+                                    HsvColor="{ReflectionBinding HsvColor,
+                                                                 ElementName=ColorSpectrum}"
+                                    IsAlphaVisible="False"
+                                    IsPerceptive="True"
+                                    IsVisible="{TemplateBinding IsColorSpectrumSliderVisible}"
+                                    Orientation="Vertical" />
+                                <primitives:ColorSpectrum
+                                    Name="ColorSpectrum"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Components="{TemplateBinding ColorSpectrumComponents}"
+                                    HsvColor="{Binding HsvColor, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                    MaxHue="{TemplateBinding MaxHue}"
+                                    MaxSaturation="{TemplateBinding MaxSaturation}"
+                                    MaxValue="{TemplateBinding MaxValue}"
+                                    MinHue="{TemplateBinding MinHue}"
+                                    MinSaturation="{TemplateBinding MinSaturation}"
+                                    MinValue="{TemplateBinding MinValue}"
+                                    Shape="{TemplateBinding ColorSpectrumShape}" />
+                                <primitives:ColorSlider
+                                    Name="ColorSpectrumAlphaSlider"
+                                    Grid.Column="2"
+                                    Margin="12,0,0,0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Stretch"
+                                    AutomationProperties.Name="Alpha Component"
+                                    ColorComponent="Alpha"
+                                    ColorModel="Hsva"
+                                    HsvColor="{ReflectionBinding HsvColor,
+                                                                 ElementName=ColorSpectrum}"
+                                    IsEnabled="{TemplateBinding IsAlphaEnabled}"
+                                    Orientation="Vertical">
+                                    <primitives:ColorSlider.IsVisible>
+                                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                            <Binding Path="IsAlphaVisible" RelativeSource="{RelativeSource TemplatedParent}" />
+                                        </MultiBinding>
+                                    </primitives:ColorSlider.IsVisible>
+                                </primitives:ColorSlider>
+                            </Grid>
+                        </TabItem>
+                        <!--  Palette Tab  -->
+                        <TabItem IsVisible="{TemplateBinding IsColorPaletteVisible}">
+                            <TabItem.Header>
+                                <Border Background="Transparent">
+                                    <PathIcon
+                                        Width="20"
+                                        Height="20"
+                                        Data="{x:Static shadui:Icons.Palette}" />
+                                </Border>
+                            </TabItem.Header>
+                            <ListBox
+                                Height="288"
+                                VerticalAlignment="Stretch"
+                                ItemContainerTheme="{StaticResource ColorViewPaletteListBoxItemTheme}"
+                                ItemsSource="{TemplateBinding PaletteColors}"
+                                SelectedItem="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static shadui:BasicConverters.DoNothingForNullConverter}, Mode=TwoWay}"
+                                Theme="{StaticResource ColorViewPaletteListBoxTheme}"
+                                UseLayoutRounding="False">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type Color}">
+                                        <Border
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            AutomationProperties.Name="{Binding Converter={x:Static shadui:BasicConverters.ColorToDisplayNameConverter}}"
+                                            CornerRadius="{DynamicResource MdCornerRadius}"
+                                            ToolTip.Tip="{Binding Converter={x:Static shadui:BasicConverters.ColorToDisplayNameConverter}}">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{Binding}" />
+                                            </Border.Background>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="{Binding $parent[ColorView].PaletteColumnCount}" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </TabItem>
+                        <!--  Components Tab  -->
+                        <TabItem IsVisible="{TemplateBinding IsColorComponentsVisible}">
+                            <TabItem.Header>
+                                <Border Background="Transparent">
+                                    <PathIcon
+                                        Width="20"
+                                        Height="16"
+                                        Data="{x:Static shadui:Icons.Settings}" />
+                                </Border>
+                            </TabItem.Header>
+                            <StackPanel Margin="12" Spacing="16">
+                                <DockPanel LastChildFill="True">
+                                    <Border
+                                        Margin="0,0,12,0"
+                                        ClipToBounds="True"
+                                        CornerRadius="{DynamicResource LgCornerRadius}">
+                                        <StackPanel IsVisible="{TemplateBinding IsColorModelVisible}" Orientation="Horizontal">
+                                            <RadioButton
+                                                Name="RgbRadioButton"
+                                                Height="{Binding ElementName=PART_HexTextBox, Path=Bounds.Height}"
+                                                Content="RGB"
+                                                IsChecked="{TemplateBinding ColorModel,
+                                                                            Converter={x:Static shadui:BasicConverters.EnumToBoolConverter},
+                                                                            ConverterParameter={x:Static controls:ColorModel.Rgba},
+                                                                            Mode=TwoWay}"
+                                                Theme="{StaticResource ColorViewColorModelRadioButtonTheme}" />
+                                            <RadioButton
+                                                Name="HsvRadioButton"
+                                                Height="{Binding ElementName=PART_HexTextBox, Path=Bounds.Height}"
+                                                Content="HSV"
+                                                IsChecked="{TemplateBinding ColorModel,
+                                                                            Converter={x:Static shadui:BasicConverters.EnumToBoolConverter},
+                                                                            ConverterParameter={x:Static controls:ColorModel.Hsva},
+                                                                            Mode=TwoWay}"
+                                                Theme="{StaticResource ColorViewColorModelRadioButtonTheme}" />
+                                        </StackPanel>
+                                    </Border>
+                                    <TextBox
+                                        Name="PART_HexTextBox"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalContentAlignment="Center"
+                                        AutomationProperties.Name="Hexadecimal Color"
+                                        MaxLength="9">
+                                        <TextBox.InnerLeftContent>
+                                            <TextBlock Margin="12,0,0,0" Text="#" />
+                                        </TextBox.InnerLeftContent>
+                                    </TextBox>
+                                </DockPanel>
+                                <StackPanel Spacing="8">
+                                    <DockPanel LastChildFill="True">
+                                        <NumericUpDown
+                                            Name="Component1NumericUpDown"
+                                            Width="112"
+                                            Margin="0,0,12,0"
+                                            FormatString="N0"
+                                            IsVisible="{TemplateBinding IsComponentTextInputVisible}"
+                                            Maximum="{ReflectionBinding Maximum,
+                                                                        ElementName=Component1Slider}"
+                                            Minimum="{ReflectionBinding Minimum,
+                                                                        ElementName=Component1Slider}"
+                                            NumberFormat="{StaticResource ColorViewComponentNumberFormat}"
+                                            ShowButtonSpinner="False"
+                                            Value="{ReflectionBinding Value,
+                                                                      ElementName=Component1Slider}">
+                                            <NumericUpDown.InnerLeftContent>
+                                                <Panel Margin="12,0,0,0">
+                                                    <TextBlock IsVisible="{CompiledBinding $parent[ColorView].ColorModel, Converter={x:Static shadui:BasicConverters.EnumToBoolConverter}, ConverterParameter={x:Static controls:ColorModel.Rgba}}" Text="R" />
+                                                    <TextBlock IsVisible="{CompiledBinding $parent[ColorView].ColorModel, Converter={x:Static shadui:BasicConverters.EnumToBoolConverter}, ConverterParameter={x:Static controls:ColorModel.Hsva}}" Text="H" />
+                                                </Panel>
+                                            </NumericUpDown.InnerLeftContent>
+                                        </NumericUpDown>
+                                        <primitives:ColorSlider
+                                            Name="Component1Slider"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center"
+                                            ColorComponent="Component1"
+                                            ColorModel="{TemplateBinding ColorModel,
+                                                                         Mode=OneWay}"
+                                            HsvColor="{Binding HsvColor, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                            IsRoundingEnabled="True"
+                                            IsSnapToTickEnabled="True"
+                                            IsVisible="{TemplateBinding IsComponentSliderVisible}"
+                                            Orientation="Horizontal"
+                                            TickFrequency="1" />
+                                    </DockPanel>
+                                    <DockPanel LastChildFill="True">
+                                        <NumericUpDown
+                                            Name="Component2NumericUpDown"
+                                            Width="112"
+                                            Margin="0,0,12,0"
+                                            FormatString="N0"
+                                            IsVisible="{TemplateBinding IsComponentTextInputVisible}"
+                                            Maximum="{ReflectionBinding Maximum,
+                                                                        ElementName=Component2Slider}"
+                                            Minimum="{ReflectionBinding Minimum,
+                                                                        ElementName=Component2Slider}"
+                                            NumberFormat="{StaticResource ColorViewComponentNumberFormat}"
+                                            ShowButtonSpinner="False"
+                                            Value="{ReflectionBinding Value,
+                                                                      ElementName=Component2Slider}">
+                                            <NumericUpDown.InnerLeftContent>
+                                                <Panel Margin="12,0,0,0">
+                                                    <TextBlock IsVisible="{CompiledBinding $parent[ColorView].ColorModel, Converter={x:Static shadui:BasicConverters.EnumToBoolConverter}, ConverterParameter={x:Static controls:ColorModel.Rgba}}" Text="G" />
+                                                    <TextBlock IsVisible="{CompiledBinding $parent[ColorView].ColorModel, Converter={x:Static shadui:BasicConverters.EnumToBoolConverter}, ConverterParameter={x:Static controls:ColorModel.Hsva}}" Text="S" />
+                                                </Panel>
+                                            </NumericUpDown.InnerLeftContent>
+                                        </NumericUpDown>
+                                        <primitives:ColorSlider
+                                            Name="Component2Slider"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center"
+                                            ColorComponent="Component2"
+                                            ColorModel="{TemplateBinding ColorModel,
+                                                                         Mode=OneWay}"
+                                            HsvColor="{Binding HsvColor, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                            IsRoundingEnabled="True"
+                                            IsSnapToTickEnabled="True"
+                                            IsVisible="{TemplateBinding IsComponentSliderVisible}"
+                                            Orientation="Horizontal"
+                                            TickFrequency="1" />
+                                    </DockPanel>
+                                    <DockPanel LastChildFill="True">
+                                        <NumericUpDown
+                                            Name="Component3NumericUpDown"
+                                            Width="112"
+                                            Margin="0,0,12,0"
+                                            FormatString="N0"
+                                            IsVisible="{TemplateBinding IsComponentTextInputVisible}"
+                                            Maximum="{Binding Maximum, ElementName=Component3Slider}"
+                                            Minimum="{Binding Minimum, ElementName=Component3Slider}"
+                                            NumberFormat="{StaticResource ColorViewComponentNumberFormat}"
+                                            ShowButtonSpinner="False"
+                                            Value="{Binding Value, ElementName=Component3Slider}">
+                                            <NumericUpDown.InnerLeftContent>
+                                                <Panel Margin="12,0,0,0">
+                                                    <TextBlock IsVisible="{CompiledBinding $parent[ColorView].ColorModel, Converter={x:Static shadui:BasicConverters.EnumToBoolConverter}, ConverterParameter={x:Static controls:ColorModel.Rgba}}" Text="B" />
+                                                    <TextBlock IsVisible="{CompiledBinding $parent[ColorView].ColorModel, Converter={x:Static shadui:BasicConverters.EnumToBoolConverter}, ConverterParameter={x:Static controls:ColorModel.Hsva}}" Text="V" />
+                                                </Panel>
+                                            </NumericUpDown.InnerLeftContent>
+                                        </NumericUpDown>
+                                        <primitives:ColorSlider
+                                            Name="Component3Slider"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center"
+                                            ColorComponent="Component3"
+                                            ColorModel="{TemplateBinding ColorModel,
+                                                                         Mode=OneWay}"
+                                            HsvColor="{Binding HsvColor, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                            IsRoundingEnabled="True"
+                                            IsSnapToTickEnabled="True"
+                                            IsVisible="{TemplateBinding IsComponentSliderVisible}"
+                                            Orientation="Horizontal"
+                                            TickFrequency="1" />
+                                    </DockPanel>
+                                    <DockPanel LastChildFill="True">
+                                        <DockPanel.IsVisible>
+                                            <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                                <Binding Path="IsAlphaVisible" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                <Binding Path="IsComponentTextInputVisible" RelativeSource="{RelativeSource TemplatedParent}" />
+                                            </MultiBinding>
+                                        </DockPanel.IsVisible>
+                                        <NumericUpDown
+                                            Name="AlphaComponentNumericUpDown"
+                                            Width="112"
+                                            Margin="0,0,12,0"
+                                            FormatString="N0"
+                                            IsVisible="{TemplateBinding IsComponentTextInputVisible}"
+                                            Maximum="{Binding Maximum, ElementName=AlphaComponentSlider}"
+                                            Minimum="{Binding Minimum, ElementName=AlphaComponentSlider}"
+                                            NumberFormat="{StaticResource ColorViewComponentNumberFormat}"
+                                            ShowButtonSpinner="False"
+                                            Value="{Binding Value, ElementName=AlphaComponentSlider}">
+                                            <NumericUpDown.InnerLeftContent>
+                                                <TextBlock Margin="12,0,0,0" Text="A" />
+                                            </NumericUpDown.InnerLeftContent>
+                                        </NumericUpDown>
+                                        <primitives:ColorSlider
+                                            Name="AlphaComponentSlider"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center"
+                                            ColorComponent="Alpha"
+                                            ColorModel="{TemplateBinding ColorModel,
+                                                                         Mode=OneWay}"
+                                            HsvColor="{Binding HsvColor, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                            IsRoundingEnabled="True"
+                                            IsSnapToTickEnabled="True"
+                                            IsVisible="{TemplateBinding IsComponentSliderVisible}"
+                                            Orientation="Horizontal"
+                                            TickFrequency="1" />
+                                    </DockPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </TabItem>
+                    </TabControl>
+                    <primitives:ColorPreviewer
+                        Grid.Row="1"
+                        Margin="12,0,12,12"
+                        HsvColor="{Binding HsvColor, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                        IsAccentColorsVisible="{TemplateBinding IsAccentColorsVisible}"
+                        IsVisible="{TemplateBinding IsColorPreviewVisible}" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

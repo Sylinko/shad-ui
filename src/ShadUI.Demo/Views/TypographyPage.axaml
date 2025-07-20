@@ -1,127 +1,62 @@
 ﻿<UserControl
-    d:DesignWidth="800"
-    mc:Ignorable="d"
     x:Class="ShadUI.Demo.Views.TypographyPage"
-    x:DataType="viewModels:TypographyViewModel"
     xmlns="https://github.com/avaloniaui"
-    xmlns:controls="clr-namespace:ShadUI.Demo.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:viewModels="clr-namespace:ShadUI.Demo.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    d:DesignWidth="800"
+    x:DataType="viewModels:TypographyViewModel"
+    mc:Ignorable="d">
     <DockPanel LastChildFill="True">
         <StackPanel
+            MaxWidth="{StaticResource PageMaxWidth}"
+            Margin="{StaticResource PageMargin}"
             DockPanel.Dock="Top"
-            Margin="48,24"
-            MaxWidth="1536">
-            <TextBlock Classes="h3" Text="Typography" />
-            <TextBlock Classes="p" Text="Styles for headings, paragraphs, lists...etc." />
+            Spacing="4">
+            <Grid ColumnDefinitions="* Auto">
+                <TextBlock Classes="h2" Text="Typography" />
+                <StackPanel
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="8">
+                    <Button
+                        Width="28"
+                        Height="28"
+                        Background="{DynamicResource GhostHoverColor}"
+                        Classes="Icon"
+                        Command="{Binding BackPageCommand}">
+                        <Viewbox Margin="6">
+                            <TextBlock Classes="LucideIcon" Text="&#57420;" />
+                        </Viewbox>
+                    </Button>
+                    <Button
+                        Width="28"
+                        Height="28"
+                        Background="{DynamicResource GhostHoverColor}"
+                        Classes="Icon"
+                        Command="{Binding NextPageCommand}">
+                        <Viewbox Margin="6">
+                            <TextBlock Classes="LucideIcon" Text="&#57421;" />
+                        </Viewbox>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <TextBlock
+                Classes="p"
+                Text="Styles for headings, paragraphs, lists...etc."
+                TextWrapping="Wrap" />
+            <ComboBox
+                Width="225"
+                Margin="0,16,0,0"
+                HorizontalAlignment="Left"
+                shadui:ControlAssist.Label="Current control"
+                ItemsSource="{Binding Controls}"
+                SelectedItem="{Binding SelectedControl}" />
         </StackPanel>
         <ScrollViewer>
-            <Panel Margin="48,24" MaxWidth="1536">
-                <StackPanel Spacing="32">
-
-                    <controls:ControlBlock
-                        Code="{Binding H1Code}"
-                        Language="xaml"
-                        Title="h1">
-                        <TextBlock
-                            Classes="h1"
-                            Text="Taxing Laughter: The Joke Tax Chronicles"
-                            TextWrapping="Wrap" />
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding H2Code}"
-                        Language="xaml"
-                        Title="h2">
-                        <TextBlock
-                            Classes="h2"
-                            Text="The People of the Kingdom"
-                            TextWrapping="Wrap" />
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding H3Code}"
-                        Language="xaml"
-                        Title="h3">
-                        <TextBlock
-                            Classes="h3"
-                            Text="The Joke Tax"
-                            TextWrapping="Wrap" />
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding H4Code}"
-                        Language="xaml"
-                        Title="h4">
-                        <TextBlock
-                            Classes="h4"
-                            Text="People stopped telling jokes"
-                            TextWrapping="Wrap" />
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding PCode}"
-                        Language="xaml"
-                        Title="p">
-                        <TextBlock
-                            Classes="p"
-                            Text="The king, seeing how much happier his subjects were, realized the error of his ways and repealed the joke tax."
-                            TextWrapping="Wrap" />
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding LeadCode}"
-                        Language="xaml"
-                        Title="Lead">
-                        <TextBlock
-                            Classes="Lead"
-                            Text="A modal dialog that interrupts the user with important content and expects a response."
-                            TextWrapping="Wrap" />
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding LargeCode}"
-                        Language="xaml"
-                        Title="Large">
-                        <TextBlock
-                            Classes="Large"
-                            Text="Are you absolutely sure?"
-                            TextWrapping="Wrap" />
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding SmallCode}"
-                        Language="xaml"
-                        Title="Small">
-                        <TextBlock
-                            Classes="Small"
-                            Text="Email address"
-                            TextWrapping="Wrap" />
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding CaptionCode}"
-                        Language="xaml"
-                        Title="Caption">
-                        <TextBlock
-                            Classes="Caption"
-                            Text="Username"
-                            TextWrapping="Wrap" />
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding MutedCode}"
-                        Language="xaml"
-                        Title="Muted">
-                        <TextBlock
-                            Classes="Muted"
-                            Text="Enter your email address"
-                            TextWrapping="Wrap" />
-                    </controls:ControlBlock>
-                    <controls:ControlBlock
-                        Code="{Binding ErrorCode}"
-                        Language="xaml"
-                        Title="Error">
-                        <TextBlock
-                            Classes="Caption Error"
-                            Text="Invalid email address"
-                            TextWrapping="Wrap" />
-                    </controls:ControlBlock>
-                </StackPanel>
-            </Panel>
+            <TransitioningContentControl Content="{Binding Content}" />
         </ScrollViewer>
     </DockPanel>
 </UserControl>

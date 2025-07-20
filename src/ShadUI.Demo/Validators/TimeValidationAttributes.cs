@@ -14,9 +14,11 @@ public sealed class StartTimeValidationAttribute(
         var endTime = instance.GetType().GetProperty(matchProperty)?.GetValue(instance);
 
         if (endTime == null)
+        {
             return ValidationResult.Success;
+        }
 
-        return ((TimeOnly) value!).CompareTo(endTime) < 0
+        return ((TimeOnly)value!).CompareTo(endTime) < 0
             ? ValidationResult.Success
             : new ValidationResult(ErrorMessage);
     }
@@ -33,9 +35,11 @@ public sealed class EndTimeValidationAttribute(
         var startTime = instance.GetType().GetProperty(matchProperty)?.GetValue(instance);
 
         if (startTime == null)
+        {
             return ValidationResult.Success;
+        }
 
-        return ((TimeOnly) value!).CompareTo(startTime) > 0
+        return ((TimeOnly)value!).CompareTo(startTime) > 0
             ? ValidationResult.Success
             : new ValidationResult(ErrorMessage);
     }

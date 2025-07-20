@@ -1,0 +1,108 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StreamGeometry x:Key="XIconData">M13.71,12.29c.39.39.39,1.03,0,1.42-.2.19-.45.29-.71.29s-.51-.1-.71-.29l-5.29-5.29L1.71,13.71c-.2.19-.45.29-.71.29s-.51-.1-.71-.29c-.39-.39-.39-1.03,0-1.42l5.29-5.29L.29,1.71C-.1,1.32-.1.68.29.29.68-.1,1.32-.1,1.71.29l5.29,5.29L12.29.29c.39-.39,1.03-.39,1.42,0,.39.39.39,1.03,0,1.42l-5.29,5.29,5.29,5.29Z</StreamGeometry>
+
+    <ControlTheme x:Key="ClearButtonTheme" TargetType="Button">
+        <Setter Property="Cursor" Value="Arrow" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        Padding="4"
+                        Background="Transparent"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <Path
+                            Width="10"
+                            Height="10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Data="{StaticResource XIconData}"
+                            Fill="{DynamicResource ForegroundColor}"
+                            Stretch="Uniform" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme x:Key="InputBoxTheme" TargetType="TextBox">
+        <Setter Property="MinWidth" Value="32" />
+        <Setter Property="CornerRadius" Value="{DynamicResource MdCornerRadius}" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="SelectionBrush" Value="{DynamicResource PrimaryColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+        <Setter Property="SelectionForegroundBrush" Value="{DynamicResource PrimaryForegroundColor}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource ForegroundColor}" />
+        <Setter Property="FocusAdorner" Value="{x:Null}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <Border
+                        Name="Background"
+                        Background="{DynamicResource PrimaryColor}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Opacity="0">
+                        <Border.Transitions>
+                            <Transitions>
+                                <DoubleTransition Property="Opacity" Duration="0:0:0.20" />
+                            </Transitions>
+                        </Border.Transitions>
+                    </Border>
+                    <Border
+                        Height="{TemplateBinding Height}"
+                        Padding="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                        <Panel Name="PART_TextContainer">
+                            <TextBlock
+                                Name="watermark"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Opacity="0.5"
+                                Text="{TemplateBinding Watermark}"
+                                TextAlignment="{TemplateBinding TextAlignment}"
+                                TextWrapping="{TemplateBinding TextWrapping}">
+                                <TextBlock.IsVisible>
+                                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                        <CompiledBinding
+                                            Converter="{x:Static StringConverters.IsNullOrEmpty}"
+                                            ElementName="PART_TextPresenter"
+                                            Path="PreeditText" />
+                                        <CompiledBinding
+                                            Converter="{x:Static StringConverters.IsNullOrEmpty}"
+                                            Path="Text"
+                                            RelativeSource="{RelativeSource TemplatedParent}" />
+                                    </MultiBinding>
+                                </TextBlock.IsVisible>
+                            </TextBlock>
+                            <TextPresenter
+                                Name="PART_TextPresenter"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                CaretBlinkInterval="{TemplateBinding CaretBlinkInterval}"
+                                CaretBrush="{TemplateBinding CaretBrush}"
+                                CaretIndex="{TemplateBinding CaretIndex}"
+                                LetterSpacing="{TemplateBinding LetterSpacing}"
+                                LineHeight="{TemplateBinding LineHeight}"
+                                PasswordChar="{TemplateBinding PasswordChar}"
+                                RevealPassword="{TemplateBinding RevealPassword}"
+                                SelectionBrush="{TemplateBinding SelectionBrush}"
+                                SelectionEnd="{TemplateBinding SelectionEnd}"
+                                SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
+                                SelectionStart="{TemplateBinding SelectionStart}"
+                                Text="{TemplateBinding Text,
+                                                       Mode=TwoWay}"
+                                TextAlignment="{TemplateBinding TextAlignment}"
+                                TextWrapping="{TemplateBinding TextWrapping}" />
+                        </Panel>
+                    </Border>
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:focus /template/ Border#Background">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

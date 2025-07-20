@@ -11,7 +11,7 @@ public sealed class IsMatchWithAttribute(string matchProperty, string errorMessa
         var instance = validationContext.ObjectInstance;
         var otherValue = instance.GetType().GetProperty(matchProperty)?.GetValue(instance);
 
-        return ((IComparable) value!).CompareTo(otherValue) == 0
+        return ((IComparable)value!).CompareTo(otherValue) == 0
             ? ValidationResult.Success
             : new ValidationResult(ErrorMessage);
     }

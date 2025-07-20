@@ -1,48 +1,37 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <!--  basic colors  -->
     <Color x:Key="ForegroundColor">#18181B</Color>
     <Color x:Key="ForegroundLeadColor">#71717A</Color>
-
     <Color x:Key="BackgroundColor">Transparent</Color>
     <Color x:Key="MutedColor">#71717A</Color>
     <Color x:Key="BorderColor">#CECECE</Color>
+    <Color x:Key="BorderColor60">#DEDEDE</Color>
+    <Color x:Key="BorderColor30">#4CCECECE</Color>
+    <Color x:Key="OutlineColor">#E5E5E5</Color>
+    <Color x:Key="GhostColor">#F5F5F5</Color>
+    <Color x:Key="GhostHoverColor">#7FF5F5F5</Color>
+    <Color x:Key="GhostHoverColor50">#33F5F5F5</Color>
+    <Color x:Key="SelectionColor">#0CE5E5E5</Color>
 
-    <Color x:Key="CardBackgroundColor">#33F7F7F7</Color>
-    <Color x:Key="SecondaryCardBackgroundColor">#99F7F7F7</Color>
-    <Color x:Key="SidebarBackgroundColor">#33FAFAFA</Color>
-    <Color x:Key="TitleBarBackgroundColor">#33FAFAFA</Color>
-    <Color x:Key="PopupBackgroundColor">#FAFAFA</Color>
-    <Color x:Key="WindowButtonHoverColor">#0D09090B</Color>
-
-    <Color x:Key="SwitchForegroundColor">#F2F2F2</Color>
-    <Color x:Key="SwitchBackgroundColor">#C0C0C2</Color>
-
-    <Color x:Key="PrimaryColor">#09090B</Color>
-    <Color x:Key="PrimaryColor75">#BF09090B</Color>
-    <Color x:Key="PrimaryColor50">#8009090B</Color>
-    <Color x:Key="PrimaryColor10">#1909090B</Color>
+    <!--  theme colors  -->
+    <Color x:Key="PrimaryColor">#171717</Color>
+    <Color x:Key="PrimaryColor75">#BF171717</Color>
+    <Color x:Key="PrimaryColor50">#80171717</Color>
+    <Color x:Key="PrimaryColor10">#19171717</Color>
     <Color x:Key="PrimaryForegroundColor">#FAFAFA</Color>
-
     <Color x:Key="SecondaryColor">#D9D9D9</Color>
     <Color x:Key="SecondaryColor75">#BFD9D9D9</Color>
     <Color x:Key="SecondaryColor50">#80D9D9D9</Color>
+    <Color x:Key="SecondaryColor10">#19D9D9D9</Color>
     <Color x:Key="SecondaryForegroundColor">#18181B</Color>
-
-    <Color x:Key="DestructiveColor">#DC2626</Color>
-    <Color x:Key="DestructiveColor75">#BFDC2626</Color>
-    <Color x:Key="DestructiveColor50">#80DC2626</Color>
+    <Color x:Key="DestructiveColor">#E7000B</Color>
+    <Color x:Key="DestructiveColor75">#BFE7000B</Color>
+    <Color x:Key="DestructiveColor50">#80E7000B</Color>
+    <Color x:Key="DestructiveColor10">#19E7000B</Color>
     <Color x:Key="DestructiveForegroundColor">#FAFAFA</Color>
 
-    <Color x:Key="TabItemSelectedColor">#FFFFFF</Color>
-    <Color x:Key="TabItemsBackgroundColor">#F0F0F0</Color>
-    <Color x:Key="OutlineColor">#BFE0E0E0</Color>
-    <Color x:Key="GhostColor">#E6E6E6</Color>
-    <Color x:Key="GhostHoverColor">#F0F0F0</Color>
-
-    <Color x:Key="BusyAreaOverlayColor">#F2F2F2</Color>
-    <Color x:Key="DialogOverlayColor">#000000</Color>
-    <Color x:Key="DialogBackgroundColor">#F2F2F2</Color>
-
+    <!--  notification colors  -->
     <Color x:Key="InfoColor">#0288D1</Color>
     <Color x:Key="InfoColor60">#990288D1</Color>
     <Color x:Key="InfoColor20">#330288D1</Color>
@@ -64,4 +53,25 @@
     <Color x:Key="ErrorColor10">#19D32F2F</Color>
     <Color x:Key="ErrorColor5">#0DD32F2F</Color>
 
+    <!--  specific control colors  -->
+    <Color x:Key="BusyAreaOverlayColor">#F2F2F2</Color>
+
+    <Color x:Key="CardBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="SecondaryCardBackgroundColor">#99F7F7F7</Color>
+
+    <Color x:Key="DialogOverlayColor">#000000</Color>
+    <Color x:Key="DialogBackgroundColor">#F2F2F2</Color>
+
+    <Color x:Key="TitleBarBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="PopupBackgroundColor">#FAFAFA</Color>
+    <Color x:Key="WindowBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="WindowButtonHoverColor">#0D09090B</Color>
+
+    <Color x:Key="SidebarBackgroundColor">#FFFFFF</Color>
+
+    <Color x:Key="SwitchBackgroundColor">#E5E5E5</Color>
+    <Color x:Key="SwitchForegroundColor">#FFFFFF</Color>
+
+    <Color x:Key="TabItemSelectedColor">#FFFFFF</Color>
+    <Color x:Key="TabItemsBackgroundColor">#E8E8E8</Color>
 </ResourceDictionary>

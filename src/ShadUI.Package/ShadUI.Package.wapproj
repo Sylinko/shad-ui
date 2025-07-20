@@ -111,10 +111,20 @@
     <Content Include="Images\Wide310x150Logo.scale-200.png" />
     <None Include="Package.StoreAssociation.xml" />
     <None Include="ShadUI.Package_TemporaryKey.pfx" />
+    
+    <!-- Include views and viewModels folders -->
+    <Content Include="..\ShadUI.Demo\bin\$(Platform)\$(Configuration)\net9.0\win-$(Platform)\views\**\*">
+      <Link>ShadUI.Demo\views\%(RecursiveDir)%(Filename).axaml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\ShadUI.Demo\bin\$(Platform)\$(Configuration)\net9.0\win-$(Platform)\viewModels\**\*">
+      <Link>ShadUI.Demo\viewModels\%(RecursiveDir)%(Filename).cs</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4188" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShadUI.Demo\ShadUI.Demo.csproj" />

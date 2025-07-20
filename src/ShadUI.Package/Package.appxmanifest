@@ -10,7 +10,7 @@
   <Identity
     Name="AccounTechBusinessManagem.Avalonia.ShadUI"
     Publisher="CN=2B86EE5F-4597-4A32-A85F-B70D63CF9F64"
-    Version="1.0.4.0" />
+    Version="1.1.1.0" />
 
   <Properties>
     <DisplayName>ShadUI App</DisplayName>

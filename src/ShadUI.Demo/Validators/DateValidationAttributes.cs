@@ -14,9 +14,11 @@ public sealed class StartDateValidationAttribute(
         var endDate = instance.GetType().GetProperty(matchProperty)?.GetValue(instance);
 
         if (endDate == null)
+        {
             return ValidationResult.Success;
+        }
 
-        return ((DateOnly) value!).CompareTo(endDate) < 0
+        return ((DateOnly)value!).CompareTo(endDate) < 0
             ? ValidationResult.Success
             : new ValidationResult(ErrorMessage);
     }
@@ -33,9 +35,11 @@ public sealed class EndDateValidationAttribute(
         var startDate = instance.GetType().GetProperty(matchProperty)?.GetValue(instance);
 
         if (startDate == null)
+        {
             return ValidationResult.Success;
+        }
 
-        return ((DateOnly) value!).CompareTo(startDate) > 0
+        return ((DateOnly)value!).CompareTo(startDate) > 0
             ? ValidationResult.Success
             : new ValidationResult(ErrorMessage);
     }

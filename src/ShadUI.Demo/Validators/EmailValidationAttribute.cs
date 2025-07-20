@@ -9,22 +9,34 @@ public sealed class EmailValidationAttribute() : ValidationAttribute(DefaultErro
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         if (value is not string email)
+        {
             return new ValidationResult(ErrorMessage);
+        }
 
         if (string.IsNullOrWhiteSpace(email))
+        {
             return new ValidationResult(ErrorMessage);
+        }
 
         var atIndex = email.IndexOf('@');
         if (atIndex <= 0 || atIndex == email.Length - 1)
+        {
             return new ValidationResult(ErrorMessage);
+        }
 
         var dotIndex = email.IndexOf('.', atIndex);
         if (dotIndex == -1 || dotIndex == atIndex + 1 || dotIndex == email.Length - 1)
+        {
             return new ValidationResult(ErrorMessage);
+        }
 
         for (var i = 0; i < email.Length - 1; i++)
+        {
             if (email[i] == '.' && email[i + 1] == '.')
+            {
                 return new ValidationResult(ErrorMessage);
+            }
+        }
 
         return ValidationResult.Success;
     }
