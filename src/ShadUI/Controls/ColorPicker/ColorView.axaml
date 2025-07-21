@@ -269,11 +269,14 @@
                                             Margin="0,0,12,0"
                                             FormatString="N0"
                                             IsVisible="{TemplateBinding IsComponentTextInputVisible}"
-                                            Maximum="{Binding Maximum, ElementName=Component3Slider}"
-                                            Minimum="{Binding Minimum, ElementName=Component3Slider}"
+                                            Maximum="{ReflectionBinding Maximum,
+                                                                        ElementName=Component3Slider}"
+                                            Minimum="{ReflectionBinding Minimum,
+                                                                        ElementName=Component3Slider}"
                                             NumberFormat="{StaticResource ColorViewComponentNumberFormat}"
                                             ShowButtonSpinner="False"
-                                            Value="{Binding Value, ElementName=Component3Slider}">
+                                            Value="{ReflectionBinding Value,
+                                                                      ElementName=Component3Slider}">
                                             <NumericUpDown.InnerLeftContent>
                                                 <Panel Margin="12,0,0,0">
                                                     <TextBlock IsVisible="{CompiledBinding $parent[ColorView].ColorModel, Converter={x:Static shadui:BasicConverters.EnumToBoolConverter}, ConverterParameter={x:Static controls:ColorModel.Rgba}}" Text="B" />
@@ -308,11 +311,14 @@
                                             Margin="0,0,12,0"
                                             FormatString="N0"
                                             IsVisible="{TemplateBinding IsComponentTextInputVisible}"
-                                            Maximum="{Binding Maximum, ElementName=AlphaComponentSlider}"
-                                            Minimum="{Binding Minimum, ElementName=AlphaComponentSlider}"
+                                            Maximum="{ReflectionBinding Maximum,
+                                                                        ElementName=AlphaComponentSlider}"
+                                            Minimum="{ReflectionBinding Minimum,
+                                                                        ElementName=AlphaComponentSlider}"
                                             NumberFormat="{StaticResource ColorViewComponentNumberFormat}"
                                             ShowButtonSpinner="False"
-                                            Value="{Binding Value, ElementName=AlphaComponentSlider}">
+                                            Value="{ReflectionBinding Value,
+                                                                      ElementName=AlphaComponentSlider}">
                                             <NumericUpDown.InnerLeftContent>
                                                 <TextBlock Margin="12,0,0,0" Text="A" />
                                             </NumericUpDown.InnerLeftContent>
