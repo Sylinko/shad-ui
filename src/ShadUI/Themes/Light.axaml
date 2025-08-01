@@ -56,22 +56,22 @@
     <!--  specific control colors  -->
     <Color x:Key="BusyAreaOverlayColor">#F2F2F2</Color>
 
-    <Color x:Key="CardBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="CardBackgroundColor">#66FFFFFF</Color>
     <Color x:Key="SecondaryCardBackgroundColor">#99F7F7F7</Color>
 
     <Color x:Key="DialogOverlayColor">#000000</Color>
     <Color x:Key="DialogBackgroundColor">#F2F2F2</Color>
 
-    <Color x:Key="TitleBarBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="TitleBarBackgroundColor">#66FFFFFF</Color>
     <Color x:Key="PopupBackgroundColor">#FAFAFA</Color>
-    <Color x:Key="WindowBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="WindowBackgroundColor">#66FFFFFF</Color>
     <Color x:Key="WindowButtonHoverColor">#0D09090B</Color>
 
-    <Color x:Key="SidebarBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="SidebarBackgroundColor">#66FFFFFF</Color>
 
-    <Color x:Key="SwitchBackgroundColor">#E5E5E5</Color>
-    <Color x:Key="SwitchForegroundColor">#FFFFFF</Color>
+    <Color x:Key="SwitchBackgroundColor">#66E5E5E5</Color>
+    <Color x:Key="SwitchForegroundColor">#66FFFFFF</Color>
 
-    <Color x:Key="TabItemSelectedColor">#FFFFFF</Color>
-    <Color x:Key="TabItemsBackgroundColor">#E8E8E8</Color>
+    <Color x:Key="TabItemSelectedColor">#66FFFFFF</Color>
+    <Color x:Key="TabItemsBackgroundColor">#66E8E8E8</Color>
 </ResourceDictionary>
