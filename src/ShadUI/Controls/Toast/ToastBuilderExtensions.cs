@@ -56,6 +56,18 @@ public static class ToastBuilderExtensions
     }
 
     /// <summary>
+    ///     Sets the progress bar for the toast notification.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <param name="progress">a 0-1 progress indicator for the toast</param>
+    /// <returns></returns>
+    public static ToastBuilder WithProgress(this ToastBuilder builder, Progress<double> progress)
+    {
+        builder.Progress = progress;
+        return builder;
+    }
+
+    /// <summary>
     ///     Sets the toast position to the top left.
     /// </summary>
     /// <param name="builder">The current <see cref="ToastBuilder" /></param>

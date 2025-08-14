@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls.Converters;
 using Avalonia.Controls.Primitives.Converters;
+using Avalonia.Data.Converters;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;

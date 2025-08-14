@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
@@ -97,6 +95,36 @@ internal class Toast : ContentControl
         set => SetValue(ActionProperty, value);
     }
 
+    public static readonly StyledProperty<double> ProgressValueProperty =
+        AvaloniaProperty.Register<Toast, double>(nameof(ProgressValue));
+
+    public double ProgressValue
+    {
+        get => GetValue(ProgressValueProperty);
+        set => SetValue(ProgressValueProperty, value);
+    }
+
+    public static readonly DirectProperty<Toast, Progress<double>?> ProgressProperty = AvaloniaProperty.RegisterDirect<Toast, Progress<double>?>(
+        nameof(Progress),
+        o => o.Progress,
+        (o, v) => o.Progress = v);
+
+    public Progress<double>? Progress
+    {
+        get => _progress;
+        set
+        {
+            if (Equals(value, _progress)) return;
+
+            if (_progress is not null) _progress.ProgressChanged -= ProgressChangedHandler;
+            SetAndRaise(ProgressProperty, ref _progress, value);
+
+            if (_progress is not null) _progress.ProgressChanged += ProgressChangedHandler;
+        }
+    }
+
+    private Progress<double>? _progress;
+
     public static readonly StyledProperty<string> ActionLabelProperty =
         AvaloniaProperty.Register<Toast, string>(nameof(ActionLabel));
 
@@ -126,6 +154,19 @@ internal class Toast : ContentControl
                 TaskScheduler.FromCurrentSynchronizationContext());
         };
         e.NameScope.Get<Button>("PART_CloseButton").Click += (_, _) => _manager?.Dismiss(this);
+    }
+
+    private void ProgressChangedHandler(object sender, double e)
+    {
+        var dispatcher = Dispatcher.UIThread;
+        if (dispatcher.CheckAccess())
+        {
+            ProgressValue = e;
+        }
+        else
+        {
+            dispatcher.InvokeAsync(() => ProgressValue = e);
+        }
     }
 
     private void ToastCardClickedHandler(object sender, PointerPressedEventArgs e)

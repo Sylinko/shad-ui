@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
@@ -28,7 +28,10 @@ public sealed class ToastBuilder
     internal double Delay { get; set; } = 10;
 
     internal string ActionLabel { get; set; } = string.Empty;
+
     internal Action? Action { get; set; }
+
+    internal Progress<double>? Progress { get; set; }
 
     internal bool DismissOnClick { get; set; }
 
@@ -53,6 +56,7 @@ public sealed class ToastBuilder
         _toast.ActionLabel = ActionLabel;
         _toast.CanDismissByClicking = DismissOnClick;
         _toast.Action = Action;
+        _toast.Progress = Progress;
         _toast.Position = Position;
         _manager.Queue(_toast);
     }
