@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -77,6 +75,14 @@ public class ToastHost : ItemsControl
     }
 
     private ToastPosition _originalPosition;
+
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="ToastHost"/> class.
+    /// </summary>
+    public ToastHost()
+    {
+        Manager = new ToastManager();
+    }
 
     /// <summary>
     ///     Called when the template is applied.

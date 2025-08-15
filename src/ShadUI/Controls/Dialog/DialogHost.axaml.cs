@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -39,13 +36,13 @@ public class DialogHost : TemplatedControl
     /// <summary>
     ///     Defines the <see cref="Manager" /> property.
     /// </summary>
-    public static readonly StyledProperty<DialogManager?> ManagerProperty =
-        AvaloniaProperty.Register<DialogHost, DialogManager?>(nameof(Manager));
+    public static readonly StyledProperty<DialogManager> ManagerProperty =
+        AvaloniaProperty.Register<DialogHost, DialogManager>(nameof(Manager));
 
     /// <summary>
     ///     Gets or sets the dialog manager responsible for handling dialog operations.
     /// </summary>
-    public DialogManager? Manager
+    public DialogManager Manager
     {
         get => GetValue(ManagerProperty);
         set => SetValue(ManagerProperty, value);
@@ -157,6 +154,14 @@ public class DialogHost : TemplatedControl
     }
 
     /// <summary>
+    ///     Initializes a new instance of the <see cref="DialogHost"/> class.
+    /// </summary>
+    public DialogHost()
+    {
+        Manager = new DialogManager();
+    }
+
+    /// <summary>
     ///     Called when the control template is applied to set up event handlers and animations.
     /// </summary>
     /// <param name="e">The template applied event arguments.</param>
@@ -212,8 +217,8 @@ public class DialogHost : TemplatedControl
 
         IsDialogOpen = false;
 
-        Manager?.RemoveLast();
-        Manager?.OpenLast();
+        Manager.RemoveLast();
+        Manager.OpenLast();
 
         if (Owner is not null) Owner.HasOpenDialog = false;
     }
@@ -221,7 +226,7 @@ public class DialogHost : TemplatedControl
     static DialogHost()
     {
         ManagerProperty.Changed.Subscribe(
-            new AnonymousObserver<AvaloniaPropertyChangedEventArgs<DialogManager?>>(x =>
+            new AnonymousObserver<AvaloniaPropertyChangedEventArgs<DialogManager>>(x =>
                 OnManagerPropertyChanged(x.Sender, x)));
     }
 
@@ -260,7 +265,7 @@ public class DialogHost : TemplatedControl
 
     private void ManagerOnDialogShown(object sender, DialogShownEventArgs e)
     {
-        if (Manager is null || Owner is null) return;
+        if (Owner is null) return;
 
         Dialog = e.Control;
         Dismissible = e.Options.Dismissible;
@@ -277,7 +282,7 @@ public class DialogHost : TemplatedControl
     {
         try
         {
-            if (Manager is null || Owner is null) return;
+            if (Owner is null) return;
             if (e.Control != Dialog) return;
 
             IsDialogOpen = false;
@@ -297,7 +302,7 @@ public class DialogHost : TemplatedControl
 
     private void AllowDismissChanged(object sender, bool e)
     {
-        if (Manager is null || Manager.Dialogs.Count == 0) return;
+        if (Manager.Dialogs.Count == 0) return;
 
         var firstDialog = Manager.Dialogs.First();
         Dismissible = firstDialog.Value.Dismissible || e;

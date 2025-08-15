@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Avalonia.Controls;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
@@ -224,52 +223,44 @@ public static class DialogBuilderExtensions
     /// <summary>
     ///     Creates a dialog with a custom context.
     /// </summary>
-    /// <typeparam name="TContext">The type of the dialog context</typeparam>
     /// <param name="manager">The <see cref="DialogManager" /></param>
-    /// <param name="context">The dialog context</param>
-    /// <returns>A new instance of <see cref="DialogBuilder{TContext}" /></returns>
-    public static DialogBuilder<TContext> CreateDialog<TContext>(this DialogManager manager, TContext context)
+    /// <param name="control">The dialog content</param>
+    public static DialogBuilder CreateDialog(this DialogManager manager, Control control)
     {
-        return new DialogBuilder<TContext>(manager).CreateDialog(context);
+        return new DialogBuilder(manager).CreateDialog(control);
     }
 
     /// <summary>
     ///     Sets the success callback for the dialog.
     /// </summary>
-    /// <typeparam name="TContext">The type of the dialog context</typeparam>
-    /// <param name="builder">The <see cref="DialogBuilder{TContext}" /></param>
+    /// <param name="builder">The <see cref="DialogBuilder" /></param>
     /// <param name="callback">The method that is called on successful completion</param>
-    /// <returns>The modified <see cref="DialogBuilder{TContext}" /> instance</returns>
-    public static DialogBuilder<TContext> WithSuccessCallback<TContext>(this DialogBuilder<TContext> builder,
-        Action callback)
+    /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
+    public static DialogBuilder WithSuccessCallback(this DialogBuilder builder, Action callback)
     {
         builder.OnSuccessCallback = callback;
         return builder;
     }
 
     /// <summary>
-    ///     Sets the success callback for the dialog with context parameter.
+    ///     Sets the success callback for the dialog.
     /// </summary>
-    /// <typeparam name="TContext">The type of the dialog context</typeparam>
-    /// <param name="builder">The <see cref="DialogBuilder{TContext}" /></param>
-    /// <param name="callback">The method that is called on successful completion, receiving the dialog context as a parameter</param>
-    /// <returns>The modified <see cref="DialogBuilder{TContext}" /> instance</returns>
-    public static DialogBuilder<TContext> WithSuccessCallback<TContext>(this DialogBuilder<TContext> builder,
-        Action<TContext> callback)
+    /// <param name="builder">The <see cref="DialogBuilder" /></param>
+    /// <param name="callback">The method that is called on successful completion</param>
+    /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
+    public static DialogBuilder WithSuccessCallback(this DialogBuilder builder, Action<Control> callback)
     {
-        builder.OnSuccessWithContextCallback = ctx => callback((TContext)ctx);
+        builder.OnSuccessWithControlCallback = callback;
         return builder;
     }
 
     /// <summary>
     ///     Sets the success callback for the dialog with an asynchronous callback.
     /// </summary>
-    /// <typeparam name="TContext">The type of the dialog context</typeparam>
-    /// <param name="builder">The <see cref="DialogBuilder{TContext}" /></param>
+    /// <param name="builder">The <see cref="DialogBuilder" /></param>
     /// <param name="callback">The asynchronous method that is called on successful completion</param>
-    /// <returns>The modified <see cref="DialogBuilder{TContext}" /> instance</returns>
-    public static DialogBuilder<TContext> WithSuccessCallback<TContext>(this DialogBuilder<TContext> builder,
-        Func<Task> callback)
+    /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
+    public static DialogBuilder WithSuccessCallback(this DialogBuilder builder, Func<Task> callback)
     {
         builder.OnSuccessAsyncCallback = callback;
         return builder;
@@ -278,29 +269,25 @@ public static class DialogBuilderExtensions
     /// <summary>
     ///     Sets the success callback for the dialog with an asynchronous callback that receives the dialog context.
     /// </summary>
-    /// <typeparam name="TContext">The type of the dialog context</typeparam>
-    /// <param name="builder">The <see cref="DialogBuilder{TContext}" /></param>
+    /// <param name="builder">The <see cref="DialogBuilder" /></param>
     /// <param name="callback">
     ///     The asynchronous method that is called on successful completion, receiving the dialog context as
     ///     a parameter
     /// </param>
-    /// <returns>The modified <see cref="DialogBuilder{TContext}" /> instance</returns>
-    public static DialogBuilder<TContext> WithSuccessCallback<TContext>(this DialogBuilder<TContext> builder,
-        Func<TContext, Task> callback)
+    /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
+    public static DialogBuilder WithSuccessCallback(this DialogBuilder builder, Func<Control, Task> callback)
     {
-        builder.OnSuccessWithContextAsyncCallback = ctx => callback((TContext)ctx);
+        builder.OnSuccessWithControlAsyncCallback = callback;
         return builder;
     }
 
     /// <summary>
     ///     Sets the cancel callback for the dialog.
     /// </summary>
-    /// <typeparam name="TContext">The type of the dialog context</typeparam>
-    /// <param name="builder">The <see cref="DialogBuilder{TContext}" /></param>
+    /// <param name="builder">The <see cref="DialogBuilder" /></param>
     /// <param name="callback">The method that is called when the dialog is cancelled</param>
-    /// <returns>The modified <see cref="DialogBuilder{TContext}" /> instance</returns>
-    public static DialogBuilder<TContext> WithCancelCallback<TContext>(this DialogBuilder<TContext> builder,
-        Action callback)
+    /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
+    public static DialogBuilder WithCancelCallback(this DialogBuilder builder, Action callback)
     {
         builder.OnCancelCallback = callback;
         return builder;
@@ -309,11 +296,10 @@ public static class DialogBuilderExtensions
     /// <summary>
     ///     Sets the cancel callback for the dialog with an asynchronous callback.
     /// </summary>
-    /// <typeparam name="TContext">The type of the dialog context</typeparam>
-    /// <param name="builder">The <see cref="DialogBuilder{TContext}" /></param>
+    /// <param name="builder">The <see cref="DialogBuilder" /></param>
     /// <param name="callback">The asynchronous method that is called when the dialog is cancelled</param>
-    /// <returns>The modified <see cref="DialogBuilder{TContext}" /> instance</returns>
-    public static DialogBuilder<TContext> WithCancelCallback<TContext>(this DialogBuilder<TContext> builder,
+    /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
+    public static DialogBuilder WithCancelCallback(this DialogBuilder builder,
         Func<Task> callback)
     {
         builder.OnCancelAsyncCallback = callback;
@@ -324,10 +310,9 @@ public static class DialogBuilderExtensions
     ///     Makes the dialog dismissible by clicking outside or pressing escape. If set to true, this will take precedence over
     ///     toggling <see cref="DialogManager.PreventDismissal()" />
     /// </summary>
-    /// <typeparam name="TContext">The type of the dialog context</typeparam>
-    /// <param name="builder">The <see cref="DialogBuilder{TContext}" /></param>
-    /// <returns>The modified <see cref="DialogBuilder{TContext}" /> instance</returns>
-    public static DialogBuilder<TContext> Dismissible<TContext>(this DialogBuilder<TContext> builder)
+    /// <param name="builder">The <see cref="DialogBuilder" /></param>
+    /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
+    public static DialogBuilder Dismissible(this DialogBuilder builder)
     {
         builder.Options.Dismissible = true;
         return builder;
@@ -336,11 +321,10 @@ public static class DialogBuilderExtensions
     /// <summary>
     ///     Sets the maximum width of the dialog.
     /// </summary>
-    /// <typeparam name="TContext">The type of the dialog context</typeparam>
-    /// <param name="builder">The <see cref="DialogBuilder{TContext}" /></param>
+    /// <param name="builder">The <see cref="DialogBuilder" /></param>
     /// <param name="maxWidth">The maximum width in pixels</param>
-    /// <returns>The modified <see cref="DialogBuilder{TContext}" /> instance</returns>
-    public static DialogBuilder<TContext> WithMaxWidth<TContext>(this DialogBuilder<TContext> builder, double maxWidth)
+    /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
+    public static DialogBuilder WithMaxWidth(this DialogBuilder builder, double maxWidth)
     {
         builder.Options.MaxWidth = maxWidth;
         return builder;
@@ -349,11 +333,10 @@ public static class DialogBuilderExtensions
     /// <summary>
     ///     Sets the minimum width of the dialog.
     /// </summary>
-    /// <typeparam name="TContext">The type of the dialog context</typeparam>
-    /// <param name="builder">The <see cref="DialogBuilder{TContext}" /></param>
+    /// <param name="builder">The <see cref="DialogBuilder" /></param>
     /// <param name="minWidth">The minimum width in pixels</param>
-    /// <returns>The modified <see cref="DialogBuilder{TContext}" /> instance</returns>
-    public static DialogBuilder<TContext> WithMinWidth<TContext>(this DialogBuilder<TContext> builder, double minWidth)
+    /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
+    public static DialogBuilder WithMinWidth(this DialogBuilder builder, double minWidth)
     {
         builder.Options.MinWidth = minWidth;
         return builder;
@@ -362,9 +345,8 @@ public static class DialogBuilderExtensions
     /// <summary>
     ///     Shows the dialog.
     /// </summary>
-    /// <typeparam name="TContext">The type of the dialog context</typeparam>
-    /// <param name="builder">The <see cref="DialogBuilder{TContext}" /></param>
-    public static void Show<TContext>(this DialogBuilder<TContext> builder)
+    /// <param name="builder">The <see cref="DialogBuilder" /></param>
+    public static void Show(this DialogBuilder builder)
     {
         builder.Show();
     }

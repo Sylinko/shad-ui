@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Avalonia.Controls;
 
 // ReSharper disable once CheckNamespace
@@ -8,8 +6,7 @@ namespace ShadUI;
 /// <summary>
 ///     Builds a dialog.
 /// </summary>
-/// <typeparam name="TContext">The DataContext of a control</typeparam>
-public sealed class DialogBuilder<TContext>
+public sealed class DialogBuilder
 {
     private readonly DialogManager _manager;
 
@@ -21,25 +18,16 @@ public sealed class DialogBuilder<TContext>
     internal Action? OnCancelCallback { get; set; }
     internal Func<Task>? OnCancelAsyncCallback { get; set; }
     internal Action? OnSuccessCallback { get; set; }
-    internal Action<object>? OnSuccessWithContextCallback { get; set; }
+    internal Action<Control>? OnSuccessWithControlCallback { get; set; }
     internal Func<Task>? OnSuccessAsyncCallback { get; set; }
-    internal Func<object, Task>? OnSuccessWithContextAsyncCallback { get; set; }
+    internal Func<Control, Task>? OnSuccessWithControlAsyncCallback { get; set; }
     internal DialogOptions Options { get; } = new();
 
     private Control? _control;
 
-    internal DialogBuilder<TContext> CreateDialog(TContext context)
+    internal DialogBuilder CreateDialog(Control control)
     {
-        if (!_manager.CustomDialogs.TryGetValue(typeof(TContext), out var type))
-        {
-            throw new InvalidOperationException($"Custom dialog with {typeof(TContext)} is not registered.");
-        }
-
-        _control = Activator.CreateInstance(type) as Control;
-
-        if (_control == null) throw new InvalidOperationException("Dialog control is not set.");
-
-        _control.DataContext = context;
+        _control = control;
         return this;
     }
 
@@ -49,32 +37,32 @@ public sealed class DialogBuilder<TContext>
 
         if (OnSuccessCallback != null)
         {
-            _manager.OnSuccessCallbacks.TryAdd(typeof(TContext), OnSuccessCallback);
+            _manager.OnSuccessCallbacks.TryAdd(_control, OnSuccessCallback);
         }
 
-        if (OnSuccessWithContextCallback != null)
+        if (OnSuccessWithControlCallback != null)
         {
-            _manager.OnSuccessWithContextCallbacks.TryAdd(typeof(TContext), OnSuccessWithContextCallback);
+            _manager.OnSuccessWithContextCallbacks.TryAdd(_control, OnSuccessWithControlCallback);
         }
 
         if (OnSuccessAsyncCallback != null)
         {
-            _manager.OnSuccessAsyncCallbacks.TryAdd(typeof(TContext), OnSuccessAsyncCallback);
+            _manager.OnSuccessAsyncCallbacks.TryAdd(_control, OnSuccessAsyncCallback);
         }
 
-        if (OnSuccessWithContextAsyncCallback != null)
+        if (OnSuccessWithControlAsyncCallback != null)
         {
-            _manager.OnSuccessWithContextAsyncCallbacks.TryAdd(typeof(TContext), OnSuccessWithContextAsyncCallback);
+            _manager.OnSuccessWithContextAsyncCallbacks.TryAdd(_control, OnSuccessWithControlAsyncCallback);
         }
 
         if (OnCancelCallback != null)
         {
-            _manager.OnCancelCallbacks.TryAdd(typeof(TContext), OnCancelCallback);
+            _manager.OnCancelCallbacks.TryAdd(_control, OnCancelCallback);
         }
 
         if (OnCancelAsyncCallback != null)
         {
-            _manager.OnCancelAsyncCallbacks.TryAdd(typeof(TContext), OnCancelAsyncCallback);
+            _manager.OnCancelAsyncCallbacks.TryAdd(_control, OnCancelAsyncCallback);
         }
 
         _manager.Show(_control, Options);
