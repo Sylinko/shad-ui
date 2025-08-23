@@ -1,7 +1,4 @@
-﻿<ResourceDictionary
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:shadui="clr-namespace:ShadUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.PreviewWith>
         <Panel>
             <ListBox
@@ -70,23 +67,14 @@
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="{TemplateBinding CornerRadius}"
                         Opacity="0" />
-                    <DockPanel Margin="{TemplateBinding Padding}" LastChildFill="True">
-                        <PathIcon
-                            Name="CheckSelected"
-                            Width="12"
-                            Height="12"
-                            Margin="4,0,0,0"
-                            Data="{x:Static shadui:Icons.Check}"
-                            DockPanel.Dock="Right"
-                            Foreground="{DynamicResource ForegroundColor}" />
-                        <ContentPresenter
-                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                            Background="Transparent"
-                            Content="{TemplateBinding Content}"
-                            ContentTemplate="{TemplateBinding ContentTemplate}"
-                            CornerRadius="{TemplateBinding CornerRadius}" />
-                    </DockPanel>
+                    <ContentPresenter
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        Background="Transparent"
+                        Margin="{TemplateBinding Padding}"
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        CornerRadius="{TemplateBinding CornerRadius}" />
                 </Panel>
             </ControlTemplate>
         </Setter>
@@ -96,12 +84,6 @@
                     <DoubleTransition Property="Opacity" Duration="0:0:0.20" />
                 </Transitions>
             </Setter>
-        </Style>
-        <Style Selector="^ /template/ PathIcon#CheckSelected">
-            <Setter Property="IsVisible" Value="False" />
-        </Style>
-        <Style Selector="^:selected /template/ PathIcon#CheckSelected">
-            <Setter Property="IsVisible" Value="True" />
         </Style>
         <Style Selector="^:selected:not(:pointerover) /template/ Border#SelectionBackground">
             <Setter Property="Opacity" Value="1" />
