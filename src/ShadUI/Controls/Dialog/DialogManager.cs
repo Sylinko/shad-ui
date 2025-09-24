@@ -135,6 +135,22 @@ public sealed class DialogManager
         if (!clearAll) OpenLast();
     }
 
+    /// <summary>
+    ///     Closes all open dialogs and invokes their callbacks.
+    /// </summary>
+    /// <param name="success"></param>
+    public void CloseAll(bool success = false)
+    {
+        var dialogs = Dialogs.Keys.ToList();
+        RemoveAll();
+
+        foreach (var dialog in dialogs)
+        {
+            CloseDialog(dialog);
+            InvokeCallBacks(dialog, success);
+        }
+    }
+
     private void RemoveAll()
     {
         Dialogs.Clear();
