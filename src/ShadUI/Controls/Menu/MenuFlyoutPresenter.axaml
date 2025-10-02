@@ -23,10 +23,10 @@
                 <ExperimentalAcrylicBorder CornerRadius="{TemplateBinding CornerRadius}">
                     <ExperimentalAcrylicBorder.Material>
                         <ExperimentalAcrylicMaterial
-                            TintOpacity="0.2"
-                            MaterialOpacity="0.4"
-                            FallbackColor="#15000000"
-                            TintColor="Black" />
+                            FallbackColor="#CC000000"
+                            MaterialOpacity="0.7"
+                            TintColor="Black"
+                            TintOpacity="0.4" />
                     </ExperimentalAcrylicBorder.Material>
                     <Border
                         Name="LayoutRoot"
