@@ -62,23 +62,6 @@ public class SidebarItem : RadioButton
         set => SetValue(SpacingProperty, value);
     }
 
-    /// <summary>
-    ///     Defines the <see cref="SharedSizeGroup" /> property.
-    /// </summary>
-    public static readonly StyledProperty<string?> SharedSizeGroupProperty =
-        AvaloniaProperty.Register<SidebarItem, string?>(
-            nameof(SharedSizeGroup));
-
-    /// <summary>
-    ///     Gets or sets the shared size group name for the icon column.
-    /// </summary>
-    public string? SharedSizeGroup
-    {
-        get => GetValue(SharedSizeGroupProperty);
-        set => SetValue(SharedSizeGroupProperty, value);
-    }
-
-    private ColumnDefinition? _iconColumn;
     private ContentPresenter? _contentPresenter;
     private double _contentPresenterWidth;
 
@@ -127,12 +110,6 @@ public class SidebarItem : RadioButton
     {
         base.OnApplyTemplate(e);
 
-        if (e.NameScope.Find("PART_BorderContainer") is Border { Child: Grid { ColumnDefinitions.Count: > 0 } grid })
-        {
-            _iconColumn = grid.ColumnDefinitions[0];
-            UpdateSharedSizeGroup();
-        }
-
         if (e.NameScope.Find("PART_ContentPresenter") is ContentPresenter contentPresenter)
         {
             _contentPresenter = contentPresenter;
@@ -149,11 +126,6 @@ public class SidebarItem : RadioButton
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
-
-        if (change.Property == SharedSizeGroupProperty)
-        {
-            UpdateSharedSizeGroup();
-        }
 
         if (change.Property == ExpandedProperty)
         {
@@ -203,17 +175,6 @@ public class SidebarItem : RadioButton
         else
         {
             _contentPresenter?.SetValue(IsVisibleProperty, false);
-        }
-    }
-
-    /// <summary>
-    ///     Updates the shared size group for the icon column.
-    /// </summary>
-    private void UpdateSharedSizeGroup()
-    {
-        if (_iconColumn != null)
-        {
-            _iconColumn.SharedSizeGroup = SharedSizeGroup;
         }
     }
 }
