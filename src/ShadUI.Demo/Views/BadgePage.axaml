@@ -55,47 +55,44 @@
                 Margin="{StaticResource PageMargin}"
                 Spacing="32">
                 <controls:ControlBlock Title="Badge" Xaml="{Binding BadgeDemoCode}">
-                    <StackPanel Spacing="16" HorizontalAlignment="Center">
-                        <!-- Basic Variants -->
-                        <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                    <StackPanel HorizontalAlignment="Center" Spacing="16">
+                        <!--  Basic Variants  -->
+                        <StackPanel
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal"
+                            Spacing="8">
                             <shadui:Badge Content="Badge" />
                             <shadui:Badge Classes="Secondary" Content="Secondary" />
                             <shadui:Badge Classes="Destructive" Content="Destructive" />
                             <shadui:Badge Classes="Outline" Content="Outline" />
                         </StackPanel>
-                        
-                        <!-- Advanced Examples -->
-                        <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                            <!-- Verified Badge with Icon -->
-                            <shadui:Badge Classes="Secondary" Background="#3b82f6" Foreground="White">
+
+                        <!--  Advanced Examples  -->
+                        <StackPanel
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal"
+                            Spacing="8">
+
+                            <!--  Verified Badge with Icon  -->
+                            <shadui:Badge Background="{DynamicResource InfoColor}" Foreground="White">
                                 <StackPanel Orientation="Horizontal" Spacing="4">
-                                    <TextBlock Classes="LucideIcon" Text="&#58568;" FontSize="12" VerticalAlignment="Center" />
-                                    <TextBlock Text="Verified" VerticalAlignment="Center" />
+                                    <TextBlock
+                                        Height="13"
+                                        VerticalAlignment="Center"
+                                        Classes="LucideIcon"
+                                        FontSize="12"
+                                        Text="&#57894;" />
+                                    <TextBlock VerticalAlignment="Center" Text="Verified" />
                                 </StackPanel>
                             </shadui:Badge>
-                            
-                            <!-- Circular Number Badges -->
-                            <shadui:Badge 
-                                Classes="rounded-full" 
-                                Content="8" 
-                                Width="20" 
-                                Height="20" 
-                                Padding="0" 
-                                FontFamily="Consolas" />
-                            <shadui:Badge 
-                                Classes="Destructive rounded-full" 
-                                Content="99" 
-                                Width="24" 
-                                Height="24" 
-                                Padding="0" 
-                                FontFamily="Consolas" />
-                            <shadui:Badge 
-                                Classes="Outline rounded-full" 
-                                Content="20+" 
-                                Width="28" 
-                                Height="28" 
-                                Padding="0" 
-                                FontFamily="Consolas" />
+
+                            <!--  Circular Number Badges  -->
+                            <shadui:Badge
+                                Padding="8,2"
+                                Classes="rounded-full"
+                                Content="8" />
+                            <shadui:Badge Classes="Destructive rounded-full" Content="99" />
+                            <shadui:Badge Classes="Outline rounded-full" Content="20+" />
                         </StackPanel>
                     </StackPanel>
                 </controls:ControlBlock>

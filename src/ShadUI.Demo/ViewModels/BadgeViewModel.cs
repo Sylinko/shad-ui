@@ -14,7 +14,7 @@ public sealed partial class BadgeViewModel : ViewModelBase, INavigable
     {
         _pageManager = pageManager;
         var path = Path.Combine(AppContext.BaseDirectory, "views", "BadgePage.axaml");
-        BadgeDemoCode = path.ExtractByLineRange(58, 101).CleanIndentation();
+        BadgeDemoCode = path.ExtractByLineRange(58, 97).CleanIndentation();
     }
 
     [RelayCommand]

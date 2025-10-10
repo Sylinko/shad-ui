@@ -5,9 +5,12 @@
     <Design.PreviewWith>
         <Border Padding="16">
             <StackPanel Spacing="16">
-                <!-- All Badge Variants -->
+                <!--  All Badge Variants  -->
                 <StackPanel Spacing="8">
-                    <TextBlock Text="Badge Variants" FontWeight="SemiBold" FontSize="14" />
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Text="Badge Variants" />
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <shadui:Badge Content="Default" />
                         <shadui:Badge Classes="Secondary" Content="Secondary" />
@@ -16,9 +19,12 @@
                     </StackPanel>
                 </StackPanel>
 
-                <!-- Different Content Lengths -->
+                <!--  Different Content Lengths  -->
                 <StackPanel Spacing="8">
-                    <TextBlock Text="Content Length Examples" FontWeight="SemiBold" FontSize="14" />
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Text="Content Length Examples" />
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <shadui:Badge Content="1" />
                         <shadui:Badge Content="99+" />
@@ -29,9 +35,12 @@
                     </StackPanel>
                 </StackPanel>
 
-                <!-- Multiple Badges in Context -->
+                <!--  Multiple Badges in Context  -->
                 <StackPanel Spacing="8">
-                    <TextBlock Text="Multiple Badges with Consistent Spacing" FontWeight="SemiBold" FontSize="14" />
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Text="Multiple Badges with Consistent Spacing" />
                     <StackPanel Orientation="Horizontal" Spacing="6">
                         <shadui:Badge Content="Active" />
                         <shadui:Badge Classes="Secondary" Content="Pending" />
@@ -40,32 +49,72 @@
                     </StackPanel>
                 </StackPanel>
 
-                <!-- Badges in Different Layout Contexts -->
+                <!--  Badges in Different Layout Contexts  -->
                 <StackPanel Spacing="8">
-                    <TextBlock Text="Layout Integration Examples" FontWeight="SemiBold" FontSize="14" />
-                    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
-                        <!-- Row 1 -->
-                        <TextBlock Grid.Column="0" Text="Status:" VerticalAlignment="Center" />
-                        <shadui:Badge Grid.Column="2" Content="Online" />
-                        
-                        <!-- Row 2 -->
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Priority:" VerticalAlignment="Center" />
-                        <shadui:Badge Grid.Row="1" Grid.Column="2" Classes="Destructive" Content="High" />
-                        
-                        <!-- Row 3 -->
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Version:" VerticalAlignment="Center" />
-                        <shadui:Badge Grid.Row="2" Grid.Column="2" Classes="Outline" Content="v2.1.0" />
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Text="Layout Integration Examples" />
+                    <Grid
+                        ColumnDefinitions="Auto,*,Auto"
+                        RowDefinitions="Auto,Auto,Auto"
+                        RowSpacing="8">
+                        <!--  Row 1  -->
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="Status:" />
+                        <shadui:Badge
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Content="Online" />
+
+                        <!--  Row 2  -->
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="Priority:" />
+                        <shadui:Badge
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Classes="Destructive"
+                            Content="High" />
+
+                        <!--  Row 3  -->
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="Version:" />
+                        <shadui:Badge
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            Classes="Outline"
+                            Content="v2.1.0" />
                     </Grid>
                 </StackPanel>
 
-                <!-- Disabled State -->
+                <!--  Disabled State  -->
                 <StackPanel Spacing="8">
-                    <TextBlock Text="Disabled State" FontWeight="SemiBold" FontSize="14" />
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Text="Disabled State" />
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <shadui:Badge Content="Disabled" IsEnabled="False" />
-                        <shadui:Badge Classes="Secondary" Content="Disabled" IsEnabled="False" />
-                        <shadui:Badge Classes="Destructive" Content="Disabled" IsEnabled="False" />
-                        <shadui:Badge Classes="Outline" Content="Disabled" IsEnabled="False" />
+                        <shadui:Badge
+                            Classes="Secondary"
+                            Content="Disabled"
+                            IsEnabled="False" />
+                        <shadui:Badge
+                            Classes="Destructive"
+                            Content="Disabled"
+                            IsEnabled="False" />
+                        <shadui:Badge
+                            Classes="Outline"
+                            Content="Disabled"
+                            IsEnabled="False" />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -76,20 +125,20 @@
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="Padding" Value="6,2" />
-        <Setter Property="CornerRadius" Value="{DynamicResource SmCornerRadius}" />
-        <Setter Property="Background" Value="{DynamicResource PrimaryColor}" />
         <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryColor}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border
                     Name="Container"
+                    Padding="{TemplateBinding Padding}"
                     Background="{TemplateBinding Background}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="{TemplateBinding CornerRadius}"
-                    Padding="{TemplateBinding Padding}">
+                    CornerRadius="{TemplateBinding CornerRadius}">
                     <ContentPresenter
                         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                         VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -101,11 +150,6 @@
                 </Border>
             </ControlTemplate>
         </Setter>
-
-        <!--  Default variant styles  -->
-        <Style Selector="^ /template/ ContentPresenter">
-            <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
-        </Style>
 
         <!--  Secondary variant  -->
         <Style Selector="^.Secondary">
