@@ -30,7 +30,7 @@ public class App : Application
         }
 
         DisableAvaloniaDataAnnotationValidation();
-        var provider = new ServiceProvider().RegisterDialogs();
+        var provider = new ServiceProvider();
 
         var themeWatcher = provider.GetService<ThemeWatcher>();
         themeWatcher.Initialize();

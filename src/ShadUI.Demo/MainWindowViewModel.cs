@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ShadUI.Demo.ViewModels;
+using ShadUI.Demo.Views;
 
 namespace ShadUI.Demo;
 
@@ -16,6 +17,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     private readonly ThemeViewModel _themeViewModel;
     private readonly TypographyViewModel _typographyViewModel;
     private readonly AvatarViewModel _avatarViewModel;
+    private readonly BadgeViewModel _badgeViewModel;
     private readonly ButtonViewModel _buttonViewModel;
     private readonly CardViewModel _cardViewModel;
     private readonly DataTableViewModel _dataTableViewModel;
@@ -47,6 +49,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         ThemeViewModel themeViewModel,
         TypographyViewModel typographyViewModel,
         AvatarViewModel avatarViewModel,
+        BadgeViewModel badgeViewModel,
         ButtonViewModel buttonViewModel,
         CardViewModel cardViewModel,
         DataTableViewModel dataTableViewModel,
@@ -76,6 +79,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         _themeViewModel = themeViewModel;
         _typographyViewModel = typographyViewModel;
         _avatarViewModel = avatarViewModel;
+        _badgeViewModel = badgeViewModel;
         _buttonViewModel = buttonViewModel;
         _cardViewModel = cardViewModel;
         _dataTableViewModel = dataTableViewModel;
@@ -152,6 +156,12 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     private void OpenAvatar()
     {
         SwitchPage(_avatarViewModel);
+    }
+
+    [RelayCommand]
+    private void OpenBadge()
+    {
+        SwitchPage(_badgeViewModel);
     }
 
     [RelayCommand]
@@ -293,7 +303,10 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void ShowAbout()
     {
-        DialogManager.CreateDialog(_aboutViewModel)
+        DialogManager.CreateDialog(new AboutContent
+            {
+                DataContext = _aboutViewModel
+            })
             .WithMinWidth(300)
             .Dismissible()
             .Show();

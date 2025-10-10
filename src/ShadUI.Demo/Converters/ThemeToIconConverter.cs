@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data.Converters;
-using LucideAvalonia;
-using LucideAvalonia.Enum;
 using ShadUI.Themes;
+using Lucide.Avalonia;
 
 namespace ShadUI.Demo.Converters;
 
 public class ThemeToIconConverter : IValueConverter
 {
-    private static readonly Dictionary<ThemeMode, Lucide> ThemeIconDictionary = new()
+    private static readonly Dictionary<ThemeMode, LucideIcon> ThemeIconDictionary = new()
         {
-            [ThemeMode.System] = new Lucide { Icon = LucideIconNames.SunMoon, StrokeThickness = 1.5, Width = 18, Height = 18 },
-            [ThemeMode.Light]  = new Lucide { Icon = LucideIconNames.Sun,     StrokeThickness = 1.5, Width = 18, Height = 18 },
-            [ThemeMode.Dark]   = new Lucide { Icon = LucideIconNames.Moon,    StrokeThickness = 1.5, Width = 18, Height = 18 },
+            [ThemeMode.System] = new LucideIcon { Kind = LucideIconKind.SunMoon, StrokeWidth = 1.5, Size = 18 },
+            [ThemeMode.Light]  = new LucideIcon { Kind = LucideIconKind.Sun,     StrokeWidth = 1.5, Size = 18 },
+            [ThemeMode.Dark]   = new LucideIcon { Kind = LucideIconKind.Moon,    StrokeWidth = 1.5, Size = 18 },
         };
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

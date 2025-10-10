@@ -24,7 +24,7 @@ public sealed partial class BasicDataTableViewModel : ViewModelBase
         new() { Status = Status.Success, Email = "ken99@example.com", Amount = 316 }
     ];
 
-    private readonly Timer? _searchTimer;
+    private readonly DispatcherTimer? _searchTimer;
 
     public BasicDataTableViewModel()
     {
@@ -36,9 +36,7 @@ public sealed partial class BasicDataTableViewModel : ViewModelBase
             "BasicDataTableViewModel.cs");
         CSharpCode = csharpPath.ExtractWithSkipRanges((31, 37), (48, 54)).CleanIndentation();
 
-        _searchTimer = new Timer(500); // 500ms debounce
-        _searchTimer.Elapsed += SearchTimerElapsed;
-        _searchTimer.AutoReset = false;
+        _searchTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(500), DispatcherPriority.Input, SearchTimerElapsed);  // 500ms debounce
 
         PropertyChanged += OnPropertyChanged;
 
@@ -73,21 +71,18 @@ public sealed partial class BasicDataTableViewModel : ViewModelBase
         }
     }
 
-    private void SearchTimerElapsed(object? sender, ElapsedEventArgs e)
+    private void SearchTimerElapsed(object? sender, EventArgs e)
     {
-        Dispatcher.UIThread.Invoke(() =>
-        {
-            var filteredItems = _originalItems
-                .Where(item => item.Email.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
-                .ToList();
+        var filteredItems = _originalItems
+            .Where(item => item.Email.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+            .ToList();
 
-            Items.Clear();
-            Items.AddRange(filteredItems);
+        Items.Clear();
+        Items.AddRange(filteredItems);
 
-            IsSearching = false;
-            _searchTimer?.Stop();
-            UpdateTotal();
-        });
+        IsSearching = false;
+        _searchTimer?.Stop();
+        UpdateTotal();
     }
 
     private void OnItemsChanged(object? sender, PropertyChangedEventArgs e)

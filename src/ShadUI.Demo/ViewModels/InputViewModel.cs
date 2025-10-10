@@ -5,6 +5,7 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ShadUI.Demo.ViewModels.Examples.Input;
+using Timer = System.Timers.Timer;
 
 namespace ShadUI.Demo.ViewModels;
 
@@ -12,17 +13,15 @@ namespace ShadUI.Demo.ViewModels;
 public sealed partial class InputViewModel : ViewModelBase, INavigable
 {
     private readonly PageManager _pageManager;
-    private readonly Timer? _searchTimer;
+    private readonly DispatcherTimer? _searchTimer;
 
     public InputViewModel(PageManager pageManager, FormInputViewModel inputForm)
     {
         _pageManager = pageManager;
         InputForm = inputForm;
 
-        _searchTimer = new Timer(500); // 500ms debounce
-        _searchTimer.Elapsed += SearchTimerElapsed;
-        _searchTimer.AutoReset = false;
-
+        _searchTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(500), DispatcherPriority.Input, SearchTimerElapsed);  // 500ms debounce
+        
         var path = Path.Combine(AppContext.BaseDirectory, "views", "InputPage.axaml");
         DefaultInputCode = path.ExtractByLineRange(58, 60).CleanIndentation();
         DisabledCode = path.ExtractByLineRange(63, 66).CleanIndentation();
@@ -46,13 +45,10 @@ public sealed partial class InputViewModel : ViewModelBase, INavigable
         _pageManager.Navigate<MenuViewModel>();
     }
 
-    private void SearchTimerElapsed(object? sender, ElapsedEventArgs e)
+    private void SearchTimerElapsed(object? sender, EventArgs e)
     {
-        Dispatcher.UIThread.Invoke(() =>
-        {
-            IsSearching = false;
-            _searchTimer?.Stop();
-        });
+        IsSearching = false;
+        _searchTimer?.Stop();
     }
 
     [ObservableProperty]

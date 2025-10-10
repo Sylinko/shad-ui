@@ -42,7 +42,7 @@ internal class Toast : ContentControl
         _timer.Start();
     }
 
-    private void OnTimeLapse(object sender, EventArgs e)
+    private void OnTimeLapse(object? sender, EventArgs e)
     {
         _timeLapsed += 1;
         if (_timeLapsed < Delay) return;
@@ -156,7 +156,7 @@ internal class Toast : ContentControl
         e.NameScope.Get<Button>("PART_CloseButton").Click += (_, _) => _manager?.Dismiss(this);
     }
 
-    private void ProgressChangedHandler(object sender, double e)
+    private void ProgressChangedHandler(object? sender, double e)
     {
         var dispatcher = Dispatcher.UIThread;
         if (dispatcher.CheckAccess())
@@ -169,7 +169,7 @@ internal class Toast : ContentControl
         }
     }
 
-    private void ToastCardClickedHandler(object sender, PointerPressedEventArgs e)
+    private void ToastCardClickedHandler(object? sender, PointerPressedEventArgs e)
     {
         if (!CanDismissByClicking) return;
         _manager?.Dismiss(this);
