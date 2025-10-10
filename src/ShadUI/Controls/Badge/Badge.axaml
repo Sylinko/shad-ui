@@ -151,7 +151,6 @@
             </ControlTemplate>
         </Setter>
 
-        <!--  Secondary variant  -->
         <Style Selector="^.Secondary">
             <Setter Property="Background" Value="{DynamicResource SecondaryColor}" />
             <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}" />
@@ -160,7 +159,6 @@
             </Style>
         </Style>
 
-        <!--  Destructive variant  -->
         <Style Selector="^.Destructive">
             <Setter Property="Background" Value="{DynamicResource DestructiveColor}" />
             <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
@@ -169,7 +167,6 @@
             </Style>
         </Style>
 
-        <!--  Outline variant  -->
         <Style Selector="^.Outline">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="1" />
@@ -180,42 +177,8 @@
             </Style>
         </Style>
 
-        <!--  Disabled state  -->
         <Style Selector="^:disabled">
             <Setter Property="Opacity" Value="0.5" />
-        </Style>
-
-        <!--  Rounded variants (Tailwind-like)  -->
-        <Style Selector="^.rounded-none">
-            <Setter Property="CornerRadius" Value="0" />
-        </Style>
-
-        <Style Selector="^.rounded-sm">
-            <Setter Property="CornerRadius" Value="2" />
-        </Style>
-
-        <Style Selector="^.rounded">
-            <Setter Property="CornerRadius" Value="4" />
-        </Style>
-
-        <Style Selector="^.rounded-md">
-            <Setter Property="CornerRadius" Value="6" />
-        </Style>
-
-        <Style Selector="^.rounded-lg">
-            <Setter Property="CornerRadius" Value="8" />
-        </Style>
-
-        <Style Selector="^.rounded-xl">
-            <Setter Property="CornerRadius" Value="12" />
-        </Style>
-
-        <Style Selector="^.rounded-2xl">
-            <Setter Property="CornerRadius" Value="16" />
-        </Style>
-
-        <Style Selector="^.rounded-full">
-            <Setter Property="CornerRadius" Value="9999" />
         </Style>
     </ControlTheme>
 

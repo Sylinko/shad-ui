@@ -1,5 +1,6 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SimpleTheme />
+    <StyleInclude Source="avares://ShadUI/Controls/CommonStyles.axaml" />
     <StyleInclude Source="avares://ShadUI/Controls/DataGrid/DataGridStyles.axaml" />
     <StyleInclude Source="avares://ShadUI/Controls/Loading/LoadingStyles.axaml" />
     <StyleInclude Source="avares://ShadUI/Controls/ScrollViewer/ScrollBarStyles.axaml" />
