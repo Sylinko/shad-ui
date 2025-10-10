@@ -28,7 +28,7 @@
                     <TextBlock
                         VerticalAlignment="Center"
                         Classes="Small"
-                        Text="{Binding $parent[ColorPicker].HsvColor, Converter={x:Static shadui:BasicConverters.ToBrushConverter}}" />
+                        Text="{Binding $parent[ColorPicker], Converter={x:Static shadui:BasicConverters.ToColorStringConverter}, ConverterParameter='ToUpper'}" />
                 </StackPanel>
             </Template>
         </Setter>
