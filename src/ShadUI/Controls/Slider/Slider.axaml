@@ -145,9 +145,8 @@
                             </Grid.Styles>
                             <Grid
                                 x:Name="HorizontalTemplate"
-                                MinHeight="32"
                                 ColumnDefinitions="Auto,Auto,*"
-                                RowDefinitions="15,Auto,15">
+                                RowDefinitions="Auto,Auto,Auto">
                                 <TickBar
                                     Name="TopTickBar"
                                     Grid.ColumnSpan="3"
@@ -240,8 +239,7 @@
                                 </Grid.Styles>
                                 <Grid
                                     x:Name="VerticalTemplate"
-                                    MinWidth="32"
-                                    ColumnDefinitions="15,Auto,15"
+                                    ColumnDefinitions="Auto,Auto,Auto"
                                     RowDefinitions="*,Auto,Auto">
                                     <TickBar
                                         Name="LeftTickBar"
