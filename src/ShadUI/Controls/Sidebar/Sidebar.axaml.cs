@@ -219,7 +219,7 @@ public class Sidebar : ContentControl
     /// <summary>
     ///     Stores the width of the sidebar before collapsing for animation purposes.
     /// </summary>
-    private double _cacheWidth;
+    private double? _cacheWidth;
 
     /// <summary>
     ///     Called when a property value changes.
@@ -251,49 +251,58 @@ public class Sidebar : ContentControl
         }
     }
 
+    private CancellationTokenSource? _animationCts;
+
     /// <summary>
     ///     Animates the sidebar expansion or collapse with the specified easing and duration.
     /// </summary>
     /// <param name="toExpand">A value indicating whether to expand or collapse the sidebar.</param>
     private void AnimateOnExpand(bool toExpand)
     {
-        if (!toExpand) _cacheWidth = Width;
+        if (!toExpand && _cacheWidth is null) _cacheWidth = Width;
+
+        _animationCts?.Cancel();
+        _animationCts = new CancellationTokenSource();
 
         if (toExpand)
         {
             this.Animate(WidthProperty)
-                .From(MinWidth)
-                .To(_cacheWidth)
+                .From(Width)
+                .To(_cacheWidth.GetValueOrDefault())
                 .WithEasing(ExpandEasing)
                 .WithDuration(TimeSpan.FromMilliseconds(ExpandAnimationDuration))
+                .WithCancellationToken(_animationCts.Token)
                 .Start();
 
             if (MinWidth == 0)
             {
                 this.Animate(OpacityProperty)
-                    .From(0.0)
+                    .From(Opacity)
                     .To(1.0)
                     .WithEasing(new EaseInOut())
                     .WithDuration(TimeSpan.FromMilliseconds(ExpandAnimationDuration))
+                    .WithCancellationToken(_animationCts.Token)
                     .Start();
             }
         }
         else
         {
             this.Animate(WidthProperty)
-                .From(_cacheWidth)
+                .From(Width)
                 .To(MinWidth)
                 .WithEasing(CollapseEasing)
                 .WithDuration(TimeSpan.FromMilliseconds(CollapseAnimationDuration))
+                .WithCancellationToken(_animationCts.Token)
                 .Start();
 
             if (MinWidth == 0)
             {
                 this.Animate(OpacityProperty)
-                    .From(1.0)
+                    .From(Opacity)
                     .To(0.0)
                     .WithEasing(new EaseOut())
                     .WithDuration(TimeSpan.FromMilliseconds(CollapseAnimationDuration))
+                    .WithCancellationToken(_animationCts.Token)
                     .Start();
             }
         }
