@@ -33,6 +33,8 @@ public sealed class ToastBuilder
 
     internal Progress<double>? Progress { get; set; }
 
+    internal CancellationTokenSource? CancellationTokenSource { get; set; }
+
     internal bool DismissOnClick { get; set; }
 
     internal ToastPosition? Position { get; set; }
@@ -57,6 +59,7 @@ public sealed class ToastBuilder
         _toast.CanDismissByClicking = DismissOnClick;
         _toast.Action = Action;
         _toast.Progress = Progress;
+        _toast.CancellationTokenSource = CancellationTokenSource;
         _toast.Position = Position;
         _manager.Queue(_toast);
     }

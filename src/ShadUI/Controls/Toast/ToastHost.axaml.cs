@@ -216,13 +216,13 @@ public class ToastHost : ItemsControl
         Manager.EnsureMaximum(MaxToasts);
 
         Position = toast.Position ?? _originalPosition;
-        toast.AnimateShow();
+        toast.Show();
     }
 
     private void ClearToast(Toast toast)
     {
         if (Manager.IsDismissed(toast)) return;
-        toast.AnimateDismiss();
+        toast.Dismiss();
         Task.Delay(300).ContinueWith(_ => { Items.Remove(toast); }, TaskScheduler.FromCurrentSynchronizationContext());
     }
 

@@ -111,19 +111,19 @@ internal class Toast : ContentControl
 
     public Progress<double>? Progress
     {
-        get => _progress;
+        get;
         set
         {
-            if (Equals(value, _progress)) return;
+            if (Equals(value, field)) return;
 
-            if (_progress is not null) _progress.ProgressChanged -= ProgressChangedHandler;
-            SetAndRaise(ProgressProperty, ref _progress, value);
+            if (field is not null) field.ProgressChanged -= ProgressChangedHandler;
+            SetAndRaise(ProgressProperty, ref field, value);
 
-            if (_progress is not null) _progress.ProgressChanged += ProgressChangedHandler;
+            if (field is not null) field.ProgressChanged += ProgressChangedHandler;
         }
     }
 
-    private Progress<double>? _progress;
+    public CancellationTokenSource? CancellationTokenSource { get; set; }
 
     public static readonly StyledProperty<string> ActionLabelProperty =
         AvaloniaProperty.Register<Toast, string>(nameof(ActionLabel));
@@ -175,7 +175,7 @@ internal class Toast : ContentControl
         _manager?.Dismiss(this);
     }
 
-    public void AnimateShow()
+    public void Show()
     {
         this.Animate(OpacityProperty)
             .From(0d)
@@ -201,8 +201,10 @@ internal class Toast : ContentControl
         StartCounter();
     }
 
-    public void AnimateDismiss()
+    public void Dismiss()
     {
+        CancellationTokenSource?.Cancel();
+
         this.Animate(OpacityProperty)
             .From(1d)
             .To(0d)

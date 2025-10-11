@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
@@ -64,6 +64,18 @@ public static class ToastBuilderExtensions
     public static ToastBuilder WithProgress(this ToastBuilder builder, Progress<double> progress)
     {
         builder.Progress = progress;
+        return builder;
+    }
+
+    /// <summary>
+    ///     Sets the cancellation token source for the toast notification. It will be cancelled when toast is dismissed.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <param name="cancellationTokenSource"></param>
+    /// <returns></returns>
+    public static ToastBuilder WithCancellationTokenSource(this ToastBuilder builder, CancellationTokenSource cancellationTokenSource)
+    {
+        builder.CancellationTokenSource = cancellationTokenSource;
         return builder;
     }
 
