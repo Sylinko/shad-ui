@@ -4,7 +4,7 @@
     <Color x:Key="ForegroundColor">#FFFFFF</Color>
     <Color x:Key="ForegroundLeadColor">#DEDEDE</Color>
     <Color x:Key="BackgroundColor">Transparent</Color>
-    <Color x:Key="MutedColor">#A0A0A9</Color>
+    <Color x:Key="MutedColor">#D0D0D0</Color>
     <Color x:Key="BorderColor">#3DFFFFFF</Color>
     <Color x:Key="BorderColor60">#2DFFFFFF</Color>
     <Color x:Key="BorderColor30">#1DFFFFFF</Color>
