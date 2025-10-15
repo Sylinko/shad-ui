@@ -100,4 +100,11 @@ public static class MenuItemAssist
     /// <param name="value">The placement mode value to set.</param>
     public static void SetPopupPlacement(MenuItem ctrl, PlacementMode value) =>
         ctrl.SetValue(PopupPlacementProperty, value);
+
+    public static readonly AttachedProperty<double> PopupMaxHeightProperty =
+        AvaloniaProperty.RegisterAttached<MenuItem, double>("PopupMaxHeight", typeof(TemplatedControl), double.PositiveInfinity);
+    
+    public static double GetPopupMaxHeight(MenuItem ctrl) => ctrl.GetValue(PopupMaxHeightProperty);
+    
+    public static void SetPopupMaxHeight(MenuItem ctrl, double value) => ctrl.SetValue(PopupMaxHeightProperty, value);
 }

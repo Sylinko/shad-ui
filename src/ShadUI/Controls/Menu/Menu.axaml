@@ -94,7 +94,7 @@
                                         <Border Padding="16,8" IsVisible="{TemplateBinding shadui:MenuItemAssist.Label, Converter={x:Static ObjectConverters.IsNotNull}}">
                                             <ContentPresenter Content="{TemplateBinding shadui:MenuItemAssist.Label}" FontFamily="{TemplateBinding FontFamily}" />
                                         </Border>
-                                        <ScrollViewer>
+                                        <ScrollViewer MaxHeight="{TemplateBinding shadui:MenuItemAssist.PopupMaxHeight}">
                                             <ItemsPresenter
                                                 Name="ItemsPresenter"
                                                 Grid.IsSharedSizeScope="True"
