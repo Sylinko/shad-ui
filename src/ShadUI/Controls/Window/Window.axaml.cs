@@ -341,9 +341,7 @@ public class Window : Avalonia.Controls.Window
     private void OnMaximizeButtonClicked(object? sender, RoutedEventArgs args)
     {
         if (!CanMaximize || !CanResize || WindowState == WindowState.FullScreen) return;
-        WindowState = WindowState == WindowState.Maximized
-            ? WindowState.Normal
-            : WindowState.Maximized;
+        WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
     }
 
     internal bool HasOpenDialog { get; set; }
@@ -361,45 +359,57 @@ public class Window : Avalonia.Controls.Window
             switch (msg)
             {
                 case 533:
+                {
                     if (!pointerOnMaxButton) break;
-                    WindowState = WindowState == WindowState.Maximized
-                        ? WindowState.Normal
-                        : WindowState.Maximized;
+                    WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
                     break;
+                }
                 case 0x0084:
+                {
                     var point = new PixelPoint(
                         (short)(ToInt32(lParam) & 0xffff),
                         (short)(ToInt32(lParam) >> 16));
                     var size = maximize.Bounds;
-                    var buttonLeftTop = maximize.PointToScreen(FlowDirection == FlowDirection.LeftToRight
-                        ? new Point(size.Width, 0)
-                        : new Point(0, 0));
+
+                    PixelPoint buttonLeftTop;
+                    try
+                    {
+                        buttonLeftTop = maximize.PointToScreen(
+                            FlowDirection == FlowDirection.LeftToRight ? new Point(size.Width, 0) : new Point(0, 0));
+                    }
+                    catch
+                    {
+                        // Control does not belong to a visual tree.
+                        break;
+                    }
+
                     var x = (buttonLeftTop.X - point.X) / RenderScaling;
                     var y = (point.Y - buttonLeftTop.Y) / RenderScaling;
-                    if (new Rect(0, 0,
+                    if (new Rect(
+                            0,
+                            0,
                             size.Width,
                             size.Height)
                         .Contains(new Point(x, y)))
                     {
-                        if (HasOpenDialog) return (IntPtr)9;
+                        if (HasOpenDialog) return 9;
 
                         setter?.SetValue(maximize, true);
                         pointerOnMaxButton = true;
                         handled = true;
-                        return (IntPtr)9;
+                        return 9;
                     }
                     pointerOnMaxButton = false;
                     setter?.SetValue(maximize, false);
                     break;
+                }
             }
 
             return IntPtr.Zero;
 
             static int ToInt32(IntPtr ptr)
             {
-                return IntPtr.Size == 4
-                    ? ptr.ToInt32()
-                    : (int)(ptr.ToInt64() & 0xffffffff);
+                return IntPtr.Size == 4 ? ptr.ToInt32() : (int)(ptr.ToInt64() & 0xffffffff);
             }
         };
 
@@ -417,9 +427,7 @@ public class Window : Avalonia.Controls.Window
                 break;
             case WindowState.Maximized:
                 ToggleMaxButtonVisibility(CanMaximize);
-                Margin = RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
-                    ? new Thickness(0)
-                    : new Thickness(7);
+                Margin = RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? new Thickness(0) : new Thickness(7);
                 break;
             case WindowState.Normal:
                 ToggleMaxButtonVisibility(CanMaximize);
