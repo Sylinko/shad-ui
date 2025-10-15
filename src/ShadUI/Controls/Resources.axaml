@@ -27,6 +27,7 @@
         <ResourceInclude Source="avares://ShadUI/Controls/DateInput/DateInput.axaml" />
         <ResourceInclude Source="avares://ShadUI/Controls/Dialog/DialogHost.axaml" />
         <ResourceInclude Source="avares://ShadUI/Controls/Expander/Expander.axaml" />
+        <ResourceInclude Source="avares://ShadUI/Controls/FlyoutPresenter/FlyoutPresenter.axaml" />
         <ResourceInclude Source="avares://ShadUI/Controls/Dialog/SimpleDialog.axaml" />
         <ResourceInclude Source="avares://ShadUI/Controls/Label/Label.axaml" />
         <ResourceInclude Source="avares://ShadUI/Controls/ListBox/ListBox.axaml" />
