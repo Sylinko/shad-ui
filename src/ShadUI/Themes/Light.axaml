@@ -54,6 +54,7 @@
     <Color x:Key="ErrorColor5">#0DD32F2F</Color>
 
     <!--  specific control colors  -->
+    <Color x:Key="BadgeForegroundColor">#FAFAFA</Color>
     <Color x:Key="BusyAreaOverlayColor">#F2F2F2</Color>
 
     <Color x:Key="CardBackgroundColor">#66FFFFFF</Color>
@@ -69,8 +70,8 @@
 
     <Color x:Key="SidebarBackgroundColor">#66FFFFFF</Color>
 
-    <Color x:Key="SwitchBackgroundColor">#66E5E5E5</Color>
-    <Color x:Key="SwitchForegroundColor">#66FFFFFF</Color>
+    <Color x:Key="SwitchBackgroundColor">#FFE5E5E5</Color>
+    <Color x:Key="SwitchForegroundColor">#FFFFFFFF</Color>
 
     <Color x:Key="TabItemSelectedColor">#66FFFFFF</Color>
     <Color x:Key="TabItemsBackgroundColor">#66E8E8E8</Color>
