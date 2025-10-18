@@ -42,11 +42,11 @@
     <Color x:Key="SuccessColor20">#3300C853</Color>
     <Color x:Key="SuccessColor10">#1900C853</Color>
     <Color x:Key="SuccessColor5">#0D00C853</Color>
-    <Color x:Key="WarningColor">#FFD600</Color>
-    <Color x:Key="WarningColor60">#99FFD600</Color>
-    <Color x:Key="WarningColor20">#33FFD600</Color>
-    <Color x:Key="WarningColor10">#19FFD600</Color>
-    <Color x:Key="WarningColor5">#0DFFD600</Color>
+    <Color x:Key="WarningColor">#FF8C00</Color>
+    <Color x:Key="WarningColor60">#99FF8C00</Color>
+    <Color x:Key="WarningColor20">#33FF8C00</Color>
+    <Color x:Key="WarningColor10">#19FF8C00</Color>
+    <Color x:Key="WarningColor5">#0DFF8C00</Color>
     <Color x:Key="ErrorColor">#FF1744</Color>
     <Color x:Key="ErrorColor60">#99FF1744</Color>
     <Color x:Key="ErrorColor20">#33FF1744</Color>
