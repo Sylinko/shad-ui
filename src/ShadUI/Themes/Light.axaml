@@ -65,7 +65,7 @@
 
     <Color x:Key="TitleBarBackgroundColor">#66FFFFFF</Color>
     <Color x:Key="PopupBackgroundColor">#FAFAFA</Color>
-    <Color x:Key="WindowBackgroundColor">#66FFFFFF</Color>
+    <Color x:Key="WindowBackgroundColor">#FFFFFF</Color>
     <Color x:Key="WindowButtonHoverColor">#0D09090B</Color>
 
     <Color x:Key="SidebarBackgroundColor">#66FFFFFF</Color>

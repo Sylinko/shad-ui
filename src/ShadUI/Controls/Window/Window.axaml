@@ -51,7 +51,11 @@
 
     <ControlTheme x:Key="WindowTheme" TargetType="shadui:Window">
         <Setter Property="Margin" Value="0" />
-        <Setter Property="Background" Value="{DynamicResource WindowBackgroundColor}" />
+        <Setter Property="Background">
+            <MultiBinding Converter="{x:Static shadui:PlatformConverters.WindowBackgroundConverter}">
+                <DynamicResource ResourceKey="WindowBackgroundColor" />
+            </MultiBinding>
+        </Setter>
         <Setter Property="TransparencyLevelHint" Value="Transparent" />
         <Setter Property="SystemDecorations" Value="{OnPlatform Full, Linux=None, x:TypeArguments=SystemDecorations}" />
         <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome" />
