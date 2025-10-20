@@ -95,30 +95,21 @@
                         CornerRadius="{TemplateBinding CornerRadius}"
                         TextElement.Foreground="{TemplateBinding Foreground}">
                         <StackPanel HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Orientation="Horizontal">
-                            <Viewbox Width="{TemplateBinding shadui:ButtonAssist.ShowProgress, Converter={x:Static shadui:BooleanConverters.ToZeroOrDouble}, ConverterParameter='24'}" Height="16">
-                                <Viewbox.Transitions>
-                                    <Transitions>
-                                        <DoubleTransition Property="Width" Duration="0:0:0.10" />
-                                    </Transitions>
-                                </Viewbox.Transitions>
-                                <ContentPresenter Content="{TemplateBinding shadui:ButtonAssist.ShowProgress, Converter={x:Static shadui:BooleanConverters.ToLoading}}" />
-                            </Viewbox>
-                            <Viewbox
-                                Width="{TemplateBinding shadui:ButtonAssist.ShowProgress,
-                                                        Converter={x:Static shadui:BooleanConverters.ToDoubleOrZero},
-                                                        ConverterParameter='24'}"
+                            <ContentPresenter Content="{TemplateBinding shadui:ButtonAssist.ShowProgress, Converter={x:Static shadui:BooleanConverters.ToLoading}}" />
+                            <ContentPresenter
+                                x:Name="Icon"
                                 IsVisible="{TemplateBinding shadui:ButtonAssist.Icon,
                                                             Converter={x:Static ObjectConverters.IsNotNull}}"
                                 Opacity="{TemplateBinding shadui:ButtonAssist.ShowProgress,
-                                                          Converter={x:Static shadui:BooleanConverters.ToInverseOpacity}}">
-                                <Viewbox.Transitions>
+                                                          Converter={x:Static shadui:BooleanConverters.ToInverseOpacity}}"
+                                Content="{TemplateBinding shadui:ButtonAssist.Icon}">
+                                <ContentPresenter.Transitions>
                                     <Transitions>
                                         <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
                                         <DoubleTransition Property="Width" Duration="0:0:0.10" />
                                     </Transitions>
-                                </Viewbox.Transitions>
-                                <ContentPresenter x:Name="Icon" Content="{TemplateBinding shadui:ButtonAssist.Icon}" />
-                            </Viewbox>
+                                </ContentPresenter.Transitions>
+                            </ContentPresenter>
                             <ContentPresenter
                                 HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
