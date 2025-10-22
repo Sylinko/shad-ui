@@ -6,6 +6,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
         <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
         <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}" />
+        <Setter Property="Background" Value="{DynamicResource GhostHoverColor}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
@@ -18,9 +19,9 @@
                     </Panel.Transitions>
                     <Border
                         Name="HoverBackground"
-                        Background="{DynamicResource GhostHoverColor}"
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        Opacity="0">
+                        Background="{TemplateBinding Background}"
+                        Opacity="0"
+                        CornerRadius="{TemplateBinding CornerRadius}">
                         <Border.Transitions>
                             <Transitions>
                                 <DoubleTransition Property="Opacity" Duration="0:0:0.20" />
@@ -34,8 +35,11 @@
         <Style Selector="^:pressed /template/ Panel#RootPanel">
             <Setter Property="RenderTransform" Value="scale(0.95, 0.95)" />
         </Style>
-        <Style Selector="^:pointerover /template/ Border#HoverBackground">
+        <Style Selector="^:checked /template/ Border#HoverBackground">
             <Setter Property="Opacity" Value="1" />
+        </Style>
+        <Style Selector="^:pointerover /template/ Border#HoverBackground">
+            <Setter Property="Opacity" Value="0.7" />
         </Style>
         <Style Selector="^:disabled">
             <Setter Property="Opacity" Value="0.50" />

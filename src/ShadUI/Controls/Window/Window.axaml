@@ -63,7 +63,6 @@
         <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="-1" />
         <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
         <Setter Property="TextElement.Foreground" Value="{DynamicResource ForegroundColor}" />
-        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="{DynamicResource BorderColor60}" />
         <Setter Property="Template">
             <ControlTemplate>
@@ -87,19 +86,14 @@
                         <Panel Name="PART_Root">
                             <DockPanel LastChildFill="True">
                                 <Panel DockPanel.Dock="Top">
-                                    <Panel.Styles>
-                                        <Style Selector="shadui|Window[ShowBottomBorder=True] /template/ Border#BottomBorder">
-                                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                                        </Style>
-                                        <Style Selector="shadui|Window[ShowBottomBorder=False] /template/ Border#BottomBorder">
-                                            <Setter Property="BorderThickness" Value="0,0,0,0" />
-                                        </Style>
-                                    </Panel.Styles>
                                     <StackPanel ClipToBounds="True">
                                         <LayoutTransformControl Name="LayoutTransform" RenderTransformOrigin="0%,0%">
                                             <Border ClipToBounds="True" CornerRadius="{TemplateBinding RootCornerRadius, Converter={x:Static shadui:CornerRadiusConverters.TopOnly}}">
                                                 <Panel Margin="0,-1,0,0">
-                                                    <Border Name="PART_TitleBarBackground" IsVisible="{TemplateBinding ShowTitlebarBackground}" />
+                                                    <Border
+                                                        Name="PART_TitleBarBackground"
+                                                        MinWidth="32"
+                                                        Background="Transparent" />
                                                     <DockPanel LastChildFill="True">
                                                         <StackPanel
                                                             DockPanel.Dock="Right"
@@ -302,10 +296,6 @@
             </Style>
         </Style>
 
-        <Style Selector="^ /template/ Border#PART_TitleBarBackground">
-            <Setter Property="MinHeight" Value="32" />
-            <Setter Property="Background" Value="{DynamicResource TitleBarBackgroundColor}" />
-        </Style>
         <Style Selector="^ /template/ StackPanel#ButtonsPanel">
             <Setter Property="MinHeight" Value="32" />
         </Style>
