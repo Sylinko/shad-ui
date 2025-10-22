@@ -6,6 +6,4 @@ namespace ShadUI;
 /// <summary>
 ///     Represents a description control for a card.
 /// </summary>
-public class CardDescription : ContentControl
-{
-}
+public class CardDescription : ContentControl;

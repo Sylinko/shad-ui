@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.IO;
 using Avalonia.Controls.Selection;
 using CommunityToolkit.Mvvm.ComponentModel;
 

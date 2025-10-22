@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.Globalization;
 using Avalonia.Data.Converters;
-using ShadUI.Themes;
 using Lucide.Avalonia;
 
 namespace ShadUI.Demo.Converters;

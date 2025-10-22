@@ -13,7 +13,7 @@ public class Badge : ContentControl
     ///     Defines the <see cref="Variant" /> property.
     /// </summary>
     public static readonly StyledProperty<BadgeVariant> VariantProperty =
-        AvaloniaProperty.Register<Badge, BadgeVariant>(nameof(Variant), BadgeVariant.Default);
+        AvaloniaProperty.Register<Badge, BadgeVariant>(nameof(Variant));
 
     static Badge()
     {

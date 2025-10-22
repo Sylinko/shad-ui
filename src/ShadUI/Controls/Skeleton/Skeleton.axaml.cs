@@ -6,6 +6,4 @@ namespace ShadUI;
 /// <summary>
 ///     Represents a skeleton loading control.
 /// </summary>
-public sealed class Skeleton : TemplatedControl
-{
-}
+public sealed class Skeleton : TemplatedControl;

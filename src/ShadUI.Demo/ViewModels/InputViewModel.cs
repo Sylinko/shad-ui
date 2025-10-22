@@ -1,11 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Timers;
-using Avalonia.Threading;
+﻿using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ShadUI.Demo.ViewModels.Examples.Input;
-using Timer = System.Timers.Timer;
 
 namespace ShadUI.Demo.ViewModels;
 

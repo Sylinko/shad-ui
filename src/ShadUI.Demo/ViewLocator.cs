@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Concurrent;
 using System.Reflection;
 using Avalonia.Controls;
@@ -49,7 +48,7 @@ public class ViewLocator : IDataTemplate
         control.DataContext = param;
 
         // Hook up disposal: when view is unloaded, dispose the ViewModel
-        control.Unloaded += (s, e) =>
+        control.Unloaded += (_, _) =>
         {
             if (control.DataContext is IDisposable disposable)
             {

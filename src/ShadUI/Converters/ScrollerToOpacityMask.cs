@@ -1,6 +1,5 @@
 using System.Globalization;
 using Avalonia;
-using Avalonia.Animation;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
 

@@ -40,7 +40,7 @@
         <FontFamily x:Key="JetbrainsFont">avares://shadui-app/Assets/Fonts#Jetbrains</FontFamily>
         <FontFamily x:Key="ManropeFont">avares://shadui-app/Assets/Fonts#Manrope</FontFamily>
         <FontFamily x:Key="LucideIcon">avares://shadui-app/Assets/Fonts#lucide</FontFamily>
-        <FontFamily x:Key="ShadUIIcon">avares://shadui-app/Assets/Fonts#shadui</FontFamily>
+        <FontFamily x:Key="ShadUiIcon">avares://shadui-app/Assets/Fonts#shadui</FontFamily>
         <x:Double x:Key="ControlContentThemeFontSize">12</x:Double>
     </Application.Resources>
     <Application.Styles>

@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Avalonia;
+﻿using Avalonia;
 using CommunityToolkit.Mvvm.Messaging;
 using Jab;
 using Serilog;

@@ -1,5 +1,3 @@
-using System;
-
 namespace ShadUI.Demo;
 
 public sealed class PageChangedMessage

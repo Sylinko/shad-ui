@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Layout;
@@ -21,7 +17,7 @@ public static class WindowExt
 {
     private static readonly Dictionary<Window, EventHandler<WindowClosingEventArgs>> Handlers = new();
     private static readonly Dictionary<string, WindowSettings?> Cache = new();
-    private static readonly object CacheLock = new();
+    private static readonly Lock CacheLock = new();
 
     /// <summary>
     ///     Enables automatic window state management for the specified window.

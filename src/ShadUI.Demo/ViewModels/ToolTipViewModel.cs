@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 
 namespace ShadUI.Demo.ViewModels;
 
@@ -11,7 +8,7 @@ public sealed partial class ToolTipViewModel : ViewModelBase, INavigable
 {
     private readonly PageManager _pageManager;
 
-    public ToolTipViewModel(IMessenger messenger, PageManager pageManager)
+    public ToolTipViewModel(PageManager pageManager)
     {
         _pageManager = pageManager;
         var path = Path.Combine(AppContext.BaseDirectory, "views", "ToolTipPage.axaml");
