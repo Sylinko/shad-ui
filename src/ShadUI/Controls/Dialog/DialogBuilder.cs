@@ -15,12 +15,7 @@ public sealed class DialogBuilder
         _manager = manager;
     }
 
-    internal Action? OnCancelCallback { get; set; }
-    internal Func<Task>? OnCancelAsyncCallback { get; set; }
-    internal Action? OnSuccessCallback { get; set; }
-    internal Action<Control>? OnSuccessWithControlCallback { get; set; }
-    internal Func<Task>? OnSuccessAsyncCallback { get; set; }
-    internal Func<Control, Task>? OnSuccessWithControlAsyncCallback { get; set; }
+    internal Action<DialogResult>? Callback { get; set; }
     internal DialogOptions Options { get; } = new();
 
     private Control? _control;
@@ -31,40 +26,17 @@ public sealed class DialogBuilder
         return this;
     }
 
-    internal void Show()
+    public Task<DialogResult> ShowAsync()
     {
         if (_control == null) throw new InvalidOperationException("Dialog control is not set.");
 
-        if (OnSuccessCallback != null)
-        {
-            _manager.OnSuccessCallbacks.TryAdd(_control, OnSuccessCallback);
-        }
+        var tcs = new TaskCompletionSource<DialogResult>();
+        var callback = Callback;
+        callback += result => tcs.SetResult(result);
 
-        if (OnSuccessWithControlCallback != null)
-        {
-            _manager.OnSuccessWithContextCallbacks.TryAdd(_control, OnSuccessWithControlCallback);
-        }
-
-        if (OnSuccessAsyncCallback != null)
-        {
-            _manager.OnSuccessAsyncCallbacks.TryAdd(_control, OnSuccessAsyncCallback);
-        }
-
-        if (OnSuccessWithControlAsyncCallback != null)
-        {
-            _manager.OnSuccessWithContextAsyncCallbacks.TryAdd(_control, OnSuccessWithControlAsyncCallback);
-        }
-
-        if (OnCancelCallback != null)
-        {
-            _manager.OnCancelCallbacks.TryAdd(_control, OnCancelCallback);
-        }
-
-        if (OnCancelAsyncCallback != null)
-        {
-            _manager.OnCancelAsyncCallbacks.TryAdd(_control, OnCancelAsyncCallback);
-        }
-
+        _manager.Callbacks.TryAdd(_control, callback);
         _manager.Show(_control, Options);
+
+        return tcs.Task;
     }
 }

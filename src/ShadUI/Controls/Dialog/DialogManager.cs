@@ -72,46 +72,16 @@ public sealed class DialogManager
         var lastDialog = Dialogs.Last();
         CloseDialog(lastDialog.Key);
 
-        InvokeCallBacks(lastDialog.Key, false);
+        InvokeCallBacks(lastDialog.Key, DialogResult.Cancel);
     }
 
-    internal readonly Dictionary<Control, Action> OnCancelCallbacks = [];
-    internal readonly Dictionary<Control, Func<Task>> OnCancelAsyncCallbacks = [];
-    internal readonly Dictionary<Control, Action> OnSuccessCallbacks = [];
-    internal readonly Dictionary<Control, Action<Control>> OnSuccessWithContextCallbacks = [];
-    internal readonly Dictionary<Control, Func<Task>> OnSuccessAsyncCallbacks = [];
-    internal readonly Dictionary<Control, Func<Control, Task>> OnSuccessWithContextAsyncCallbacks = [];
+    internal readonly Dictionary<Control, Action<DialogResult>> Callbacks = [];
 
-    private void InvokeCallBacks(Control control, bool success)
+    private void InvokeCallBacks(Control control, DialogResult result)
     {
-        if (OnSuccessCallbacks.Remove(control, out var successCallback) && success)
+        if (Callbacks.Remove(control, out var callback))
         {
-            successCallback?.Invoke();
-        }
-
-        if (OnSuccessWithContextCallbacks.Remove(control, out var successWithContextCallback) && success)
-        {
-            successWithContextCallback?.Invoke(control);
-        }
-
-        if (OnSuccessAsyncCallbacks.Remove(control, out var successAsyncCallback) && success)
-        {
-            successAsyncCallback?.Invoke();
-        }
-
-        if (OnSuccessWithContextAsyncCallbacks.Remove(control, out var successWithContextAsyncCallback) && success)
-        {
-            successWithContextAsyncCallback?.Invoke(control);
-        }
-
-        if (OnCancelCallbacks.Remove(control, out var cancelCallback) && !success)
-        {
-            cancelCallback?.Invoke();
-        }
-
-        if (OnCancelAsyncCallbacks.Remove(control, out var cancelAsyncCallback) && !success)
-        {
-            cancelAsyncCallback?.Invoke();
+            callback.Invoke(result);
         }
     }
 
@@ -119,45 +89,39 @@ public sealed class DialogManager
     ///     Closes the dialog associated with the specified context and invokes the appropriate callbacks.
     /// </summary>
     /// <param name="control">The control of the dialog to close.</param>
-    /// <param name="options">Optional parameters for closing the dialog.</param>
-    public void Close(Control control, CloseDialogOptions? options = null)
+    /// <param name="result"></param>
+    /// <param name="closeAll"></param>
+    public void Close(Control control, DialogResult result = DialogResult.Cancel, bool closeAll = false)
     {
-        var clearAll = options?.ClearAll ?? false;
         var dialogs = Dialogs.Where(x => Equals(x.Key, control)).ToList();
 
-        if (clearAll) RemoveAll();
+        if (closeAll) RemoveAll();
 
         foreach (var dialog in dialogs) CloseDialog(dialog.Key);
 
-        var success = options?.Success ?? false;
-        InvokeCallBacks(control, success);
+        InvokeCallBacks(control, result);
 
-        if (!clearAll) OpenLast();
+        if (!closeAll) OpenLast();
     }
 
     /// <summary>
     ///     Closes all open dialogs and invokes their callbacks.
     /// </summary>
-    /// <param name="success"></param>
-    public void CloseAll(bool success = false)
+    /// <param name="result"></param>
+    public void CloseAll(DialogResult result = DialogResult.Cancel)
     {
         var dialogs = Dialogs.Keys.ToList();
-        RemoveAll();
-
         foreach (var dialog in dialogs)
         {
             CloseDialog(dialog);
-            InvokeCallBacks(dialog, success);
+            InvokeCallBacks(dialog, result);
         }
     }
 
     private void RemoveAll()
     {
         Dialogs.Clear();
-        OnSuccessAsyncCallbacks.Clear();
-        OnSuccessCallbacks.Clear();
-        OnCancelAsyncCallbacks.Clear();
-        OnCancelCallbacks.Clear();
+        Callbacks.Clear();
     }
 
     internal event EventHandler<bool>? AllowDismissChanged;

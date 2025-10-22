@@ -231,78 +231,14 @@ public static class DialogBuilderExtensions
     }
 
     /// <summary>
-    ///     Sets the success callback for the dialog.
+    ///     Sets the callback for the dialog.
     /// </summary>
     /// <param name="builder">The <see cref="DialogBuilder" /></param>
-    /// <param name="callback">The method that is called on successful completion</param>
+    /// <param name="callback">The method that is called when the dialog is closed</param>
     /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
-    public static DialogBuilder WithSuccessCallback(this DialogBuilder builder, Action callback)
+    public static DialogBuilder WithCallback(this DialogBuilder builder, Action<DialogResult> callback)
     {
-        builder.OnSuccessCallback = callback;
-        return builder;
-    }
-
-    /// <summary>
-    ///     Sets the success callback for the dialog.
-    /// </summary>
-    /// <param name="builder">The <see cref="DialogBuilder" /></param>
-    /// <param name="callback">The method that is called on successful completion</param>
-    /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
-    public static DialogBuilder WithSuccessCallback(this DialogBuilder builder, Action<Control> callback)
-    {
-        builder.OnSuccessWithControlCallback = callback;
-        return builder;
-    }
-
-    /// <summary>
-    ///     Sets the success callback for the dialog with an asynchronous callback.
-    /// </summary>
-    /// <param name="builder">The <see cref="DialogBuilder" /></param>
-    /// <param name="callback">The asynchronous method that is called on successful completion</param>
-    /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
-    public static DialogBuilder WithSuccessCallback(this DialogBuilder builder, Func<Task> callback)
-    {
-        builder.OnSuccessAsyncCallback = callback;
-        return builder;
-    }
-
-    /// <summary>
-    ///     Sets the success callback for the dialog with an asynchronous callback that receives the dialog context.
-    /// </summary>
-    /// <param name="builder">The <see cref="DialogBuilder" /></param>
-    /// <param name="callback">
-    ///     The asynchronous method that is called on successful completion, receiving the dialog context as
-    ///     a parameter
-    /// </param>
-    /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
-    public static DialogBuilder WithSuccessCallback(this DialogBuilder builder, Func<Control, Task> callback)
-    {
-        builder.OnSuccessWithControlAsyncCallback = callback;
-        return builder;
-    }
-
-    /// <summary>
-    ///     Sets the cancel callback for the dialog.
-    /// </summary>
-    /// <param name="builder">The <see cref="DialogBuilder" /></param>
-    /// <param name="callback">The method that is called when the dialog is cancelled</param>
-    /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
-    public static DialogBuilder WithCancelCallback(this DialogBuilder builder, Action callback)
-    {
-        builder.OnCancelCallback = callback;
-        return builder;
-    }
-
-    /// <summary>
-    ///     Sets the cancel callback for the dialog with an asynchronous callback.
-    /// </summary>
-    /// <param name="builder">The <see cref="DialogBuilder" /></param>
-    /// <param name="callback">The asynchronous method that is called when the dialog is cancelled</param>
-    /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
-    public static DialogBuilder WithCancelCallback(this DialogBuilder builder,
-        Func<Task> callback)
-    {
-        builder.OnCancelAsyncCallback = callback;
+        builder.Callback = callback;
         return builder;
     }
 
@@ -340,14 +276,5 @@ public static class DialogBuilderExtensions
     {
         builder.Options.MinWidth = minWidth;
         return builder;
-    }
-
-    /// <summary>
-    ///     Shows the dialog.
-    /// </summary>
-    /// <param name="builder">The <see cref="DialogBuilder" /></param>
-    public static void Show(this DialogBuilder builder)
-    {
-        builder.Show();
     }
 }

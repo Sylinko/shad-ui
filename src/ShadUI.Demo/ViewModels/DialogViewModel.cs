@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ShadUI.Demo.Views;
 
@@ -104,24 +102,29 @@ public sealed partial class DialogViewModel : ViewModelBase, INavigable
     private string _customDialogCode = string.Empty;
 
     [RelayCommand]
-    private void ShowCustomDialog()
+    private async Task ShowCustomDialog()
     {
         _loginViewModel.Initialize();
-        _dialogManager.CreateDialog(new LoginContent
+        var result = await _dialogManager.CreateDialog(new LoginContent
             {
                 DataContext = _loginViewModel
             })
             .Dismissible()
-            .WithSuccessCallback(vm =>
-                _toastManager.CreateToast("Sign in successful")
-                    .WithContent($"Hi {(vm.DataContext as LoginViewModel)?.Email}, welcome back!")
-                    .DismissOnClick()
-                    .ShowSuccess())
-            .WithCancelCallback(() =>
-                _toastManager.CreateToast("Sign in cancelled")
-                    .WithContent("Please sign in to continue.")
-                    .DismissOnClick()
-                    .ShowWarning())
-            .Show();
+            .ShowAsync();
+
+        if (result == DialogResult.Cancel)
+        {
+            _toastManager.CreateToast("Sign in cancelled")
+                .WithContent("Please sign in to continue.")
+                .DismissOnClick()
+                .ShowWarning();
+        }
+        else
+        {
+            _toastManager.CreateToast("Sign in successful")
+                .WithContent($"Hi {_loginViewModel.Email}, welcome back!")
+                .DismissOnClick()
+                .ShowSuccess();
+        }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -318,7 +317,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
             })
             .WithMinWidth(300)
             .Dismissible()
-            .Show();
+            .ShowAsync();
     }
 
     [RelayCommand]
