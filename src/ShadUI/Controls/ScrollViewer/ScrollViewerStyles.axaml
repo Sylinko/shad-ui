@@ -8,11 +8,12 @@
             <ControlTemplate>
                 <Panel>
                     <Panel Name="InnerPanel">
-                        <Panel.Transitions>
-                            <Transitions>
-                                <BrushTransition Property="OpacityMask" Duration="0:0:0.2" />
-                            </Transitions>
-                        </Panel.Transitions>
+                        <Panel.OpacityMask>
+                            <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Top}">
+                                <Binding Path="#PART_VerticalScrollBar.Value" />
+                                <Binding Path="#PART_VerticalScrollBar.Minimum" />
+                            </MultiBinding>
+                        </Panel.OpacityMask>
                         <ScrollContentPresenter
                             Name="PART_ContentPresenter"
                             Padding="{TemplateBinding Padding}"
@@ -22,6 +23,12 @@
                             ScrollViewer.IsScrollInertiaEnabled="{TemplateBinding IsScrollInertiaEnabled}"
                             VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
                             VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}">
+                            <ScrollContentPresenter.OpacityMask>
+                                <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Bottom}">
+                                    <Binding Path="#PART_VerticalScrollBar.Value" />
+                                    <Binding Path="#PART_VerticalScrollBar.Maximum" />
+                                </MultiBinding>
+                            </ScrollContentPresenter.OpacityMask>
                             <ScrollContentPresenter.Transitions>
                                 <Transitions>
                                     <BrushTransition Property="OpacityMask" Duration="0:0:0.2" />
@@ -77,22 +84,6 @@
         </Style>
         <Style Selector="^ /template/ Panel#StackScrollPanel">
             <Setter Property="IsVisible" Value="True" />
-        </Style>
-        <Style Selector="^ /template/ Panel#InnerPanel">
-            <Setter Property="OpacityMask">
-                <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Top}">
-                    <Binding Path="$parent[Panel].((Panel)Children[2]).((Slider)Children[0]).Value" />
-                    <Binding Path="$parent[Panel].((Panel)Children[2]).((Slider)Children[0]).Minimum" />
-                </MultiBinding>
-            </Setter>
-        </Style>
-        <Style Selector="^ /template/ ScrollContentPresenter#PART_ContentPresenter">
-            <Setter Property="OpacityMask">
-                <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Bottom}">
-                    <Binding Path="$parent[Panel;1].((Panel)Children[2]).((Slider)Children[0]).Value" />
-                    <Binding Path="$parent[Panel;1].((Panel)Children[2]).((Slider)Children[0]).Minimum" />
-                </MultiBinding>
-            </Setter>
         </Style>
     </Style>
 </Styles>

@@ -71,12 +71,17 @@
                         Background="Transparent"
                         BorderThickness="0"
                         Focusable="False">
-                        <RepeatButton.IsVisible>
-                            <MultiBinding Converter="{x:Static shadui:SidebarScrollerToVisibilityBool.Up}">
+                        <RepeatButton.Opacity>
+                            <MultiBinding Converter="{x:Static shadui:SidebarScrollerToOpacityConverter.Up}">
                                 <CompiledBinding Path="Value" RelativeSource="{RelativeSource TemplatedParent}" />
                                 <CompiledBinding Path="Minimum" RelativeSource="{RelativeSource TemplatedParent}" />
                             </MultiBinding>
-                        </RepeatButton.IsVisible>
+                        </RepeatButton.Opacity>
+                        <RepeatButton.Transitions>
+                            <Transitions>
+                                <DoubleTransition Property="Opacity" Duration="0:0:0.2" />
+                            </Transitions>
+                        </RepeatButton.Transitions>
                         <PathIcon
                             Width="10"
                             Height="25"
@@ -96,7 +101,7 @@
                         BorderThickness="0"
                         Focusable="False">
                         <RepeatButton.IsVisible>
-                            <MultiBinding Converter="{x:Static shadui:SidebarScrollerToVisibilityBool.Down}">
+                            <MultiBinding Converter="{x:Static shadui:SidebarScrollerToOpacityConverter.Down}">
                                 <CompiledBinding Path="Value" RelativeSource="{RelativeSource TemplatedParent}" />
                                 <CompiledBinding Path="Maximum" RelativeSource="{RelativeSource TemplatedParent}" />
                             </MultiBinding>

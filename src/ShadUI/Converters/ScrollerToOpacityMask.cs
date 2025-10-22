@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
 
@@ -17,7 +16,7 @@ namespace ShadUI;
 /// </remarks>
 public class ScrollerToOpacityMask : IMultiValueConverter
 {
-    private readonly Func<double, double, IBrush?> _func;
+    private readonly Func<double, double, IBrush> _func;
 
     /// <summary>
     ///     Gets the top mask instance for creating fade-out effects at the top of scrollable content.
@@ -26,7 +25,31 @@ public class ScrollerToOpacityMask : IMultiValueConverter
     ///     This instance creates a gradient that fades from transparent at the top to opaque at the bottom.
     ///     It's typically used when content can be scrolled up.
     /// </remarks>
-    public static ScrollerToOpacityMask Top { get; } = new((x, y) => x > y ? TopBrush : Brushes.White);
+    public static ScrollerToOpacityMask Top
+    {
+        get
+        {
+            var topBrush = new LinearGradientBrush
+            {
+                StartPoint = new RelativePoint(0.5, 0.0, RelativeUnit.Relative),
+                EndPoint = new RelativePoint(0.5, 0.05, RelativeUnit.Relative),
+                GradientStops =
+                [
+                    new GradientStop(Colors.Transparent, 0),
+                    new GradientStop(Colors.Black, 1)
+                ]
+            };
+
+            return new ScrollerToOpacityMask((value, minimum) =>
+            {
+                topBrush.EndPoint = value > minimum ?
+                    new RelativePoint(0.5, 0.05, RelativeUnit.Relative) :
+                    new RelativePoint(0.5, 0.001, RelativeUnit.Relative);
+
+                return topBrush;
+            });
+        }
+    }
 
     /// <summary>
     ///     Gets the bottom mask instance for creating fade-out effects at the bottom of scrollable content.
@@ -35,41 +58,37 @@ public class ScrollerToOpacityMask : IMultiValueConverter
     ///     This instance creates a gradient that fades from opaque at the top to transparent at the bottom.
     ///     It's typically used when content can be scrolled down.
     /// </remarks>
-    public static ScrollerToOpacityMask Bottom { get; } = new((x, y) => x < y ? BottomBrush : Brushes.White);
-
-    /// <summary>
-    ///     The bottom gradient brush that fades from opaque to transparent.
-    /// </summary>
-    private static readonly LinearGradientBrush BottomBrush = new()
+    public static ScrollerToOpacityMask Bottom
     {
-        StartPoint = new RelativePoint(0.5, 0, RelativeUnit.Relative),
-        EndPoint = new RelativePoint(0.5, 0.95, RelativeUnit.Relative),
-        GradientStops =
-        [
-            new GradientStop(Colors.Black, 0.9),
-            new GradientStop(Colors.Transparent, 1)
-        ]
-    };
+        get
+        {
+            var bottomBrush = new LinearGradientBrush
+            {
+                StartPoint = new RelativePoint(0.5, 0.95, RelativeUnit.Relative),
+                EndPoint = new RelativePoint(0.5, 1.0, RelativeUnit.Relative),
+                GradientStops =
+                [
+                    new GradientStop(Colors.Black, 0.0),
+                    new GradientStop(Colors.Transparent, 1)
+                ]
+            };
 
-    /// <summary>
-    ///     The top gradient brush that fades from transparent to opaque.
-    /// </summary>
-    private static readonly LinearGradientBrush TopBrush = new()
-    {
-        StartPoint = new RelativePoint(0.5, 1, RelativeUnit.Relative),
-        EndPoint = new RelativePoint(0.5, 0.05, RelativeUnit.Relative),
-        GradientStops =
-        [
-            new GradientStop(Colors.Black, 0.9),
-            new GradientStop(Colors.Transparent, 1)
-        ]
-    };
+            return new ScrollerToOpacityMask((value, maximum) =>
+            {
+                bottomBrush.StartPoint = value < maximum ?
+                    new RelativePoint(0.5, 0.95, RelativeUnit.Relative) :
+                    new RelativePoint(0.5, 0.999, RelativeUnit.Relative);
+
+                return bottomBrush;
+            });
+        }
+    }
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="ScrollerToOpacityMask" /> class.
     /// </summary>
     /// <param name="func">The function that determines which brush to return based on scroll values.</param>
-    public ScrollerToOpacityMask(Func<double, double, IBrush?> func)
+    private ScrollerToOpacityMask(Func<double, double, IBrush> func)
     {
         _func = func;
     }
