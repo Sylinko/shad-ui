@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:shadui="clr-namespace:ShadUI">
+    xmlns:shadui="clr-namespace:ShadUI"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime">
     <Design.PreviewWith>
         <Border Padding="12">
             <StackPanel Spacing="8">
@@ -94,22 +95,54 @@
                         ClipToBounds="True"
                         CornerRadius="{TemplateBinding CornerRadius}"
                         TextElement.Foreground="{TemplateBinding Foreground}">
-                        <StackPanel HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Orientation="Horizontal">
-                            <ContentPresenter Content="{TemplateBinding shadui:ButtonAssist.ShowProgress, Converter={x:Static shadui:BooleanConverters.ToLoading}}" />
-                            <ContentPresenter
-                                x:Name="Icon"
-                                IsVisible="{TemplateBinding shadui:ButtonAssist.Icon,
-                                                            Converter={x:Static ObjectConverters.IsNotNull}}"
-                                Opacity="{TemplateBinding shadui:ButtonAssist.ShowProgress,
-                                                          Converter={x:Static shadui:BooleanConverters.ToInverseOpacity}}"
-                                Content="{TemplateBinding shadui:ButtonAssist.Icon}">
-                                <ContentPresenter.Transitions>
+                        <StackPanel
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Orientation="Horizontal"
+                            Spacing="4">
+                            <Viewbox IsVisible="{TemplateBinding shadui:ButtonAssist.ShowProgress}" Height="{TemplateBinding shadui:ButtonAssist.IconSize}">
+                                <Viewbox.Width>
+                                    <MultiBinding Converter="{x:Static shadui:BooleanConverters.Gate}">
+                                        <TemplateBinding Property="shadui:ButtonAssist.ShowProgress" />
+                                        <TemplateBinding Property="shadui:ButtonAssist.IconSize" />
+                                        <Binding Source="{x:Static system:Double.NegativeZero}" />
+                                    </MultiBinding>
+                                </Viewbox.Width>
+                                <Viewbox.Transitions>
                                     <Transitions>
-                                        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-                                        <DoubleTransition Property="Width" Duration="0:0:0.10" />
+                                        <BoolTransition Property="IsVisible" Duration="0:0:0.10" />
+                                        <DoubleTransition
+                                            Property="Width"
+                                            Duration="0:0:0.10"
+                                            Easing="CubicEaseInOut" />
                                     </Transitions>
-                                </ContentPresenter.Transitions>
-                            </ContentPresenter>
+                                </Viewbox.Transitions>
+                                <ContentPresenter Content="{TemplateBinding shadui:ButtonAssist.ShowProgress, Converter={x:Static shadui:BooleanConverters.ToLoading}}" />
+                            </Viewbox>
+                            <Viewbox Height="{TemplateBinding shadui:ButtonAssist.IconSize}">
+                                <Viewbox.Width>
+                                    <MultiBinding Converter="{x:Static shadui:BooleanConverters.Gate}">
+                                        <TemplateBinding Property="shadui:ButtonAssist.ShowProgress" />
+                                        <Binding Source="{x:Static system:Double.NegativeZero}" />
+                                        <TemplateBinding Property="shadui:ButtonAssist.IconSize" />
+                                    </MultiBinding>
+                                </Viewbox.Width>
+                                <Viewbox.IsVisible>
+                                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                        <TemplateBinding Property="shadui:ButtonAssist.ShowProgress" Converter="{x:Static BoolConverters.Not}" />
+                                        <TemplateBinding Property="shadui:ButtonAssist.Icon" Converter="{x:Static ObjectConverters.IsNotNull}" />
+                                    </MultiBinding>
+                                </Viewbox.IsVisible>
+                                <Viewbox.Transitions>
+                                    <Transitions>
+                                        <BoolTransition Property="IsVisible" Duration="0:0:0.10" />
+                                        <DoubleTransition
+                                            Property="Width"
+                                            Duration="0:0:0.10"
+                                            Easing="CubicEaseInOut" />
+                                    </Transitions>
+                                </Viewbox.Transitions>
+                                <ContentPresenter x:Name="Icon" Content="{TemplateBinding shadui:ButtonAssist.Icon}" />
+                            </Viewbox>
                             <ContentPresenter
                                 HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"

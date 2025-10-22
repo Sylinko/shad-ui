@@ -17,6 +17,7 @@
         <PackageReference Include="Avalonia.Themes.Simple"/>
         <PackageReference Include="MinVer"/>
         <PackageReference Include="Lucide.Avalonia"/>
+        <PackageReference Include="SkiaSharp" />
     </ItemGroup>
 
     <PropertyGroup>

@@ -87,4 +87,11 @@ public static class ButtonAssist
     {
         return btn.GetValue(HoverBackgroundProperty);
     }
+
+    public static readonly AttachedProperty<double> IconSizeProperty =
+        AvaloniaProperty.RegisterAttached<Button, double>("IconSize", typeof(Button), 16d);
+
+    public static void SetIconSize(Button obj, double value) => obj.SetValue(IconSizeProperty, value);
+
+    public static double GetIconSize(Button obj) => obj.GetValue(IconSizeProperty);
 }

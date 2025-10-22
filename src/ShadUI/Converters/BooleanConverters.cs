@@ -1,7 +1,6 @@
-﻿using Avalonia.Controls;
+﻿using System.Globalization;
 using Avalonia.Data.Converters;
 
-// ReSharper disable once CheckNamespace
 namespace ShadUI;
 
 /// <summary>
@@ -24,48 +23,38 @@ public static class BooleanConverters
         new FuncValueConverter<bool, int>(value => value ? 0 : 1);
 
     /// <summary>
-    ///     Converts a boolean value to either a Loading control or a Panel.
+    ///     Converts a boolean value to either a Loading control or null.
     /// </summary>
     /// <remarks>
     ///     This converter returns a Loading control when the boolean is true, and a Panel when false.
     ///     Useful for showing loading states in UI elements.
     /// </remarks>
     public static readonly IValueConverter ToLoading =
-        new FuncValueConverter<bool, object>(value => value ? new Loading() : new Panel());
+        new FuncValueConverter<bool, object?>(value => value ? new Loading() : null);
 
     /// <summary>
-    ///     Converts a boolean value to either a specified double value or zero.
+    ///     Needs at least 3 values: [bool?, valueIfTrue, valueIfFalse, (optional) valueIfNull]
     /// </summary>
-    /// <remarks>
-    ///     This converter returns the parsed parameter value when the boolean is true, and 0 when false.
-    ///     The parameter should be a string representation of a double value.
-    ///     
-    ///     Parameters:
-    ///     - value: The boolean value to convert
-    ///     - param: A string representation of the double value to return when true
-    /// </remarks>
-    public static readonly IValueConverter ToZeroOrDouble =
-        new FuncValueConverter<bool, string, double>((value, param) =>
-        {
-            var paramValue = double.TryParse(param, out var parsedValue) ? parsedValue : 0;
-            return value ? paramValue : 0;
-        });
+    public static IMultiValueConverter Gate { get; } = new GateImpl();
 
-    /// <summary>
-    ///     Converts a boolean value to either zero or a specified double value (inverse of ToZeroOrDouble).
-    /// </summary>
-    /// <remarks>
-    ///     This converter returns 0 when the boolean is true, and the parsed parameter value when false.
-    ///     The parameter should be a string representation of a double value.
-    ///     
-    ///     Parameters:
-    ///     - value: The boolean value to convert
-    ///     - param: A string representation of the double value to return when false
-    /// </remarks>
-    public static readonly IValueConverter ToDoubleOrZero =
-        new FuncValueConverter<bool, string, double>((value, param) =>
+    private sealed class GateImpl : IMultiValueConverter
+    {
+        public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
-            var paramValue = double.TryParse(param, out var parsedValue) ? parsedValue : 0;
-            return value ? 0 : paramValue;
-        });
+            if (values.Count < 2)
+                throw new ArgumentException("Gate converter needs at least 2 values.");
+
+            var condition = values[0];
+            var valueIfTrue = values[1];
+            var valueIfFalse = values.Count >= 3 ? values[2] : null;
+            var valueIfNull = values.Count >= 4 ? values[3] : null;
+
+            return condition switch
+            {
+                true => valueIfTrue,
+                false => valueIfFalse,
+                _ => valueIfNull
+            };
+        }
+    }
 }
