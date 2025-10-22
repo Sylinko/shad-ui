@@ -148,7 +148,7 @@
                                 VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                 Content="{TemplateBinding Content}"
                                 FontSize="{TemplateBinding FontSize}"
-                                FontWeight="SemiBold"
+                                FontWeight="{TemplateBinding FontWeight}"
                                 RecognizesAccessKey="True" />
                         </StackPanel>
                     </Border>
@@ -276,6 +276,16 @@
             <Style Selector="^ /template/ Border#HoverBackground">
                 <Setter Property="Background" Value="{DynamicResource GhostColor}" />
             </Style>
+        </Style>
+
+        <!--  Compact  -->
+        <Style Selector="^.Compact">
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="Height" Value="NaN" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="Light" />
         </Style>
 
         <!--  Icon  -->
