@@ -239,6 +239,22 @@ public class Window : Avalonia.Controls.Window
     }
 
     /// <summary>
+    ///     The thickness of the resize border.
+    /// </summary>
+    public static readonly StyledProperty<Thickness> ResizeBorderThicknessProperty = AvaloniaProperty.Register<Window, Thickness>(
+        nameof(ResizeBorderThickness),
+        defaultValue: new Thickness(4));
+
+    /// <summary>
+    ///     Gets or sets the value of the <see cref="ResizeBorderThicknessProperty" />.
+    /// </summary>
+    public Thickness ResizeBorderThickness
+    {
+        get => GetValue(ResizeBorderThicknessProperty);
+        set => SetValue(ResizeBorderThicknessProperty, value);
+    }
+
+    /// <summary>
     ///     Initializes a new instance of the <see cref="Window" /> class.
     /// </summary>
     protected Window()
@@ -291,6 +307,7 @@ public class Window : Avalonia.Controls.Window
     }
 
     private Button? _maximizeButton;
+    private Control? _titleBar;
     private CornerRadius _lastCornerRadius;
 
     /// <summary>
@@ -306,7 +323,9 @@ public class Window : Avalonia.Controls.Window
         {
             _maximizeButton = maximize;
             _maximizeButton.Click += OnMaximizeButtonClicked;
-            EnableWindowsSnapLayout(maximize);
+#if IsWindows
+            AddCustomWndProcHook();
+#endif
         }
 
         if (e.NameScope.Get<Button>("PART_MinimizeButton") is { } minimize)
@@ -321,17 +340,18 @@ public class Window : Avalonia.Controls.Window
 
         if (e.NameScope.Get<Control>("PART_TitleBarBackground") is { } titleBar)
         {
-            titleBar.PointerPressed += OnTitleBarPointerPressed;
-            titleBar.DoubleTapped += OnMaximizeButtonClicked;
+            _titleBar = titleBar;
+            _titleBar.PointerPressed += OnTitleBarPointerPressed;
+            _titleBar.DoubleTapped += OnMaximizeButtonClicked;
         }
-        
+
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             if (e.NameScope.Get<Panel>("PART_Root") is { } rootPanel)
             {
                 this.AddResizeGrip(rootPanel);
             }
-        
+
             if (RootCornerRadius == default)
             {
                 RootCornerRadius = new CornerRadius(10);
@@ -344,27 +364,31 @@ public class Window : Avalonia.Controls.Window
     private void OnMaximizeButtonClicked(object? sender, RoutedEventArgs args)
     {
         if (!CanMaximize || !CanResize || WindowState == WindowState.FullScreen) return;
-        
-        WindowState = WindowState == WindowState.Maximized
-            ? WindowState.Normal
-            : WindowState.Maximized;
+
+        WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
     }
 
     internal bool HasOpenDialog { get; set; }
 
+#if IsWindows
     private bool _snapLayoutEnabled = true;
 
-    private void EnableWindowsSnapLayout(Button maximize)
+    /// <summary>
+    ///     Adds a custom window procedure hook to handle snap layout and resize hit testing.
+    /// </summary>
+    private void AddCustomWndProcHook()
     {
         var pointerOnMaxButton = false;
+        // We need to use reflection here because IsPointerOver is an internal property.
         var setter = typeof(Button).GetProperty("IsPointerOver");
-        var proc = (IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
-        {
-            if (!_snapLayoutEnabled) return IntPtr.Zero;
+        Win32Properties.AddWndProcHookCallback(this, WndProcHook);
 
+        IntPtr WndProcHook(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
             switch (msg)
             {
-                case 533:
+                // WM_GETSYSMENU,
+                case 0x313 when _snapLayoutEnabled:
                 {
                     if (!pointerOnMaxButton) break;
                     WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
@@ -372,42 +396,104 @@ public class Window : Avalonia.Controls.Window
                 }
                 case 0x0084:
                 {
+                    // ReSharper disable InconsistentNaming
+                    // ReSharper disable IdentifierTypo
+                    const int HT_MAXBUTTON = 0x9;
+                    const int HT_CAPTION = 0x2;
+                    const int HT_CLIENT = 0x1;
+                    const int HT_TOPLEFT = 0xD;
+                    const int HT_TOPRIGHT = 0xE;
+                    const int HT_BOTTOMLEFT = 0x10;
+                    const int HT_BOTTOMRIGHT = 0x11;
+                    const int HT_LEFT = 0xA;
+                    const int HT_RIGHT = 0xB;
+                    const int HT_TOP = 0xC;
+                    const int HT_BOTTOM = 0xF;
+                    // ReSharper restore InconsistentNaming
+                    // ReSharper restore IdentifierTypo
+
                     var point = new PixelPoint(
                         (short)(ToInt32(lParam) & 0xffff),
                         (short)(ToInt32(lParam) >> 16));
-                    var size = maximize.Bounds;
 
-                    PixelPoint buttonLeftTop;
-                    try
+                    if (_snapLayoutEnabled && _maximizeButton is not null)
                     {
-                        buttonLeftTop = maximize.PointToScreen(
-                            FlowDirection == FlowDirection.LeftToRight ? new Point(size.Width, 0) : new Point(0, 0));
-                    }
-                    catch
-                    {
-                        // Control does not belong to a visual tree.
-                        break;
+                        var size = _maximizeButton.Bounds;
+
+                        PixelPoint buttonLeftTop;
+                        try
+                        {
+                            buttonLeftTop = _maximizeButton.PointToScreen(
+                                FlowDirection == FlowDirection.LeftToRight ? new Point(size.Width, 0) : new Point(0, 0));
+                        }
+                        catch
+                        {
+                            // Control does not belong to a visual tree.
+                            break;
+                        }
+
+                        var x = (buttonLeftTop.X - point.X) / RenderScaling;
+                        var y = (point.Y - buttonLeftTop.Y) / RenderScaling;
+
+                        if (new Rect(
+                                0,
+                                0,
+                                size.Width,
+                                size.Height).Contains(new Point(x, y)))
+                        {
+                            if (HasOpenDialog) return HT_MAXBUTTON;
+
+                            setter?.SetValue(_maximizeButton, true);
+                            pointerOnMaxButton = true;
+                            handled = true;
+                            return HT_MAXBUTTON;
+                        }
+
+                        pointerOnMaxButton = false;
+                        setter?.SetValue(_maximizeButton, false);
                     }
 
-                    var x = (buttonLeftTop.X - point.X) / RenderScaling;
-                    var y = (point.Y - buttonLeftTop.Y) / RenderScaling;
-                    if (new Rect(
-                            0,
-                            0,
-                            size.Width,
-                            size.Height)
-                        .Contains(new Point(x, y)))
+                    // Handle Resize Hit Test
                     {
-                        if (HasOpenDialog) return 9;
+                        var x = (point.X - Position.X) / RenderScaling;
+                        var y = (point.Y - Position.Y) / RenderScaling;
+                        var thickness = ResizeBorderThickness;
+                        var bounds = Bounds;
+                        var titleBarHeight = _titleBar?.Bounds.Height ?? 0;
 
-                        setter?.SetValue(maximize, true);
-                        pointerOnMaxButton = true;
-                        handled = true;
-                        return 9;
+                        // horizontal: 0 = left, 1 = client, 2 = right
+                        // vertical: 0 = top, 1 = caption, 2 = client, 3 = bottom
+
+                        int horizontal, vertical;
+
+                        if (x < thickness.Left) horizontal = 0;
+                        else if (x >= bounds.Width - thickness.Right) horizontal = 2;
+                        else horizontal = 1;
+
+                        if (y < thickness.Top) vertical = 0;
+                        else if (y < titleBarHeight) vertical = 1;
+                        else if (y >= bounds.Height - thickness.Bottom) vertical = 3;
+                        else vertical = 2;
+
+                        var ht = (horizontal, vertical) switch
+                        {
+                            (0, 0) => HT_TOPLEFT,
+                            (1, 0) => HT_TOP,
+                            (2, 0) => HT_TOPRIGHT,
+                            (0, 1) => HT_LEFT,
+                            (1, 1) => HT_CAPTION,
+                            (2, 1) => HT_RIGHT,
+                            (0, 2) => HT_LEFT,
+                            (2, 2) => HT_RIGHT,
+                            (0, 3) => HT_BOTTOMLEFT,
+                            (1, 3) => HT_BOTTOM,
+                            (2, 3) => HT_BOTTOMRIGHT,
+                            _ => HT_CLIENT
+                        };
+
+                        if (ht != HT_CAPTION) handled = true;
+                        return ht;
                     }
-                    pointerOnMaxButton = false;
-                    setter?.SetValue(maximize, false);
-                    break;
                 }
             }
 
@@ -417,14 +503,16 @@ public class Window : Avalonia.Controls.Window
             {
                 return IntPtr.Size == 4 ? ptr.ToInt32() : (int)(ptr.ToInt64() & 0xffffffff);
             }
-        };
-
-        Win32Properties.AddWndProcHookCallback(this, new Win32Properties.CustomWndProcHookCallback(proc));
+        }
     }
+#endif
 
     private void OnWindowStateChanged(WindowState state)
     {
+#if IsWindows
         _snapLayoutEnabled = WindowState != WindowState.FullScreen && CanMaximize && CanResize;
+#endif
+
         switch (state)
         {
             case WindowState.FullScreen:
@@ -436,9 +524,7 @@ public class Window : Avalonia.Controls.Window
             case WindowState.Maximized:
                 ToggleMaxButtonVisibility(CanMaximize);
                 RootCornerRadius = _lastCornerRadius;
-                Margin = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-                    ? new Thickness(7)
-                    : new Thickness(0);
+                Margin = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? new Thickness(7) : new Thickness(0);
                 break;
             case WindowState.Normal:
                 ToggleMaxButtonVisibility(CanMaximize);
@@ -478,10 +564,5 @@ public class Window : Avalonia.Controls.Window
     public void RestoreWindowState()
     {
         WindowState = _lastState == WindowState.FullScreen ? WindowState.Maximized : _lastState;
-    }
-
-    static Window()
-    {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) OnScreenKeyboard.Integrate();
     }
 }
