@@ -1,323 +1,330 @@
 ﻿<ResourceDictionary
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:shadui="clr-namespace:ShadUI"
-    xmlns:system="clr-namespace:System;assembly=System.Runtime">
-    <Design.PreviewWith>
-        <Border Padding="12">
-            <StackPanel Spacing="8">
-                <Button
-                    Height="36"
-                    Padding="16,8"
-                    shadui:ButtonAssist.ShowProgress="True"
-                    Content="Default" />
-                <Button
-                    shadui:ButtonAssist.ShowProgress="True"
-                    Classes="Primary"
-                    Content="Primary" />
-                <Button
-                    shadui:ButtonAssist.ShowProgress="True"
-                    Classes="Secondary"
-                    Content="Secondary" />
-                <Button
-                    shadui:ButtonAssist.ShowProgress="True"
-                    Classes="Destructive"
-                    Content="Destructive" />
-                <Button
-                    shadui:ButtonAssist.ShowProgress="True"
-                    Classes="Outline"
-                    Content="Outline" />
-                <Button
-                    shadui:ButtonAssist.ShowProgress="True"
-                    Classes="Ghost"
-                    Content="Ghost">
-                    <shadui:ButtonAssist.Icon>
-                        <PathIcon Height="32" Data="{x:Static shadui:Icons.Cross}" />
-                    </shadui:ButtonAssist.Icon>
-                </Button>
-                <Button BorderBrush="{DynamicResource BorderColor}" Classes="Icon">
-                    <shadui:ButtonAssist.Icon>
-                        <PathIcon Height="32" Data="{x:Static shadui:Icons.Cross}" />
-                    </shadui:ButtonAssist.Icon>
-                </Button>
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI"
+  xmlns:system="clr-namespace:System;assembly=System.Runtime">
+  <Design.PreviewWith>
+    <Border Padding="12">
+      <StackPanel Spacing="8">
+        <Button
+          Height="36"
+          Padding="16,8"
+          shadui:ButtonAssist.ShowProgress="True"
+          Content="Default" />
+        <Button
+          shadui:ButtonAssist.ShowProgress="True"
+          Classes="Primary"
+          Content="Primary" />
+        <Button
+          shadui:ButtonAssist.ShowProgress="True"
+          Classes="Secondary"
+          Content="Secondary" />
+        <Button
+          shadui:ButtonAssist.ShowProgress="True"
+          Classes="Destructive"
+          Content="Destructive" />
+        <Button
+          shadui:ButtonAssist.ShowProgress="True"
+          Classes="Outline"
+          Content="Outline" />
+        <Button
+          shadui:ButtonAssist.ShowProgress="True"
+          Classes="Ghost"
+          Content="Ghost">
+          <shadui:ButtonAssist.Icon>
+            <PathIcon Height="32" Data="{x:Static shadui:Icons.Cross}" />
+          </shadui:ButtonAssist.Icon>
+        </Button>
+        <Button BorderBrush="{DynamicResource BorderColor}" Classes="Icon">
+          <shadui:ButtonAssist.Icon>
+            <PathIcon Height="32" Data="{x:Static shadui:Icons.Cross}" />
+          </shadui:ButtonAssist.Icon>
+        </Button>
+      </StackPanel>
+    </Border>
+  </Design.PreviewWith>
+  <ControlTheme x:Key="ButtonStyle" TargetType="Button">
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}" />
+    <Setter Property="Background" Value="{DynamicResource BackgroundColor}" />
+    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="shadui:ButtonAssist.Icon" Value="{x:Null}" />
+    <Setter Property="shadui:ButtonAssist.ShowProgress" Value="False" />
+    <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource GhostColor}" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel Name="RootPanel">
+          <Panel.Transitions>
+            <Transitions>
+              <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.10" />
+            </Transitions>
+          </Panel.Transitions>
+          <Border
+            Name="BaseBackground"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding CornerRadius}"
+            Opacity="1">
+            <Border.Transitions>
+              <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.20" />
+              </Transitions>
+            </Border.Transitions>
+          </Border>
+          <Border
+            Name="HoverBackground"
+            Background="{TemplateBinding shadui:ButtonAssist.HoverBackground}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding CornerRadius}"
+            Opacity="0">
+            <Border.Transitions>
+              <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.20" />
+              </Transitions>
+            </Border.Transitions>
+          </Border>
+          <Border
+            Name="BorderContainer"
+            Padding="{TemplateBinding Padding}"
+            Background="Transparent"
+            ClipToBounds="True"
+            CornerRadius="{TemplateBinding CornerRadius}"
+            TextElement.Foreground="{TemplateBinding Foreground}">
+            <StackPanel
+              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+              Orientation="Horizontal"
+              Spacing="6">
+              <Viewbox IsVisible="{TemplateBinding shadui:ButtonAssist.ShowProgress}" Height="{TemplateBinding shadui:ButtonAssist.IconSize}">
+                <Viewbox.Width>
+                  <MultiBinding Converter="{x:Static shadui:BooleanConverters.Gate}">
+                    <TemplateBinding Property="shadui:ButtonAssist.ShowProgress" />
+                    <TemplateBinding Property="shadui:ButtonAssist.IconSize" />
+                    <Binding Source="{x:Static system:Double.NegativeZero}" />
+                  </MultiBinding>
+                </Viewbox.Width>
+                <Viewbox.Transitions>
+                  <Transitions>
+                    <BoolTransition Property="IsVisible" Duration="0:0:0.10" />
+                    <DoubleTransition
+                      Property="Width"
+                      Duration="0:0:0.10"
+                      Easing="CubicEaseInOut" />
+                  </Transitions>
+                </Viewbox.Transitions>
+                <ContentPresenter Content="{TemplateBinding shadui:ButtonAssist.ShowProgress, Converter={x:Static shadui:BooleanConverters.ToLoading}}" />
+              </Viewbox>
+              <Viewbox Height="{TemplateBinding shadui:ButtonAssist.IconSize}">
+                <Viewbox.Width>
+                  <MultiBinding Converter="{x:Static shadui:BooleanConverters.Gate}">
+                    <TemplateBinding Property="shadui:ButtonAssist.ShowProgress" />
+                    <Binding Source="{x:Static system:Double.NegativeZero}" />
+                    <TemplateBinding Property="shadui:ButtonAssist.IconSize" />
+                  </MultiBinding>
+                </Viewbox.Width>
+                <Viewbox.IsVisible>
+                  <MultiBinding Converter="{x:Static BoolConverters.And}">
+                    <TemplateBinding Property="shadui:ButtonAssist.ShowProgress" Converter="{x:Static BoolConverters.Not}" />
+                    <TemplateBinding Property="shadui:ButtonAssist.Icon" Converter="{x:Static ObjectConverters.IsNotNull}" />
+                  </MultiBinding>
+                </Viewbox.IsVisible>
+                <Viewbox.Transitions>
+                  <Transitions>
+                    <BoolTransition Property="IsVisible" Duration="0:0:0.10" />
+                    <DoubleTransition
+                      Property="Width"
+                      Duration="0:0:0.10"
+                      Easing="CubicEaseInOut" />
+                  </Transitions>
+                </Viewbox.Transitions>
+                <ContentPresenter x:Name="Icon" Content="{TemplateBinding shadui:ButtonAssist.Icon}" />
+              </Viewbox>
+              <ContentPresenter
+                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                Content="{TemplateBinding Content}"
+                FontSize="{TemplateBinding FontSize}"
+                FontWeight="{TemplateBinding FontWeight}"
+                RecognizesAccessKey="True" />
             </StackPanel>
-        </Border>
-    </Design.PreviewWith>
-    <ControlTheme x:Key="ButtonStyle" TargetType="Button">
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontWeight" Value="Medium" />
-        <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}" />
-        <Setter Property="Background" Value="{DynamicResource BackgroundColor}" />
+          </Border>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+
+    <!--  Nested Selectors For Default Button  -->
+    <Style Selector="^ /template/ TextBlock">
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+    <Style Selector="^:disabled">
+      <Setter Property="Opacity" Value="0.5" />
+    </Style>
+    <Style Selector="^:pointerover /template/ Border#HoverBackground">
+      <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="^:pointerover /template/ Border#BaseBackground">
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+    <Style Selector="^:pressed /template/ Panel#RootPanel">
+      <Setter Property="RenderTransform" Value="scale(0.95, 0.95)" />
+    </Style>
+    <Style Selector="^ /template/ Border#BorderContainer:pointerover">
+      <Setter Property="Cursor" Value="Hand" />
+    </Style>
+
+    <!--  NoPressedAnimation  -->
+    <Style Selector="^.NoPressedAnimation">
+      <Style Selector="^:pressed /template/ Panel#RootPanel">
+        <Setter Property="RenderTransform" Value="scale(1, 1)" />
+      </Style>
+    </Style>
+
+    <!--  Primary  -->
+    <Style Selector="^.Primary">
+      <Setter Property="Height" Value="36" />
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="Padding" Value="16,8" />
+      <Setter Property="Background" Value="{DynamicResource PrimaryColor}" />
+      <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
+      <Style Selector="^ /template/ TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
+      </Style>
+      <Style Selector="^ /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
+      </Style>
+      <Style Selector="^ /template/ Border#HoverBackground">
+        <Setter Property="Background" Value="{DynamicResource PrimaryColor50}" />
+      </Style>
+    </Style>
+
+    <!--  Secondary  -->
+    <Style Selector="^.Secondary">
+      <Setter Property="Height" Value="36" />
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="Padding" Value="16,8" />
+      <Setter Property="Background" Value="{DynamicResource SecondaryColor}" />
+      <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}" />
+      <Style Selector="^ /template/ TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}" />
+      </Style>
+      <Style Selector="^ /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}" />
+      </Style>
+      <Style Selector="^ /template/ Border#HoverBackground">
+        <Setter Property="Background" Value="{DynamicResource SecondaryColor50}" />
+      </Style>
+    </Style>
+
+    <!--  Destructive  -->
+    <Style Selector="^.Destructive">
+      <Setter Property="Height" Value="36" />
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="Padding" Value="16,8" />
+      <Setter Property="Background" Value="{DynamicResource DestructiveColor}" />
+      <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
+      <Style Selector="^ /template/ TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
+      </Style>
+      <Style Selector="^ /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
+      </Style>
+      <Style Selector="^ /template/ Border#HoverBackground">
+        <Setter Property="Background" Value="{DynamicResource DestructiveColor50}" />
+      </Style>
+    </Style>
+
+    <!--  Outline  -->
+    <Style Selector="^.Outline">
+      <Setter Property="Height" Value="36" />
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="Padding" Value="16,8" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
+      <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+      <Style Selector="^ /template/ TextBlock">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="shadui:ButtonAssist.Icon" Value="{x:Null}" />
-        <Setter Property="shadui:ButtonAssist.ShowProgress" Value="False" />
-        <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource GhostColor}" />
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Panel Name="RootPanel">
-                    <Panel.Transitions>
-                        <Transitions>
-                            <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.10" />
-                        </Transitions>
-                    </Panel.Transitions>
-                    <Border
-                        Name="BaseBackground"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        Opacity="1">
-                        <Border.Transitions>
-                            <Transitions>
-                                <DoubleTransition Property="Opacity" Duration="0:0:0.20" />
-                            </Transitions>
-                        </Border.Transitions>
-                    </Border>
-                    <Border
-                        Name="HoverBackground"
-                        Background="{TemplateBinding shadui:ButtonAssist.HoverBackground}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        Opacity="0">
-                        <Border.Transitions>
-                            <Transitions>
-                                <DoubleTransition Property="Opacity" Duration="0:0:0.20" />
-                            </Transitions>
-                        </Border.Transitions>
-                    </Border>
-                    <Border
-                        Name="BorderContainer"
-                        Padding="{TemplateBinding Padding}"
-                        Background="Transparent"
-                        ClipToBounds="True"
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        TextElement.Foreground="{TemplateBinding Foreground}">
-                        <StackPanel
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            Orientation="Horizontal"
-                            Spacing="6">
-                            <Viewbox IsVisible="{TemplateBinding shadui:ButtonAssist.ShowProgress}" Height="{TemplateBinding shadui:ButtonAssist.IconSize}">
-                                <Viewbox.Width>
-                                    <MultiBinding Converter="{x:Static shadui:BooleanConverters.Gate}">
-                                        <TemplateBinding Property="shadui:ButtonAssist.ShowProgress" />
-                                        <TemplateBinding Property="shadui:ButtonAssist.IconSize" />
-                                        <Binding Source="{x:Static system:Double.NegativeZero}" />
-                                    </MultiBinding>
-                                </Viewbox.Width>
-                                <Viewbox.Transitions>
-                                    <Transitions>
-                                        <BoolTransition Property="IsVisible" Duration="0:0:0.10" />
-                                        <DoubleTransition
-                                            Property="Width"
-                                            Duration="0:0:0.10"
-                                            Easing="CubicEaseInOut" />
-                                    </Transitions>
-                                </Viewbox.Transitions>
-                                <ContentPresenter Content="{TemplateBinding shadui:ButtonAssist.ShowProgress, Converter={x:Static shadui:BooleanConverters.ToLoading}}" />
-                            </Viewbox>
-                            <Viewbox Height="{TemplateBinding shadui:ButtonAssist.IconSize}">
-                                <Viewbox.Width>
-                                    <MultiBinding Converter="{x:Static shadui:BooleanConverters.Gate}">
-                                        <TemplateBinding Property="shadui:ButtonAssist.ShowProgress" />
-                                        <Binding Source="{x:Static system:Double.NegativeZero}" />
-                                        <TemplateBinding Property="shadui:ButtonAssist.IconSize" />
-                                    </MultiBinding>
-                                </Viewbox.Width>
-                                <Viewbox.IsVisible>
-                                    <MultiBinding Converter="{x:Static BoolConverters.And}">
-                                        <TemplateBinding Property="shadui:ButtonAssist.ShowProgress" Converter="{x:Static BoolConverters.Not}" />
-                                        <TemplateBinding Property="shadui:ButtonAssist.Icon" Converter="{x:Static ObjectConverters.IsNotNull}" />
-                                    </MultiBinding>
-                                </Viewbox.IsVisible>
-                                <Viewbox.Transitions>
-                                    <Transitions>
-                                        <BoolTransition Property="IsVisible" Duration="0:0:0.10" />
-                                        <DoubleTransition
-                                            Property="Width"
-                                            Duration="0:0:0.10"
-                                            Easing="CubicEaseInOut" />
-                                    </Transitions>
-                                </Viewbox.Transitions>
-                                <ContentPresenter x:Name="Icon" Content="{TemplateBinding shadui:ButtonAssist.Icon}" />
-                            </Viewbox>
-                            <ContentPresenter
-                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                Content="{TemplateBinding Content}"
-                                FontSize="{TemplateBinding FontSize}"
-                                FontWeight="{TemplateBinding FontWeight}"
-                                RecognizesAccessKey="True" />
-                        </StackPanel>
-                    </Border>
-                </Panel>
-            </ControlTemplate>
-        </Setter>
+      </Style>
+      <Style Selector="^ /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+      </Style>
+      <Style Selector="^ /template/ Border#HoverBackground">
+        <Setter Property="Background" Value="{DynamicResource GhostColor}" />
+      </Style>
+    </Style>
 
-        <!--  Nested Selectors For Default Button  -->
-        <Style Selector="^ /template/ TextBlock">
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="FontWeight" Value="Medium" />
-        </Style>
-        <Style Selector="^:disabled">
-            <Setter Property="Opacity" Value="0.5" />
-        </Style>
-        <Style Selector="^:pointerover /template/ Border#HoverBackground">
-            <Setter Property="Opacity" Value="1" />
-        </Style>
-        <Style Selector="^:pointerover /template/ Border#BaseBackground">
-            <Setter Property="Opacity" Value="0" />
-        </Style>
-        <Style Selector="^:pressed /template/ Panel#RootPanel">
-            <Setter Property="RenderTransform" Value="scale(0.95, 0.95)" />
-        </Style>
-        <Style Selector="^ /template/ Border#BorderContainer:pointerover">
-            <Setter Property="Cursor" Value="Hand" />
-        </Style>
+    <!--  Ghost  -->
+    <Style Selector="^.Ghost">
+      <Setter Property="Height" Value="36" />
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="Padding" Value="16,8" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
+      <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+      <Style Selector="^ /template/ TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+      </Style>
+      <Style Selector="^ /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+      </Style>
+      <Style Selector="^ /template/ Border#HoverBackground">
+        <Setter Property="Background" Value="{DynamicResource GhostColor}" />
+      </Style>
+    </Style>
 
-        <!--  NoPressedAnimation  -->
-        <Style Selector="^.NoPressedAnimation">
-            <Style Selector="^:pressed /template/ Panel#RootPanel">
-                <Setter Property="RenderTransform" Value="scale(1, 1)" />
-            </Style>
-        </Style>
+    <!--  Compact  -->
+    <Style Selector="^.Compact">
+      <Setter Property="Padding" Value="4" />
+      <Setter Property="MinHeight" Value="0" />
+      <Setter Property="Height" Value="NaN" />
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="FontWeight" Value="Light" />
+    </Style>
 
-        <!--  Primary  -->
-        <Style Selector="^.Primary">
-            <Setter Property="Height" Value="36" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Padding" Value="16,8" />
-            <Setter Property="Background" Value="{DynamicResource PrimaryColor}" />
-            <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
-            <Style Selector="^ /template/ TextBlock">
-                <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
-            </Style>
-            <Style Selector="^ /template/ Border#HoverBackground">
-                <Setter Property="Background" Value="{DynamicResource PrimaryColor50}" />
-            </Style>
-        </Style>
+    <Style Selector="^.Rounded">
+      <Setter Property="Width" Value="30" />
+      <Setter Property="Height" Value="30" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="CornerRadius" Value="15" />
+    </Style>
 
-        <!--  Secondary  -->
-        <Style Selector="^.Secondary">
-            <Setter Property="Height" Value="36" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Padding" Value="16,8" />
-            <Setter Property="Background" Value="{DynamicResource SecondaryColor}" />
-            <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}" />
-            <Style Selector="^ /template/ TextBlock">
-                <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}" />
-            </Style>
-            <Style Selector="^ /template/ Border#HoverBackground">
-                <Setter Property="Background" Value="{DynamicResource SecondaryColor50}" />
-            </Style>
-        </Style>
+    <!--  Icon  -->
+    <Style Selector="^.Icon">
+      <Setter Property="Width" Value="36" />
+      <Setter Property="Height" Value="36" />
+      <Setter Property="Background" Value="{DynamicResource GhostHoverColor50}" />
+      <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+      <Style Selector="^ /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+      </Style>
+      <Style Selector="^ /template/ Border#HoverBackground">
+        <Setter Property="Background" Value="{DynamicResource GhostColor}" />
+      </Style>
+    </Style>
 
-        <!--  Destructive  -->
-        <Style Selector="^.Destructive">
-            <Setter Property="Height" Value="36" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Padding" Value="16,8" />
-            <Setter Property="Background" Value="{DynamicResource DestructiveColor}" />
-            <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
-            <Style Selector="^ /template/ TextBlock">
-                <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
-            </Style>
-            <Style Selector="^ /template/ Border#HoverBackground">
-                <Setter Property="Background" Value="{DynamicResource DestructiveColor50}" />
-            </Style>
-        </Style>
-
-        <!--  Outline  -->
-        <Style Selector="^.Outline">
-            <Setter Property="Height" Value="36" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Padding" Value="16,8" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
-            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
-            <Style Selector="^ /template/ TextBlock">
-                <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
-            </Style>
-            <Style Selector="^ /template/ Border#HoverBackground">
-                <Setter Property="Background" Value="{DynamicResource GhostColor}" />
-            </Style>
-        </Style>
-
-        <!--  Ghost  -->
-        <Style Selector="^.Ghost">
-            <Setter Property="Height" Value="36" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Padding" Value="16,8" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
-            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
-            <Style Selector="^ /template/ TextBlock">
-                <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
-            </Style>
-            <Style Selector="^ /template/ ContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
-            </Style>
-            <Style Selector="^ /template/ Border#HoverBackground">
-                <Setter Property="Background" Value="{DynamicResource GhostColor}" />
-            </Style>
-        </Style>
-
-        <!--  Compact  -->
-        <Style Selector="^.Compact">
-            <Setter Property="Padding" Value="4" />
-            <Setter Property="MinHeight" Value="0" />
-            <Setter Property="Height" Value="NaN" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="FontWeight" Value="Light" />
-        </Style>
-
-        <!--  Icon  -->
-        <Style Selector="^.Icon">
-            <Setter Property="Width" Value="36" />
-            <Setter Property="Height" Value="36" />
-            <Setter Property="Background" Value="{DynamicResource GhostHoverColor50}" />
-            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
-            <Style Selector="^ /template/ ContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
-            </Style>
-            <Style Selector="^ /template/ Border#HoverBackground">
-                <Setter Property="Background" Value="{DynamicResource GhostColor}" />
-            </Style>
-        </Style>
-
-        <!--  DestructiveIcon  -->
-        <Style Selector="^.DestructiveIcon">
-            <Setter Property="Width" Value="36" />
-            <Setter Property="Height" Value="36" />
-            <Setter Property="Background" Value="{DynamicResource DestructiveColor}" />
-            <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
-            <Style Selector="^ /template/ ContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
-            </Style>
-            <Style Selector="^ /template/ Border#HoverBackground">
-                <Setter Property="Background" Value="{DynamicResource DestructiveColor50}" />
-            </Style>
-        </Style>
-    </ControlTheme>
-    <ControlTheme
-        x:Key="{x:Type Button}"
-        BasedOn="{StaticResource ButtonStyle}"
-        TargetType="Button" />
+    <!--  DestructiveIcon  -->
+    <Style Selector="^.DestructiveIcon">
+      <Setter Property="Width" Value="36" />
+      <Setter Property="Height" Value="36" />
+      <Setter Property="Background" Value="{DynamicResource DestructiveColor}" />
+      <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
+      <Style Selector="^ /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
+      </Style>
+      <Style Selector="^ /template/ Border#HoverBackground">
+        <Setter Property="Background" Value="{DynamicResource DestructiveColor50}" />
+      </Style>
+    </Style>
+  </ControlTheme>
+  <ControlTheme
+    x:Key="{x:Type Button}"
+    BasedOn="{StaticResource ButtonStyle}"
+    TargetType="Button" />
 </ResourceDictionary>
