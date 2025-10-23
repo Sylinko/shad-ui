@@ -118,10 +118,25 @@ public class Window : Avalonia.Controls.Window
     }
 
     /// <summary>
+    ///     The content to override the title bar.
+    /// </summary>
+    public static readonly StyledProperty<object?> TitleBarContentOverrideProperty =
+        AvaloniaProperty.Register<Window, object?>(nameof(TitleBarContentOverride));
+
+    /// <summary>
+    ///     Gets or sets the value of the <see cref="TitleBarContentOverrideProperty" />.
+    /// </summary>
+    public object? TitleBarContentOverride
+    {
+        get => GetValue(TitleBarContentOverrideProperty);
+        set => SetValue(TitleBarContentOverrideProperty, value);
+    }
+
+    /// <summary>
     ///     Whether to enable title bar animation.
     /// </summary>
     public static readonly StyledProperty<bool> TitleBarAnimationEnabledProperty =
-        AvaloniaProperty.Register<Window, bool>(nameof(TitleBarAnimationEnabled), true);
+        AvaloniaProperty.Register<Window, bool>(nameof(TitleBarAnimationEnabled));
 
     /// <summary>
     ///     Gets or sets the value of the <see cref="TitleBarAnimationEnabledProperty" />.
@@ -394,7 +409,7 @@ public class Window : Avalonia.Controls.Window
                     WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
                     break;
                 }
-                case 0x0084:
+                case 0x0084 when CanResize:
                 {
                     // ReSharper disable InconsistentNaming
                     // ReSharper disable IdentifierTypo

@@ -1,4 +1,6 @@
 using Avalonia.Controls;
+using Avalonia.Threading;
+using ShadUI.Extensions;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
@@ -26,16 +28,18 @@ public sealed class DialogBuilder
         return this;
     }
 
-    public Task<DialogResult> ShowAsync()
+    public Task<DialogResult> ShowAsync(CancellationToken cancellationToken = default)
     {
         if (_control == null) throw new InvalidOperationException("Dialog control is not set.");
 
         var tcs = new TaskCompletionSource<DialogResult>();
         var callback = Callback;
-        callback += result => tcs.SetResult(result);
+        callback += result => tcs.TrySetResult(result);
 
         _manager.Callbacks.TryAdd(_control, callback);
         _manager.Show(_control, Options);
+
+        if (cancellationToken.CanBeCanceled) cancellationToken.Register(() => Dispatcher.UIThread.InvokeOnDemand(() => _manager.Close(_control)));
 
         return tcs.Task;
     }
