@@ -9,7 +9,7 @@ namespace ShadUI;
 /// <summary>
 ///     Provides extension methods for <see cref="Avalonia.Application" /> class.
 /// </summary>
-internal static class ApplicationExt
+internal static class ApplicationExtension
 {
     /// <summary>
     ///     Gets the top-level window or visual element from an <see cref="Avalonia.Application" />.
@@ -22,15 +22,11 @@ internal static class ApplicationExt
     /// </returns>
     public static TopLevel? GetTopLevel(this Application? app)
     {
-        if (app is null) return null;
-
-        if (app.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop) return desktop.MainWindow;
-        if (app.ApplicationLifetime is ISingleViewApplicationLifetime viewApp)
+        return app?.ApplicationLifetime switch
         {
-            var visualRoot = viewApp.MainView?.GetVisualRoot();
-            return visualRoot as TopLevel;
-        }
-
-        return null;
+            IClassicDesktopStyleApplicationLifetime desktop => desktop.MainWindow,
+            ISingleViewApplicationLifetime viewApp => viewApp.MainView?.GetVisualRoot() as TopLevel,
+            _ => null
+        };
     }
 }
