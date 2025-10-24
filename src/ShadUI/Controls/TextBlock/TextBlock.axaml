@@ -15,7 +15,7 @@
 
         <Style Selector="^.h2">
             <Setter Property="FontSize" Value="30" />
-            <Setter Property="LineHeight" Value="36" />
+            <Setter Property="LineHeight" Value="40" />
             <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
 
