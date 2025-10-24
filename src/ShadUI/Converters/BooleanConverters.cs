@@ -33,7 +33,7 @@ public static class BooleanConverters
         new FuncValueConverter<bool, object?>(value => value ? new Loading() : null);
 
     /// <summary>
-    ///     Needs at least 3 values: [bool?, valueIfTrue, valueIfFalse, (optional) valueIfNull]
+    ///     Needs at least 2 values: [bool?, valueIfTrue, (optional) valueIfFalse, (optional) valueIfNull]
     /// </summary>
     public static IMultiValueConverter Gate { get; } = new GateImpl();
 

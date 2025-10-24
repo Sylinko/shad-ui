@@ -34,7 +34,7 @@
           Name="PART_Container"
           Orientation="Horizontal"
           ReverseOrder="{TemplateBinding shadui:ToggleSwitchAssist.RightAlignedContent}"
-          Spacing="2">
+          Spacing="8">
           <Panel>
             <ContentPresenter
               x:Name="PART_OffContentPresenter"
