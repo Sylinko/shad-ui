@@ -120,6 +120,21 @@ public class Sidebar : ContentControl
     }
 
     /// <summary>
+    ///     Defines the <see cref="ExpandPaneWidth" /> property.
+    /// </summary>
+    public static readonly StyledProperty<double> ExpandPaneWidthProperty = AvaloniaProperty.Register<Sidebar, double>(
+        nameof(ExpandPaneWidth), 180);
+
+    /// <summary>
+    ///     Gets or sets the width of the sidebar when expanded.
+    /// </summary>
+    public double ExpandPaneWidth
+    {
+        get => GetValue(ExpandPaneWidthProperty);
+        set => SetValue(ExpandPaneWidthProperty, value);
+    }
+
+    /// <summary>
     ///     Defines the <see cref="ExpandAnimationDuration" /> property.
     /// </summary>
     public static readonly StyledProperty<double> ExpandAnimationDurationProperty =
@@ -213,13 +228,7 @@ public class Sidebar : ContentControl
         base.OnApplyTemplate(e);
         DefaultItemsSharedSizeGroup = $"Shared{Guid.NewGuid():N}";
         DefaultItemsGroup = $"Group{Guid.NewGuid():N}";
-        _cacheWidth = Width;
     }
-
-    /// <summary>
-    ///     Stores the width of the sidebar before collapsing for animation purposes.
-    /// </summary>
-    private double? _cacheWidth;
 
     /// <summary>
     ///     Called when a property value changes.
@@ -259,8 +268,6 @@ public class Sidebar : ContentControl
     /// <param name="toExpand">A value indicating whether to expand or collapse the sidebar.</param>
     private void AnimateOnExpand(bool toExpand)
     {
-        if (!toExpand && _cacheWidth is null) _cacheWidth = Width;
-
         _animationCts?.Cancel();
         _animationCts = new CancellationTokenSource();
 
@@ -268,7 +275,7 @@ public class Sidebar : ContentControl
         {
             this.Animate(WidthProperty)
                 .From(Width)
-                .To(_cacheWidth.GetValueOrDefault())
+                .To(ExpandPaneWidth)
                 .WithEasing(ExpandEasing)
                 .WithDuration(TimeSpan.FromMilliseconds(ExpandAnimationDuration))
                 .WithCancellationToken(_animationCts.Token)
