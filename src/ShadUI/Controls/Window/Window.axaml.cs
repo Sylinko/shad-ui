@@ -403,7 +403,7 @@ public class Window : Avalonia.Controls.Window
             switch (msg)
             {
                 // WM_GETSYSMENU,
-                case 0x313 when _snapLayoutEnabled:
+                case 0x215 when _snapLayoutEnabled:
                 {
                     if (!pointerOnMaxButton) break;
                     WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
