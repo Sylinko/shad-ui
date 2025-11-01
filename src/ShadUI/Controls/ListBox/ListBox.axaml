@@ -1,9 +1,9 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <Design.PreviewWith>
     <Panel>
       <ListBox
-        Width="200"
-        Height="300"
+        Width="200" Height="300"
         Margin="24">
         <ListBoxItem IsSelected="True">Item 1</ListBoxItem>
         <ListBoxItem>Item 2</ListBoxItem>
@@ -33,31 +33,123 @@
       </ListBox>
     </Panel>
   </Design.PreviewWith>
-  <ControlTheme x:Key="{x:Type ListBox}" TargetType="ListBox">
-    <Setter Property="Background" Value="{DynamicResource BackgroundColor}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
-    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}" />
-    <Setter Property="BorderThickness" Value="1" />
-    <Setter Property="Padding" Value="3" />
-    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
-    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-    <Setter Property="ScrollViewer.IsScrollChainingEnabled" Value="True" />
+
+  <ControlTheme
+    x:Key="ListBoxItemTheme" TargetType="ListBoxItem">
+    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+    <Setter Property="Padding" Value="10,8"/>
+    <Setter Property="Margin" Value="0,1,1,1"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource MdCornerRadius}"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontWeight" Value="Medium"/>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="ListBoxItem">
+        <DockPanel
+          MinHeight="{TemplateBinding MinHeight}"
+          Margin="{TemplateBinding Margin}"
+          LastChildFill="True">
+          <Border
+            x:Name="SelectedBorder" DockPanel.Dock="Left"
+            Width="4" Margin="0,2,2,2"
+            Background="{DynamicResource PrimaryColor}"
+            CornerRadius="2" Opacity="0"/>
+
+          <Panel>
+            <Border
+              Name="BaseBackground"
+              Background="{TemplateBinding Background}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="{TemplateBinding CornerRadius}"
+              Opacity="1"/>
+            <Border
+              Name="HoverBackground"
+              Background="{DynamicResource GhostHoverColor}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="{TemplateBinding CornerRadius}"
+              Opacity="0"/>
+            <Border
+              Name="SelectionBackground"
+              Background="{DynamicResource GhostColor}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="{TemplateBinding CornerRadius}"
+              Opacity="0"/>
+            <ContentPresenter
+              Margin="{TemplateBinding Padding}"
+              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+              Background="Transparent"
+              Content="{TemplateBinding Content}"
+              ContentTemplate="{TemplateBinding ContentTemplate}"
+              CornerRadius="{TemplateBinding CornerRadius}"/>
+          </Panel>
+        </DockPanel>
+      </ControlTemplate>
+    </Setter>
+    <Style Selector="^ /template/ Border">
+      <Setter Property="Transitions">
+        <Transitions>
+          <DoubleTransition
+            Property="Opacity" Duration="0:0:0.20"/>
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="^:selected:not(:pointerover) /template/ Border#SelectionBackground">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
+    <Style Selector="^:selected /template/ Border#SelectedBorder">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
+    <Style Selector="^:focus /template/ Border#HoverBackground">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
+    <Style Selector="^:pointerover /template/ Border#HoverBackground">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
+    <Style Selector="^:focus:pointerover /template/ Border#HoverBackground">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
+    <Style Selector="^:not(:focus):not(:pointerover) /template/ Border#HoverBackground">
+      <Setter Property="Opacity" Value="0"/>
+    </Style>
+  </ControlTheme>
+
+  <ControlTheme
+    x:Key="{x:Type ListBoxItem}"
+    BasedOn="{StaticResource ListBoxItemTheme}"
+    TargetType="ListBoxItem"/>
+
+  <ControlTheme
+    x:Key="{x:Type ListBox}"
+    TargetType="ListBox">
+    <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Padding" Value="3"/>
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="ScrollViewer.IsScrollChainingEnabled" Value="True"/>
     <Setter Property="ItemsPanel">
       <ItemsPanelTemplate>
-        <VirtualizingStackPanel />
+        <VirtualizingStackPanel/>
       </ItemsPanelTemplate>
     </Setter>
     <Setter Property="Template">
       <ControlTemplate>
         <Border
           Name="border"
-          ClipToBounds="True"
           BorderBrush="{TemplateBinding BorderBrush}"
           BorderThickness="{TemplateBinding BorderThickness}"
+          ClipToBounds="True"
           CornerRadius="{TemplateBinding CornerRadius}">
           <ScrollViewer
-            Name="PART_ScrollViewer"
-            Margin="0,0,-3,0"
+            Name="PART_ScrollViewer" Margin="0,0,-3,0"
             Padding="0,0,3,0"
             AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}"
             Background="{TemplateBinding Background}"
@@ -71,13 +163,58 @@
             <ItemsPresenter
               Name="PART_ItemsPresenter"
               Margin="{TemplateBinding Padding}"
-              ItemsPanel="{TemplateBinding ItemsPanel}" />
+              ItemsPanel="{TemplateBinding ItemsPanel}"/>
           </ScrollViewer>
         </Border>
       </ControlTemplate>
     </Setter>
+
     <Style Selector="^:disabled /template/ Border#border">
-      <Setter Property="Opacity" Value="0.50" />
+      <Setter Property="Opacity" Value="0.50"/>
+    </Style>
+
+    <Style Selector="^.Simple">
+      <Setter Property="ItemContainerTheme">
+        <ControlTheme
+          BasedOn="{StaticResource ListBoxItemTheme}"
+          TargetType="ListBoxItem">
+          <Setter Property="Template">
+            <ControlTemplate TargetType="ListBoxItem">
+              <Panel>
+                <Border
+                  Name="BaseBackground"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Opacity="1"/>
+                <Border
+                  Name="HoverBackground"
+                  Background="{DynamicResource GhostHoverColor}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Opacity="0"/>
+                <Border
+                  Name="SelectionBackground"
+                  Background="{DynamicResource GhostColor}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Opacity="0"/>
+                <ContentPresenter
+                  Margin="{TemplateBinding Padding}"
+                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                  Background="Transparent"
+                  Content="{TemplateBinding Content}"
+                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                  CornerRadius="{TemplateBinding CornerRadius}"/>
+              </Panel>
+            </ControlTemplate>
+          </Setter>
+        </ControlTheme>
+      </Setter>
     </Style>
   </ControlTheme>
 </ResourceDictionary>

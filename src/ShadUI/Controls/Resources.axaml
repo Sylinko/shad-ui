@@ -32,7 +32,6 @@
     <ResourceInclude Source="avares://ShadUI/Controls/Dialog/SimpleDialog.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Label/Label.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/ListBox/ListBox.axaml"/>
-    <ResourceInclude Source="avares://ShadUI/Controls/ListBox/ListBoxItem.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Loading/Loading.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Menu/Menu.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Menu/MenuFlyoutPresenter.axaml"/>
