@@ -40,6 +40,12 @@ public class EditableTextBlock : TemplatedControl
         TextBox.TextAlignmentProperty.AddOwner<EditableTextBlock>();
 
     /// <summary>
+    /// Identifies the TextTrimming property.
+    /// </summary>
+    public static readonly StyledProperty<TextTrimming> TextTrimmingProperty =
+        TextBlock.TextTrimmingProperty.AddOwner<EditableTextBlock>();
+
+    /// <summary>
     /// Identifies the Watermark property.
     /// </summary>
     public static readonly StyledProperty<string?> WatermarkProperty =
@@ -76,6 +82,15 @@ public class EditableTextBlock : TemplatedControl
     {
         get => GetValue(TextAlignmentProperty);
         set => SetValue(TextAlignmentProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets how the text is trimmed when it exceeds the available space.
+    /// </summary>
+    public TextTrimming TextTrimming
+    {
+        get => GetValue(TextTrimmingProperty);
+        set => SetValue(TextTrimmingProperty, value);
     }
 
     /// <summary>
