@@ -1,4 +1,5 @@
 ﻿using Avalonia.Data.Converters;
+using Avalonia.Media;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
@@ -25,7 +26,7 @@ public static class StringConverters
     ///     - value: The string value to compare (from binding)
     ///     - param: The string parameter to compare against (from ConverterParameter)
     /// </remarks>
-    public static readonly IValueConverter IsMatch =
+    public static IValueConverter IsMatch { get; } =
         new FuncValueConverter<string, string, bool>((value, param) =>
         {
             if (string.IsNullOrEmpty(value) || string.IsNullOrEmpty(param))
@@ -34,4 +35,7 @@ public static class StringConverters
             }
             return value.Equals(param, StringComparison.OrdinalIgnoreCase);
         });
+
+    public static IValueConverter ToFontFamily { get; } =
+        new FuncValueConverter<string, FontFamily>(value => new FontFamily(value ?? "Segoe UI, 'Helvetica Neue', sans-serif"));
 }
