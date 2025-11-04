@@ -288,8 +288,8 @@ public class DialogHost : TemplatedControl
             IsDialogOpen = false;
             if (e.ReplaceExisting) return;
 
-            HasOpenDialog = Manager.Dialogs.Count > 0;
-            Owner.HasOpenDialog = Manager.Dialogs.Count > 0;
+            HasOpenDialog = Manager._dialogs.Count > 0;
+            Owner.HasOpenDialog = Manager._dialogs.Count > 0;
 
             await Task.Delay(200); // Allow animations to complete
             if (!HasOpenDialog) Dialog = null;
@@ -302,9 +302,9 @@ public class DialogHost : TemplatedControl
 
     private void AllowDismissChanged(object? sender, bool e)
     {
-        if (Manager.Dialogs.Count == 0) return;
+        if (Manager._dialogs.Count == 0) return;
 
-        var firstDialog = Manager.Dialogs.First();
+        var firstDialog = Manager._dialogs.First();
         Dismissible = firstDialog.Value.Dismissible || e;
     }
 }

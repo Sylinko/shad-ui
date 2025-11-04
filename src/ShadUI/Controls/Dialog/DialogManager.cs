@@ -11,7 +11,7 @@ public sealed class DialogManager
     internal event EventHandler<DialogShownEventArgs>? OnDialogShown;
     internal event EventHandler<DialogClosedEventArgs>? OnDialogClosed;
 
-    internal readonly Dictionary<Control, DialogOptions> Dialogs = [];
+    internal readonly Dictionary<Control, DialogOptions> _dialogs = [];
 
     /// <summary>
     ///     Shows a dialog with the provided options.
@@ -20,66 +20,66 @@ public sealed class DialogManager
     /// <param name="options">Dialog options</param>
     internal void Show(Control control, DialogOptions options)
     {
-        if (Dialogs.Count > 0)
+        if (_dialogs.Count > 0)
         {
             if (control is SimpleDialog simple)
             {
-                var existingSimpleDialog = Dialogs.FirstOrDefault(x => x.Key is SimpleDialog d && d.Id == simple.Id)
+                var existingSimpleDialog = _dialogs.FirstOrDefault(x => x.Key is SimpleDialog d && d.Id == simple.Id)
                     .Key;
 
                 if (existingSimpleDialog is not null) return;
             }
 
             var existingCustomDialog =
-                Dialogs.FirstOrDefault(x =>
+                _dialogs.FirstOrDefault(x =>
                     x.Key.DataContext?.GetType() == control.DataContext?.GetType()).Key;
             if (existingCustomDialog is not null) return;
 
-            var last = Dialogs.Last();
+            var last = _dialogs.Last();
             if (last.Key != control)
             {
                 OnDialogClosed?.Invoke(this, new DialogClosedEventArgs { ReplaceExisting = true, Control = last.Key });
             }
         }
 
-        Dialogs.TryAdd(control, options);
+        _dialogs.TryAdd(control, options);
         OnDialogShown?.Invoke(this, new DialogShownEventArgs { Control = control, Options = options });
     }
 
     internal void CloseDialog(Control control)
     {
-        Dialogs.Remove(control);
+        _dialogs.Remove(control);
 
         OnDialogClosed?.Invoke(this, new DialogClosedEventArgs
         {
-            ReplaceExisting = Dialogs.Count > 0,
+            ReplaceExisting = _dialogs.Count > 0,
             Control = control
         });
     }
 
     internal void OpenLast()
     {
-        if (Dialogs.Count == 0) return;
+        if (_dialogs.Count == 0) return;
 
-        var lastDialog = Dialogs.Last();
+        var lastDialog = _dialogs.Last();
         OnDialogShown?.Invoke(this, new DialogShownEventArgs { Control = lastDialog.Key, Options = lastDialog.Value });
     }
 
     internal void RemoveLast()
     {
-        if (Dialogs.Count == 0) return;
+        if (_dialogs.Count == 0) return;
 
-        var lastDialog = Dialogs.Last();
+        var lastDialog = _dialogs.Last();
         CloseDialog(lastDialog.Key);
 
         InvokeCallBacks(lastDialog.Key, DialogResult.Cancel);
     }
 
-    internal readonly Dictionary<Control, Action<DialogResult>> Callbacks = [];
+    internal readonly Dictionary<Control, Action<DialogResult>> _callbacks = [];
 
     private void InvokeCallBacks(Control control, DialogResult result)
     {
-        if (Callbacks.Remove(control, out var callback))
+        if (_callbacks.Remove(control, out var callback))
         {
             callback.Invoke(result);
         }
@@ -93,7 +93,7 @@ public sealed class DialogManager
     /// <param name="closeAll"></param>
     public void Close(Control control, DialogResult result = DialogResult.Cancel, bool closeAll = false)
     {
-        var dialogs = Dialogs.Where(x => Equals(x.Key, control)).ToList();
+        var dialogs = _dialogs.Where(x => Equals(x.Key, control)).ToList();
 
         if (closeAll) RemoveAll();
 
@@ -110,7 +110,7 @@ public sealed class DialogManager
     /// <param name="result"></param>
     public void CloseAll(DialogResult result = DialogResult.Cancel)
     {
-        var dialogs = Dialogs.Keys.ToList();
+        var dialogs = _dialogs.Keys.ToList();
         foreach (var dialog in dialogs)
         {
             CloseDialog(dialog);
@@ -120,8 +120,8 @@ public sealed class DialogManager
 
     private void RemoveAll()
     {
-        Dialogs.Clear();
-        Callbacks.Clear();
+        _dialogs.Clear();
+        _callbacks.Clear();
     }
 
     internal event EventHandler<bool>? AllowDismissChanged;

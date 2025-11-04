@@ -36,7 +36,7 @@ public sealed class DialogBuilder
         var callback = Callback;
         callback += result => tcs.TrySetResult(result);
 
-        _manager.Callbacks.TryAdd(_control, callback);
+        _manager._callbacks.TryAdd(_control, callback);
         _manager.Show(_control, Options);
 
         if (cancellationToken.CanBeCanceled) cancellationToken.Register(() => Dispatcher.UIThread.InvokeOnDemand(() => _manager.Close(_control)));
