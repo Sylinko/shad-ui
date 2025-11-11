@@ -1,99 +1,125 @@
 ﻿<ResourceDictionary
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:shadui="clr-namespace:ShadUI.Controls;assembly=ShadUI">
-    <ControlTheme x:Key="{x:Type Expander}" TargetType="Expander">
-        <Setter Property="Padding" Value="16" />
-        <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}" />
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI.Controls;assembly=ShadUI">
+  <ControlTheme
+    x:Key="{x:Type Expander}"
+    TargetType="Expander">
+    <Setter Property="Padding" Value="16"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}"/>
 
-        <Setter Property="Template">
-            <ControlTemplate TargetType="Expander">
-                <shadui:Card Padding="{TemplateBinding Padding}" CornerRadius="{TemplateBinding CornerRadius}">
-                    <StackPanel>
-                        <LayoutTransformControl Name="PART_ToggleTransform">
-                            <Panel>
-                                <Panel.Styles>
-                                    <Style Selector="ToggleButton#PART_ToggleButton:checked /template/ Border#RootBorder">
-                                        <Setter Property="Background" Value="Transparent" />
-                                    </Style>
-                                </Panel.Styles>
-                                <ToggleButton
-                                    x:Name="PART_ToggleButton"
-                                    Classes="Basic"
-                                    DockPanel.Dock="Right"
-                                    HorizontalAlignment="Stretch"
-                                    HorizontalContentAlignment="Stretch"
-                                    BorderThickness="0"
-                                    CornerRadius="8"
-                                    IsChecked="{TemplateBinding IsExpanded,
-                                                                Mode=TwoWay}"
-                                    IsEnabled="True" />
-                                <Grid ColumnDefinitions="*, Auto">
-                                    <ContentPresenter
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"
-                                        Content="{TemplateBinding Header}"
-                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-                                    <PathIcon
-                                        x:Name="PART_Icon"
-                                        Grid.Column="1"
-                                        Margin="20,0,4,0"
-                                        IsHitTestVisible="False"
-                                        Data="{x:Static shadui:Icons.ChevronDown}"
-                                        Width="12">
-                                        <PathIcon.Transitions>
-                                            <Transitions>
-                                                <TransformOperationsTransition
-                                                    Easing="CubicEaseInOut"
-                                                    Property="RenderTransform"
-                                                    Duration="0:0:0.3" />
-                                            </Transitions>
-                                        </PathIcon.Transitions>
-                                    </PathIcon>
-                                </Grid>
-                            </Panel>
-                        </LayoutTransformControl>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="Expander">
+        <shadui:Card
+          Padding="{TemplateBinding Padding}"
+          CornerRadius="{TemplateBinding CornerRadius}">
+          <StackPanel>
+            <LayoutTransformControl Name="PART_ToggleTransform">
+              <Panel>
+                <Panel.Styles>
+                  <Style Selector="ToggleButton#PART_ToggleButton:checked /template/ Border#RootBorder">
+                    <Setter Property="Background" Value="Transparent"/>
+                  </Style>
+                </Panel.Styles>
+                <ToggleButton
+                  x:Name="PART_ToggleButton" Classes="Basic"
+                  DockPanel.Dock="Right" HorizontalAlignment="Stretch"
+                  HorizontalContentAlignment="Stretch" BorderThickness="0"
+                  CornerRadius="8"
+                  IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
+                  IsEnabled="True"/>
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                  <PathIcon
+                    x:Name="PART_LeftIcon" Grid.Column="0"
+                    Width="12" Margin="0,0,12,0"
+                    Data="{x:Static shadui:Icons.ChevronDown}"
+                    IsHitTestVisible="False">
+                    <PathIcon.Transitions>
+                      <Transitions>
+                        <TransformOperationsTransition
+                          Easing="CubicEaseInOut" Property="RenderTransform"
+                          Duration="0:0:0.3"/>
+                      </Transitions>
+                    </PathIcon.Transitions>
+                  </PathIcon>
+                  <ContentPresenter
+                    Grid.Column="1" HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                    Content="{TemplateBinding Header}"/>
+                  <PathIcon
+                    x:Name="PART_RightIcon" Grid.Column="2"
+                    Width="12" Margin="12,0,0,0"
+                    Data="{x:Static shadui:Icons.ChevronDown}"
+                    IsHitTestVisible="False">
+                    <PathIcon.Transitions>
+                      <Transitions>
+                        <TransformOperationsTransition
+                          Easing="CubicEaseInOut" Property="RenderTransform"
+                          Duration="0:0:0.3"/>
+                      </Transitions>
+                    </PathIcon.Transitions>
+                  </PathIcon>
+                </Grid>
+              </Panel>
+            </LayoutTransformControl>
 
-                        <ContentControl
-                            x:Name="ContentExpandControlContainer"
-                            Padding="0,8,0,0"
-                            IsVisible="{Binding ElementName=PART_ToggleButton, Path=IsChecked}">
-                            <shadui:ContentExpandControl
-                                x:Name="PART_ContentExpand"
-                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                Content="{TemplateBinding Content}"
-                                ContentTemplate="{TemplateBinding ContentTemplate}" />
-                        </ContentControl>
-                    </StackPanel>
-                </shadui:Card>
-            </ControlTemplate>
-        </Setter>
+            <ContentControl
+              x:Name="ContentExpandControlContainer" Padding="0,8,0,0"
+              IsVisible="{Binding ElementName=PART_ToggleButton, Path=IsChecked}">
+              <shadui:ContentExpandControl
+                x:Name="PART_ContentExpand"
+                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                Content="{TemplateBinding Content}"
+                ContentTemplate="{TemplateBinding ContentTemplate}"/>
+            </ContentControl>
+          </StackPanel>
+        </shadui:Card>
+      </ControlTemplate>
+    </Setter>
 
-        <Style Selector="^:down">
-            <Style Selector="^ /template/ ContentPresenter#PART_ContentExpand">
-                <Setter Property="Margin" Value="0, 12" />
-            </Style>
-        </Style>
+    <Style Selector="^:down">
+      <Style Selector="^ /template/ ContentPresenter#PART_ContentExpand">
+        <Setter Property="Margin" Value="0, 12"/>
+      </Style>
+    </Style>
 
-        <Style Selector="^:expanded">
-            <Style Selector="^ PathIcon#PART_Icon">
-                <Setter Property="RenderTransform" Value="Rotate(180deg)" />
-            </Style>
-        </Style>
+    <Style Selector="^:expanded">
+      <Style Selector="^ PathIcon#PART_LeftIcon">
+        <Setter Property="RenderTransform" Value="Rotate(180deg)"/>
+      </Style>
+      <Style Selector="^ PathIcon#PART_RightIcon">
+        <Setter Property="RenderTransform" Value="Rotate(180deg)"/>
+      </Style>
+    </Style>
 
-        <Style Selector="^.NotExpandable">
-            <Style Selector="^ PathIcon#PART_Icon">
-                <Setter Property="IsVisible" Value="False" />
-            </Style>
-            <Style Selector="^ ToggleButton#PART_ToggleButton">
-                <Setter Property="IsHitTestVisible" Value="False" />
-            </Style>
-            <Style Selector="^ ContentControl#ContentExpandControlContainer">
-                <Setter Property="IsVisible" Value="False" />
-            </Style>
-        </Style>
-    </ControlTheme>
+    <Style Selector="^ /template/ PathIcon#PART_LeftIcon">
+      <Setter Property="IsVisible" Value="False"/>
+    </Style>
+
+    <Style Selector="^.LeftIcon">
+      <Style Selector="^ PathIcon#PART_LeftIcon">
+        <Setter Property="IsVisible" Value="True"/>
+      </Style>
+      <Style Selector="^ PathIcon#PART_RightIcon">
+        <Setter Property="IsVisible" Value="False"/>
+      </Style>
+    </Style>
+
+    <Style Selector="^.NotExpandable">
+      <Style Selector="^ PathIcon#PART_LeftIcon">
+        <Setter Property="IsVisible" Value="False"/>
+      </Style>
+      <Style Selector="^ PathIcon#PART_RightIcon">
+        <Setter Property="IsVisible" Value="False"/>
+      </Style>
+      <Style Selector="^ ToggleButton#PART_ToggleButton">
+        <Setter Property="IsHitTestVisible" Value="False"/>
+      </Style>
+      <Style Selector="^ ContentControl#ContentExpandControlContainer">
+        <Setter Property="IsVisible" Value="False"/>
+      </Style>
+    </Style>
+  </ControlTheme>
 </ResourceDictionary>
