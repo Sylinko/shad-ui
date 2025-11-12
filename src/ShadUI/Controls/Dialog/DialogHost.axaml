@@ -21,14 +21,17 @@
           </Border>
           <Border
             Name="PART_TitleBar" Height="32"
-            HorizontalAlignment="Stretch" VerticalAlignment="Top"
-            Background="Transparent" IsVisible="False"/>
+            Margin="16,16,16,-16" HorizontalAlignment="Stretch"
+            VerticalAlignment="Top" Background="Transparent"
+            IsVisible="False"/>
           <Border
             Name="DialogContent"
             MinWidth="{TemplateBinding DialogMinWidth}"
             MaxWidth="{TemplateBinding DialogMaxWidth}"
-            Padding="36,36" HorizontalAlignment="Center"
-            VerticalAlignment="Center"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            Background="{DynamicResource DialogBackgroundColor}"
+            BorderBrush="{DynamicResource BorderColor}"
+            BorderThickness="1" ClipToBounds="True"
             CornerRadius="{TemplateBinding CornerRadius}">
             <Border.Transitions>
               <Transitions>
@@ -49,10 +52,7 @@
               </Transitions>
             </Border.Transitions>
             <Panel>
-              <!--  add border for proper clip  -->
-              <Border
-                ClipToBounds="True"
-                CornerRadius="{TemplateBinding CornerRadius}">
+              <Border>
                 <ScrollViewer>
                   <ContentControl
                     Name="PART_DialogContainer"
@@ -116,7 +116,7 @@
         <Setter Property="Opacity" Value="0"/>
         <Setter Property="IsHitTestVisible" Value="False"/>
         <Setter Property="RenderTransform" Value="scale(0.70)"/>
-        <Setter Property="Margin" Value="0,50,0,0"/>
+        <Setter Property="Margin" Value="16"/>
       </Style>
       <Style Selector="^/template/ ContentControl#PART_DialogContainer">
         <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
