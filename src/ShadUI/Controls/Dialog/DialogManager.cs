@@ -10,51 +10,54 @@ public sealed class DialogManager
 {
     internal event EventHandler<DialogShownEventArgs>? OnDialogShown;
     internal event EventHandler<DialogClosedEventArgs>? OnDialogClosed;
+    internal IReadOnlyDictionary<Control, DialogOptions> Dialogs => _dialogs;
 
-    internal readonly Dictionary<Control, DialogOptions> _dialogs = [];
+    private readonly Dictionary<Control, DialogOptions> _dialogs = [];
+    private readonly Dictionary<Control, Action<DialogResult>> _callbacks = [];
+
+    /// <summary>
+    ///     Creates a simple dialog.
+    /// </summary>
+    /// <param name="content">The dialog content</param>
+    /// <param name="title">The dialog title</param>
+    /// <returns>A new instance of <see cref="DialogBuilder" /></returns>
+    public DialogBuilder CreateDialog(object content, object? title = null) => new(this, content, title);
+
+    /// <summary>
+    ///     Creates a dialog with a custom context.
+    /// </summary>
+    /// <param name="control">The dialog content</param>
+    public CustomDialogBuilder CreateCustomDialog(Control control) => new(this, control);
 
     /// <summary>
     ///     Shows a dialog with the provided options.
     /// </summary>
     /// <param name="control">Control to be shown as dialog</param>
+    /// <param name="callback">Callback when dialog is closed</param>
     /// <param name="options">Dialog options</param>
-    internal void Show(Control control, DialogOptions options)
+    internal void Show(Control control, Action<DialogResult> callback, DialogOptions options)
     {
         if (_dialogs.Count > 0)
         {
-            if (control is SimpleDialog simple)
-            {
-                var existingSimpleDialog = _dialogs.FirstOrDefault(x => x.Key is SimpleDialog d && d.Id == simple.Id)
-                    .Key;
-
-                if (existingSimpleDialog is not null) return;
-            }
-
-            var existingCustomDialog =
-                _dialogs.FirstOrDefault(x =>
-                    x.Key.DataContext?.GetType() == control.DataContext?.GetType()).Key;
-            if (existingCustomDialog is not null) return;
+            if (_dialogs.Any(x => x.Key == control)) return;
 
             var last = _dialogs.Last();
             if (last.Key != control)
             {
-                OnDialogClosed?.Invoke(this, new DialogClosedEventArgs { ReplaceExisting = true, Control = last.Key });
+                OnDialogClosed?.Invoke(this, new DialogClosedEventArgs(last.Key, true));
             }
         }
 
         _dialogs.TryAdd(control, options);
-        OnDialogShown?.Invoke(this, new DialogShownEventArgs { Control = control, Options = options });
+        _callbacks.TryAdd(control, callback);
+        OnDialogShown?.Invoke(this, new DialogShownEventArgs(control, options));
     }
 
-    internal void CloseDialog(Control control)
+    internal void CloseDialog(Control control, DialogResult result)
     {
         _dialogs.Remove(control);
-
-        OnDialogClosed?.Invoke(this, new DialogClosedEventArgs
-        {
-            ReplaceExisting = _dialogs.Count > 0,
-            Control = control
-        });
+        OnDialogClosed?.Invoke(this, new DialogClosedEventArgs(control, _dialogs.Count > 0));
+        InvokeCallBacks(control, result);
     }
 
     internal void OpenLast()
@@ -62,20 +65,17 @@ public sealed class DialogManager
         if (_dialogs.Count == 0) return;
 
         var lastDialog = _dialogs.Last();
-        OnDialogShown?.Invoke(this, new DialogShownEventArgs { Control = lastDialog.Key, Options = lastDialog.Value });
+        OnDialogShown?.Invoke(this, new DialogShownEventArgs(lastDialog.Key, lastDialog.Value));
     }
 
-    internal void RemoveLast()
+    internal void RemoveLast(DialogResult result)
     {
         if (_dialogs.Count == 0) return;
 
         var lastDialog = _dialogs.Last();
-        CloseDialog(lastDialog.Key);
-
-        InvokeCallBacks(lastDialog.Key, DialogResult.Cancel);
+        CloseDialog(lastDialog.Key, result);
+        InvokeCallBacks(lastDialog.Key, result);
     }
-
-    internal readonly Dictionary<Control, Action<DialogResult>> _callbacks = [];
 
     private void InvokeCallBacks(Control control, DialogResult result)
     {
@@ -90,18 +90,14 @@ public sealed class DialogManager
     /// </summary>
     /// <param name="control">The control of the dialog to close.</param>
     /// <param name="result"></param>
-    /// <param name="closeAll"></param>
-    public void Close(Control control, DialogResult result = DialogResult.Cancel, bool closeAll = false)
+    public void Close(Control control, DialogResult result = DialogResult.Cancel)
     {
         var dialogs = _dialogs.Where(x => Equals(x.Key, control)).ToList();
 
-        if (closeAll) RemoveAll();
-
-        foreach (var dialog in dialogs) CloseDialog(dialog.Key);
+        foreach (var dialog in dialogs) CloseDialog(dialog.Key, result);
 
         InvokeCallBacks(control, result);
-
-        if (!closeAll) OpenLast();
+        OpenLast();
     }
 
     /// <summary>
@@ -113,15 +109,9 @@ public sealed class DialogManager
         var dialogs = _dialogs.Keys.ToList();
         foreach (var dialog in dialogs)
         {
-            CloseDialog(dialog);
+            CloseDialog(dialog, result);
             InvokeCallBacks(dialog, result);
         }
-    }
-
-    private void RemoveAll()
-    {
-        _dialogs.Clear();
-        _callbacks.Clear();
     }
 
     internal event EventHandler<bool>? AllowDismissChanged;
@@ -145,14 +135,14 @@ public sealed class DialogManager
     }
 }
 
-internal sealed class DialogShownEventArgs : EventArgs
+internal sealed class DialogShownEventArgs(Control control, DialogOptions options) : EventArgs
 {
-    public Control Control { get; set; } = null!;
-    public DialogOptions Options { get; set; } = null!;
+    public Control Control { get; } = control;
+    public DialogOptions Options { get; } = options;
 }
 
-internal sealed class DialogClosedEventArgs : EventArgs
+internal sealed class DialogClosedEventArgs(Control control, bool replaceExisting = false) : EventArgs
 {
-    public bool ReplaceExisting { get; set; }
-    public Control Control { get; set; } = null!;
+    public Control Control { get; } = control;
+    public bool ReplaceExisting { get; } = replaceExisting;
 }

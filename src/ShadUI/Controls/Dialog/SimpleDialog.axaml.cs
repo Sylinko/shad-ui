@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
@@ -20,38 +18,36 @@ internal class SimpleDialog : TemplatedControl
     {
     }
 
-    public string Id { get; set; } = string.Empty;
-
     public SimpleDialog(DialogManager manager)
     {
         _manager = manager;
     }
 
-    public static readonly StyledProperty<string> TitleProperty =
-        AvaloniaProperty.Register<SimpleDialog, string>(nameof(Title));
+    public static readonly StyledProperty<object?> TitleProperty =
+        AvaloniaProperty.Register<SimpleDialog, object?>(nameof(Title));
 
-    public string Title
+    public object? Title
     {
         get => GetValue(TitleProperty);
         set => SetValue(TitleProperty, value);
     }
 
-    public static readonly StyledProperty<string> MessageProperty =
-        AvaloniaProperty.Register<SimpleDialog, string>(nameof(Message));
+    public static readonly StyledProperty<object?> ContentProperty =
+        AvaloniaProperty.Register<SimpleDialog, object?>(nameof(Content));
 
-    public string Message
+    public object? Content
     {
-        get => GetValue(MessageProperty);
-        set => SetValue(MessageProperty, value);
+        get => GetValue(ContentProperty);
+        set => SetValue(ContentProperty, value);
     }
 
-    public static readonly StyledProperty<string> PrimaryButtonTextProperty =
-        AvaloniaProperty.Register<SimpleDialog, string>(nameof(PrimaryButtonText));
+    public static readonly StyledProperty<object?> PrimaryButtonContentProperty =
+        AvaloniaProperty.Register<SimpleDialog, object?>(nameof(PrimaryButtonContent));
 
-    public string PrimaryButtonText
+    public object? PrimaryButtonContent
     {
-        get => GetValue(PrimaryButtonTextProperty);
-        set => SetValue(PrimaryButtonTextProperty, value);
+        get => GetValue(PrimaryButtonContentProperty);
+        set => SetValue(PrimaryButtonContentProperty, value);
     }
 
     public static readonly StyledProperty<DialogButtonStyle> PrimaryButtonStyleProperty =
@@ -65,15 +61,13 @@ internal class SimpleDialog : TemplatedControl
 
     public Action? PrimaryCallback { get; set; }
 
-    public Func<Task>? PrimaryCallbackAsync { get; set; }
+    public static readonly StyledProperty<object?> SecondaryButtonContentProperty =
+        AvaloniaProperty.Register<SimpleDialog, object?>(nameof(SecondaryButtonContent));
 
-    public static readonly StyledProperty<string> SecondaryButtonTextProperty =
-        AvaloniaProperty.Register<SimpleDialog, string>(nameof(SecondaryButtonText));
-
-    public string SecondaryButtonText
+    public object? SecondaryButtonContent
     {
-        get => GetValue(SecondaryButtonTextProperty);
-        set => SetValue(SecondaryButtonTextProperty, value);
+        get => GetValue(SecondaryButtonContentProperty);
+        set => SetValue(SecondaryButtonContentProperty, value);
     }
 
     public static readonly StyledProperty<DialogButtonStyle> SecondaryButtonStyleProperty =
@@ -88,15 +82,13 @@ internal class SimpleDialog : TemplatedControl
 
     public Action? SecondaryCallback { get; set; }
 
-    public Func<Task>? SecondaryCallbackAsync { get; set; }
+    public static readonly StyledProperty<object?> TertiaryButtonContentProperty =
+        AvaloniaProperty.Register<SimpleDialog, object?>(nameof(TertiaryButtonContent));
 
-    public static readonly StyledProperty<string> TertiaryButtonTextProperty =
-        AvaloniaProperty.Register<SimpleDialog, string>(nameof(TertiaryButtonText));
-
-    public string TertiaryButtonText
+    public object? TertiaryButtonContent
     {
-        get => GetValue(TertiaryButtonTextProperty);
-        set => SetValue(TertiaryButtonTextProperty, value);
+        get => GetValue(TertiaryButtonContentProperty);
+        set => SetValue(TertiaryButtonContentProperty, value);
     }
 
     public static readonly StyledProperty<DialogButtonStyle> TertiaryButtonStyleProperty =
@@ -111,20 +103,16 @@ internal class SimpleDialog : TemplatedControl
 
     public Action? TertiaryCallback { get; set; }
 
-    public Func<Task>? TertiaryCallbackAsync { get; set; }
+    public static readonly StyledProperty<object?> CancelButtonContentProperty =
+        AvaloniaProperty.Register<SimpleDialog, object?>(nameof(CancelButtonContent));
 
-    public static readonly StyledProperty<string> CancelButtonTextProperty =
-        AvaloniaProperty.Register<SimpleDialog, string>(nameof(CancelButtonText));
-
-    public string CancelButtonText
+    public object? CancelButtonContent
     {
-        get => GetValue(CancelButtonTextProperty);
-        set => SetValue(CancelButtonTextProperty, value);
+        get => GetValue(CancelButtonContentProperty);
+        set => SetValue(CancelButtonContentProperty, value);
     }
 
     public Action? CancelCallback { get; set; }
-
-    public Func<Task>? CancelCallbackAsync { get; set; }
 
     public static readonly StyledProperty<DialogButtonStyle> CancelButtonStyleProperty =
         AvaloniaProperty.Register<SimpleDialog, DialogButtonStyle>(nameof(CancelButtonStyle),
@@ -141,112 +129,27 @@ internal class SimpleDialog : TemplatedControl
         base.OnApplyTemplate(e);
         e.NameScope.Get<Button>("PART_PrimaryButton").Click += (_, _) =>
         {
-            _manager?.CloseDialog(this);
+            _manager?.CloseDialog(this, DialogResult.Primary);
             _manager?.OpenLast();
             PrimaryCallback?.Invoke();
-            PrimaryCallbackAsync?.Invoke();
         };
         e.NameScope.Get<Button>("PART_SecondaryButton").Click += (_, _) =>
         {
-            _manager?.CloseDialog(this);
+            _manager?.CloseDialog(this, DialogResult.Secondary);
             _manager?.OpenLast();
             SecondaryCallback?.Invoke();
-            SecondaryCallbackAsync?.Invoke();
         };
         e.NameScope.Get<Button>("PART_TertiaryButton").Click += (_, _) =>
         {
-            _manager?.CloseDialog(this);
+            _manager?.CloseDialog(this, DialogResult.Tertiary);
             _manager?.OpenLast();
             TertiaryCallback?.Invoke();
-            TertiaryCallbackAsync?.Invoke();
         };
         e.NameScope.Get<Button>("PART_CancelButton").Click += (_, _) =>
         {
-            _manager?.CloseDialog(this);
+            _manager?.CloseDialog(this, DialogResult.Cancel);
             _manager?.OpenLast();
             CancelCallback?.Invoke();
-            CancelCallbackAsync?.Invoke();
         };
-    }
-
-    /// <summary>
-    ///     Sets the ID of the dialog based on its properties and options.
-    /// </summary>
-    /// <param name="options"></param>
-    internal void SetId(DialogOptions options)
-    {
-        // Use a pooled array writer which is more memory efficient than StringBuilder
-        using var hasher = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
-
-        if (!string.IsNullOrEmpty(Title))
-        {
-            hasher.AppendData(Encoding.UTF8.GetBytes(Title));
-        }
-
-        hasher.AppendData(new[] { (byte)'|' });
-
-        if (!string.IsNullOrEmpty(Message))
-        {
-            hasher.AppendData(Encoding.UTF8.GetBytes(Message));
-        }
-
-        hasher.AppendData(new[] { (byte)'|' });
-
-        if (!string.IsNullOrEmpty(PrimaryButtonText))
-        {
-            hasher.AppendData(Encoding.UTF8.GetBytes(PrimaryButtonText));
-        }
-
-        hasher.AppendData(new[] { (byte)'|' });
-        hasher.AppendData(BitConverter.GetBytes((int)PrimaryButtonStyle));
-        hasher.AppendData(new[] { (byte)'|' });
-
-        if (!string.IsNullOrEmpty(SecondaryButtonText))
-        {
-            hasher.AppendData(Encoding.UTF8.GetBytes(SecondaryButtonText));
-        }
-
-        hasher.AppendData(new[] { (byte)'|' });
-        hasher.AppendData(BitConverter.GetBytes((int)SecondaryButtonStyle));
-        hasher.AppendData(new[] { (byte)'|' });
-
-        if (!string.IsNullOrEmpty(TertiaryButtonText))
-        {
-            hasher.AppendData(Encoding.UTF8.GetBytes(TertiaryButtonText));
-        }
-
-        hasher.AppendData(new[] { (byte)'|' });
-        hasher.AppendData(BitConverter.GetBytes((int)TertiaryButtonStyle));
-        hasher.AppendData(new[] { (byte)'|' });
-
-        if (!string.IsNullOrEmpty(CancelButtonText))
-        {
-            hasher.AppendData(Encoding.UTF8.GetBytes(CancelButtonText));
-        }
-
-        hasher.AppendData(new[] { (byte)'|' });
-        hasher.AppendData(BitConverter.GetBytes((int)CancelButtonStyle));
-        hasher.AppendData(new[] { (byte)'|' });
-
-        hasher.AppendData(BitConverter.GetBytes(options.Dismissible));
-        hasher.AppendData(new[] { (byte)'|' });
-        hasher.AppendData(BitConverter.GetBytes(options.MinWidth));
-        hasher.AppendData(new[] { (byte)'|' });
-        hasher.AppendData(BitConverter.GetBytes(options.MaxWidth));
-
-        var hash = hasher.GetHashAndReset();
-        var hexChars = new char[16];
-        for (var i = 0; i < 8; i++)
-        {
-            hexChars[i * 2] = GetHexChar(hash[i] >> 4);
-            hexChars[i * 2 + 1] = GetHexChar(hash[i] & 0xF);
-        }
-
-        Id = new string(hexChars);
-    }
-
-    private static char GetHexChar(int value)
-    {
-        return (char)(value < 10 ? '0' + value : 'A' + (value - 10));
     }
 }
