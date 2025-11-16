@@ -92,7 +92,13 @@
                   <StackPanel ClipToBounds="True">
                     <LayoutTransformControl
                       Name="LayoutTransform" RenderTransformOrigin="0%,0%">
-                      <Panel>
+                      <Panel MinHeight="{Binding WindowDecorationMargin.Top, RelativeSource={RelativeSource TemplatedParent}}">
+                        <Panel.Margin>
+                          <OnPlatform
+                            x:TypeArguments="Thickness" Linux="0"
+                            Windows="0" macOS="60,0,0,0"/>
+                        </Panel.Margin>
+
                         <Border
                           ClipToBounds="True"
                           CornerRadius="{TemplateBinding RootCornerRadius, Converter={x:Static shadui:CornerRadiusConverters.TopOnly}}"
