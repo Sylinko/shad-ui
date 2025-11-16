@@ -321,26 +321,21 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void TryClose()
+    private async Task TryClose()
     {
-        DialogManager.CreateDialog("Close", "Do you really want to exit?")
-            .WithPrimaryButton("Yes", OnAcceptExit)
+        var result = await DialogManager.CreateDialog("Close", "Do you really want to exit?")
+            .WithPrimaryButton("Yes")
             .WithCancelButton("No")
             .WithMinWidth(300)
-            .Show();
-    }
+            .ShowAsync();
 
-    private void OnAcceptExit()
-    {
-        Environment.Exit(0);
+        if (result == DialogResult.Primary) Environment.Exit(0);
     }
-
-    private ThemeMode _currentTheme;
 
     public ThemeMode CurrentTheme
     {
-        get => _currentTheme;
-        private set => SetProperty(ref _currentTheme, value);
+        get;
+        private set => SetProperty(ref field, value);
     }
 
     [RelayCommand]

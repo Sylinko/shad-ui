@@ -59,43 +59,46 @@ public sealed partial class DialogViewModel : ViewModelBase, INavigable
     private string _alertDialogCode = string.Empty;
 
     [RelayCommand]
-    private void ShowDialog()
+    private async Task ShowDialog()
     {
-        _dialogManager
+        var result = await _dialogManager
             .CreateDialog(
                 "Are you absolutely sure?",
                 "This action cannot be undone. This will permanently delete your account and remove your data from our servers.")
-            .WithPrimaryButton("Continue",
-                () => _toastManager.CreateToast("Delete account")
-                    .WithContent("Account deleted successfully!")
-                    .DismissOnClick()
-                    .ShowSuccess())
+            .WithPrimaryButton("Continue")
             .WithCancelButton("Cancel")
             .WithMaxWidth(512)
             .Dismissible()
-            .Show();
+            .ShowAsync();
+
+        if (result == DialogResult.Primary)
+            _toastManager.CreateToast("Delete account")
+                .WithContent("Account deleted successfully!")
+                .DismissOnClick()
+                .ShowSuccess();
     }
 
     [ObservableProperty]
     private string _destructiveAlertDialogCode = string.Empty;
 
     [RelayCommand]
-    private void ShowDestructiveStyleDialog()
+    private async Task ShowDestructiveStyleDialog()
     {
-        _dialogManager
+        var result = await _dialogManager
             .CreateDialog(
                 "Are you absolutely sure?",
                 "This action cannot be undone. This will permanently delete your account and remove your data from our servers.")
-            .WithPrimaryButton("Continue",
-                () => _toastManager.CreateToast("Delete account")
-                    .WithContent("Account deleted successfully!")
-                    .DismissOnClick()
-                    .ShowSuccess()
-                , DialogButtonStyle.Destructive)
+            .WithPrimaryButton("Continue", DialogButtonStyle.Destructive)
             .WithCancelButton("Cancel")
             .WithMaxWidth(512)
             .Dismissible()
-            .Show();
+            .ShowAsync();
+
+        if (result == DialogResult.Primary)
+            _toastManager.CreateToast("Delete account")
+                .WithContent("Account deleted successfully!")
+                .DismissOnClick()
+                .ShowSuccess();
     }
 
     [ObservableProperty]
