@@ -1,75 +1,110 @@
 ﻿<ResourceDictionary
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    x:ClassModifier="internal">
-    <ControlTheme x:Key="{x:Type TextBlock}" TargetType="TextBlock">
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:system="clr-namespace:System;assembly=System.Runtime" x:ClassModifier="internal">
 
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontWeight" Value="Regular" />
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+  <system:Double x:Key="FontSizeS">12.8</system:Double>
+  <system:Double x:Key="FontSizeM">14</system:Double>
+  <system:Double x:Key="FontSizeL">16</system:Double>
+  <system:Double x:Key="FontSizeXl">20</system:Double>
+  <system:Double x:Key="FontSize2Xl">24</system:Double>
+  <system:Double x:Key="FontSize3Xl">30</system:Double>
+  <system:Double x:Key="FontSize4Xl">48</system:Double>
 
-        <Style Selector="^.h1">
-            <Setter Property="FontSize" Value="48" />
-            <Setter Property="FontWeight" Value="ExtraBold" />
-        </Style>
+  <!--  Sets LineHeight to 3/2 of FontSize  -->
+  <system:Double x:Key="LineHeightS">19.2</system:Double>
+  <system:Double x:Key="LineHeightM">21</system:Double>
+  <system:Double x:Key="LineHeightL">24</system:Double>
+  <system:Double x:Key="LineHeightXl">30</system:Double>
+  <system:Double x:Key="LineHeight2Xl">36</system:Double>
+  <system:Double x:Key="LineHeight3Xl">45</system:Double>
+  <system:Double x:Key="LineHeight4Xl">72</system:Double>
 
-        <Style Selector="^.h2">
-            <Setter Property="FontSize" Value="30" />
-            <Setter Property="LineHeight" Value="40" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-        </Style>
+  <ControlTheme
+    x:Key="{x:Type TextBlock}"
+    TargetType="TextBlock">
 
-        <Style Selector="^.h3">
-            <Setter Property="FontSize" Value="24" />
-            <Setter Property="LineHeight" Value="32" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-        </Style>
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
+    <Setter Property="LineHeight" Value="{DynamicResource LineHeightM}"/>
+    <Setter Property="FontWeight" Value="Regular"/>
+    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
 
-        <Style Selector="^.h4">
-            <Setter Property="FontSize" Value="20" />
-            <Setter Property="LineHeight" Value="28" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-        </Style>
+    <Style Selector="^.h1">
+      <Setter Property="FontSize" Value="{DynamicResource FontSize4Xl}"/>
+      <Setter Property="LineHeight" Value="{DynamicResource LineHeight4Xl}"/>
+      <Setter Property="FontWeight" Value="ExtraBold"/>
+    </Style>
 
-        <Style Selector="^.p">
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="LineHeight" Value="30" />
-        </Style>
+    <Style Selector="^.h2">
+      <Setter Property="FontSize" Value="{DynamicResource FontSize3Xl}"/>
+      <Setter Property="LineHeight" Value="{DynamicResource LineHeight3Xl}"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
 
-        <Style Selector="^.Lead">
-            <Setter Property="FontSize" Value="20" />
-            <Setter Property="LineHeight" Value="28" />
-            <Setter Property="Foreground" Value="{DynamicResource ForegroundLeadColor}" />
-        </Style>
+    <Style Selector="^.h3">
+      <Setter Property="FontSize" Value="{DynamicResource FontSize2Xl}"/>
+      <Setter Property="LineHeight" Value="{DynamicResource LineHeight2Xl}"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
 
-        <Style Selector="^.Large">
-            <Setter Property="FontSize" Value="18" />
-            <Setter Property="LineHeight" Value="28" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-        </Style>
+    <Style Selector="^.h4">
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeXl}"/>
+      <Setter Property="LineHeight" Value="{DynamicResource LineHeight2Xl}"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
 
-        <Style Selector="^.Small">
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="FontWeight" Value="Medium" />
-        </Style>
+    <Style Selector="^.p">
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeL}"/>
+      <Setter Property="LineHeight" Value="{DynamicResource LineHeightXl}"/>
+    </Style>
 
-        <Style Selector="^.Caption">
-            <Setter Property="FontSize" Value="12.8" />
-            <Setter Property="FontWeight" Value="Medium" />
-        </Style>
+    <Style Selector="^.Lead">
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeXl}"/>
+      <Setter Property="LineHeight" Value="{DynamicResource LineHeight2Xl}"/>
+      <Setter Property="Foreground" Value="{DynamicResource ForegroundLeadColor}"/>
+    </Style>
 
-        <Style Selector="^.Muted">
-            <Setter Property="Foreground" Value="{DynamicResource MutedColor}" />
-        </Style>
+    <Style Selector="^.Large">
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeL}"/>
+      <Setter Property="LineHeight" Value="{DynamicResource LineHeightXl}"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
 
-        <Style Selector="^.Error">
-            <Setter Property="Foreground" Value="{DynamicResource DestructiveColor}" />
-        </Style>
-    </ControlTheme>
+    <Style Selector="^.Small">
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
+      <Setter Property="LineHeight" Value="{DynamicResource LineHeightS}"/>
+      <Setter Property="FontWeight" Value="Medium"/>
+    </Style>
 
-    <ControlTheme x:Key="{x:Type ContentPresenter}" TargetType="ContentPresenter">
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontWeight" Value="Regular" />
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
-    </ControlTheme>
+    <Style Selector="^.Caption">
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
+      <Setter Property="LineHeight" Value="{DynamicResource LineHeightS}"/>
+      <Setter Property="FontWeight" Value="Medium"/>
+    </Style>
+
+    <Style Selector="^.Muted">
+      <Setter Property="Foreground" Value="{DynamicResource MutedColor}"/>
+    </Style>
+
+    <Style Selector="^.Error">
+      <Setter Property="Foreground" Value="{DynamicResource DestructiveColor}"/>
+    </Style>
+  </ControlTheme>
+
+  <ControlTheme
+    x:Key="{x:Type ContentPresenter}"
+    TargetType="ContentPresenter">
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
+    <Setter Property="LineHeight" Value="{DynamicResource LineHeightM}"/>
+    <Setter Property="FontWeight" Value="Regular"/>
+    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+  </ControlTheme>
+
+  <ControlTheme
+    x:Key="{x:Type SelectableTextBlock}"
+    TargetType="SelectableTextBlock">
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
+    <Setter Property="LineHeight" Value="{DynamicResource LineHeightM}"/>
+    <Setter Property="FontWeight" Value="Regular"/>
+    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+  </ControlTheme>
 </ResourceDictionary>
