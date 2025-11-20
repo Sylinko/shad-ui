@@ -12,8 +12,11 @@
         <shadui:Card
           Padding="{TemplateBinding Padding}"
           CornerRadius="{TemplateBinding CornerRadius}">
-          <StackPanel>
-            <LayoutTransformControl Name="PART_ToggleTransform">
+          <Grid RowDefinitions="Auto,Auto">
+
+            <!--  Header 区  -->
+            <LayoutTransformControl
+              Name="PART_ToggleTransform" Grid.Row="0">
               <Panel>
                 <Panel.Styles>
                   <Style Selector="ToggleButton#PART_ToggleButton:checked /template/ Border#RootBorder">
@@ -64,18 +67,33 @@
               </Panel>
             </LayoutTransformControl>
 
-            <ContentControl
-              x:Name="ContentExpandControlContainer" Padding="0,8,0,0"
-              IsVisible="{Binding ElementName=PART_ToggleButton, Path=IsChecked}">
-              <shadui:ContentExpandControl
-                x:Name="PART_ContentExpand"
-                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                Content="{TemplateBinding Content}"
-                ContentTemplate="{TemplateBinding ContentTemplate}"/>
-            </ContentControl>
-          </StackPanel>
+            <Border
+              x:Name="ContentBorder" Grid.Row="1"
+              Opacity="0.5" RenderTransform="translateY(-16px)">
+              <Border.Transitions>
+                <Transitions>
+                  <DoubleTransition
+                    Easing="CubicEaseOut" Property="Opacity"
+                    Duration="0:0:0.25"/>
+                  <TransformOperationsTransition
+                    Easing="CubicEaseOut" Property="RenderTransform"
+                    Duration="0:0:0.3"/>
+                </Transitions>
+              </Border.Transitions>
+              <ContentControl
+                x:Name="ContentExpandControlContainer" Padding="0,8,0,0"
+                IsVisible="{Binding ElementName=PART_ToggleButton, Path=IsChecked}">
+                <shadui:ContentExpandControl
+                  x:Name="PART_ContentExpand"
+                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                  Content="{TemplateBinding Content}"
+                  ContentTemplate="{TemplateBinding ContentTemplate}"/>
+              </ContentControl>
+            </Border>
+          </Grid>
         </shadui:Card>
+
       </ControlTemplate>
     </Setter>
 
@@ -86,6 +104,11 @@
     </Style>
 
     <Style Selector="^:expanded">
+      <Style Selector="^ /template/ Border#ContentBorder">
+        <Setter Property="Opacity" Value="1"/>
+        <Setter Property="RenderTransform" Value="translateY(0)"/>
+      </Style>
+
       <Style Selector="^ PathIcon#PART_LeftIcon">
         <Setter Property="RenderTransform" Value="Rotate(180deg)"/>
       </Style>

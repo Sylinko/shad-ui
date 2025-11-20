@@ -1,4 +1,5 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
   <!--  basic colors  -->
   <Color x:Key="ForegroundColor">#FFFFFF</Color>
@@ -25,10 +26,10 @@
   <Color x:Key="SecondaryColor50">#802C2C30</Color>
   <Color x:Key="SecondaryColor10">#192C2C30</Color>
   <Color x:Key="SecondaryForegroundColor">#E5E5E5</Color>
-  <Color x:Key="DestructiveColor">#9D4042</Color>
-  <Color x:Key="DestructiveColor75">#A09D4042</Color>
-  <Color x:Key="DestructiveColor50">#809D4042</Color>
-  <Color x:Key="DestructiveColor10">#199D4042</Color>
+  <Color x:Key="DestructiveColor">#F44336</Color>
+  <Color x:Key="DestructiveColor75">#A0F44336</Color>
+  <Color x:Key="DestructiveColor50">#80F44336</Color>
+  <Color x:Key="DestructiveColor10">#19F44336</Color>
   <Color x:Key="DestructiveForegroundColor">#E5E5E5</Color>
 
   <!--  notification colors  -->

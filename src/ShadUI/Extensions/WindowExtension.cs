@@ -19,58 +19,60 @@ public static class WindowExtension
     private static readonly Dictionary<string, WindowSettings?> Cache = new();
     private static readonly Lock CacheLock = new();
 
-    /// <summary>
-    ///     Enables automatic window state management for the specified window.
-    ///     The window's position, size, and state will be automatically saved when the window closes
-    ///     and restored when the window is opened again.
-    /// </summary>
     /// <param name="window">The window to manage state for.</param>
-    /// <param name="key">
-    ///     A unique identifier for this window's state. Used to distinguish between different windows.
-    ///     Defaults to "main" if not specified.
-    /// </param>
-    public static void ManageWindowState(this Window window, string key = "main")
+    extension(Window window)
     {
-        if (Handlers.ContainsKey(window)) return;
-
-        var file = Path.Combine(Path.GetTempPath(), $"shadui_{key}.txt");
-        RestoreWindowState(window, file);
-
-        EventHandler<WindowClosingEventArgs> handler = async void (_, _) =>
+        /// <summary>
+        ///     Enables automatic window state management for the specified window.
+        ///     The window's position, size, and state will be automatically saved when the window closes
+        ///     and restored when the window is opened again.
+        /// </summary>
+        /// <param name="key">
+        ///     A unique identifier for this window's state. Used to distinguish between different windows.
+        ///     Defaults to "main" if not specified.
+        /// </param>
+        public void ManageWindowState(string key = "main")
         {
-            try
+            if (Handlers.ContainsKey(window)) return;
+
+            var file = Path.Combine(Path.GetTempPath(), $"shadui_{key}.txt");
+            RestoreWindowState(window, file);
+
+            EventHandler<WindowClosingEventArgs> handler = async void (_, _) =>
             {
-                var current = new WindowSettings
+                try
                 {
-                    X = window.Position.X,
-                    Y = window.Position.Y,
-                    Width = window.Width,
-                    Height = window.Height,
-                    WindowState = window.WindowState
-                };
+                    var current = new WindowSettings
+                    {
+                        X = window.Position.X,
+                        Y = window.Position.Y,
+                        Width = window.Width,
+                        Height = window.Height,
+                        WindowState = window.WindowState
+                    };
 
-                await SaveWindowSettingsAsync(current, file);
-            }
-            catch (Exception)
-            {
-                //ignore
-            }
-        };
-        window.Closing += handler;
-        Handlers[window] = handler;
-    }
+                    await SaveWindowSettingsAsync(current, file);
+                }
+                catch (Exception)
+                {
+                    //ignore
+                }
+            };
+            window.Closing += handler;
+            Handlers[window] = handler;
+        }
 
-    /// <summary>
-    ///     Disables automatic window state management for the specified window.
-    ///     Removes the event handler that was previously attached by <see cref="ManageWindowState" />.
-    /// </summary>
-    /// <param name="window">The window to stop managing state for.</param>
-    public static void UnmanageWindowState(this Window window)
-    {
-        if (Handlers.TryGetValue(window, out var handler))
+        /// <summary>
+        ///     Disables automatic window state management for the specified window.
+        ///     Removes the event handler that was previously attached by <see cref="ManageWindowState" />.
+        /// </summary>
+        public void UnmanageWindowState()
         {
-            window.Closing -= handler;
-            Handlers.Remove(window);
+            if (Handlers.TryGetValue(window, out var handler))
+            {
+                window.Closing -= handler;
+                Handlers.Remove(window);
+            }
         }
     }
 
