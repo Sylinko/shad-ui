@@ -24,13 +24,11 @@
     TargetType="TextBlock">
 
     <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
-    <Setter Property="LineHeight" Value="{DynamicResource LineHeightM}"/>
     <Setter Property="FontWeight" Value="Regular"/>
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
 
     <Style Selector="^.h1">
       <Setter Property="FontSize" Value="{DynamicResource FontSize4Xl}"/>
-      <Setter Property="LineHeight" Value="{DynamicResource LineHeight4Xl}"/>
       <Setter Property="FontWeight" Value="ExtraBold"/>
     </Style>
 
@@ -71,13 +69,11 @@
 
     <Style Selector="^.Small">
       <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
-      <Setter Property="LineHeight" Value="{DynamicResource LineHeightS}"/>
       <Setter Property="FontWeight" Value="Medium"/>
     </Style>
 
     <Style Selector="^.Caption">
       <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
-      <Setter Property="LineHeight" Value="{DynamicResource LineHeightS}"/>
       <Setter Property="FontWeight" Value="Medium"/>
     </Style>
 
@@ -93,15 +89,6 @@
   <ControlTheme
     x:Key="{x:Type ContentPresenter}"
     TargetType="ContentPresenter">
-    <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
-    <Setter Property="LineHeight" Value="{DynamicResource LineHeightM}"/>
-    <Setter Property="FontWeight" Value="Regular"/>
-    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-  </ControlTheme>
-
-  <ControlTheme
-    x:Key="{x:Type SelectableTextBlock}"
-    TargetType="SelectableTextBlock">
     <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="LineHeight" Value="{DynamicResource LineHeightM}"/>
     <Setter Property="FontWeight" Value="Regular"/>

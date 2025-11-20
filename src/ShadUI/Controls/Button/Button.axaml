@@ -42,7 +42,7 @@
   </Design.PreviewWith>
   <ControlTheme
     x:Key="ButtonStyle" TargetType="Button">
-    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="FontWeight" Value="Medium"/>
     <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
@@ -193,8 +193,6 @@
 
     <!--  Primary  -->
     <Style Selector="^.Primary">
-      <Setter Property="Height" Value="36"/>
-      <Setter Property="FontSize" Value="14"/>
       <Setter Property="Padding" Value="16,8"/>
       <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
@@ -211,8 +209,6 @@
 
     <!--  Secondary  -->
     <Style Selector="^.Secondary">
-      <Setter Property="Height" Value="36"/>
-      <Setter Property="FontSize" Value="14"/>
       <Setter Property="Padding" Value="16,8"/>
       <Setter Property="Background" Value="{DynamicResource SecondaryColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}"/>
@@ -227,8 +223,6 @@
 
     <!--  Destructive  -->
     <Style Selector="^.Destructive">
-      <Setter Property="Height" Value="36"/>
-      <Setter Property="FontSize" Value="14"/>
       <Setter Property="Padding" Value="16,8"/>
       <Setter Property="Background" Value="{DynamicResource DestructiveColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}"/>
@@ -243,8 +237,6 @@
 
     <!--  Outline  -->
     <Style Selector="^.Outline">
-      <Setter Property="Height" Value="36"/>
-      <Setter Property="FontSize" Value="14"/>
       <Setter Property="Padding" Value="16,8"/>
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="BorderThickness" Value="1"/>
@@ -261,8 +253,6 @@
 
     <!--  Ghost  -->
     <Style Selector="^.Ghost">
-      <Setter Property="Height" Value="36"/>
-      <Setter Property="FontSize" Value="14"/>
       <Setter Property="Padding" Value="16,8"/>
       <Setter Property="BorderThickness" Value="0"/>
       <Setter Property="Background" Value="Transparent"/>
@@ -288,16 +278,16 @@
     </Style>
 
     <Style Selector="^.Rounded">
-      <Setter Property="Width" Value="30"/>
-      <Setter Property="Height" Value="30"/>
+      <Setter Property="MinWidth" Value="30"/>
+      <Setter Property="Height" Value="{Binding $self.Bounds.Width}"/>
       <Setter Property="Padding" Value="0"/>
-      <Setter Property="CornerRadius" Value="15"/>
+      <Setter Property="CornerRadius" Value="{DynamicResource FullCornerRadius}"/>
     </Style>
 
     <!--  Icon  -->
     <Style Selector="^.Icon">
-      <Setter Property="Width" Value="36"/>
-      <Setter Property="Height" Value="36"/>
+      <Setter Property="MinWidth" Value="36"/>
+      <Setter Property="Height" Value="{Binding $self.Bounds.Width}"/>
       <Setter Property="Background" Value="{DynamicResource GhostHoverColor50}"/>
       <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource GhostColor}"/>
@@ -308,8 +298,8 @@
 
     <!--  DestructiveIcon  -->
     <Style Selector="^.DestructiveIcon">
-      <Setter Property="Width" Value="36"/>
-      <Setter Property="Height" Value="36"/>
+      <Setter Property="MinWidth" Value="36"/>
+      <Setter Property="Height" Value="{Binding $self.Bounds.Width}"/>
       <Setter Property="Background" Value="{DynamicResource DestructiveColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource DestructiveColor50}"/>
