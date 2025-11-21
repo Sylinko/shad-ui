@@ -1,4 +1,5 @@
-﻿using ShadUI.Extensions;
+﻿using System.ComponentModel;
+using ShadUI.Extensions;
 using Avalonia.Threading;
 
 // ReSharper disable once CheckNamespace
@@ -39,13 +40,16 @@ public sealed class DialogBuilder
     ///     Sets the primary button of the dialog.
     /// </summary>
     /// <param name="content">The button content</param>
+    /// <param name="callback"></param>
     /// <param name="buttonStyle">The style of the button. The default is <see cref="DialogButtonStyle.Primary" /></param>
     /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
     public DialogBuilder WithPrimaryButton(
         object content,
+        CancelEventHandler? callback = null,
         DialogButtonStyle buttonStyle = DialogButtonStyle.Primary)
     {
         _dialog.PrimaryButtonContent = content;
+        _dialog.PrimaryCallback = callback;
         _dialog.PrimaryButtonStyle = buttonStyle;
         return this;
     }
@@ -54,13 +58,16 @@ public sealed class DialogBuilder
     ///     Sets the secondary button of the dialog.
     /// </summary>
     /// <param name="content">The button content</param>
+    /// <param name="callback"></param>
     /// <param name="buttonStyle">The style of the button. The default is <see cref="DialogButtonStyle.Secondary" /></param>
     /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
     public DialogBuilder WithSecondaryButton(
         object content,
+        CancelEventHandler? callback = null,
         DialogButtonStyle buttonStyle = DialogButtonStyle.Secondary)
     {
         _dialog.SecondaryButtonContent = content;
+        _dialog.SecondaryCallback = callback;
         _dialog.SecondaryButtonStyle = buttonStyle;
         return this;
     }
@@ -69,10 +76,12 @@ public sealed class DialogBuilder
     ///     Sets the tertiary button of the dialog.
     /// </summary>
     /// <param name="content">The button content</param>
+    /// <param name="callback"></param>
     /// <param name="buttonStyle">The style of the button. The default is <see cref="DialogButtonStyle.Outline" /></param>
     /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
     public DialogBuilder WithTertiaryButton(
         object content,
+        CancelEventHandler? callback = null,
         DialogButtonStyle buttonStyle = DialogButtonStyle.Outline)
     {
         _dialog.TertiaryButtonContent = content;
@@ -84,13 +93,16 @@ public sealed class DialogBuilder
     ///     Sets the cancel button of the dialog.
     /// </summary>
     /// <param name="content">The button content</param>
+    /// <param name="callback"></param>
     /// <param name="buttonStyle">The style of the button. The default is <see cref="DialogButtonStyle.Outline" /></param>
     /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
     public DialogBuilder WithCancelButton(
         object content,
+        CancelEventHandler? callback = null,
         DialogButtonStyle buttonStyle = DialogButtonStyle.Outline)
     {
         _dialog.CancelButtonContent = content;
+        _dialog.CancelCallback = callback;
         _dialog.CancelButtonStyle = buttonStyle;
         return this;
     }

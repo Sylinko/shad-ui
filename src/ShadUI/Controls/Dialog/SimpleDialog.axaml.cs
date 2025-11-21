@@ -1,7 +1,9 @@
-﻿using Avalonia;
+﻿using System.ComponentModel;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
@@ -59,7 +61,7 @@ internal class SimpleDialog : TemplatedControl
         set => SetValue(PrimaryButtonStyleProperty, value);
     }
 
-    public Action? PrimaryCallback { get; set; }
+    public CancelEventHandler? PrimaryCallback { get; set; }
 
     public static readonly StyledProperty<object?> SecondaryButtonContentProperty =
         AvaloniaProperty.Register<SimpleDialog, object?>(nameof(SecondaryButtonContent));
@@ -80,7 +82,7 @@ internal class SimpleDialog : TemplatedControl
         set => SetValue(SecondaryButtonStyleProperty, value);
     }
 
-    public Action? SecondaryCallback { get; set; }
+    public CancelEventHandler? SecondaryCallback { get; set; }
 
     public static readonly StyledProperty<object?> TertiaryButtonContentProperty =
         AvaloniaProperty.Register<SimpleDialog, object?>(nameof(TertiaryButtonContent));
@@ -101,7 +103,7 @@ internal class SimpleDialog : TemplatedControl
         set => SetValue(TertiaryButtonStyleProperty, value);
     }
 
-    public Action? TertiaryCallback { get; set; }
+    public CancelEventHandler? TertiaryCallback { get; set; }
 
     public static readonly StyledProperty<object?> CancelButtonContentProperty =
         AvaloniaProperty.Register<SimpleDialog, object?>(nameof(CancelButtonContent));
@@ -112,7 +114,7 @@ internal class SimpleDialog : TemplatedControl
         set => SetValue(CancelButtonContentProperty, value);
     }
 
-    public Action? CancelCallback { get; set; }
+    public CancelEventHandler? CancelCallback { get; set; }
 
     public static readonly StyledProperty<DialogButtonStyle> CancelButtonStyleProperty =
         AvaloniaProperty.Register<SimpleDialog, DialogButtonStyle>(nameof(CancelButtonStyle),
@@ -127,29 +129,22 @@ internal class SimpleDialog : TemplatedControl
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        e.NameScope.Get<Button>("PART_PrimaryButton").Click += (_, _) =>
+        e.NameScope.Get<Button>("PART_PrimaryButton").Click += CreateClickHandler(() => PrimaryCallback, DialogResult.Primary);
+        e.NameScope.Get<Button>("PART_SecondaryButton").Click += CreateClickHandler(() => SecondaryCallback, DialogResult.Secondary);
+        e.NameScope.Get<Button>("PART_TertiaryButton").Click += CreateClickHandler(() => TertiaryCallback, DialogResult.Tertiary);
+        e.NameScope.Get<Button>("PART_CancelButton").Click += CreateClickHandler(() => CancelCallback, DialogResult.Cancel);
+
+        EventHandler<RoutedEventArgs> CreateClickHandler(Func<CancelEventHandler?> callbackFactory, DialogResult result)
         {
-            _manager?.CloseDialog(this, DialogResult.Primary);
-            _manager?.OpenLast();
-            PrimaryCallback?.Invoke();
-        };
-        e.NameScope.Get<Button>("PART_SecondaryButton").Click += (_, _) =>
-        {
-            _manager?.CloseDialog(this, DialogResult.Secondary);
-            _manager?.OpenLast();
-            SecondaryCallback?.Invoke();
-        };
-        e.NameScope.Get<Button>("PART_TertiaryButton").Click += (_, _) =>
-        {
-            _manager?.CloseDialog(this, DialogResult.Tertiary);
-            _manager?.OpenLast();
-            TertiaryCallback?.Invoke();
-        };
-        e.NameScope.Get<Button>("PART_CancelButton").Click += (_, _) =>
-        {
-            _manager?.CloseDialog(this, DialogResult.Cancel);
-            _manager?.OpenLast();
-            CancelCallback?.Invoke();
-        };
+            return delegate
+            {
+                var cancelEventArgs = new CancelEventArgs();
+                callbackFactory()?.Invoke(this, cancelEventArgs);
+                if (cancelEventArgs.Cancel) return;
+
+                _manager?.CloseDialog(this, result);
+                _manager?.OpenLast();
+            };
+        }
     }
 }
