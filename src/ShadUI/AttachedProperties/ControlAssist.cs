@@ -99,7 +99,7 @@ public static class ControlAssist
     ///     Defines an attached property for setting the height excluding label and hint of a control.
     /// </summary>
     public static readonly AttachedProperty<double> HeightProperty =
-        AvaloniaProperty.RegisterAttached<TemplatedControl, double>("Height", typeof(TemplatedControl));
+        AvaloniaProperty.RegisterAttached<TemplatedControl, double>("Height", typeof(TemplatedControl), double.NaN);
 
     /// <summary>
     ///     Gets the value of the <see cref="HeightProperty" />.
