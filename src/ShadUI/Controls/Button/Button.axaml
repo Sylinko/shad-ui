@@ -184,10 +184,19 @@
       <Setter Property="Cursor" Value="Hand"/>
     </Style>
 
-    <!--  NoPressedAnimation  -->
-    <Style Selector="^.NoPressedAnimation">
-      <Style Selector="^:pressed /template/ Panel#RootPanel">
-        <Setter Property="RenderTransform" Value="scale(1, 1)"/>
+    <!--  Outline  -->
+    <Style Selector="^.Outline">
+      <Setter Property="Padding" Value="16,8"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource GhostColor}"/>
+      <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+      <Style Selector="^ /template/ TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+      </Style>
+      <Style Selector="^ /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
       </Style>
     </Style>
 
@@ -232,22 +241,6 @@
       </Style>
       <Style Selector="^ /template/ ContentPresenter">
         <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}"/>
-      </Style>
-    </Style>
-
-    <!--  Outline  -->
-    <Style Selector="^.Outline">
-      <Setter Property="Padding" Value="16,8"/>
-      <Setter Property="Background" Value="Transparent"/>
-      <Setter Property="BorderThickness" Value="1"/>
-      <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource GhostColor}"/>
-      <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-      <Style Selector="^ /template/ TextBlock">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-      </Style>
-      <Style Selector="^ /template/ ContentPresenter">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
       </Style>
     </Style>
 
@@ -305,6 +298,13 @@
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource DestructiveColor50}"/>
       <Style Selector="^ /template/ ContentPresenter">
         <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}"/>
+      </Style>
+    </Style>
+
+    <!--  NoPressedAnimation  -->
+    <Style Selector="^.NoPressedAnimation">
+      <Style Selector="^:pressed /template/ Panel#RootPanel">
+        <Setter Property="RenderTransform" Value="scale(1, 1)"/>
       </Style>
     </Style>
   </ControlTheme>

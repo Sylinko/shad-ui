@@ -45,7 +45,7 @@
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="SeparatorBrush" Value="{DynamicResource BorderColor}"/>
-    <Setter Property="Padding" Value="12,11"/>
+    <Setter Property="Padding" Value="12,4"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="Template">
       <ControlTemplate>
@@ -228,8 +228,7 @@
   <ControlTheme
     x:Key="{x:Type DataGridRowGroupHeader}"
     TargetType="DataGridRowGroupHeader">
-    <Setter Property="FontSize" Value="14"/>
-    <Setter Property="MinHeight" Value="32"/>
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="Background" Value="{DynamicResource GhostHoverColor}"/>
     <Setter Property="FontWeight" Value="DemiBold"/>
     <Setter Property="BorderBrush" Value="{Binding $parent[DataGrid].BorderBrush}"/>
