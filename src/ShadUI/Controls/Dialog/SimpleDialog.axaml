@@ -48,9 +48,15 @@
           <StackPanel
             Margin="{TemplateBinding Padding}"
             Spacing="16">
+            <StackPanel.Styles>
+              <Style Selector="ContentPresenter#DialogTitle TextBlock">
+                <Setter Property="FontSize" Value="{DynamicResource FontSizeL}"/>
+                <Setter Property="FontWeight" Value="DemiBold"/>
+              </Style>
+            </StackPanel.Styles>
             <ContentPresenter
+              x:Name="DialogTitle"
               Content="{TemplateBinding Title}"
-              FontSize="18" FontWeight="DemiBold"
               IsVisible="{TemplateBinding Title, Converter={x:Static ObjectConverters.IsNotNull}}"
               TextWrapping="Wrap"/>
             <ContentPresenter
