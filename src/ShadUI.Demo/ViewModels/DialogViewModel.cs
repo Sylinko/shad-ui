@@ -88,7 +88,7 @@ public sealed partial class DialogViewModel : ViewModelBase, INavigable
             .CreateDialog(
                 "Are you absolutely sure?",
                 "This action cannot be undone. This will permanently delete your account and remove your data from our servers.")
-            .WithPrimaryButton("Continue", DialogButtonStyle.Destructive)
+            .WithPrimaryButton("Continue", buttonStyle: DialogButtonStyle.Destructive)
             .WithCancelButton("Cancel")
             .WithMaxWidth(512)
             .Dismissible()
