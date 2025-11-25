@@ -148,36 +148,6 @@ public class Window : Avalonia.Controls.Window
     }
 
     /// <summary>
-    ///     Whether to show the menu.
-    /// </summary>
-    public static readonly StyledProperty<bool> IsMenuVisibleProperty =
-        AvaloniaProperty.Register<Window, bool>(nameof(IsMenuVisible));
-
-    /// <summary>
-    ///     Gets or sets the value of the <see cref="IsMenuVisibleProperty" />.
-    /// </summary>
-    public bool IsMenuVisible
-    {
-        get => GetValue(IsMenuVisibleProperty);
-        set => SetValue(IsMenuVisibleProperty, value);
-    }
-
-    /// <summary>
-    ///     The menu items.
-    /// </summary>
-    public static readonly StyledProperty<object?> MenuBarContentProperty =
-        AvaloniaProperty.Register<Window, object?>(nameof(MenuBarContent));
-
-    /// <summary>
-    ///     Gets or sets the value of the <see cref="MenuBarContentProperty" />.
-    /// </summary>
-    public object? MenuBarContent
-    {
-        get => GetValue(MenuBarContentProperty);
-        set => SetValue(MenuBarContentProperty, value);
-    }
-
-    /// <summary>
     ///     Whether to show the title bar background.
     /// </summary>
     public static readonly StyledProperty<bool> ShowTitlebarBackgroundProperty =
