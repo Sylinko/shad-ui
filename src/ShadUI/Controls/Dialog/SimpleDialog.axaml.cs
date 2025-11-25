@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 
 // ReSharper disable once CheckNamespace
@@ -73,7 +74,8 @@ internal class SimpleDialog : TemplatedControl
     }
 
     public static readonly StyledProperty<DialogButtonStyle> SecondaryButtonStyleProperty =
-        AvaloniaProperty.Register<SimpleDialog, DialogButtonStyle>(nameof(SecondaryButtonStyle),
+        AvaloniaProperty.Register<SimpleDialog, DialogButtonStyle>(
+            nameof(SecondaryButtonStyle),
             DialogButtonStyle.Secondary);
 
     public DialogButtonStyle SecondaryButtonStyle
@@ -94,7 +96,8 @@ internal class SimpleDialog : TemplatedControl
     }
 
     public static readonly StyledProperty<DialogButtonStyle> TertiaryButtonStyleProperty =
-        AvaloniaProperty.Register<SimpleDialog, DialogButtonStyle>(nameof(TertiaryButtonStyle),
+        AvaloniaProperty.Register<SimpleDialog, DialogButtonStyle>(
+            nameof(TertiaryButtonStyle),
             DialogButtonStyle.Outline);
 
     public DialogButtonStyle TertiaryButtonStyle
@@ -117,7 +120,8 @@ internal class SimpleDialog : TemplatedControl
     public CancelEventHandler? CancelCallback { get; set; }
 
     public static readonly StyledProperty<DialogButtonStyle> CancelButtonStyleProperty =
-        AvaloniaProperty.Register<SimpleDialog, DialogButtonStyle>(nameof(CancelButtonStyle),
+        AvaloniaProperty.Register<SimpleDialog, DialogButtonStyle>(
+            nameof(CancelButtonStyle),
             DialogButtonStyle.Outline);
 
     public DialogButtonStyle CancelButtonStyle
@@ -126,13 +130,31 @@ internal class SimpleDialog : TemplatedControl
         set => SetValue(CancelButtonStyleProperty, value);
     }
 
+    static SimpleDialog()
+    {
+        KeyDownEvent.AddClassHandler<SimpleDialog>(
+            HandleKeyDownEvent,
+            RoutingStrategies.Tunnel | RoutingStrategies.Bubble | RoutingStrategies.Direct,
+            true);
+    }
+
+    private static void HandleKeyDownEvent(SimpleDialog sender, KeyEventArgs args)
+    {
+        if (args.Key is Key.Escape)
+        {
+            sender._cancelHandler?.Invoke(sender, args);
+        }
+    }
+
+    private EventHandler<RoutedEventArgs>? _cancelHandler;
+
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
         e.NameScope.Get<Button>("PART_PrimaryButton").Click += CreateClickHandler(() => PrimaryCallback, DialogResult.Primary);
         e.NameScope.Get<Button>("PART_SecondaryButton").Click += CreateClickHandler(() => SecondaryCallback, DialogResult.Secondary);
         e.NameScope.Get<Button>("PART_TertiaryButton").Click += CreateClickHandler(() => TertiaryCallback, DialogResult.Tertiary);
-        e.NameScope.Get<Button>("PART_CancelButton").Click += CreateClickHandler(() => CancelCallback, DialogResult.Cancel);
+        e.NameScope.Get<Button>("PART_CancelButton").Click += _cancelHandler = CreateClickHandler(() => CancelCallback, DialogResult.Cancel);
 
         EventHandler<RoutedEventArgs> CreateClickHandler(Func<CancelEventHandler?> callbackFactory, DialogResult result)
         {
