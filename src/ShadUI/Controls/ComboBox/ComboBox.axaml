@@ -98,8 +98,19 @@
                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                     VerticalAlignment="Center"
                     Foreground="{TemplateBinding PlaceholderForeground}"
-                    IsVisible="{TemplateBinding SelectionBoxItem, Converter={x:Static ObjectConverters.IsNull}}"
-                    Text="{TemplateBinding PlaceholderText}"/>
+                    Text="{TemplateBinding PlaceholderText}">
+                    <TextBlock.IsVisible>
+                      <MultiBinding Converter="{x:Static BoolConverters.And}">
+                        <Binding
+                          Converter="{x:Static ObjectConverters.IsNull}"
+                          Path="SelectionBoxItem"
+                          RelativeSource="{RelativeSource TemplatedParent}"/>
+                        <Binding
+                          Path="!IsEditable"
+                          RelativeSource="{RelativeSource TemplatedParent}"/>
+                      </MultiBinding>
+                    </TextBlock.IsVisible>
+                  </TextBlock>
                   <ContentControl
                     Grid.Column="0" Margin="12,0,0,0"
                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -107,9 +118,26 @@
                     Content="{TemplateBinding SelectionBoxItem}"
                     ContentTemplate="{TemplateBinding ItemTemplate}"
                     Foreground="{DynamicResource ForegroundColor}"
+                    IsVisible="{TemplateBinding IsEditable, Converter={x:Static BoolConverters.Not}}"
                     TextBlock.FontSize="{TemplateBinding FontSize}"
                     TextBlock.FontWeight="{TemplateBinding FontWeight}"
                     TextBlock.Foreground="{TemplateBinding Foreground}"/>
+                  <TextBox
+                    Name="PART_EditableTextBox" Grid.Column="0"
+                    Margin="12,0,0,0"
+                    Padding="{TemplateBinding Padding}"
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                    Background="Transparent" BorderThickness="0"
+                    Foreground="{TemplateBinding Foreground}"
+                    IsVisible="{TemplateBinding IsEditable}"
+                    Text="{TemplateBinding Text, Mode=TwoWay}">
+                    <TextBox.Resources>
+                      <SolidColorBrush x:Key="TextControlBackgroundFocused">Transparent</SolidColorBrush>
+                      <SolidColorBrush x:Key="TextControlBackgroundPointerOver">Transparent</SolidColorBrush>
+                      <Thickness x:Key="TextControlBorderThemeThicknessFocused">0</Thickness>
+                    </TextBox.Resources>
+                  </TextBox>
                   <Path
                     Name="Icon" Grid.Column="1"
                     Width="8" Margin="5,0,16,0"
@@ -212,6 +240,10 @@
       <Style Selector="^/template/ TextBlock#Label">
         <Setter Property="Foreground" Value="{DynamicResource ErrorColor}"/>
       </Style>
+    </Style>
+    <Style Selector="^[IsEditable=true]">
+      <Setter Property="IsTabStop" Value="False"/>
+      <Setter Property="KeyboardNavigation.TabNavigation" Value="Local"/>
     </Style>
   </ControlTheme>
 
