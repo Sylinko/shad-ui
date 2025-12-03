@@ -1,49 +1,48 @@
 ﻿<ResourceDictionary
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:shadui="clr-namespace:ShadUI.Controls;assembly=ShadUI"
-    x:ClassModifier="internal">
-    <ControlTheme x:Key="{x:Type MenuFlyoutPresenter}" TargetType="MenuFlyoutPresenter">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
-        <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="0,2" />
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-        <Setter Property="TextBlock.FontSize" Value="14" />
-        <Setter Property="TextBlock.FontWeight" Value="Medium" />
-        <Setter Property="shadui:TopLevelAssist.TransparencyLevelHint" Value="AcrylicBlur" />
-        <Setter Property="shadui:TopLevelAssist.SystemDecorations" Value="BorderOnly" />
-        <Setter Property="shadui:TopLevelAssist.CanResize" Value="False" />
-        <Setter Property="shadui:TopLevelAssist.ExtendClientAreaChromeHints" Value="NoChrome" />
-        <Setter Property="shadui:TopLevelAssist.ExtendClientAreaToDecorationsHint" Value="True" />
-        <Setter Property="Template">
-            <ControlTemplate>
-                <ExperimentalAcrylicBorder CornerRadius="{TemplateBinding CornerRadius}">
-                    <ExperimentalAcrylicBorder.Material>
-                        <ExperimentalAcrylicMaterial
-                            FallbackColor="#CC000000"
-                            MaterialOpacity="0.7"
-                            TintColor="Black"
-                            TintOpacity="0.4" />
-                    </ExperimentalAcrylicBorder.Material>
-                    <Border
-                        Name="LayoutRoot"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}">
-                        <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-                            <ItemsPresenter
-                                Margin="{TemplateBinding Padding}"
-                                Grid.IsSharedSizeScope="True"
-                                ItemsPanel="{TemplateBinding ItemsPanel}"
-                                KeyboardNavigation.TabNavigation="Continue" />
-                        </ScrollViewer>
-                    </Border>
-                </ExperimentalAcrylicBorder>
-            </ControlTemplate>
-        </Setter>
-    </ControlTheme>
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI.Controls;assembly=ShadUI" x:ClassModifier="internal">
+  <ControlTheme
+    x:Key="{x:Type MenuFlyoutPresenter}"
+    TargetType="MenuFlyoutPresenter">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Padding" Value="2"/>
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="TextBlock.FontSize" Value="{DynamicResource FontSizeM}"/>
+    <Setter Property="shadui:TopLevelAssist.TransparencyLevelHint" Value="AcrylicBlur"/>
+    <Setter Property="shadui:TopLevelAssist.SystemDecorations" Value="BorderOnly"/>
+    <Setter Property="shadui:TopLevelAssist.CanResize" Value="False"/>
+    <Setter Property="shadui:TopLevelAssist.ExtendClientAreaChromeHints" Value="NoChrome"/>
+    <Setter Property="shadui:TopLevelAssist.ExtendClientAreaToDecorationsHint" Value="True"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ExperimentalAcrylicBorder CornerRadius="{TemplateBinding CornerRadius}">
+          <ExperimentalAcrylicBorder.Material>
+            <ExperimentalAcrylicMaterial
+              FallbackColor="#CC000000" MaterialOpacity="0.7"
+              TintColor="Black" TintOpacity="0.4"/>
+          </ExperimentalAcrylicBorder.Material>
+          <Border
+            Name="LayoutRoot"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding CornerRadius}">
+            <ScrollViewer
+              HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+              VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+              <ItemsPresenter
+                Margin="{TemplateBinding Padding}"
+                Grid.IsSharedSizeScope="True"
+                ItemsPanel="{TemplateBinding ItemsPanel}"
+                KeyboardNavigation.TabNavigation="Continue"/>
+            </ScrollViewer>
+          </Border>
+        </ExperimentalAcrylicBorder>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
 </ResourceDictionary>
