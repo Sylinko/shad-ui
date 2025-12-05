@@ -205,5 +205,15 @@
         </Style>
       </Style>
     </Style>
+
+    <!--  Compact  -->
+    <Style Selector="^.Compact">
+      <Setter Property="Padding" Value="4"/>
+      <Setter Property="MinHeight" Value="0"/>
+      <Setter Property="Height" Value="NaN"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
+      <Setter Property="FontWeight" Value="Light"/>
+    </Style>
   </ControlTheme>
 </ResourceDictionary>

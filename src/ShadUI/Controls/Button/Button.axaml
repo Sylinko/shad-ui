@@ -266,7 +266,7 @@
       <Setter Property="MinHeight" Value="0"/>
       <Setter Property="Height" Value="NaN"/>
       <Setter Property="Cursor" Value="Hand"/>
-      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
       <Setter Property="FontWeight" Value="Light"/>
     </Style>
 
