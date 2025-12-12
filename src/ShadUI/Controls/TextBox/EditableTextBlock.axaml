@@ -15,7 +15,7 @@
           <TextBlock
             x:Name="PART_TextBlock"
             Padding="{TemplateBinding Padding}"
-            VerticalAlignment="Center"
+            VerticalAlignment="Stretch"
             FontFamily="{TemplateBinding FontFamily}"
             FontSize="{TemplateBinding FontSize}"
             FontStretch="{TemplateBinding FontStretch}"
@@ -26,7 +26,14 @@
             Text="{TemplateBinding Text}"
             TextWrapping="{TemplateBinding TextWrapping}"/>
           <TextBox
-            x:Name="PART_TextBox" Padding="0"
+            x:Name="PART_TextBox"
+            Padding="{TemplateBinding Padding}"
+            VerticalAlignment="Stretch" BorderThickness="0"
+            FontFamily="{TemplateBinding FontFamily}"
+            FontSize="{TemplateBinding FontSize}"
+            FontStretch="{TemplateBinding FontStretch}"
+            FontStyle="{TemplateBinding FontStyle}"
+            FontWeight="{TemplateBinding FontWeight}"
             IsHitTestVisible="{TemplateBinding IsEditing}"
             Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"
             Watermark="{TemplateBinding Watermark}">
