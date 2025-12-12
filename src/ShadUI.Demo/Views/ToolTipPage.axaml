@@ -55,14 +55,40 @@
                 Margin="{StaticResource PageMargin}"
                 Spacing="32">
                 <controls:ControlBlock Title="Usage" Xaml="{Binding UsageCode}">
-                    <Button
+                    <StackPanel Orientation="Horizontal" Spacing="15" HorizontalAlignment="Center">
+                      <Button
                         HorizontalAlignment="Center"
                         Classes="Outline"
                         ToolTip.Placement="Top"
                         ToolTip.Tip="Add to library"
                         ToolTip.VerticalOffset="-5">
-                        Hover
-                    </Button>
+                        Hover Top
+                      </Button>
+                      <Button
+                        HorizontalAlignment="Center"
+                        Classes="Outline"
+                        ToolTip.Placement="Left"
+                        ToolTip.Tip="Add to library"
+                        ToolTip.VerticalOffset="-5">
+                        Hover Left
+                      </Button>
+                      <Button
+                        HorizontalAlignment="Center"
+                        Classes="Outline"
+                        ToolTip.Placement="Right"
+                        ToolTip.Tip="Add to library"
+                        ToolTip.VerticalOffset="-5">
+                        Hover Right
+                      </Button>
+                      <Button
+                        HorizontalAlignment="Center"
+                        Classes="Outline"
+                        ToolTip.Placement="Bottom"
+                        ToolTip.Tip="Add to library"
+                        ToolTip.VerticalOffset="-5">
+                        Hover Bottom
+                      </Button>
+                    </StackPanel>
                 </controls:ControlBlock>
             </StackPanel>
         </ScrollViewer>

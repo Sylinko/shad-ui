@@ -1,65 +1,78 @@
 ﻿<ResourceDictionary
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:sys="using:System"
-    x:ClassModifier="internal">
-    <Design.PreviewWith>
-        <Border Padding="20">
-            <StackPanel Spacing="20">
-                <ToolTip Opacity="1">Text Content</ToolTip>
-                <ToolTip Opacity="1">Very long text content which should exceed the maximum with of the tooltip and wrap.</ToolTip>
-                <ToolTip Opacity="1">
-                    <StackPanel>
-                        <TextBlock>Multi-line</TextBlock>
-                        <TextBlock>Control Content</TextBlock>
-                    </StackPanel>
-                </ToolTip>
-                <Button
-                    Classes="Outline"
-                    ToolTip.Placement="Top"
-                    ToolTip.Tip="Add to library"
-                    ToolTip.VerticalOffset="-5">
-                    Hover
-                </Button>
-            </StackPanel>
-        </Border>
-    </Design.PreviewWith>
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:sys="using:System"
+  xmlns:shad="using:ShadUI"
+  x:ClassModifier="internal">
+  <Design.PreviewWith>
+    <Border Padding="20">
+      <StackPanel Spacing="20">
+        <ToolTip Opacity="1">Text Content</ToolTip>
+        <ToolTip Opacity="1">Very long text content which should exceed the maximum with of the tooltip and wrap.</ToolTip>
+        <ToolTip Opacity="1">
+          <StackPanel>
+            <TextBlock>Multi-line</TextBlock>
+            <TextBlock>Control Content</TextBlock>
+          </StackPanel>
+        </ToolTip>
+        <Button
+          Classes="Outline"
+          ToolTip.Placement="Top"
+          ToolTip.Tip="Add to library"
+          ToolTip.VerticalOffset="-5">
+          Hover
+        </Button>
+      </StackPanel>
+    </Border>
+  </Design.PreviewWith>
 
-    <sys:Double x:Key="ToolTipContentMaxWidth">320</sys:Double>
+  <sys:Double x:Key="ToolTipContentMaxWidth">320</sys:Double>
 
-    <ControlTheme TargetType="ToolTip" x:Key="{x:Type ToolTip}">
-        <Setter Property="FontFamily" Value="{DynamicResource FontFamily}" />
-        <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}" />
-        <Setter Property="Background" Value="{DynamicResource SecondaryColor}" />
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="Padding" Value="12,6" />
-        <Setter Property="MaxWidth" Value="{DynamicResource ToolTipContentMaxWidth}" />
-        <Setter Property="CornerRadius" Value="{DynamicResource MdCornerRadius}" />
-        <Setter Property="Opacity" Value="0" />
-        <Setter Property="Transitions">
+  <ControlTheme TargetType="ToolTip" x:Key="{x:Type ToolTip}">
+    <Setter Property="FontFamily" Value="{DynamicResource FontFamily}"/>
+    <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}"/>
+    <Setter Property="Background" Value="{DynamicResource SecondaryColor}"/>
+    <Setter Property="FontSize" Value="10"/>
+    <Setter Property="Padding" Value="10,4"/>
+    <Setter Property="MaxWidth" Value="{DynamicResource ToolTipContentMaxWidth}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel Name="PART_RootPanel" ClipToBounds="False" Opacity="0">
+          <Panel.Transitions>
             <Transitions>
-                <DoubleTransition Property="Opacity" Duration="0:0:0.20" />
+              <DoubleTransition Property="Opacity" Duration="0:0:0.2"/>
             </Transitions>
-        </Setter>
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Border
-                    Padding="{TemplateBinding Padding}"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="{TemplateBinding CornerRadius}">
-                    <ContentPresenter
-                        Name="PART_ContentPresenter"
-                        MaxWidth="{TemplateBinding MaxWidth}"
-                        Content="{TemplateBinding Content}"
-                        ContentTemplate="{TemplateBinding ContentTemplate}"
-                        TextBlock.TextWrapping="Wrap" />
-                </Border>
-            </ControlTemplate>
-        </Setter>
-        <Style Selector="^:open">
-            <Setter Property="Opacity" Value="1" />
-        </Style>
-    </ControlTheme>
+          </Panel.Transitions>
+          <Border
+            Name="PART_LayoutRoot"
+            Padding="{TemplateBinding Padding}"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding CornerRadius}">
+            <ContentPresenter
+              Name="PART_ContentPresenter"
+              MaxWidth="{TemplateBinding MaxWidth}"
+              Content="{TemplateBinding Content}"
+              ContentTemplate="{TemplateBinding ContentTemplate}"
+              TextBlock.TextWrapping="Wrap"/>
+          </Border>
+          <Path
+            Name="Arrow"
+            IsVisible="False"
+            Data="M 0,0 L 4,4 Q 6,6 8,4 L 12,0"
+            Fill="{TemplateBinding Background}"
+            Stroke="{TemplateBinding BorderBrush}"
+            StrokeJoin="Round"
+            StrokeThickness="{TemplateBinding BorderThickness, Converter={x:Static shad:ThicknessConverters.ToLargest}}"/>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+    <Style Selector="^:open">
+      <Style Selector="^ Panel#PART_RootPanel">
+        <Setter Property="Opacity" Value="1"></Setter>
+      </Style>
+    </Style>
+  </ControlTheme>
 </ResourceDictionary>
