@@ -3,6 +3,7 @@ using Avalonia.Controls.Converters;
 using Avalonia.Controls.Primitives.Converters;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
+using Avalonia.Styling;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
@@ -49,9 +50,8 @@ public static class BasicConverters
     /// <summary>
     ///     Converts a <see cref="ColorPicker" />'s selected color to a string representation.
     /// </summary>
-    public static readonly IValueConverter ToColorStringConverter =
-        new FuncValueConverter<ColorPicker, string, string>((
-            picker, param) =>
+    public static IValueConverter ToColorStringConverter { get; } =
+        new FuncValueConverter<ColorPicker, string, string>((picker, param) =>
         {
             if (picker is null) return "";
 
@@ -60,10 +60,18 @@ public static class BasicConverters
             var color = new SolidColorBrush(picker.HsvColor.ToRgb()).ToString();
 
             if (picker is { IsAlphaEnabled: true, IsAlphaVisible: true }) return toUpper ? color.ToUpper() : color;
-            
+
             var rgb = picker.HsvColor.ToRgb();
             color = $"#{rgb.R:X2}{rgb.G:X2}{rgb.B:X2}";
 
             return toUpper ? color.ToUpper() : color;
+        });
+
+    public static IValueConverter InvertThemeVariant { get; } =
+        new FuncValueConverter<ThemeVariant?, ThemeVariant>(x => x?.Key switch
+        {
+            "Dark" => ThemeVariant.Light,
+            "Light" => ThemeVariant.Dark,
+            _ => x ?? ThemeVariant.Default
         });
 }

@@ -22,11 +22,6 @@
   <ControlTheme
     x:Key="{x:Type TextBlock}"
     TargetType="TextBlock">
-
-    <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
-    <Setter Property="FontWeight" Value="Regular"/>
-    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-
     <Style Selector="^.h1">
       <Setter Property="FontSize" Value="{DynamicResource FontSize4Xl}"/>
       <Setter Property="FontWeight" Value="ExtraBold"/>
@@ -84,14 +79,5 @@
     <Style Selector="^.Error">
       <Setter Property="Foreground" Value="{DynamicResource DestructiveColor}"/>
     </Style>
-  </ControlTheme>
-
-  <ControlTheme
-    x:Key="{x:Type ContentPresenter}"
-    TargetType="ContentPresenter">
-    <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
-    <Setter Property="LineHeight" Value="{DynamicResource LineHeightM}"/>
-    <Setter Property="FontWeight" Value="Regular"/>
-    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
   </ControlTheme>
 </ResourceDictionary>

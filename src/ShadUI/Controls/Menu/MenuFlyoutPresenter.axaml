@@ -6,7 +6,11 @@
     TargetType="MenuFlyoutPresenter">
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="CornerRadius">
+      <OnPlatform
+        x:TypeArguments="CornerRadius" Linux="0"
+        Windows="8" macOS="10"/>
+    </Setter>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="Padding" Value="2"/>
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>

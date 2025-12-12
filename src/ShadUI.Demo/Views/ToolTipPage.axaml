@@ -1,96 +1,87 @@
 ﻿<UserControl
-    x:Class="ShadUI.Demo.Views.ToolTipPage"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:ShadUI.Demo.Controls"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModels="clr-namespace:ShadUI.Demo.ViewModels"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
-    x:DataType="viewModels:ToolTipViewModel"
-    mc:Ignorable="d">
-    <DockPanel LastChildFill="True">
+  x:Class="ShadUI.Demo.Views.ToolTipPage" xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:ShadUI.Demo.Controls"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:viewModels="clr-namespace:ShadUI.Demo.ViewModels" d:DesignHeight="450"
+  d:DesignWidth="800" x:DataType="viewModels:ToolTipViewModel"
+  mc:Ignorable="d">
+  <DockPanel LastChildFill="True">
+    <StackPanel
+      DockPanel.Dock="Top"
+      MaxWidth="{StaticResource PageMaxWidth}"
+      Margin="{StaticResource PageMargin}"
+      Spacing="4">
+      <Grid ColumnDefinitions="* Auto">
+        <TextBlock
+          Classes="h2" Text="Tooltip"/>
         <StackPanel
-            MaxWidth="{StaticResource PageMaxWidth}"
-            Margin="{StaticResource PageMargin}"
-            DockPanel.Dock="Top"
-            Spacing="4">
-            <Grid ColumnDefinitions="* Auto">
-                <TextBlock Classes="h2" Text="Tooltip" />
-                <StackPanel
-                    Grid.Column="1"
-                    Orientation="Horizontal"
-                    Spacing="8">
-                    <Button
-                        Width="28"
-                        Height="28"
-                        Background="{DynamicResource GhostHoverColor}"
-                        Classes="Icon"
-                        Command="{Binding BackPageCommand}">
-                        <Viewbox Margin="6">
-                            <TextBlock Classes="LucideIcon" Text="&#57420;" />
-                        </Viewbox>
-                    </Button>
-                    <Button
-                        Width="28"
-                        Height="28"
-                        Background="{DynamicResource GhostHoverColor}"
-                        Classes="Icon"
-                        Command="{Binding NextPageCommand}">
-                        <Viewbox Margin="6">
-                            <TextBlock Classes="LucideIcon" Text="&#57421;" />
-                        </Viewbox>
-                    </Button>
-                </StackPanel>
-            </Grid>
-            <TextBlock
-                Classes="p"
-                Text="A popup that displays information related to an element when the mouse hovers over it."
-                TextWrapping="Wrap" />
+          Grid.Column="1" Orientation="Horizontal"
+          Spacing="8">
+          <Button
+            Classes="Icon" Width="28"
+            Height="28"
+            Background="{DynamicResource GhostHoverColor}"
+            Command="{Binding BackPageCommand}">
+            <Viewbox Margin="6">
+              <TextBlock
+                Classes="LucideIcon" Text="&#57420;"/>
+            </Viewbox>
+          </Button>
+          <Button
+            Classes="Icon" Width="28"
+            Height="28"
+            Background="{DynamicResource GhostHoverColor}"
+            Command="{Binding NextPageCommand}">
+            <Viewbox Margin="6">
+              <TextBlock
+                Classes="LucideIcon" Text="&#57421;"/>
+            </Viewbox>
+          </Button>
         </StackPanel>
-        <ScrollViewer>
-            <StackPanel
-                MaxWidth="{StaticResource PageMaxWidth}"
-                Margin="{StaticResource PageMargin}"
-                Spacing="32">
-                <controls:ControlBlock Title="Usage" Xaml="{Binding UsageCode}">
-                    <StackPanel Orientation="Horizontal" Spacing="15" HorizontalAlignment="Center">
-                      <Button
-                        HorizontalAlignment="Center"
-                        Classes="Outline"
-                        ToolTip.Placement="Top"
-                        ToolTip.Tip="Add to library"
-                        ToolTip.VerticalOffset="-5">
-                        Hover Top
-                      </Button>
-                      <Button
-                        HorizontalAlignment="Center"
-                        Classes="Outline"
-                        ToolTip.Placement="Left"
-                        ToolTip.Tip="Add to library"
-                        ToolTip.VerticalOffset="-5">
-                        Hover Left
-                      </Button>
-                      <Button
-                        HorizontalAlignment="Center"
-                        Classes="Outline"
-                        ToolTip.Placement="Right"
-                        ToolTip.Tip="Add to library"
-                        ToolTip.VerticalOffset="-5">
-                        Hover Right
-                      </Button>
-                      <Button
-                        HorizontalAlignment="Center"
-                        Classes="Outline"
-                        ToolTip.Placement="Bottom"
-                        ToolTip.Tip="Add to library"
-                        ToolTip.VerticalOffset="-5">
-                        Hover Bottom
-                      </Button>
-                    </StackPanel>
-                </controls:ControlBlock>
-            </StackPanel>
-        </ScrollViewer>
-    </DockPanel>
+      </Grid>
+      <TextBlock
+        Classes="p" Text="A popup that displays information related to an element when the mouse hovers over it."
+        TextWrapping="Wrap"/>
+    </StackPanel>
+    <ScrollViewer>
+      <StackPanel
+        MaxWidth="{StaticResource PageMaxWidth}"
+        Margin="{StaticResource PageMargin}"
+        Spacing="32">
+        <controls:ControlBlock
+          Title="Usage"
+          Xaml="{Binding UsageCode}">
+          <StackPanel
+            HorizontalAlignment="Center" Orientation="Horizontal"
+            Spacing="15">
+            <Button
+              Classes="Outline" HorizontalAlignment="Center"
+              ToolTip.Placement="Pointer" ToolTip.Tip="Add to library">
+              Hover Pointer
+            </Button>
+            <Button
+              Classes="Outline" HorizontalAlignment="Center"
+              ToolTip.Placement="Top" ToolTip.Tip="Add to library">
+              Hover Top
+            </Button>
+            <Button
+              Classes="Outline" HorizontalAlignment="Center"
+              ToolTip.Placement="Left" ToolTip.Tip="Add to library">
+              Hover Left
+            </Button>
+            <Button
+              Classes="Outline" HorizontalAlignment="Center"
+              ToolTip.Placement="Right" ToolTip.Tip="Add to library">
+              Hover Right
+            </Button>
+            <Button
+              Classes="Outline" HorizontalAlignment="Center"
+              ToolTip.Placement="Bottom" ToolTip.Tip="Add to library">
+              Hover Bottom
+            </Button>
+          </StackPanel>
+        </controls:ControlBlock>
+      </StackPanel>
+    </ScrollViewer>
+  </DockPanel>
 </UserControl>

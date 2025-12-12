@@ -16,7 +16,7 @@
 
   <ControlTheme
     x:Key="ToggleSwitchTheme" TargetType="ToggleSwitch">
-    <Setter Property="Foreground" Value="{DynamicResource PrimaryColor}"/>
+    <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
     <Setter Property="RenderTransform">
       <ScaleTransform ScaleX="1.1" ScaleY="1.1"/>
     </Setter>
