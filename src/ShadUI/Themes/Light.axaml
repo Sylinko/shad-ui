@@ -69,6 +69,7 @@
   <Color x:Key="WindowButtonHoverColor">#0D09090B</Color>
 
   <Color x:Key="SidebarBackgroundColor">#66FFFFFF</Color>
+  <Color x:Key="SliderThumbBackgroundColor">#FFFAFAFA</Color>
 
   <Color x:Key="SwitchBackgroundColor">#FFE5E5E5</Color>
   <Color x:Key="SwitchForegroundColor">#FFFFFFFF</Color>
