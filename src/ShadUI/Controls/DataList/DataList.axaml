@@ -1,0 +1,61 @@
+﻿<ResourceDictionary
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI.Controls;assembly=ShadUI">
+  <ControlTheme
+    x:Key="{x:Type shadui:DataList}"
+    TargetType="shadui:DataList">
+    <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Padding" Value="3"/>
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="ScrollViewer.IsScrollChainingEnabled" Value="True"/>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="shadui:DataList">
+        <DataValidationErrors Focusable="False">
+          <Border
+            x:Name="DataListBorder"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            ClipToBounds="{TemplateBinding ClipToBounds}"
+            CornerRadius="{TemplateBinding CornerRadius}">
+            <DockPanel Margin="{TemplateBinding Padding}">
+              <StackPanel
+                DockPanel.Dock="Bottom" HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <ContentPresenter/>
+                <Button
+                  x:Name="PART_AddButton" Classes="Ghost Compact"
+                  Content="{LucideIconContent Plus, Size=18}"/>
+              </StackPanel>
+              <ScrollViewer
+                Name="PART_ScrollViewer" Margin="0,0,-3,0"
+                Padding="0,0,3,0"
+                AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}"
+                Background="{TemplateBinding Background}"
+                BringIntoViewOnFocusChange="{TemplateBinding (ScrollViewer.BringIntoViewOnFocusChange)}"
+                HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+                HorizontalSnapPointsType="{TemplateBinding (ScrollViewer.HorizontalSnapPointsType)}"
+                IsDeferredScrollingEnabled="{TemplateBinding (ScrollViewer.IsDeferredScrollingEnabled)}"
+                IsScrollChainingEnabled="{TemplateBinding (ScrollViewer.IsScrollChainingEnabled)}"
+                VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
+                VerticalSnapPointsType="{TemplateBinding (ScrollViewer.VerticalSnapPointsType)}">
+                <ItemsPresenter
+                  Name="PART_ItemsPresenter"
+                  ItemsPanel="{TemplateBinding ItemsPanel}"/>
+              </ScrollViewer>
+            </DockPanel>
+          </Border>
+        </DataValidationErrors>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:error">
+      <Style Selector="^/template/ Border#DataListBorder">
+        <Setter Property="BorderBrush" Value="{DynamicResource ErrorColor}"/>
+      </Style>
+    </Style>
+  </ControlTheme>
+</ResourceDictionary>

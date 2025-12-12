@@ -1,0 +1,72 @@
+﻿<ResourceDictionary
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="using:ShadUI.Controls">
+  <ControlTheme
+    x:Key="{x:Type shadui:DataListItem}"
+    TargetType="shadui:DataListItem">
+    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+    <Setter Property="Padding" Value="4,2"/>
+    <Setter Property="Margin" Value="0,1,1,1"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource MdCornerRadius}"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="shadui:DataListItem">
+        <Grid
+          ColumnDefinitions="*,Auto" ColumnSpacing="4">
+          <Border
+            Name="BaseBackground" Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding CornerRadius}"
+            Opacity="1"/>
+          <Border
+            Name="HoverBackground" Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Background="{DynamicResource GhostHoverColor}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding CornerRadius}"
+            Opacity="0"/>
+          <ContentPresenter
+            Grid.Column="0"
+            Margin="{TemplateBinding Padding}"
+            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+            Background="Transparent"
+            Content="{TemplateBinding Content}"
+            ContentTemplate="{TemplateBinding ContentTemplate}"
+            CornerRadius="{TemplateBinding CornerRadius}"/>
+          <Button
+            x:Name="PART_RemoveButton" Classes="Ghost Compact"
+            Grid.Column="1" VerticalAlignment="Center"
+            Content="{LucideIconContent Minus, Size=18}"/>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+    <Style Selector="^ /template/ Border">
+      <Setter Property="Transitions">
+        <Transitions>
+          <DoubleTransition
+            Property="Opacity" Duration="0:0:0.20"/>
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="^:focus /template/ Border#HoverBackground">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
+    <Style Selector="^:pointerover /template/ Border#HoverBackground">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
+    <Style Selector="^:focus:pointerover /template/ Border#HoverBackground">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
+    <Style Selector="^:not(:focus):not(:pointerover) /template/ Border#HoverBackground">
+      <Setter Property="Opacity" Value="0"/>
+    </Style>
+  </ControlTheme>
+</ResourceDictionary>

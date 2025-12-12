@@ -23,6 +23,8 @@
     <ResourceInclude Source="avares://ShadUI/Controls/ColorPicker/ColorView.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/ComboBox/ComboBox.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/ComboBox/ComboBoxItem.axaml"/>
+    <ResourceInclude Source="avares://ShadUI/Controls/DataList/DataList.axaml"/>
+    <ResourceInclude Source="avares://ShadUI/Controls/DataList/DataListItem.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/DataGrid/DataGrid.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/DataValidation/DataValidationErrors.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/DateInput/DateInput.axaml"/>
