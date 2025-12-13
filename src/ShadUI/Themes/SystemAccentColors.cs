@@ -6,7 +6,7 @@ using Avalonia.Styling;
 
 namespace ShadUI.Themes;
 
-internal sealed class SystemAccentColors : ResourceProvider
+public sealed class SystemAccentColors : ResourceProvider
 {
     private const string AccentKey = "SystemAccentColor";
     private const string AccentDark1Key = "SystemAccentColorDark1";
@@ -16,6 +16,11 @@ internal sealed class SystemAccentColors : ResourceProvider
     private const string AccentLight2Key = "SystemAccentColorLight2";
     private const string AccentLight3Key = "SystemAccentColorLight3";
     private const string AccentForegroundColorKey = "SystemAccentForegroundColor";
+
+    private const string PrimaryKey = "PrimaryColor";
+    private const string Primary75Key = "PrimaryColor75";
+    private const string Primary50Key = "PrimaryColor50";
+    private const string Primary10Key = "PrimaryColor10";
     
     private static readonly Color SDefaultSystemAccentColor = Color.FromRgb(0, 120, 215);
     private bool _invalidateColors = true;
@@ -82,6 +87,34 @@ internal sealed class SystemAccentColors : ResourceProvider
             {
                 EnsureColors();
                 value = _systemAccentForegroundColor;
+                return true;
+            }
+
+            if (strKey.Equals(PrimaryKey, StringComparison.InvariantCulture))
+            {
+                EnsureColors();
+                value = _systemAccentColor;
+                return true;
+            }
+
+            if (strKey.Equals(Primary75Key, StringComparison.InvariantCulture))
+            {
+                EnsureColors();
+                value = Color.FromUInt32((uint)((_systemAccentColor.ToUInt32() & 0x00FFFFFF) | 0xBF000000));
+                return true;
+            }
+
+            if (strKey.Equals(Primary50Key, StringComparison.InvariantCulture))
+            {
+                EnsureColors();
+                value = Color.FromUInt32((uint)((_systemAccentColor.ToUInt32() & 0x00FFFFFF) | 0x80000000));
+                return true;
+            }
+
+            if (strKey.Equals(Primary10Key, StringComparison.InvariantCulture))
+            {
+                EnsureColors();
+                value = Color.FromUInt32((uint)((_systemAccentColor.ToUInt32() & 0x00FFFFFF) | 0x19000000));
                 return true;
             }
         }

@@ -30,6 +30,7 @@
     <Setter Property="ToolTip.Placement" Value="{ReflectionBinding $parent[Popup].Placement}"/>
     <Setter Property="Background" Value="{DynamicResource ToolTipBackgroundColor}"/>
     <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
     <Setter Property="Padding" Value="10,4"/>
     <Setter Property="MaxWidth" Value="{DynamicResource ToolTipContentMaxWidth}"/>
     <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}"/>

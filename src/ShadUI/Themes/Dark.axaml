@@ -1,5 +1,10 @@
 ﻿<ResourceDictionary
-  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:themes="clr-namespace:ShadUI.Themes">
+
+  <ResourceDictionary.MergedDictionaries>
+    <themes:SystemAccentColors/>
+  </ResourceDictionary.MergedDictionaries>
 
   <!--  basic colors  -->
   <Color x:Key="ForegroundColor">#E5E5E5</Color>
@@ -16,10 +21,6 @@
   <Color x:Key="SelectionColor">#0CE5E5E5</Color>
 
   <!--  theme colors  -->
-  <Color x:Key="PrimaryColor">#E5E5E5</Color>
-  <Color x:Key="PrimaryColor75">#BFE5E5E5</Color>
-  <Color x:Key="PrimaryColor50">#80E5E5E5</Color>
-  <Color x:Key="PrimaryColor10">#19E5E5E5</Color>
   <Color x:Key="PrimaryForegroundColor">#18181B</Color>
   <Color x:Key="SecondaryColor">#36363a</Color>
   <Color x:Key="SecondaryColor75">#BF36363a</Color>
@@ -65,7 +66,7 @@
   <Color x:Key="DialogBackgroundColor">#0A0A0A</Color>
 
   <Color x:Key="TitleBarBackgroundColor">#660A0A0A</Color>
-  <Color x:Key="PopupBackgroundColor">#0A0A0D</Color>
+  <Color x:Key="PopupBackgroundColor">#0A0A0A</Color>
   <Color x:Key="ToolTipBackgroundColor">#FAFAFA</Color>
   <Color x:Key="WindowBackgroundColor">#0A0A0A</Color>
   <Color x:Key="WindowButtonHoverColor">#0DFAFAFA</Color>
