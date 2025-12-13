@@ -21,7 +21,6 @@
   <Color x:Key="SelectionColor">#0CE5E5E5</Color>
 
   <!--  theme colors  -->
-  <Color x:Key="PrimaryForegroundColor">#FAFAFA</Color>
   <Color x:Key="SecondaryColor">#D9D9D9</Color>
   <Color x:Key="SecondaryColor75">#BFD9D9D9</Color>
   <Color x:Key="SecondaryColor50">#80D9D9D9</Color>
@@ -67,6 +66,7 @@
 
   <Color x:Key="TitleBarBackgroundColor">#66FFFFFF</Color>
   <Color x:Key="PopupBackgroundColor">#FAFAFA</Color>
+  <Color x:Key="ToolTipForegroundColor">#FAFAFA</Color>
   <Color x:Key="ToolTipBackgroundColor">#0A0A0D</Color>
   <Color x:Key="WindowBackgroundColor">#FFFFFF</Color>
   <Color x:Key="WindowButtonHoverColor">#0D09090B</Color>

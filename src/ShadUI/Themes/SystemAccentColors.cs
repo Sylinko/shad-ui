@@ -21,6 +21,7 @@ public sealed class SystemAccentColors : ResourceProvider
     private const string Primary75Key = "PrimaryColor75";
     private const string Primary50Key = "PrimaryColor50";
     private const string Primary10Key = "PrimaryColor10";
+    private const string PrimaryForegroundColorKey = "PrimaryForegroundColor";
     
     private static readonly Color SDefaultSystemAccentColor = Color.FromRgb(0, 120, 215);
     private bool _invalidateColors = true;
@@ -100,21 +101,28 @@ public sealed class SystemAccentColors : ResourceProvider
             if (strKey.Equals(Primary75Key, StringComparison.InvariantCulture))
             {
                 EnsureColors();
-                value = Color.FromUInt32((uint)((_systemAccentColor.ToUInt32() & 0x00FFFFFF) | 0xBF000000));
+                value = Color.FromUInt32(_systemAccentColor.ToUInt32() & 0x00FFFFFF | 0xBF000000);
                 return true;
             }
 
             if (strKey.Equals(Primary50Key, StringComparison.InvariantCulture))
             {
                 EnsureColors();
-                value = Color.FromUInt32((uint)((_systemAccentColor.ToUInt32() & 0x00FFFFFF) | 0x80000000));
+                value = Color.FromUInt32(_systemAccentColor.ToUInt32() & 0x00FFFFFF | 0x80000000);
                 return true;
             }
 
             if (strKey.Equals(Primary10Key, StringComparison.InvariantCulture))
             {
                 EnsureColors();
-                value = Color.FromUInt32((uint)((_systemAccentColor.ToUInt32() & 0x00FFFFFF) | 0x19000000));
+                value = Color.FromUInt32(_systemAccentColor.ToUInt32() & 0x00FFFFFF | 0x19000000);
+                return true;
+            }
+
+            if (strKey.Equals(PrimaryForegroundColorKey, StringComparison.InvariantCulture))
+            {
+                EnsureColors();
+                value = _systemAccentForegroundColor;
                 return true;
             }
         }
