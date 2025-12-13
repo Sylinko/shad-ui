@@ -109,7 +109,8 @@ public class SidebarItem : RadioButton
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-
+        
+        ToolTip.SetPlacement(this, PlacementMode.Right);
         if (e.NameScope.Find("PART_ContentPresenter") is ContentPresenter contentPresenter)
         {
             _contentPresenter = contentPresenter;
@@ -131,6 +132,12 @@ public class SidebarItem : RadioButton
         {
             var toExpand = change.GetNewValue<bool>();
             AnimateExpand(toExpand);
+            UpdateToolTip();
+        }
+
+        if (change.Property == ContentProperty)
+        {
+            UpdateToolTip();
         }
 
         if (change.Property == IconProperty)
@@ -143,6 +150,31 @@ public class SidebarItem : RadioButton
             this.GetVisualAncestors().OfType<Sidebar>().FirstOrDefault() is { } sidebar)
         {
             sidebar.SelectedSidebarItem = this;
+        }
+    }
+
+    private void UpdateToolTip()
+    {
+        if (Expanded || Content is null)
+        {
+            ToolTip.SetTip(this, null);
+            return;
+        }
+
+        if (Content is Visual)
+        {
+            if (Content is TextBlock tb)
+            {
+                ToolTip.SetTip(this, tb.Text);
+            }
+            else
+            {
+                ToolTip.SetTip(this, null);
+            }
+        }
+        else
+        {
+            ToolTip.SetTip(this, Content);
         }
     }
 
