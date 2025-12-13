@@ -1,189 +1,183 @@
 <ResourceDictionary
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:shadui="clr-namespace:ShadUI">
-    <Design.PreviewWith>
-        <Border Padding="16">
-            <StackPanel Spacing="16">
-                <!--  All Badge Variants  -->
-                <StackPanel Spacing="8">
-                    <TextBlock
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        Text="Badge Variants" />
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <shadui:Badge Content="Default" />
-                        <shadui:Badge Classes="Secondary" Content="Secondary" />
-                        <shadui:Badge Classes="Destructive" Content="Destructive" />
-                        <shadui:Badge Classes="Outline" Content="Outline" />
-                    </StackPanel>
-                </StackPanel>
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI">
+  <Design.PreviewWith>
+    <Border Padding="16">
+      <StackPanel Spacing="16">
+        <!--  All Badge Variants  -->
+        <StackPanel Spacing="8">
+          <TextBlock
+            FontSize="14" FontWeight="SemiBold"
+            Text="Badge Variants"/>
+          <StackPanel
+            Orientation="Horizontal" Spacing="8">
+            <shadui:Badge Content="Default"/>
+            <shadui:Badge
+              Classes="Secondary" Content="Secondary"/>
+            <shadui:Badge
+              Classes="Destructive" Content="Destructive"/>
+            <shadui:Badge
+              Classes="Outline" Content="Outline"/>
+          </StackPanel>
+        </StackPanel>
 
-                <!--  Different Content Lengths  -->
-                <StackPanel Spacing="8">
-                    <TextBlock
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        Text="Content Length Examples" />
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <shadui:Badge Content="1" />
-                        <shadui:Badge Content="99+" />
-                        <shadui:Badge Content="New" />
-                        <shadui:Badge Content="Beta" />
-                        <shadui:Badge Content="Coming Soon" />
-                        <shadui:Badge Classes="Secondary" Content="Long Badge Text Example" />
-                    </StackPanel>
-                </StackPanel>
+        <!--  Different Content Lengths  -->
+        <StackPanel Spacing="8">
+          <TextBlock
+            FontSize="14" FontWeight="SemiBold"
+            Text="Content Length Examples"/>
+          <StackPanel
+            Orientation="Horizontal" Spacing="8">
+            <shadui:Badge Content="1"/>
+            <shadui:Badge Content="99+"/>
+            <shadui:Badge Content="New"/>
+            <shadui:Badge Content="Beta"/>
+            <shadui:Badge Content="Coming Soon"/>
+            <shadui:Badge
+              Classes="Secondary" Content="Long Badge Text Example"/>
+          </StackPanel>
+        </StackPanel>
 
-                <!--  Multiple Badges in Context  -->
-                <StackPanel Spacing="8">
-                    <TextBlock
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        Text="Multiple Badges with Consistent Spacing" />
-                    <StackPanel Orientation="Horizontal" Spacing="6">
-                        <shadui:Badge Content="Active" />
-                        <shadui:Badge Classes="Secondary" Content="Pending" />
-                        <shadui:Badge Classes="Destructive" Content="Error" />
-                        <shadui:Badge Classes="Outline" Content="Draft" />
-                    </StackPanel>
-                </StackPanel>
+        <!--  Multiple Badges in Context  -->
+        <StackPanel Spacing="8">
+          <TextBlock
+            FontSize="14" FontWeight="SemiBold"
+            Text="Multiple Badges with Consistent Spacing"/>
+          <StackPanel
+            Orientation="Horizontal" Spacing="6">
+            <shadui:Badge Content="Active"/>
+            <shadui:Badge
+              Classes="Secondary" Content="Pending"/>
+            <shadui:Badge
+              Classes="Destructive" Content="Error"/>
+            <shadui:Badge
+              Classes="Outline" Content="Draft"/>
+          </StackPanel>
+        </StackPanel>
 
-                <!--  Badges in Different Layout Contexts  -->
-                <StackPanel Spacing="8">
-                    <TextBlock
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        Text="Layout Integration Examples" />
-                    <Grid
-                        ColumnDefinitions="Auto,*,Auto"
-                        RowDefinitions="Auto,Auto,Auto"
-                        RowSpacing="8">
-                        <!--  Row 1  -->
-                        <TextBlock
-                            Grid.Column="0"
-                            VerticalAlignment="Center"
-                            Text="Status:" />
-                        <shadui:Badge
-                            Grid.Row="0"
-                            Grid.Column="2"
-                            Content="Online" />
+        <!--  Badges in Different Layout Contexts  -->
+        <StackPanel Spacing="8">
+          <TextBlock
+            FontSize="14" FontWeight="SemiBold"
+            Text="Layout Integration Examples"/>
+          <Grid
+            ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto"
+            RowSpacing="8">
+            <!--  Row 1  -->
+            <TextBlock
+              Grid.Column="0" VerticalAlignment="Center"
+              Text="Status:"/>
+            <shadui:Badge
+              Grid.Row="0" Grid.Column="2"
+              Content="Online"/>
 
-                        <!--  Row 2  -->
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            VerticalAlignment="Center"
-                            Text="Priority:" />
-                        <shadui:Badge
-                            Grid.Row="1"
-                            Grid.Column="2"
-                            Classes="Destructive"
-                            Content="High" />
+            <!--  Row 2  -->
+            <TextBlock
+              Grid.Row="1" Grid.Column="0"
+              VerticalAlignment="Center" Text="Priority:"/>
+            <shadui:Badge
+              Classes="Destructive" Grid.Row="1"
+              Grid.Column="2" Content="High"/>
 
-                        <!--  Row 3  -->
-                        <TextBlock
-                            Grid.Row="2"
-                            Grid.Column="0"
-                            VerticalAlignment="Center"
-                            Text="Version:" />
-                        <shadui:Badge
-                            Grid.Row="2"
-                            Grid.Column="2"
-                            Classes="Outline"
-                            Content="v2.1.0" />
-                    </Grid>
-                </StackPanel>
+            <!--  Row 3  -->
+            <TextBlock
+              Grid.Row="2" Grid.Column="0"
+              VerticalAlignment="Center" Text="Version:"/>
+            <shadui:Badge
+              Classes="Outline" Grid.Row="2"
+              Grid.Column="2" Content="v2.1.0"/>
+          </Grid>
+        </StackPanel>
 
-                <!--  Disabled State  -->
-                <StackPanel Spacing="8">
-                    <TextBlock
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        Text="Disabled State" />
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <shadui:Badge Content="Disabled" IsEnabled="False" />
-                        <shadui:Badge
-                            Classes="Secondary"
-                            Content="Disabled"
-                            IsEnabled="False" />
-                        <shadui:Badge
-                            Classes="Destructive"
-                            Content="Disabled"
-                            IsEnabled="False" />
-                        <shadui:Badge
-                            Classes="Outline"
-                            Content="Disabled"
-                            IsEnabled="False" />
-                    </StackPanel>
-                </StackPanel>
-            </StackPanel>
+        <!--  Disabled State  -->
+        <StackPanel Spacing="8">
+          <TextBlock
+            FontSize="14" FontWeight="SemiBold"
+            Text="Disabled State"/>
+          <StackPanel
+            Orientation="Horizontal" Spacing="8">
+            <shadui:Badge
+              Content="Disabled" IsEnabled="False"/>
+            <shadui:Badge
+              Classes="Secondary" Content="Disabled"
+              IsEnabled="False"/>
+            <shadui:Badge
+              Classes="Destructive" Content="Disabled"
+              IsEnabled="False"/>
+            <shadui:Badge
+              Classes="Outline" Content="Disabled"
+              IsEnabled="False"/>
+          </StackPanel>
+        </StackPanel>
+      </StackPanel>
+    </Border>
+  </Design.PreviewWith>
+
+  <ControlTheme
+    x:Key="BadgeControlTheme"
+    TargetType="{x:Type shadui:Badge}">
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
+    <Setter Property="FontWeight" Value="Medium"/>
+    <Setter Property="Padding" Value="6,2"/>
+    <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border
+          Name="Container"
+          Padding="{TemplateBinding Padding}"
+          Background="{TemplateBinding Background}"
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}"
+          CornerRadius="{TemplateBinding CornerRadius}">
+          <ContentPresenter
+            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+            Content="{TemplateBinding Content}"
+            FontSize="{TemplateBinding FontSize}"
+            FontWeight="{TemplateBinding FontWeight}"
+            Foreground="{TemplateBinding Foreground}"
+            TextElement.Foreground="{TemplateBinding Foreground}"/>
         </Border>
-    </Design.PreviewWith>
+      </ControlTemplate>
+    </Setter>
 
-    <ControlTheme x:Key="BadgeControlTheme" TargetType="{x:Type shadui:Badge}">
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="FontWeight" Value="Medium" />
-        <Setter Property="Padding" Value="6,2" />
-        <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}" />
-        <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}" />
-        <Setter Property="Background" Value="{DynamicResource PrimaryColor}" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Border
-                    Name="Container"
-                    Padding="{TemplateBinding Padding}"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="{TemplateBinding CornerRadius}">
-                    <ContentPresenter
-                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                        Content="{TemplateBinding Content}"
-                        FontSize="{TemplateBinding FontSize}"
-                        FontWeight="{TemplateBinding FontWeight}"
-                        Foreground="{TemplateBinding Foreground}"
-                        TextElement.Foreground="{TemplateBinding Foreground}" />
-                </Border>
-            </ControlTemplate>
-        </Setter>
+    <Style Selector="^.Secondary">
+      <Setter Property="Background" Value="{DynamicResource SecondaryColor}"/>
+      <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}"/>
+      <Style Selector="^ /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}"/>
+      </Style>
+    </Style>
 
-        <Style Selector="^.Secondary">
-            <Setter Property="Background" Value="{DynamicResource SecondaryColor}" />
-            <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}" />
-            <Style Selector="^ /template/ ContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}" />
-            </Style>
-        </Style>
+    <Style Selector="^.Destructive">
+      <Setter Property="Background" Value="{DynamicResource DestructiveColor}"/>
+      <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}"/>
+      <Style Selector="^ /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}"/>
+      </Style>
+    </Style>
 
-        <Style Selector="^.Destructive">
-            <Setter Property="Background" Value="{DynamicResource DestructiveColor}" />
-            <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
-            <Style Selector="^ /template/ ContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}" />
-            </Style>
-        </Style>
+    <Style Selector="^.Outline">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+      <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+      <Style Selector="^ /template/ ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+      </Style>
+    </Style>
 
-        <Style Selector="^.Outline">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
-            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
-            <Style Selector="^ /template/ ContentPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
-            </Style>
-        </Style>
+    <Style Selector="^:disabled">
+      <Setter Property="Opacity" Value="0.5"/>
+    </Style>
+  </ControlTheme>
 
-        <Style Selector="^:disabled">
-            <Setter Property="Opacity" Value="0.5" />
-        </Style>
-    </ControlTheme>
-
-    <ControlTheme
-        x:Key="{x:Type shadui:Badge}"
-        BasedOn="{StaticResource BadgeControlTheme}"
-        TargetType="{x:Type shadui:Badge}" />
+  <ControlTheme
+    x:Key="{x:Type shadui:Badge}"
+    BasedOn="{StaticResource BadgeControlTheme}"
+    TargetType="{x:Type shadui:Badge}"/>
 </ResourceDictionary>

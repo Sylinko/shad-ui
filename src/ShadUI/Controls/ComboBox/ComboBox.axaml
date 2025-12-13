@@ -39,7 +39,7 @@
     <Setter Property="PlaceholderForeground" Value="{DynamicResource MutedColor}"/>
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
     <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
-    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="FontWeight" Value="Medium"/>
     <Setter Property="shadui:ControlAssist.MinHeight" Value="36"/>
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>

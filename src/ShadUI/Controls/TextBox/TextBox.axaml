@@ -104,9 +104,9 @@
   <ControlTheme
     x:Key="{x:Type TextBox}"
     TargetType="TextBox">
-    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="Cursor" Value="IBeam"/>
-    <Setter Property="LineHeight" Value="20"/>
+    <Setter Property="LineHeight" Value="{DynamicResource LineHeightM}"/>
     <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
