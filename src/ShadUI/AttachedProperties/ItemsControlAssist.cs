@@ -44,8 +44,5 @@ public static class ItemsControlAssist
     /// </summary>
     /// <param name="wrap"></param>
     /// <param name="value"></param>
-    public static void SetAnimatedScroll(ItemsControl wrap, bool value)
-    {
-        wrap.SetValue(AnimatedScrollProperty, value);
-    }
+    public static void SetAnimatedScroll(ItemsControl wrap, bool value) => wrap.SetValue(AnimatedScrollProperty, value);
 }

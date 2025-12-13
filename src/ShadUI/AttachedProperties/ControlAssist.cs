@@ -44,10 +44,7 @@ public static class ControlAssist
     /// </summary>
     /// <param name="control"></param>
     /// <param name="value"></param>
-    public static void SetLabel(TemplatedControl control, string value)
-    {
-        control.SetValue(LabelProperty, value);
-    }
+    public static void SetLabel(TemplatedControl control, string value) => control.SetValue(LabelProperty, value);
 
     /// <summary>
     ///     Show a hint text.
@@ -67,10 +64,7 @@ public static class ControlAssist
     /// </summary>
     /// <param name="control"></param>
     /// <param name="value"></param>
-    public static void SetHint(TemplatedControl control, string value)
-    {
-        control.SetValue(HintProperty, value);
-    }
+    public static void SetHint(TemplatedControl control, string value) => control.SetValue(HintProperty, value);
 
     /// <summary>
     ///     Indicates whether the control should show progress.
@@ -90,10 +84,7 @@ public static class ControlAssist
     /// </summary>
     /// <param name="control">The control.</param>
     /// <param name="value">The value to set.</param>
-    public static void SetShowProgress(TemplatedControl control, bool value)
-    {
-        control.SetValue(ShowProgressProperty, value);
-    }
+    public static void SetShowProgress(TemplatedControl control, bool value) => control.SetValue(ShowProgressProperty, value);
 
     /// <summary>
     ///     Defines an attached property for setting the height excluding label and hint of a control.
@@ -199,18 +190,12 @@ public static class ControlAssist
     /// <param name="value">
     ///     The value to set - true to show the icon, false to hide it.
     /// </param>
-    public static void SetShowIcon(TemplatedControl obj, bool value)
-    {
-        obj.SetValue(ShowIconProperty, value);
-    }
+    public static void SetShowIcon(TemplatedControl obj, bool value) => obj.SetValue(ShowIconProperty, value);
 
     /// <summary>
     ///     Gets the value of the <see cref="ShowIconProperty" />.
     /// </summary>
     /// <param name="obj">The control.</param>
     /// <returns>A boolean value indicating whether the icon should be displayed.</returns>
-    public static bool GetShowIcon(TemplatedControl obj)
-    {
-        return obj.GetValue(ShowIconProperty);
-    }
+    public static bool GetShowIcon(TemplatedControl obj) => obj.GetValue(ShowIconProperty);
 }

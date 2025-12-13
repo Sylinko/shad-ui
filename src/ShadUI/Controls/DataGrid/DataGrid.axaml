@@ -294,7 +294,7 @@
     <Setter Property="RowBackground" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="HeadersVisibility" Value="Column"/>
-    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="FontWeight" Value="Medium"/>
     <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
     <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>

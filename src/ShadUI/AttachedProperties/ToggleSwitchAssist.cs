@@ -13,7 +13,8 @@ public static class ToggleSwitchAssist
     ///     Determines whether the toggle switch on/of content is right-aligned.
     /// </summary>
     public static readonly AttachedProperty<bool> RightAlignedContentProperty =
-        AvaloniaProperty.RegisterAttached<ToggleSwitch, bool>("RightAlignedContent",
+        AvaloniaProperty.RegisterAttached<ToggleSwitch, bool>(
+            "RightAlignedContent",
             typeof(ToggleSwitch));
 
     /// <summary>
@@ -29,8 +30,6 @@ public static class ToggleSwitchAssist
     /// </summary>
     /// <param name="toggleSwitch"></param>
     /// <param name="value"></param>
-    public static void SetRightAlignedContent(ToggleSwitch toggleSwitch, bool value)
-    {
+    public static void SetRightAlignedContent(ToggleSwitch toggleSwitch, bool value) => 
         toggleSwitch.SetValue(RightAlignedContentProperty, value);
-    }
 }

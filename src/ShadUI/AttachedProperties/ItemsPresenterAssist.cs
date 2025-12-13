@@ -44,8 +44,5 @@ public static class ItemsPresenterAssist
     /// </summary>
     /// <param name="wrap"></param>
     /// <param name="value"></param>
-    public static void SetAnimatedScroll(ItemsPresenter wrap, bool value)
-    {
-        wrap.SetValue(AnimatedScrollProperty, value);
-    }
+    public static void SetAnimatedScroll(ItemsPresenter wrap, bool value) => wrap.SetValue(AnimatedScrollProperty, value);
 }

@@ -44,8 +44,5 @@ public static class StackPanelAssist
     /// </summary>
     /// <param name="wrap"></param>
     /// <param name="value"></param>
-    public static void SetAnimatedScroll(StackPanel wrap, bool value)
-    {
-        wrap.SetValue(AnimatedScrollProperty, value);
-    }
+    public static void SetAnimatedScroll(StackPanel wrap, bool value) => wrap.SetValue(AnimatedScrollProperty, value);
 }

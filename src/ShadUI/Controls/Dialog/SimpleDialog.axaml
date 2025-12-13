@@ -61,7 +61,8 @@
               TextWrapping="Wrap"/>
             <ContentPresenter
               Content="{TemplateBinding Content}"
-              FontSize="14" FontWeight="Medium"
+              FontSize="{DynamicResource FontSizeM}"
+              FontWeight="Medium"
               Foreground="{DynamicResource MutedColor}"
               LineHeight="20" TextWrapping="Wrap"/>
             <StackPanel

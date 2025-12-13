@@ -36,20 +36,14 @@ public static class ScrollEventAssist
     /// </summary>
     /// <param name="control">The control.</param>
     /// <returns>The prevent scroll propagation value.</returns>
-    public static bool GetPreventScrollPropagation(Control control)
-    {
-        return control.GetValue(PreventScrollPropagationProperty);
-    }
+    public static bool GetPreventScrollPropagation(Control control) => control.GetValue(PreventScrollPropagationProperty);
 
     /// <summary>
     ///     Sets the value of <see cref="PreventScrollPropagationProperty" />
     /// </summary>
     /// <param name="control">The control.</param>
     /// <param name="value">The prevent scroll propagation value to set.</param>
-    public static void SetPreventScrollPropagation(Control control, bool value)
-    {
-        control.SetValue(PreventScrollPropagationProperty, value);
-    }
+    public static void SetPreventScrollPropagation(Control control, bool value) => control.SetValue(PreventScrollPropagationProperty, value);
 
     private static void HandlePreventScrollPropagationChanged(Control control, AvaloniaPropertyChangedEventArgs args)
     {
@@ -65,8 +59,5 @@ public static class ScrollEventAssist
         }
     }
 
-    private static void OnPointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        e.Handled = true;
-    }
+    private static void OnPointerWheelChanged(object? sender, PointerWheelEventArgs e) => e.Handled = true;
 }

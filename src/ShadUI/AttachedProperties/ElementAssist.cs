@@ -42,20 +42,14 @@ public class ElementAssist
     /// </summary>
     /// <param name="element"></param>
     /// <param name="value"></param>
-    public static void SetClasses(AvaloniaObject element, string value)
-    {
-        element.SetValue(ClassesProperty, value);
-    }
+    public static void SetClasses(AvaloniaObject element, string value) => element.SetValue(ClassesProperty, value);
 
     /// <summary>
     ///     Gets the classes of the element.
     /// </summary>
     /// <param name="element"></param>
     /// <returns></returns>
-    public static string GetClasses(AvaloniaObject element)
-    {
-        return element.GetValue(ClassesProperty);
-    }
+    public static string GetClasses(AvaloniaObject element) => element.GetValue(ClassesProperty);
 
     /// <summary>
     ///     Gets whether the element should be focused when loaded.
@@ -67,18 +61,12 @@ public class ElementAssist
     /// <summary>
     ///     Sets whether the element should be focused when loaded.
     /// </summary>
-    public static void SetFocusOnLoad(AvaloniaObject element, bool value)
-    {
-        element.SetValue(FocusOnLoadProperty, value);
-    }
+    public static void SetFocusOnLoad(AvaloniaObject element, bool value) => element.SetValue(FocusOnLoadProperty, value);
 
     /// <summary>
     ///     Gets whether the element should be focused when loaded.
     /// </summary>
-    public static bool GetFocusOnLoad(AvaloniaObject element)
-    {
-        return element.GetValue(FocusOnLoadProperty);
-    }
+    public static bool GetFocusOnLoad(AvaloniaObject element) => element.GetValue(FocusOnLoadProperty);
 
     private static void HandleFocusOnLoadChanged(AvaloniaObject element, AvaloniaPropertyChangedEventArgs args)
     {
@@ -98,6 +86,9 @@ public class ElementAssist
     ///     When the specified child element gains or loses focus, the parent element's Tag property
     ///     will be set to "active" or "inactive" respectively.
     /// </summary>
+    /// <summary>
+    ///     Defines an attached property that allows a parent element to track focus state of a child element.
+    /// </summary>
     public static readonly AttachedProperty<string> AttachFocusProperty =
         AvaloniaProperty.RegisterAttached<ElementAssist, Control, string>("AttachFocus");
 
@@ -106,20 +97,14 @@ public class ElementAssist
     /// </summary>
     /// <param name="obj">The parent control that will track the focus state.</param>
     /// <param name="value">The name of the child element to monitor for focus changes.</param>
-    public static void SetAttachFocus(Control obj, string value)
-    {
-        obj.SetValue(AttachFocusProperty, value);
-    }
+    public static void SetAttachFocus(Control obj, string value) => obj.SetValue(AttachFocusProperty, value);
 
     /// <summary>
     ///     Gets the name of the child element whose focus state is being tracked by the parent element.
     /// </summary>
     /// <param name="obj">The parent control that is tracking the focus state.</param>
     /// <returns>The name of the child element being monitored, or null if no element is being tracked.</returns>
-    public static string GetAttachFocus(Control obj)
-    {
-        return obj.GetValue(AttachFocusProperty);
-    }
+    public static string GetAttachFocus(Control obj) => obj.GetValue(AttachFocusProperty);
 
     private static void HandleAttachFocusChanged(Control element, AvaloniaPropertyChangedEventArgs e)
     {

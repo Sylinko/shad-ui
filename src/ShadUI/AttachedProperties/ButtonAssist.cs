@@ -21,20 +21,14 @@ public static class ButtonAssist
     /// </summary>
     /// <param name="textBox"></param>
     /// <returns></returns>
-    public static bool GetShowProgress(Button textBox)
-    {
-        return textBox.GetValue(ShowProgressProperty);
-    }
+    public static bool GetShowProgress(Button textBox) => textBox.GetValue(ShowProgressProperty);
 
     /// <summary>
     ///     Set the value of the <see cref="ShowProgressProperty" />.
     /// </summary>
     /// <param name="textBox"></param>
     /// <param name="value"></param>
-    public static void SetShowProgress(Button textBox, bool value)
-    {
-        textBox.SetValue(ShowProgressProperty, value);
-    }
+    public static void SetShowProgress(Button textBox, bool value) => textBox.SetValue(ShowProgressProperty, value);
 
     /// <summary>
     ///     Add button icon.
@@ -47,20 +41,14 @@ public static class ButtonAssist
     /// </summary>
     /// <param name="textBox"></param>
     /// <returns></returns>
-    public static object GetIcon(Button textBox)
-    {
-        return textBox.GetValue(IconProperty);
-    }
+    public static object GetIcon(Button textBox) => textBox.GetValue(IconProperty);
 
     /// <summary>
     ///     Set the value of the <see cref="IconProperty" />.
     /// </summary>
     /// <param name="textBox"></param>
     /// <param name="value"></param>
-    public static void SetIcon(Button textBox, object value)
-    {
-        textBox.SetValue(IconProperty, value);
-    }
+    public static void SetIcon(Button textBox, object value) => textBox.SetValue(IconProperty, value);
 
     /// <summary>
     ///     Attached property for setting the hover background brush of a <see cref="Button" />.
@@ -73,25 +61,32 @@ public static class ButtonAssist
     /// </summary>
     /// <param name="btn">The button to set the hover background for.</param>
     /// <param name="value">The brush to use as the hover background.</param>
-    public static void SetHoverBackground(Button btn, IBrush value)
-    {
-        btn.SetValue(HoverBackgroundProperty, value);
-    }
+    public static void SetHoverBackground(Button btn, IBrush value) => btn.SetValue(HoverBackgroundProperty, value);
 
     /// <summary>
     ///     Gets the hover background brush for the specified <see cref="Button" />.
     /// </summary>
     /// <param name="btn">The button to get the hover background from.</param>
     /// <returns>The brush used as the hover background.</returns>
-    public static IBrush GetHoverBackground(Button btn)
-    {
-        return btn.GetValue(HoverBackgroundProperty);
-    }
+    public static IBrush GetHoverBackground(Button btn) => btn.GetValue(HoverBackgroundProperty);
 
+    /// <summary>
+    ///     Attached property for setting the icon size of a <see cref="Button" />.
+    /// </summary>
     public static readonly AttachedProperty<double> IconSizeProperty =
         AvaloniaProperty.RegisterAttached<Button, double>("IconSize", typeof(Button), 16d);
 
+    /// <summary>
+    ///     Sets the icon size for the specified <see cref="Button" />.
+    /// </summary>
+    /// <param name="obj">The button to set the icon size for.</param>
+    /// <param name="value">The size to use for the icon.</param>
     public static void SetIconSize(Button obj, double value) => obj.SetValue(IconSizeProperty, value);
 
+    /// <summary>
+    ///     Gets the icon size for the specified <see cref="Button" />.
+    /// </summary>
+    /// <param name="obj">The button to get the icon size from.</param>
+    /// <returns>The size used for the icon.</returns>
     public static double GetIconSize(Button obj) => obj.GetValue(IconSizeProperty);
 }

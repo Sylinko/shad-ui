@@ -61,7 +61,8 @@
                 <ContentPresenter.DataTemplates>
                   <DataTemplate DataType="system:String">
                     <TextBlock
-                      Name="HeaderText" FontSize="14"
+                      Name="HeaderText"
+                      FontSize="{DynamicResource FontSizeM}"
                       FontWeight="Medium"
                       Text="{CompiledBinding}"/>
                   </DataTemplate>
@@ -145,7 +146,7 @@
     <!--  Primary  -->
     <Style Selector="^.Primary">
       <Setter Property="Height" Value="36"/>
-      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
       <Setter Property="Padding" Value="16,8"/>
       <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
       <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
@@ -175,7 +176,7 @@
     <!--  Secondary  -->
     <Style Selector="^.Secondary">
       <Setter Property="Height" Value="36"/>
-      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
       <Setter Property="Padding" Value="16,8"/>
       <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
       <Setter Property="Background" Value="{DynamicResource SecondaryColor}"/>
@@ -205,7 +206,7 @@
     <!--  Outline  -->
     <Style Selector="^.Outline">
       <Setter Property="Height" Value="36"/>
-      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
       <Setter Property="Padding" Value="16,8"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
@@ -236,7 +237,7 @@
     <!--  Ghost  -->
     <Style Selector="^.Ghost">
       <Setter Property="Height" Value="36"/>
-      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
       <Setter Property="Padding" Value="16,8"/>
       <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
       <Style Selector="^:pressed /template/ Panel#RootPanel">

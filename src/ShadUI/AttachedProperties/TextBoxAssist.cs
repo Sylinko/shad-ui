@@ -44,20 +44,14 @@ public class TextBoxAssist
     /// </summary>
     /// <param name="element">The TextBox element to set the format on.</param>
     /// <param name="value">The format string to apply (e.g., "C2", "P0", "N1").</param>
-    public static void SetFormatNumber(AvaloniaObject element, string value)
-    {
-        element.SetValue(FormatNumberProperty, value);
-    }
+    public static void SetFormatNumber(AvaloniaObject element, string value) => element.SetValue(FormatNumberProperty, value);
 
     /// <summary>
     ///     Gets the number format string applied to the specified TextBox.
     /// </summary>
     /// <param name="element">The TextBox element to get the format from.</param>
     /// <returns>The format string applied to the TextBox.</returns>
-    public static string GetFormatNumber(AvaloniaObject element)
-    {
-        return element.GetValue(FormatNumberProperty);
-    }
+    public static string GetFormatNumber(AvaloniaObject element) => element.GetValue(FormatNumberProperty);
 
     private static void HandleFormatNumberChanged(AvaloniaObject element, AvaloniaPropertyChangedEventArgs args)
     {
@@ -118,18 +112,12 @@ public class TextBoxAssist
     /// </summary>
     /// <param name="obj">The TextBox element to set the clearable property on.</param>
     /// <param name="value">True to enable the clear button; false to disable it.</param>
-    public static void SetClearable(TextBox obj, bool value)
-    {
-        obj.SetValue(ClearableProperty, value);
-    }
+    public static void SetClearable(TextBox obj, bool value) => obj.SetValue(ClearableProperty, value);
 
     /// <summary>
     ///     Gets whether the specified TextBox displays a clear button.
     /// </summary>
     /// <param name="obj">The TextBox element to get the clearable property from.</param>
     /// <returns>True if the clear button is enabled; false otherwise.</returns>
-    public static bool GetClearable(TextBox obj)
-    {
-        return obj.GetValue(ClearableProperty);
-    }
+    public static bool GetClearable(TextBox obj) => obj.GetValue(ClearableProperty);
 }
