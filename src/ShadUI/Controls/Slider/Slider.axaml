@@ -1,33 +1,28 @@
 ﻿<ResourceDictionary
-  xmlns="https://github.com/avaloniaui"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:sys="using:System"
-  x:ClassModifier="internal">
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:sys="using:System" x:ClassModifier="internal">
   <Design.PreviewWith>
     <ThemeVariantScope RequestedThemeVariant="Dark">
       <Border
-        Background="Black"
-        Width="400"
-        Height="600"
-        Margin="20">
+        Width="400" Height="600"
+        Margin="20" Background="Black">
         <DockPanel LastChildFill="True">
-          <StackPanel DockPanel.Dock="Top" Spacing="10">
+          <StackPanel
+            DockPanel.Dock="Top" Spacing="10">
             <Slider Value="50"/>
-            <Slider IsDirectionReversed="True" Value="50"/>
             <Slider
-              IsSnapToTickEnabled="True"
-              TickFrequency="10"
-              TickPlacement="TopLeft"
+              IsDirectionReversed="True" Value="50"/>
+            <Slider
+              IsSnapToTickEnabled="True" TickFrequency="10"
+              TickPlacement="TopLeft" Value="50"/>
+            <Slider
+              TickFrequency="10" TickPlacement="BottomRight"
               Value="50"/>
             <Slider
-              TickFrequency="10"
-              TickPlacement="BottomRight"
+              TickFrequency="10" TickPlacement="Outside"
               Value="50"/>
             <Slider
-              TickFrequency="10"
-              TickPlacement="Outside"
-              Value="50"/>
-            <Slider IsEnabled="False" Value="50"/>
+              IsEnabled="False" Value="50"/>
             <Slider Value="50">
               <DataValidationErrors.Error>
                 <sys:Exception>
@@ -38,48 +33,41 @@
               </DataValidationErrors.Error>
             </Slider>
           </StackPanel>
-          <StackPanel Orientation="Horizontal" Spacing="10">
-            <Slider Orientation="Vertical" Value="50"/>
+          <StackPanel
+            Orientation="Horizontal" Spacing="10">
             <Slider
-              IsDirectionReversed="True"
-              Orientation="Vertical"
+              Orientation="Vertical" Value="50"/>
+            <Slider
+              IsDirectionReversed="True" Orientation="Vertical"
               Value="50"/>
             <Slider
-              IsEnabled="False"
-              Orientation="Vertical"
+              IsEnabled="False" Orientation="Vertical"
               Value="50"/>
             <Slider
-              Orientation="Vertical"
-              TickFrequency="10"
-              TickPlacement="TopLeft"
-              Value="50"/>
+              Orientation="Vertical" TickFrequency="10"
+              TickPlacement="TopLeft" Value="50"/>
             <Slider
-              Orientation="Vertical"
-              TickFrequency="10"
-              TickPlacement="BottomRight"
-              Value="50"/>
+              Orientation="Vertical" TickFrequency="10"
+              TickPlacement="BottomRight" Value="50"/>
             <Slider
-              Orientation="Vertical"
-              TickFrequency="10"
-              TickPlacement="Outside"
-              Value="50"/>
+              Orientation="Vertical" TickFrequency="10"
+              TickPlacement="Outside" Value="50"/>
           </StackPanel>
         </DockPanel>
       </Border>
     </ThemeVariantScope>
   </Design.PreviewWith>
 
-  <ControlTheme x:Key="SliderHorizontalRepeatButton" TargetType="RepeatButton">
+  <ControlTheme
+    x:Key="SliderHorizontalRepeatButton" TargetType="RepeatButton">
     <Setter Property="Template">
       <ControlTemplate>
         <Grid>
           <Border
-            Name="FocusTarget"
-            Margin="0,-10"
+            Name="FocusTarget" Margin="0,-10"
             Background="Transparent"/>
           <Border
-            Name="TrackBackground"
-            Height="6"
+            Name="TrackBackground" Height="6"
             VerticalAlignment="Center"
             Background="{TemplateBinding Background}"
             CornerRadius="{TemplateBinding CornerRadius}"/>
@@ -88,17 +76,16 @@
     </Setter>
   </ControlTheme>
 
-  <ControlTheme x:Key="SliderVerticalRepeatButton" TargetType="RepeatButton">
+  <ControlTheme
+    x:Key="SliderVerticalRepeatButton" TargetType="RepeatButton">
     <Setter Property="Template">
       <ControlTemplate>
         <Grid>
           <Border
-            Name="FocusTarget"
-            Margin="0,-10"
+            Name="FocusTarget" Margin="0,-10"
             Background="Transparent"/>
           <Border
-            Name="TrackBackground"
-            Width="6"
+            Name="TrackBackground" Width="6"
             HorizontalAlignment="Center"
             Background="{TemplateBinding Background}"
             CornerRadius="{TemplateBinding CornerRadius}"/>
@@ -107,20 +94,22 @@
     </Setter>
   </ControlTheme>
 
-  <ControlTheme x:Key="SliderThumbTheme" TargetType="Thumb">
+  <ControlTheme
+    x:Key="SliderThumbTheme" TargetType="Thumb">
     <Setter Property="Template">
       <ControlTemplate>
         <Grid>
           <Border
-            Name="Halo"
-            Margin="0"
+            Name="Halo" Margin="0"
             Background="Gray"
             CornerRadius="{DynamicResource FullCornerRadius}"
             Opacity="0">
             <Border.Transitions>
               <Transitions>
-                <DoubleTransition Property="Opacity" Duration="0:0:0.2"/>
-                <ThicknessTransition Property="Margin" Duration="0:0:0.2"/>
+                <DoubleTransition
+                  Property="Opacity" Duration="0:0:0.2"/>
+                <ThicknessTransition
+                  Property="Margin" Duration="0:0:0.2"/>
               </Transitions>
             </Border.Transitions>
           </Border>
@@ -148,7 +137,9 @@
     </Style>
   </ControlTheme>
 
-  <ControlTheme x:Key="{x:Type Slider}" TargetType="Slider">
+  <ControlTheme
+    x:Key="{x:Type Slider}"
+    TargetType="Slider">
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="Foreground" Value="{DynamicResource PrimaryColor}"/>
@@ -159,22 +150,21 @@
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
             CornerRadius="{TemplateBinding CornerRadius}">
-            <Grid x:Name="SliderContainer" Margin="{TemplateBinding Padding}">
+            <Grid
+              x:Name="SliderContainer"
+              Margin="{TemplateBinding Padding}">
               <Grid.Styles>
                 <Style Selector="TickBar">
                   <Setter Property="ReservedSpace" Value="{CompiledBinding #PART_Track.Thumb.Bounds}"/>
                 </Style>
               </Grid.Styles>
               <Grid
-                x:Name="HorizontalTemplate"
-                ColumnDefinitions="Auto,Auto,*"
+                x:Name="HorizontalTemplate" ColumnDefinitions="Auto,Auto,*"
                 RowDefinitions="Auto,Auto,Auto">
                 <TickBar
-                  Grid.Row="0" Grid.Column="0"
-                  Name="TopTickBar"
-                  Grid.ColumnSpan="3"
-                  Height="10"
-                  Margin="0,0,0,4"
+                  Name="TopTickBar" Grid.Row="0"
+                  Grid.Column="0" Grid.ColumnSpan="3"
+                  Height="10" Margin="0,0,0,4"
                   VerticalAlignment="Bottom"
                   Fill="{DynamicResource BorderColor}"
                   IsVisible="False"
@@ -185,12 +175,9 @@
                   TickFrequency="{TemplateBinding Slider.TickFrequency}"
                   Ticks="{TemplateBinding Ticks}"/>
                 <TickBar
-                  Name="BottomTickBar"
-                  Grid.Row="2"
-                  Grid.Column="0"
-                  Grid.ColumnSpan="3"
-                  Height="10"
-                  Margin="0,4,0,0"
+                  Name="BottomTickBar" Grid.Row="2"
+                  Grid.Column="0" Grid.ColumnSpan="3"
+                  Height="10" Margin="0,4,0,0"
                   VerticalAlignment="Top"
                   Fill="{DynamicResource BorderColor}"
                   IsVisible="False"
@@ -201,11 +188,9 @@
                   TickFrequency="{TemplateBinding Slider.TickFrequency}"
                   Ticks="{TemplateBinding Ticks}"/>
                 <Track
-                  Name="PART_Track"
-                  Grid.Row="1"
-                  Margin="0, 4"
-                  Grid.Column="0"
-                  Grid.ColumnSpan="3"
+                  Name="PART_Track" Grid.Row="1"
+                  Grid.Column="0" Grid.ColumnSpan="3"
+                  Margin="0,4"
                   IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
                   Maximum="{TemplateBinding Maximum}"
                   Minimum="{TemplateBinding Minimum}"
@@ -213,28 +198,22 @@
                   Value="{TemplateBinding Value, Mode=TwoWay}">
                   <Track.DecreaseButton>
                     <RepeatButton
-                      Name="PART_DecreaseButton"
-                      Margin="1,0,-5,0"
+                      Name="PART_DecreaseButton" Margin="1,0,-5,0"
                       Background="{DynamicResource PrimaryColor}"
-                      CornerRadius="3"
-                      Focusable="False"
+                      CornerRadius="3" Focusable="False"
                       Theme="{StaticResource SliderHorizontalRepeatButton}"/>
                   </Track.DecreaseButton>
                   <Track.IncreaseButton>
                     <RepeatButton
-                      Name="PART_IncreaseButton"
-                      Margin="-5,0,1,0"
-                      Background="{DynamicResource PrimaryColor10}"
-                      CornerRadius="3"
-                      Focusable="False"
+                      Name="PART_IncreaseButton" Margin="-5,0,1,0"
+                      Background="{DynamicResource GhostColor}"
+                      CornerRadius="3" Focusable="False"
                       Theme="{StaticResource SliderHorizontalRepeatButton}"/>
                   </Track.IncreaseButton>
                   <Thumb
-                    Name="Thumb"
-                    Width="16"
+                    Name="Thumb" Width="16"
+                    Height="16" Padding="0"
                     ClipToBounds="False"
-                    Height="16"
-                    Padding="0"
                     DataContext="{TemplateBinding Value}"
                     Theme="{StaticResource SliderThumbTheme}"/>
                 </Track>
@@ -262,14 +241,11 @@
                   </Style>
                 </Grid.Styles>
                 <Grid
-                  x:Name="VerticalTemplate"
-                  ColumnDefinitions="Auto,Auto,Auto"
+                  x:Name="VerticalTemplate" ColumnDefinitions="Auto,Auto,Auto"
                   RowDefinitions="*,Auto,Auto">
                   <TickBar
-                    Name="LeftTickBar"
-                    Grid.RowSpan="3"
-                    Width="10"
-                    Margin="0,0,4,0"
+                    Name="LeftTickBar" Grid.RowSpan="3"
+                    Width="10" Margin="0,0,4,0"
                     HorizontalAlignment="Right"
                     Fill="{DynamicResource BorderColor}"
                     IsVisible="False"
@@ -280,12 +256,9 @@
                     TickFrequency="{TemplateBinding Slider.TickFrequency}"
                     Ticks="{TemplateBinding Ticks}"/>
                   <TickBar
-                    Name="RightTickBar"
-                    Grid.Row="0"
-                    Grid.RowSpan="3"
-                    Grid.Column="2"
-                    Width="10"
-                    Margin="4,0,0,0"
+                    Name="RightTickBar" Grid.Row="0"
+                    Grid.RowSpan="3" Grid.Column="2"
+                    Width="10" Margin="4,0,0,0"
                     HorizontalAlignment="Left"
                     Fill="{DynamicResource BorderColor}"
                     IsVisible="False"
@@ -296,37 +269,29 @@
                     TickFrequency="{TemplateBinding Slider.TickFrequency}"
                     Ticks="{TemplateBinding Ticks}"/>
                   <Track
-                    Name="PART_Track"
-                    Grid.Row="0"
-                    Grid.RowSpan="3"
-                    Grid.Column="1"
+                    Name="PART_Track" Grid.Row="0"
+                    Grid.RowSpan="3" Grid.Column="1"
                     IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
                     Maximum="{TemplateBinding Maximum}"
                     Minimum="{TemplateBinding Minimum}"
                     Orientation="Vertical"
-                    Value="{TemplateBinding Value,
-                                                                Mode=TwoWay}">
+                    Value="{TemplateBinding Value, Mode=TwoWay}">
                     <Track.DecreaseButton>
                       <RepeatButton
-                        Name="PART_DecreaseButton"
-                        Margin="0,-5,0,1"
+                        Name="PART_DecreaseButton" Margin="0,-5,0,1"
                         Background="{DynamicResource PrimaryColor}"
-                        CornerRadius="3"
-                        Focusable="False"
+                        CornerRadius="3" Focusable="False"
                         Theme="{StaticResource SliderVerticalRepeatButton}"/>
                     </Track.DecreaseButton>
                     <Track.IncreaseButton>
                       <RepeatButton
-                        Name="PART_IncreaseButton"
-                        Margin="0,1,0,-5"
+                        Name="PART_IncreaseButton" Margin="0,1,0,-5"
                         Background="{DynamicResource PrimaryColor10}"
-                        CornerRadius="3"
-                        Focusable="False"
+                        CornerRadius="3" Focusable="False"
                         Theme="{StaticResource SliderVerticalRepeatButton}"/>
                     </Track.IncreaseButton>
                     <Thumb
-                      Width="16"
-                      Height="16"
+                      Width="16" Height="16"
                       Padding="0"
                       DataContext="{TemplateBinding Value}"
                       Theme="{StaticResource SliderThumbTheme}"/>
@@ -340,23 +305,19 @@
     </Style>
 
     <!--  TickBar Placement States  -->
-    <Style
-      Selector="^[TickPlacement=TopLeft] /template/ TickBar#LeftTickBar, ^[TickPlacement=Outside] /template/ TickBar#LeftTickBar">
+    <Style Selector="^[TickPlacement=TopLeft] /template/ TickBar#LeftTickBar, ^[TickPlacement=Outside] /template/ TickBar#LeftTickBar">
       <Setter Property="IsVisible" Value="True"/>
     </Style>
 
-    <Style
-      Selector="^[TickPlacement=TopLeft] /template/ TickBar#TopTickBar, ^[TickPlacement=Outside] /template/ TickBar#TopTickBar">
+    <Style Selector="^[TickPlacement=TopLeft] /template/ TickBar#TopTickBar, ^[TickPlacement=Outside] /template/ TickBar#TopTickBar">
       <Setter Property="IsVisible" Value="True"/>
     </Style>
 
-    <Style
-      Selector="^[TickPlacement=BottomRight] /template/ TickBar#BottomTickBar, ^[TickPlacement=Outside] /template/ TickBar#BottomTickBar">
+    <Style Selector="^[TickPlacement=BottomRight] /template/ TickBar#BottomTickBar, ^[TickPlacement=Outside] /template/ TickBar#BottomTickBar">
       <Setter Property="IsVisible" Value="True"/>
     </Style>
 
-    <Style
-      Selector="^[TickPlacement=BottomRight] /template/ TickBar#RightTickBar, ^[TickPlacement=Outside] /template/ TickBar#RightTickBar">
+    <Style Selector="^[TickPlacement=BottomRight] /template/ TickBar#RightTickBar, ^[TickPlacement=Outside] /template/ TickBar#RightTickBar">
       <Setter Property="IsVisible" Value="True"/>
     </Style>
 

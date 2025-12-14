@@ -2,210 +2,68 @@
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Platform;
-using Avalonia.Styling;
 
 namespace ShadUI.Themes;
 
-public sealed class SystemAccentColors : ResourceProvider
+/// <summary>
+/// A ResourceDictionary that updates its colors based on the system accent color.
+/// </summary>
+public sealed class SystemAccentColors : ResourceDictionary
 {
-    private const string AccentKey = "SystemAccentColor";
-    private const string AccentDark1Key = "SystemAccentColorDark1";
-    private const string AccentDark2Key = "SystemAccentColorDark2";
-    private const string AccentDark3Key = "SystemAccentColorDark3";
-    private const string AccentLight1Key = "SystemAccentColorLight1";
-    private const string AccentLight2Key = "SystemAccentColorLight2";
-    private const string AccentLight3Key = "SystemAccentColorLight3";
-    private const string AccentForegroundColorKey = "SystemAccentForegroundColor";
-
     private const string PrimaryKey = "PrimaryColor";
     private const string Primary75Key = "PrimaryColor75";
     private const string Primary50Key = "PrimaryColor50";
     private const string Primary10Key = "PrimaryColor10";
-    private const string PrimaryForegroundColorKey = "PrimaryForegroundColor";
+    private const string PrimaryForegroundKey = "PrimaryForegroundColor";
     
     private static readonly Color SDefaultSystemAccentColor = Color.FromRgb(0, 120, 215);
-    private bool _invalidateColors = true;
-    private Color _systemAccentColor;
-    private Color _systemAccentColorDark1, _systemAccentColorDark2, _systemAccentColorDark3;
-    private Color _systemAccentColorLight1, _systemAccentColorLight2, _systemAccentColorLight3;
-    private Color _systemAccentForegroundColor;
-
-    public override bool HasResources => true;
-    public override bool TryGetResource(object key, ThemeVariant? theme, out object? value)
+    
+    public SystemAccentColors()
     {
-        if (key is string strKey)
-        {
-            if (strKey.Equals(AccentKey, StringComparison.InvariantCulture))
-            {
-                EnsureColors();
-                value = _systemAccentColor;
-                return true;
-            }
-
-            if (strKey.Equals(AccentDark1Key, StringComparison.InvariantCulture))
-            {
-                EnsureColors();
-                value = _systemAccentColorDark1;
-                return true;
-            }
-
-            if (strKey.Equals(AccentDark2Key, StringComparison.InvariantCulture))
-            {
-                EnsureColors();
-                value = _systemAccentColorDark2;
-                return true;
-            }
-
-            if (strKey.Equals(AccentDark3Key, StringComparison.InvariantCulture))
-            {
-                EnsureColors();
-                value = _systemAccentColorDark3;
-                return true;
-            }
-
-            if (strKey.Equals(AccentLight1Key, StringComparison.InvariantCulture))
-            {
-                EnsureColors();
-                value = _systemAccentColorLight1;
-                return true;
-            }
-
-            if (strKey.Equals(AccentLight2Key, StringComparison.InvariantCulture))
-            {
-                EnsureColors();
-                value = _systemAccentColorLight2;
-                return true;
-            }
-
-            if (strKey.Equals(AccentLight3Key, StringComparison.InvariantCulture))
-            {
-                EnsureColors();
-                value = _systemAccentColorLight3;
-                return true;
-            }
-
-            if (strKey.Equals(AccentForegroundColorKey, StringComparison.InvariantCulture))
-            {
-                EnsureColors();
-                value = _systemAccentForegroundColor;
-                return true;
-            }
-
-            if (strKey.Equals(PrimaryKey, StringComparison.InvariantCulture))
-            {
-                EnsureColors();
-                value = _systemAccentColor;
-                return true;
-            }
-
-            if (strKey.Equals(Primary75Key, StringComparison.InvariantCulture))
-            {
-                EnsureColors();
-                value = Color.FromUInt32(_systemAccentColor.ToUInt32() & 0x00FFFFFF | 0xBF000000);
-                return true;
-            }
-
-            if (strKey.Equals(Primary50Key, StringComparison.InvariantCulture))
-            {
-                EnsureColors();
-                value = Color.FromUInt32(_systemAccentColor.ToUInt32() & 0x00FFFFFF | 0x80000000);
-                return true;
-            }
-
-            if (strKey.Equals(Primary10Key, StringComparison.InvariantCulture))
-            {
-                EnsureColors();
-                value = Color.FromUInt32(_systemAccentColor.ToUInt32() & 0x00FFFFFF | 0x19000000);
-                return true;
-            }
-
-            if (strKey.Equals(PrimaryForegroundColorKey, StringComparison.InvariantCulture))
-            {
-                EnsureColors();
-                value = _systemAccentForegroundColor;
-                return true;
-            }
-        }
-
-        value = null;
-        return false;
-    }
-
-    protected override void OnAddOwner(IResourceHost owner)
-    {
-        if (GetFromOwner(owner) is { } platformSettings)
+        if (Application.Current?.PlatformSettings is { } platformSettings)
         {
             platformSettings.ColorValuesChanged += PlatformSettingsOnColorValuesChanged;
         }
-
-        _invalidateColors = true;
+        
+        UpdateColors();
     }
 
-    protected override void OnRemoveOwner(IResourceHost owner)
-    {
-        if (GetFromOwner(owner) is { } platformSettings)
-        {
-            platformSettings.ColorValuesChanged -= PlatformSettingsOnColorValuesChanged;
-        }
+    private void PlatformSettingsOnColorValuesChanged(object? sender, PlatformColorValues e) => 
+        UpdateColors();
 
-        _invalidateColors = true;
+    private void UpdateColors()
+    {
+        var platformSettings = Application.Current?.PlatformSettings;
+        var systemAccentColor = platformSettings?.GetColorValues().AccentColor1 ?? SDefaultSystemAccentColor;
+        
+        var (d1, d2, d3) = CalculateAccentShades(systemAccentColor);
+        
+        var luminance = (0.299 * systemAccentColor.R + 0.587 * systemAccentColor.G + 0.114 * systemAccentColor.B) / 255;
+        var systemAccentForegroundColor = luminance > 0.6 ? 
+            new Color(255, 29, 29, 31) : 
+            new Color(255, 245, 245, 247);
+
+        SetItems(
+        [
+            new KeyValuePair<object, object?>(PrimaryKey, systemAccentColor),
+            new KeyValuePair<object, object?>(Primary75Key, d1),
+            new KeyValuePair<object, object?>(Primary50Key, d2),
+            new KeyValuePair<object, object?>(Primary10Key, d3),
+            new KeyValuePair<object, object?>(PrimaryForegroundKey, systemAccentForegroundColor),
+        ]);
     }
 
-    private void EnsureColors()
+    private static (Color d1, Color d2, Color d3) CalculateAccentShades(Color accentColor)
     {
-        if (_invalidateColors)
-        {
-            _invalidateColors = false;
-
-            var platformSettings = GetFromOwner(Owner);
-            
-            _systemAccentColor = platformSettings?.GetColorValues().AccentColor1 ?? SDefaultSystemAccentColor;
-            (_systemAccentColorDark1,_systemAccentColorDark2, _systemAccentColorDark3,
-                    _systemAccentColorLight1, _systemAccentColorLight2, _systemAccentColorLight3) = CalculateAccentShades(_systemAccentColor);
-
-            _systemAccentForegroundColor = _systemAccentColor.ToHsl().L > 0.6 ? Colors.Black : Colors.White;
-        }
-    }
-
-    private static IPlatformSettings? GetFromOwner(IResourceHost? owner)
-    {
-        return owner switch
-        {
-            Application app => app.PlatformSettings,
-            Visual visual => TopLevel.GetTopLevel(visual)?.PlatformSettings,
-            _ => null
-        };
-    }
-    
-    public static (Color d1, Color d2, Color d3, Color l1, Color l2, Color l3) CalculateAccentShades(Color accentColor)
-    {
-        // dark1step = (hslAccent.L - SystemAccentColorDark1.L) * 255
         const double dark1Step = 28.5 / 255d;
         const double dark2Step = 49 / 255d;
         const double dark3Step = 74.5 / 255d;
-        // light1step = (SystemAccentColorLight1.L - hslAccent.L) * 255
-        const double light1Step = 39 / 255d;
-        const double light2Step = 70 / 255d;
-        const double light3Step = 103 / 255d;
         
         var hslAccent = accentColor.ToHsl();
-
         return (
-            // Darker shades
             new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L - dark1Step).ToRgb(),
             new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L - dark2Step).ToRgb(),
-            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L - dark3Step).ToRgb(),
-
-            // Lighter shades
-            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L + light1Step).ToRgb(),
-            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L + light2Step).ToRgb(),
-            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L + light3Step).ToRgb()
+            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L - dark3Step).ToRgb()
         );
-    }
-    
-    private void PlatformSettingsOnColorValuesChanged(object? sender, PlatformColorValues e)
-    {
-        _invalidateColors = true;
-        Owner?.NotifyHostedResourcesChanged(ResourcesChangedEventArgs.Empty);
     }
 }

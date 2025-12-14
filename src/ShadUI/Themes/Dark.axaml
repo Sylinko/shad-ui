@@ -1,12 +1,8 @@
 ﻿<ResourceDictionary
-  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:themes="clr-namespace:ShadUI.Themes">
-
-  <ResourceDictionary.MergedDictionaries>
-    <themes:SystemAccentColors/>
-  </ResourceDictionary.MergedDictionaries>
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
   <!--  basic colors  -->
+  <Color x:Key="TransparentColor">#00000000</Color>
   <Color x:Key="ForegroundColor">#E5E5E5</Color>
   <Color x:Key="ForegroundLeadColor">#A1A1AA</Color>
   <Color x:Key="BackgroundColor">Transparent</Color>

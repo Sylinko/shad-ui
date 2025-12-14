@@ -193,12 +193,6 @@
       <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource GhostColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-      <Style Selector="^ /template/ TextBlock">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-      </Style>
-      <Style Selector="^ /template/ ContentPresenter">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-      </Style>
     </Style>
 
     <!--  Primary  -->
@@ -206,15 +200,7 @@
       <Setter Property="Padding" Value="16,8"/>
       <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
-      <Style Selector="^ /template/ TextBlock">
-        <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
-      </Style>
-      <Style Selector="^ /template/ ContentPresenter">
-        <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
-      </Style>
-      <Style Selector="^ /template/ Border#HoverBackground">
-        <Setter Property="Background" Value="{DynamicResource PrimaryColor50}"/>
-      </Style>
+      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource PrimaryColor50}"/>
     </Style>
 
     <!--  Secondary  -->
@@ -223,12 +209,6 @@
       <Setter Property="Background" Value="{DynamicResource SecondaryColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource SecondaryColor50}"/>
-      <Style Selector="^ /template/ TextBlock">
-        <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}"/>
-      </Style>
-      <Style Selector="^ /template/ ContentPresenter">
-        <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}"/>
-      </Style>
     </Style>
 
     <!--  Destructive  -->
@@ -237,12 +217,6 @@
       <Setter Property="Background" Value="{DynamicResource DestructiveColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource DestructiveColor50}"/>
-      <Style Selector="^ /template/ TextBlock">
-        <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}"/>
-      </Style>
-      <Style Selector="^ /template/ ContentPresenter">
-        <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}"/>
-      </Style>
     </Style>
 
     <!--  Ghost  -->
@@ -253,12 +227,6 @@
       <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource GhostColor}"/>
-      <Style Selector="^ /template/ TextBlock">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-      </Style>
-      <Style Selector="^ /template/ ContentPresenter">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-      </Style>
     </Style>
 
     <!--  Compact  -->
