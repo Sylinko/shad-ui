@@ -18,6 +18,7 @@
         <PackageReference Include="MinVer"/>
         <PackageReference Include="Lucide.Avalonia"/>
         <PackageReference Include="SkiaSharp" />
+        <PackageReference Include="Xaml.Behaviors.Avalonia" />
     </ItemGroup>
 
     <PropertyGroup>
