@@ -2,9 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
-using Avalonia.Controls.Primitives;
-using Avalonia.Media;
-using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 // ReSharper disable once CheckNamespace
@@ -62,9 +59,6 @@ public class SidebarItem : RadioButton
         set => SetValue(SpacingProperty, value);
     }
 
-    private ContentPresenter? _contentPresenter;
-    private double _contentPresenterWidth;
-
     /// <summary>
     ///     Defines the <see cref="HasIcon" /> property.
     /// </summary>
@@ -101,24 +95,6 @@ public class SidebarItem : RadioButton
         get => GetValue(RouteProperty);
         set => SetValue(RouteProperty, value);
     }
-    
-    /// <summary>
-    ///     Called when the template is applied to the control.
-    /// </summary>
-    /// <param name="e">The template applied event arguments.</param>
-    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
-    {
-        base.OnApplyTemplate(e);
-        
-        ToolTip.SetPlacement(this, PlacementMode.Right);
-        if (e.NameScope.Find("PART_ContentPresenter") is ContentPresenter contentPresenter)
-        {
-            _contentPresenter = contentPresenter;
-            _contentPresenterWidth = _contentPresenter.Width;
-
-            AnimateExpand(Expanded);
-        }
-    }
 
     /// <summary>
     ///     Called when a property value changes.
@@ -130,8 +106,6 @@ public class SidebarItem : RadioButton
 
         if (change.Property == ExpandedProperty)
         {
-            var toExpand = change.GetNewValue<bool>();
-            AnimateExpand(toExpand);
             UpdateToolTip();
         }
 
@@ -175,38 +149,6 @@ public class SidebarItem : RadioButton
         else
         {
             ToolTip.SetTip(this, Content);
-        }
-    }
-
-    private void AnimateExpand(bool toExpand)
-    {
-        if (toExpand)
-        {
-            _contentPresenter?.SetValue(IsVisibleProperty, true);
-
-            var originalTextWrapping = _contentPresenter?.GetValue(TextBlock.TextWrappingProperty);
-            _contentPresenter?.SetValue(TextBlock.TextWrappingProperty, TextWrapping.NoWrap);
-
-            _contentPresenter?.Animate(WidthProperty)
-                .From(0)
-                .To(_contentPresenterWidth)
-                .WithDuration(TimeSpan.FromSeconds(0.1))
-                .WithEasing(new EaseInOut())
-                .RunAsync()
-                .ContinueWith(_ => Dispatcher.UIThread.Post(() =>
-                {
-                    _contentPresenter.SetValue(TextBlock.TextWrappingProperty, originalTextWrapping);
-                }));
-            _contentPresenter?.Animate(OpacityProperty)
-                .From(0)
-                .To(1)
-                .WithDuration(TimeSpan.FromSeconds(0.1))
-                .WithEasing(new EaseInOut())
-                .Start();
-        }
-        else
-        {
-            _contentPresenter?.SetValue(IsVisibleProperty, false);
         }
     }
 }

@@ -56,6 +56,19 @@
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="ItemIconContentSpacing" Value="12"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition
+          Easing="{StaticResource StrongEaseOutBack}"
+          Property="Opacity" Duration="0:0:0.3"/>
+        <DoubleTransition
+          Easing="{StaticResource StrongEaseOutBack}"
+          Property="Width" Duration="0:0:0.3"/>
+        <DoubleTransition
+          Easing="{StaticResource StrongEaseOutBack}"
+          Property="Height" Duration="0:0:0.3"/>
+      </Transitions>
+    </Setter>
     <Setter Property="Template">
       <ControlTemplate>
         <Border

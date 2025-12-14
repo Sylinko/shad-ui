@@ -105,21 +105,6 @@ public class Sidebar : ContentControl
     }
 
     /// <summary>
-    ///     Defines the <see cref="ExpandEasing" /> property.
-    /// </summary>
-    public static readonly StyledProperty<Easing> ExpandEasingProperty = AvaloniaProperty.Register<Sidebar, Easing>(
-        nameof(ExpandEasing), new EaseInOut());
-
-    /// <summary>
-    ///     Gets or sets the easing function used for the expand animation of the sidebar.
-    /// </summary>
-    public Easing ExpandEasing
-    {
-        get => GetValue(ExpandEasingProperty);
-        set => SetValue(ExpandEasingProperty, value);
-    }
-
-    /// <summary>
     ///     Defines the <see cref="ExpandPaneWidth" /> property.
     /// </summary>
     public static readonly StyledProperty<double> ExpandPaneWidthProperty = AvaloniaProperty.Register<Sidebar, double>(
@@ -132,22 +117,6 @@ public class Sidebar : ContentControl
     {
         get => GetValue(ExpandPaneWidthProperty);
         set => SetValue(ExpandPaneWidthProperty, value);
-    }
-
-    /// <summary>
-    ///     Defines the <see cref="ExpandAnimationDuration" /> property.
-    /// </summary>
-    public static readonly StyledProperty<double> ExpandAnimationDurationProperty =
-        AvaloniaProperty.Register<Sidebar, double>(
-            nameof(ExpandAnimationDuration), 300);
-
-    /// <summary>
-    ///     Gets or sets the duration of the expand animation in milliseconds.
-    /// </summary>
-    public double ExpandAnimationDuration
-    {
-        get => GetValue(ExpandAnimationDurationProperty);
-        set => SetValue(ExpandAnimationDurationProperty, value);
     }
 
     /// <summary>
@@ -240,9 +209,17 @@ public class Sidebar : ContentControl
 
         if (change.Property == ExpandedProperty)
         {
-            var toExpand = change.GetNewValue<bool>();
-
-            AnimateOnExpand(toExpand);
+            var expanded = change.GetNewValue<bool>();
+            if (expanded)
+            {
+                Width = ExpandPaneWidth;
+                if (MinWidth == 0) Opacity = 1.0;
+            }
+            else
+            {
+                Width = MinWidth;
+                if (MinWidth == 0) Opacity = 0d;
+            }
         }
 
         if (change.Property == SelectedSidebarItemProperty)
@@ -256,61 +233,6 @@ public class Sidebar : ContentControl
             else
             {
                 CurrentRoute = null;
-            }
-        }
-    }
-
-    private CancellationTokenSource? _animationCts;
-
-    /// <summary>
-    ///     Animates the sidebar expansion or collapse with the specified easing and duration.
-    /// </summary>
-    /// <param name="toExpand">A value indicating whether to expand or collapse the sidebar.</param>
-    private void AnimateOnExpand(bool toExpand)
-    {
-        _animationCts?.Cancel();
-        _animationCts = new CancellationTokenSource();
-
-        if (toExpand)
-        {
-            this.Animate(WidthProperty)
-                .From(Width)
-                .To(ExpandPaneWidth)
-                .WithEasing(ExpandEasing)
-                .WithDuration(TimeSpan.FromMilliseconds(ExpandAnimationDuration))
-                .WithCancellationToken(_animationCts.Token)
-                .Start();
-
-            if (MinWidth == 0)
-            {
-                this.Animate(OpacityProperty)
-                    .From(Opacity)
-                    .To(1.0)
-                    .WithEasing(new EaseInOut())
-                    .WithDuration(TimeSpan.FromMilliseconds(ExpandAnimationDuration))
-                    .WithCancellationToken(_animationCts.Token)
-                    .Start();
-            }
-        }
-        else
-        {
-            this.Animate(WidthProperty)
-                .From(Width)
-                .To(MinWidth)
-                .WithEasing(CollapseEasing)
-                .WithDuration(TimeSpan.FromMilliseconds(CollapseAnimationDuration))
-                .WithCancellationToken(_animationCts.Token)
-                .Start();
-
-            if (MinWidth == 0)
-            {
-                this.Animate(OpacityProperty)
-                    .From(Opacity)
-                    .To(0.0)
-                    .WithEasing(new EaseOut())
-                    .WithDuration(TimeSpan.FromMilliseconds(CollapseAnimationDuration))
-                    .WithCancellationToken(_animationCts.Token)
-                    .Start();
             }
         }
     }
