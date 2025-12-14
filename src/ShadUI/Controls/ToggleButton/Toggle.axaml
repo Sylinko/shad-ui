@@ -110,6 +110,20 @@
       </Style>
     </Style>
 
+    <Style Selector="^.Ghost.Secondary">
+      <Setter Property="Padding" Value="8,4"/>
+      <Setter Property="Background" Value="{DynamicResource TransparentColor}"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Style Selector="^:pointerover /template/ Border#RootBorder">
+        <Setter Property="Background" Value="{DynamicResource GhostHoverColor}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GhostHoverColor}"/>
+      </Style>
+      <Style Selector="^:checked /template/ Border#RootBorder">
+        <Setter Property="Background" Value="{DynamicResource GhostHoverColor}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GhostHoverColor}"/>
+      </Style>
+    </Style>
+
     <!--  Compact  -->
     <Style Selector="^.Compact">
       <Setter Property="Padding" Value="4"/>
