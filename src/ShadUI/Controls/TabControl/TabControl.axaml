@@ -56,6 +56,8 @@
     x:Key="TabControlTheme" TargetType="TabControl">
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
+    <Setter Property="ToolTip.Placement" Value="Top"/>
+    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="ItemsPanel">
       <Setter.Value>
         <ItemsPanelTemplate>

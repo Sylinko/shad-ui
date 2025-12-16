@@ -155,6 +155,8 @@
     <Setter Property="FontWeight" Value="Medium"/>
     <Setter Property="Watermark" Value="Pick a date"/>
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+    <Setter Property="ToolTip.Placement" Value="Top"/>
+    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <DataValidationErrors>

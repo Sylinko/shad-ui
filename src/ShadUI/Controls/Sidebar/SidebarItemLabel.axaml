@@ -10,6 +10,8 @@
     <Setter Property="Background" Value="{DynamicResource BorderColor}"/>
     <Setter Property="FontWeight" Value="DemiBold"/>
     <Setter Property="Expanded" Value="{Binding $parent[shadui:Sidebar].Expanded}"/>
+    <Setter Property="ToolTip.Placement" Value="Top"/>
+    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Panel>

@@ -1,16 +1,25 @@
 ﻿<ResourceDictionary
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:shadui="clr-namespace:ShadUI">
-    <ControlTheme x:Key="{x:Type shadui:BreakpointView}" TargetType="shadui:BreakpointView">
-        <Setter Property="IsVisible">
-            <Setter.Value>
-                <MultiBinding Converter="{x:Static shadui:WidthToVisibilityConverter.Instance}">
-                    <CompiledBinding Path="Bounds.Width" RelativeSource="{RelativeSource AncestorType={x:Type shadui:BreakpointViewPort}}" />
-                    <CompiledBinding Path="Breakpoint" RelativeSource="{RelativeSource Self}" />
-                    <CompiledBinding Path="Invert" RelativeSource="{RelativeSource Self}" />
-                </MultiBinding>
-            </Setter.Value>
-        </Setter>
-    </ControlTheme>
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI">
+  <ControlTheme
+    x:Key="{x:Type shadui:BreakpointView}"
+    TargetType="shadui:BreakpointView">
+    <Setter Property="ToolTip.Placement" Value="Top"/>
+    <Setter Property="ToolTip.ShowDelay" Value="50"/>
+    <Setter Property="IsVisible">
+      <Setter.Value>
+        <MultiBinding Converter="{x:Static shadui:WidthToVisibilityConverter.Instance}">
+          <CompiledBinding
+            Path="Bounds.Width"
+            RelativeSource="{RelativeSource AncestorType={x:Type shadui:BreakpointViewPort}}"/>
+          <CompiledBinding
+            Path="Breakpoint"
+            RelativeSource="{RelativeSource Self}"/>
+          <CompiledBinding
+            Path="Invert"
+            RelativeSource="{RelativeSource Self}"/>
+        </MultiBinding>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
 </ResourceDictionary>

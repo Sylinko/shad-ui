@@ -1,89 +1,78 @@
 ﻿<Styles
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:shadui="clr-namespace:ShadUI">
-    <Style Selector="ScrollViewer">
-        <Setter Property="IsScrollInertiaEnabled" Value="True" />
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Panel>
-                    <Panel Name="InnerPanel">
-                        <Panel.OpacityMask>
-                            <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Top}">
-                                <Binding Path="#PART_VerticalScrollBar.Value" />
-                                <Binding Path="#PART_VerticalScrollBar.Minimum" />
-                            </MultiBinding>
-                        </Panel.OpacityMask>
-                        <ScrollContentPresenter
-                            Name="PART_ContentPresenter"
-                            Padding="{TemplateBinding Padding}"
-                            Background="{TemplateBinding Background}"
-                            HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
-                            HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
-                            ScrollViewer.IsScrollInertiaEnabled="{TemplateBinding IsScrollInertiaEnabled}"
-                            VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
-                            VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}">
-                            <ScrollContentPresenter.OpacityMask>
-                                <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Bottom}">
-                                    <Binding Path="#PART_VerticalScrollBar.Value" />
-                                    <Binding Path="#PART_VerticalScrollBar.Maximum" />
-                                </MultiBinding>
-                            </ScrollContentPresenter.OpacityMask>
-                            <ScrollContentPresenter.Transitions>
-                                <Transitions>
-                                    <BrushTransition Property="OpacityMask" Duration="0:0:0.2" />
-                                </Transitions>
-                            </ScrollContentPresenter.Transitions>
-                            <ScrollContentPresenter.GestureRecognizers>
-                                <ScrollGestureRecognizer
-                                    CanHorizontallyScroll="{CompiledBinding CanHorizontallyScroll,
-                                                                            ElementName=PART_ContentPresenter}"
-                                    CanVerticallyScroll="{CompiledBinding CanVerticallyScroll,
-                                                                          ElementName=PART_ContentPresenter}"
-                                    IsScrollInertiaEnabled="{CompiledBinding (ScrollViewer.IsScrollInertiaEnabled),
-                                                                             ElementName=PART_ContentPresenter}" />
-                            </ScrollContentPresenter.GestureRecognizers>
-                        </ScrollContentPresenter>
-                    </Panel>
-                    <Grid
-                        Name="BasicScroll"
-                        ColumnDefinitions="*,Auto"
-                        RowDefinitions="*,Auto">
-                        <ScrollBar
-                            Name="PART_HorizontalScrollBar"
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Orientation="Horizontal" />
-                        <ScrollBar
-                            Name="PART_VerticalScrollBar"
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Orientation="Vertical" />
-                        <Panel
-                            Name="PART_ScrollBarsSeparator"
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Background="Transparent" />
-                    </Grid>
-                    <Panel Name="StackScrollPanel" IsVisible="False">
-                        <ScrollBar
-                            Name="StackVerticalScrollBar"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Classes="Stack"
-                            Orientation="Vertical" />
-                    </Panel>
-                </Panel>
-            </ControlTemplate>
-        </Setter>
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI">
+  <Style Selector="ScrollViewer">
+    <Setter Property="IsScrollInertiaEnabled" Value="True"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel>
+          <Panel Name="InnerPanel">
+            <Panel.OpacityMask>
+              <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Top}">
+                <Binding Path="#PART_VerticalScrollBar.Value"/>
+                <Binding Path="#PART_VerticalScrollBar.Minimum"/>
+              </MultiBinding>
+            </Panel.OpacityMask>
+            <ScrollContentPresenter
+              Name="PART_ContentPresenter"
+              Padding="{TemplateBinding Padding}"
+              Background="{TemplateBinding Background}"
+              HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+              HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+              ScrollViewer.IsScrollInertiaEnabled="{TemplateBinding IsScrollInertiaEnabled}"
+              VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
+              VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}">
+              <ScrollContentPresenter.OpacityMask>
+                <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Bottom}">
+                  <Binding Path="#PART_VerticalScrollBar.Value"/>
+                  <Binding Path="#PART_VerticalScrollBar.Maximum"/>
+                </MultiBinding>
+              </ScrollContentPresenter.OpacityMask>
+              <ScrollContentPresenter.Transitions>
+                <Transitions>
+                  <BrushTransition
+                    Property="OpacityMask" Duration="0:0:0.2"/>
+                </Transitions>
+              </ScrollContentPresenter.Transitions>
+              <ScrollContentPresenter.GestureRecognizers>
+                <ScrollGestureRecognizer
+                  CanHorizontallyScroll="{CompiledBinding CanHorizontallyScroll, ElementName=PART_ContentPresenter}"
+                  CanVerticallyScroll="{CompiledBinding CanVerticallyScroll, ElementName=PART_ContentPresenter}"
+                  IsScrollInertiaEnabled="{CompiledBinding (ScrollViewer.IsScrollInertiaEnabled), ElementName=PART_ContentPresenter}"/>
+              </ScrollContentPresenter.GestureRecognizers>
+            </ScrollContentPresenter>
+          </Panel>
+          <Grid
+            Name="BasicScroll" ColumnDefinitions="*,Auto"
+            RowDefinitions="*,Auto">
+            <ScrollBar
+              Name="PART_HorizontalScrollBar" Grid.Row="1"
+              Grid.Column="0" Orientation="Horizontal"/>
+            <ScrollBar
+              Name="PART_VerticalScrollBar" Grid.Row="0"
+              Grid.Column="1" Orientation="Vertical"/>
+            <Panel
+              Name="PART_ScrollBarsSeparator" Grid.Row="1"
+              Grid.Column="1" Background="Transparent"/>
+          </Grid>
+          <Panel
+            Name="StackScrollPanel" IsVisible="False">
+            <ScrollBar
+              Name="StackVerticalScrollBar" Classes="Stack"
+              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+              Orientation="Vertical"/>
+          </Panel>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="ScrollViewer.Stack">
+    <Setter Property="Background" Value="Transparent"/>
+    <Style Selector="^ /template/ Grid#BasicScroll">
+      <Setter Property="IsVisible" Value="False"/>
     </Style>
-    <Style Selector="ScrollViewer.Stack">
-        <Setter Property="Background" Value="Transparent" />
-        <Style Selector="^ /template/ Grid#BasicScroll">
-            <Setter Property="IsVisible" Value="False" />
-        </Style>
-        <Style Selector="^ /template/ Panel#StackScrollPanel">
-            <Setter Property="IsVisible" Value="True" />
-        </Style>
+    <Style Selector="^ /template/ Panel#StackScrollPanel">
+      <Setter Property="IsVisible" Value="True"/>
     </Style>
+  </Style>
 </Styles>

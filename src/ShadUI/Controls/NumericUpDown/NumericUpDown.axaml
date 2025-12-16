@@ -16,6 +16,8 @@
     <Setter Property="FocusAdorner" Value="{x:Null}"/>
     <Setter Property="IsReadOnly" Value="True"/>
     <Setter Property="shadui:TextBoxAssist.Clearable" Value="False"/>
+    <Setter Property="ToolTip.Placement" Value="Top"/>
+    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Grid
@@ -122,6 +124,8 @@
 
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="Padding" Value="12,7"/>
+    <Setter Property="ToolTip.Placement" Value="Top"/>
+    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <StackPanel

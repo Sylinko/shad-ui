@@ -6,7 +6,8 @@
     TargetType="Expander">
     <Setter Property="Padding" Value="16"/>
     <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}"/>
-
+    <Setter Property="ToolTip.Placement" Value="Top"/>
+    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate TargetType="Expander">
         <shadui:Card

@@ -23,6 +23,8 @@
     <Setter Property="TextBlock.FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="TextBlock.FontWeight" Value="Medium"/>
     <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="ToolTip.Placement" Value="Top"/>
+    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <StackPanel
