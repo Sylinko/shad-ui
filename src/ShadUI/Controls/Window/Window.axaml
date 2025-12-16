@@ -167,12 +167,23 @@
                                 HorizontalAlignment="Left"
                                 Content="{Binding $parent[shadui:Window].LogoContent}"
                                 IsHitTestVisible="False"/>
-                              <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="{Binding $parent[shadui:Window].TitleFontSize}"
-                                FontWeight="{Binding $parent[shadui:Window].TitleFontWeight}"
-                                IsHitTestVisible="False"
-                                Text="{Binding $parent[shadui:Window].Title}"/>
+                              <StackPanel
+                                Orientation="Horizontal" Spacing="4">
+                                <TextBlock
+                                  VerticalAlignment="Center"
+                                  FontSize="{Binding $parent[shadui:Window].TitleFontSize}"
+                                  FontWeight="{Binding $parent[shadui:Window].TitleFontWeight}"
+                                  IsHitTestVisible="False"
+                                  Text="{Binding $parent[shadui:Window].Title}"/>
+                                <TextBlock
+                                  VerticalAlignment="Center"
+                                  FontSize="{Binding $parent[shadui:Window].VersionFontSize}"
+                                  FontWeight="{Binding $parent[shadui:Window].VersionFontWeight}"
+                                  Foreground="{DynamicResource ForegroundLeadColor}"
+                                  IsHitTestVisible="False"
+                                  IsVisible="{Binding $parent[shadui:Window].Version, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                  Text="{Binding $parent[shadui:Window].Version}"/>
+                              </StackPanel>
                             </StackPanel>
                           </DockPanel>
                         </Panel>

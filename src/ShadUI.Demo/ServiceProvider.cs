@@ -27,6 +27,7 @@ namespace ShadUI.Demo;
 [Transient<FormDateInputViewModel>]
 [Transient<FormDatePickerViewModel>]
 [Transient<CheckBoxViewModel>]
+[Transient<CheckUpdateViewModel>]
 [Transient<ComboBoxViewModel>]
 [Transient<FormComboBoxViewModel>]
 [Transient<ColorViewModel>]

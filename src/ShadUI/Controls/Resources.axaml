@@ -16,6 +16,7 @@
     <ResourceInclude Source="avares://ShadUI/Controls/Card/CardDescription.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Card/CardTitle.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/CheckBox/CheckBox.axaml"/>
+    <ResourceInclude Source="avares://ShadUI/Controls/CheckUpdate/CheckUpdate.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/ColorPicker/ColorPicker.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/ColorPicker/ColorPreviewer.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/ColorPicker/ColorSlider.axaml"/>
@@ -61,5 +62,6 @@
     <ResourceInclude Source="avares://ShadUI/Controls/ToggleButton/Toggle.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/ToolTip/ToolTip.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Window/Window.axaml"/>
+    <ResourceInclude Source="avares://ShadUI/Utilities/Easings.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

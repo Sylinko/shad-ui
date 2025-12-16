@@ -56,6 +56,51 @@ public class Window : Avalonia.Controls.Window
         get => GetValue(TitleFontWeightProperty);
         set => SetValue(TitleFontWeightProperty, value);
     }
+    
+    /// <summary>
+    ///     The font size of the version.
+    /// </summary>
+    public static readonly StyledProperty<double> VersionFontSizeProperty =
+        AvaloniaProperty.Register<Window, double>(nameof(VersionFontSize), 12.8);
+
+    /// <summary>
+    ///     Gets or sets the value of the <see cref="TitleFontSizeProperty" />.
+    /// </summary>
+    public double VersionFontSize
+    {
+        get => GetValue(VersionFontSizeProperty);
+        set => SetValue(VersionFontSizeProperty, value);
+    }
+
+    /// <summary>
+    ///     The font weight of the version.
+    /// </summary>
+    public static readonly StyledProperty<FontWeight> VersionFontWeightProperty =
+        AvaloniaProperty.Register<Window, FontWeight>(nameof(VersionFontWeight), FontWeight.Medium);
+
+    /// <summary>
+    ///     Gets or sets the value of the <see cref="VersionFontWeightProperty" />.
+    /// </summary>
+    public FontWeight VersionFontWeight
+    {
+        get => GetValue(VersionFontWeightProperty);
+        set => SetValue(VersionFontWeightProperty, value);
+    }
+
+    /// <summary>
+    ///    The version text.
+    /// </summary>
+    public static readonly StyledProperty<string> VersionProperty = AvaloniaProperty.Register<Window, string>(
+        nameof(Version));
+
+    /// <summary>
+    ///     Gets or sets the value of the <see cref="VersionProperty" />.
+    /// </summary>
+    public string Version
+    {
+        get => GetValue(VersionProperty);
+        set => SetValue(VersionProperty, value);
+    }
 
     /// <summary>
     ///     The content of the logo.

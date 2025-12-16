@@ -22,6 +22,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     private readonly DataTableViewModel _dataTableViewModel;
     private readonly DateViewModel _dateViewModel;
     private readonly CheckBoxViewModel _checkBoxViewModel;
+    private readonly CheckUpdateViewModel _checkUpdateViewModel;
     private readonly DialogViewModel _dialogViewModel;
     private readonly TimeViewModel _timeViewModel;
     private readonly InputViewModel _inputViewModel;
@@ -56,6 +57,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         DataTableViewModel dataTableViewModel,
         DateViewModel dateViewModel,
         CheckBoxViewModel checkBoxViewModel,
+        CheckUpdateViewModel checkUpdateViewModel,
         DialogViewModel dialogViewModel,
         InputViewModel inputViewModel,
         NumericViewModel numericViewModel,
@@ -86,6 +88,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         _dataTableViewModel = dataTableViewModel;
         _dateViewModel = dateViewModel;
         _checkBoxViewModel = checkBoxViewModel;
+        _checkUpdateViewModel = checkUpdateViewModel;
         _dialogViewModel = dialogViewModel;
         _inputViewModel = inputViewModel;
         _numericViewModel = numericViewModel;
@@ -194,6 +197,12 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     private void OpenCheckBoxes()
     {
         SwitchPage(_checkBoxViewModel);
+    }
+
+    [RelayCommand]
+    private void OpenCheckUpdate()
+    {
+        SwitchPage(_checkUpdateViewModel);
     }
 
     [RelayCommand]
