@@ -2,6 +2,7 @@
 using Avalonia.Controls.Converters;
 using Avalonia.Controls.Primitives.Converters;
 using Avalonia.Data.Converters;
+using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Styling;
 
@@ -74,4 +75,7 @@ public static class BasicConverters
             "Light" => ThemeVariant.Dark,
             _ => x ?? ThemeVariant.Default
         });
+
+    public static IValueConverter InvertOrientation { get; } =
+        new FuncValueConverter<Orientation, Orientation>(x => x == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal);
 }

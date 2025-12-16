@@ -15,7 +15,6 @@
           CornerRadius="{TemplateBinding CornerRadius}">
           <Grid RowDefinitions="Auto,Auto">
 
-            <!--  Header 区  -->
             <LayoutTransformControl
               Name="PART_ToggleTransform" Grid.Row="0">
               <Panel>

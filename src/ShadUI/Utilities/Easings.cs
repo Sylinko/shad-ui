@@ -48,7 +48,7 @@ public class EaseInBackOutBack : Easing
     {
         var backIntensity = BounceIntensity switch
         {
-            EasingIntensity.Soft => 0.9,
+            EasingIntensity.Soft => 0.6,
             EasingIntensity.Normal => 1.15,
             EasingIntensity.Strong => 1.5,
             _ => 1.0
@@ -93,7 +93,7 @@ public class EaseInOutBack : Easing
     {
         var backIntensity = BounceIntensity switch
         {
-            EasingIntensity.Soft => 0.9,
+            EasingIntensity.Soft => 0.6,
             EasingIntensity.Normal => 1.15,
             EasingIntensity.Strong => 1.5,
             _ => 1.0
@@ -132,7 +132,7 @@ public class EaseOutBack : Easing
     {
         var backIntensity = BounceIntensity switch
         {
-            EasingIntensity.Soft => 0.9,
+            EasingIntensity.Soft => 0.6,
             EasingIntensity.Normal => 1.15,
             EasingIntensity.Strong => 1.5,
             _ => 1.0
