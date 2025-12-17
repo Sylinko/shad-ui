@@ -11,7 +11,7 @@
     <Setter Property="Orientation" Value="{Binding $parent[shadui:NavigationBar].Orientation, Converter={x:Static shadui:BasicConverters.InvertOrientation}}"/>
     <Setter Property="Spacing" Value="12"/>
     <Setter Property="Padding" Value="8"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource FullCornerRadius}"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -67,7 +67,7 @@
             </Border>
             <Border
               x:Name="SelectedBackground"
-              Background="{DynamicResource GhostColor}"
+              Background="{DynamicResource SelectionColor}"
               BorderBrush="{TemplateBinding BorderBrush}"
               BorderThickness="{TemplateBinding BorderThickness}"
               CornerRadius="{TemplateBinding CornerRadius}"
@@ -190,8 +190,11 @@
       <Setter Property="Opacity" Value="0"/>
     </Style>
 
-    <Style Selector="^:checked /template/ Border#SelectedBackground">
-      <Setter Property="Opacity" Value="1"/>
+    <Style Selector="^:checked">
+      <Setter Property="Foreground" Value="{DynamicResource PrimaryColor}"/>
+      <Style Selector="^ /template/ Border#SelectedBackground">
+        <Setter Property="Opacity" Value="1"/>
+      </Style>
     </Style>
 
     <Style Selector="^:pressed /template/ Panel#RootPanel">

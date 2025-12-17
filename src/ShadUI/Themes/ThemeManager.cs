@@ -121,7 +121,6 @@ public class ThemeManager
             SwitchBackgroundColor = TryGetColor("SwitchBackgroundColor"),
             SwitchForegroundColor = TryGetColor("SwitchForegroundColor"),
             TabItemSelectedColor = TryGetColor("TabItemSelectedColor"),
-            TabItemsBackgroundColor = TryGetColor("TabItemsBackgroundColor")
         };
     }
 

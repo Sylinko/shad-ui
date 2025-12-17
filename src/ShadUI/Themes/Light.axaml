@@ -73,9 +73,6 @@
   <Color x:Key="SwitchBackgroundColor">#FFE5E5E5</Color>
   <Color x:Key="SwitchForegroundColor">#FFFFFFFF</Color>
 
-  <Color x:Key="TabItemSelectedColor">#66FFFFFF</Color>
-  <Color x:Key="TabItemsBackgroundColor">#66E8E8E8</Color>
-
   <Color x:Key="AcrylicWindowBackgroundColor">#EEFFFFFF</Color>
   <Color x:Key="QuoteColor">#CA5010</Color>
 </ResourceDictionary>

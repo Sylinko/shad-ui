@@ -70,6 +70,5 @@ public class ThemeColors
     public Color SwitchBackgroundColor { get; set; }
     public Color SwitchForegroundColor { get; set; }
     public Color TabItemSelectedColor { get; set; }
-    public Color TabItemsBackgroundColor { get; set; }
 }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
