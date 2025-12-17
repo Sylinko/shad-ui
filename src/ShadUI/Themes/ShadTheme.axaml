@@ -10,14 +10,11 @@
       </ResourceDictionary.MergedDictionaries>
       <ResourceDictionary.ThemeDictionaries>
         <ResourceInclude
-          x:Key="{x:Static themes:ThemeVariants.Light}"
+          x:Key="{x:Static ThemeVariant.Light}"
           Source="avares://ShadUI/Themes/Light.axaml"/>
         <ResourceInclude
-          x:Key="{x:Static themes:ThemeVariants.Dark}"
+          x:Key="{x:Static ThemeVariant.Dark}"
           Source="avares://ShadUI/Themes/Dark.axaml"/>
-        <ResourceInclude
-          x:Key="{x:Static themes:ThemeVariants.Acrylic}"
-          Source="avares://ShadUI/Themes/Acrylic.axaml"/>
       </ResourceDictionary.ThemeDictionaries>
     </ResourceDictionary>
   </Styles.Resources>

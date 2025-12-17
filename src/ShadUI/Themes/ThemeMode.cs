@@ -21,9 +21,4 @@ public enum ThemeMode
     ///     The dark theme.
     /// </summary>
     Dark,
-
-    /// <summary>
-    ///     The acrylic theme.
-    /// </summary>
-    Acrylic,
 }

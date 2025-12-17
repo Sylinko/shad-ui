@@ -10,7 +10,6 @@
   <ControlTheme
     x:Key="{x:Type ToggleButton}"
     TargetType="ToggleButton">
-    <Setter Property="MinHeight" Value="36"/>
     <Setter Property="Padding" Value="12,8"/>
     <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>

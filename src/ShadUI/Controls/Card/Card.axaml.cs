@@ -1,7 +1,5 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
-using ShadUI.Themes;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
@@ -54,20 +52,5 @@ public class Card : ContentControl
     {
         get => GetValue(HasShadowProperty);
         set => SetValue(HasShadowProperty, value);
-    }
-
-    /// <inheritdoc cref="OnApplyTemplate"/>
-    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
-    {
-        base.OnApplyTemplate(e);
-
-        if (e.NameScope.Find<ExperimentalAcrylicBorder>("PART_AcrylicBorder") is { } acrylicBorder)
-        {
-            acrylicBorder.IsVisible = ActualThemeVariant == ThemeVariants.Acrylic;
-            ActualThemeVariantChanged += delegate
-            {
-                acrylicBorder.IsVisible = ActualThemeVariant == ThemeVariants.Acrylic;
-            };
-        }
     }
 }

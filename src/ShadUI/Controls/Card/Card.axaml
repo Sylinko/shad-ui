@@ -69,19 +69,7 @@
               CornerRadius="{TemplateBinding CornerRadius}">
               <Grid
                 Margin="{TemplateBinding Padding}"
-                RowDefinitions="Auto * Auto">
-                <ExperimentalAcrylicBorder
-                  Name="PART_AcrylicBorder" Grid.Row="0"
-                  Grid.RowSpan="3"
-                  CornerRadius="{TemplateBinding CornerRadius}"
-                  IsVisible="False">
-                  <ExperimentalAcrylicBorder.Material>
-                    <ExperimentalAcrylicMaterial
-                      FallbackColor="#15000000" MaterialOpacity="0.4"
-                      TintColor="Black" TintOpacity="0.2"/>
-                  </ExperimentalAcrylicBorder.Material>
-                </ExperimentalAcrylicBorder>
-
+                RowDefinitions="Auto,*,Auto">
                 <ContentPresenter
                   Grid.Row="0" Margin="0,0,0,24"
                   Content="{TemplateBinding Header}"
