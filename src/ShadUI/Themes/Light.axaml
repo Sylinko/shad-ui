@@ -11,10 +11,10 @@
   <Color x:Key="BorderColor60">#9CDEDEDE</Color>
   <Color x:Key="BorderColor30">#4CDEDEDE</Color>
   <Color x:Key="OutlineColor">#E5E5E5</Color>
-  <Color x:Key="GhostColor">#F5F5F5</Color>
-  <Color x:Key="GhostHoverColor">#7FF5F5F5</Color>
-  <Color x:Key="GhostHoverColor50">#33F5F5F5</Color>
-  <Color x:Key="SelectionColor">#0CE5E5E5</Color>
+  <Color x:Key="GhostColor">#E6E6E6</Color>
+  <Color x:Key="GhostHoverColor">#7FE6E6E6</Color>
+  <Color x:Key="GhostHoverColor50">#33E6E6E6</Color>
+  <Color x:Key="SelectionColor">#0CE6E6E6</Color>
 
   <!--  theme colors  -->
   <Color x:Key="SecondaryColor">#D9D9D9</Color>
