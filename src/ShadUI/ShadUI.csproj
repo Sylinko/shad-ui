@@ -15,6 +15,7 @@
         <PackageReference Include="Avalonia.Controls.DataGrid"/>
         <PackageReference Include="Avalonia.Skia"/>
         <PackageReference Include="Avalonia.Themes.Simple"/>
+        <PackageReference Include="CommunityToolkit.Mvvm" />
         <PackageReference Include="MinVer"/>
         <PackageReference Include="Lucide.Avalonia"/>
         <PackageReference Include="SkiaSharp" />

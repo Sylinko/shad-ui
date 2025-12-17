@@ -3,49 +3,50 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.Threading;
+using CommunityToolkit.Mvvm.Messaging;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
 
 /// <summary>
+///     A message indicating that the theme has changed, containing the new theme variant and colors.
+/// </summary>
+/// <param name="Variant"></param>
+/// <param name="Colors"></param>
+public record ThemeChangedMessage(ThemeVariant Variant, ThemeColors Colors);
+
+/// <summary>
 ///     Watches and manages theme changes in the application, providing access to current theme colors
 ///     and notifications when the theme changes.
 /// </summary>
-public class ThemeWatcher
+public class ThemeManager
 {
     private readonly Application _app;
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="ThemeWatcher" /> class.
+    ///     Initializes a new instance of the <see cref="ThemeManager" /> class.
     /// </summary>
     /// <param name="app">The Avalonia application instance to watch for theme changes.</param>
-    public ThemeWatcher(Application app)
+    public ThemeManager(Application app)
     {
         _app = app;
         _app.ActualThemeVariantChanged += OnThemeChanged;
+        ThemeColors = GetThemeColors();
     }
 
     /// <summary>
     ///     Gets the current theme colors used in the application.
     /// </summary>
-    public ThemeColors ThemeColors { get; private set; } = new();
+    public ThemeColors ThemeColors { get; private set; }
 
     /// <summary>
     ///     Handles theme change events and updates the current theme colors.
     /// </summary>
     private void OnThemeChanged(object? sender, EventArgs e)
     {
-        var colors = GetThemeColors();
-        ThemeColors = colors;
-        ThemeChanged?.Invoke(this, colors);
-    }
-
-    /// <summary>
-    ///     Initializes the theme watcher by setting the initial theme colors.
-    /// </summary>
-    public void Initialize()
-    {
         ThemeColors = GetThemeColors();
+        ThemeChanged?.Invoke(this, _app.ActualThemeVariant);
+        WeakReferenceMessenger.Default.Send(new ThemeChangedMessage(_app.ActualThemeVariant, ThemeColors));
     }
 
     /// <summary>
@@ -142,7 +143,7 @@ public class ThemeWatcher
     /// <summary>
     ///     Occurs when the application theme changes, providing the new theme colors.
     /// </summary>
-    public event EventHandler<ThemeColors>? ThemeChanged;
+    public event EventHandler<ThemeVariant>? ThemeChanged;
 
     /// <summary>
     ///     Switches the theme of the application based on the specified mode.
@@ -154,7 +155,6 @@ public class ThemeWatcher
         {
             ThemeMode.Dark => ThemeVariant.Dark,
             ThemeMode.Light => ThemeVariant.Light,
-            ThemeMode.Acrylic => new ThemeVariant("Acrylic", ThemeVariant.Dark),
             _ => ThemeVariant.Default
         };
 

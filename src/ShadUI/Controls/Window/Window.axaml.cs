@@ -8,6 +8,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using CommunityToolkit.Mvvm.Messaging;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
@@ -20,7 +21,7 @@ namespace ShadUI;
 [TemplatePart("PART_MaximizeButton", typeof(Button))]
 [TemplatePart("PART_MinimizeButton", typeof(Button))]
 [TemplatePart("PART_CloseButton", typeof(Button))]
-public class Window : Avalonia.Controls.Window
+public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
 {
     /// <summary>
     ///     The style key of the window.
@@ -300,9 +301,18 @@ public class Window : Avalonia.Controls.Window
     {
         base.OnLoaded(e);
 
+        WeakReferenceMessenger.Default.Register(this);
+
         if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop) return;
 
         if (desktop.MainWindow is Window window && window != this) Icon ??= window.Icon;
+    }
+
+    protected override void OnUnloaded(RoutedEventArgs e)
+    {
+        base.OnUnloaded(e);
+
+        WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 
     private WindowState _lastState = WindowState.Normal;
@@ -594,5 +604,10 @@ public class Window : Avalonia.Controls.Window
     public void RestoreWindowState()
     {
         WindowState = _lastState == WindowState.FullScreen ? WindowState.Maximized : _lastState;
+    }
+
+    public void Receive(ThemeChangedMessage message)
+    {
+        RequestedThemeVariant = message.Variant;
     }
 }
