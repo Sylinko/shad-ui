@@ -1,0 +1,256 @@
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Layout;
+using Avalonia.Media;
+using Avalonia.VisualTree;
+
+namespace ShadUI;
+
+/// <summary>
+/// A container that draws a timeline connecting attached items.
+/// Items can be anywhere in the visual tree under this container.
+/// Use <see cref="Timeline.AnchorProperty"/> to mark items.
+/// </summary>
+public class Timeline : Decorator
+{
+    private readonly List<Control> _items = [];
+
+    #region Properties
+
+    public static readonly StyledProperty<Orientation> OrientationProperty =
+        AvaloniaProperty.Register<Timeline, Orientation>(nameof(Orientation), Orientation.Vertical);
+
+    public Orientation Orientation
+    {
+        get => GetValue(OrientationProperty);
+        set => SetValue(OrientationProperty, value);
+    }
+
+    public static readonly StyledProperty<double> DotSizeProperty =
+        AvaloniaProperty.Register<Timeline, double>(nameof(DotSize), 10.0);
+
+    public double DotSize
+    {
+        get => GetValue(DotSizeProperty);
+        set => SetValue(DotSizeProperty, value);
+    }
+
+    public static readonly StyledProperty<IBrush> FillProperty =
+        AvaloniaProperty.Register<Timeline, IBrush>(nameof(Fill), Brushes.Gray);
+
+    public IBrush Fill
+    {
+        get => GetValue(FillProperty);
+        set => SetValue(FillProperty, value);
+    }
+
+    public static readonly StyledProperty<double> StrokeThicknessProperty =
+        AvaloniaProperty.Register<Timeline, double>(nameof(StrokeThickness), 2.0);
+
+    public double StrokeThickness
+    {
+        get => GetValue(StrokeThicknessProperty);
+        set => SetValue(StrokeThicknessProperty, value);
+    }
+
+    public static readonly StyledProperty<IBrush> StrokeProperty =
+        AvaloniaProperty.Register<Timeline, IBrush>(nameof(Stroke), Brushes.Gray);
+
+    public IBrush Stroke
+    {
+        get => GetValue(StrokeProperty);
+        set => SetValue(StrokeProperty, value);
+    }
+
+    #endregion
+
+    #region Attached Properties
+
+    /// <summary>
+    /// Defines the anchor point for the timeline connection, relative to the attached control.
+    /// Only the relevant coordinate (Y for Vertical, X for Horizontal) is used for sorting.
+    /// </summary>
+    public static readonly AttachedProperty<Point?> AnchorProperty =
+        AvaloniaProperty.RegisterAttached<Timeline, Control, Point?>("Anchor");
+
+    public static Point? GetAnchor(Control element) => element.GetValue(AnchorProperty);
+    public static void SetAnchor(Control element, Point? value) => element.SetValue(AnchorProperty, value);
+
+    #endregion
+
+    static Timeline()
+    {
+        AffectsRender<Timeline>(
+            OrientationProperty,
+            DotSizeProperty,
+            FillProperty,
+            StrokeThicknessProperty,
+            StrokeProperty);
+
+        AnchorProperty.Changed.AddClassHandler<Control>(OnAnchorChanged);
+    }
+
+    public Timeline()
+    {
+        LayoutUpdated += (_, _) => InvalidateVisual();
+    }
+
+    private static void OnAnchorChanged(Control control, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is Point)
+        {
+            control.AttachedToVisualTree += OnItemAttached;
+            control.DetachedFromVisualTree += OnItemDetached;
+
+            // If already attached, try to register immediately
+            if (control.IsLoaded)
+            {
+                RegisterItem(control);
+            }
+        }
+        else
+        {
+            control.AttachedToVisualTree -= OnItemAttached;
+            control.DetachedFromVisualTree -= OnItemDetached;
+            UnregisterItem(control);
+        }
+    }
+
+    private static void OnItemAttached(object? sender, VisualTreeAttachmentEventArgs e)
+    {
+        if (sender is Control control)
+        {
+            RegisterItem(control);
+        }
+    }
+
+    private static void OnItemDetached(object? sender, VisualTreeAttachmentEventArgs e)
+    {
+        if (sender is Control control)
+        {
+            UnregisterItem(control);
+        }
+    }
+
+    private static void RegisterItem(Control control)
+    {
+        var timeline = control.FindAncestorOfType<Timeline>();
+        timeline?.AddItem(control);
+    }
+
+    private static void UnregisterItem(Control control)
+    {
+        // We can't easily find the *old* timeline if detached, 
+        // but the timeline itself can clean up invalid items during Render.
+        // However, for correctness, we can try to find it if still possible,
+        // or rely on the Timeline list management.
+
+        // In this implementation, we rely on the Timeline instance methods.
+        // Since we don't store the reference to Timeline in the child, 
+        // we have to search. If detached, FindAncestor won't work.
+        // So we might need to iterate all Timelines? No, that's too heavy.
+
+        // Optimization: The Timeline will filter out detached items during Render.
+        // But to prevent memory leaks, we should try to remove it if possible.
+        // For now, we'll rely on the Render loop to clean up or just keep it simple.
+        // Actually, let's just try to find it.
+        var timeline = control.FindAncestorOfType<Timeline>();
+        timeline?.RemoveItem(control);
+    }
+
+    private void AddItem(Control item)
+    {
+        if (!_items.Contains(item))
+        {
+            _items.Add(item);
+            InvalidateVisual();
+        }
+    }
+
+    private void RemoveItem(Control item)
+    {
+        if (_items.Remove(item))
+        {
+            InvalidateVisual();
+        }
+    }
+
+    public override void Render(DrawingContext context)
+    {
+        base.Render(context);
+
+        if (_items.Count == 0) return;
+
+        // 1. Collect valid points
+        var points = new List<(Point Point, Control Item)>();
+        var toRemove = new List<Control>();
+
+        foreach (var item in _items)
+        {
+            if (!item.IsEffectivelyVisible)
+            {
+                // Skip invisible or detached items
+                // Optionally mark for removal if detached
+                toRemove.Add(item);
+                continue;
+            }
+
+            // Ensure item is still a descendant
+            if (!this.IsVisualAncestorOf(item))
+            {
+                toRemove.Add(item);
+                continue;
+            }
+
+            var anchor = GetAnchor(item);
+            if (anchor == null) continue;
+
+            // Transform anchor to Timeline coordinates
+            var matrix = item.TransformToVisual(this);
+            if (matrix.HasValue)
+            {
+                var p = anchor.Value.Transform(matrix.Value);
+                points.Add((p, item));
+            }
+        }
+
+        // Cleanup
+        foreach (var item in toRemove) _items.Remove(item);
+
+        if (points.Count == 0) return;
+
+        // 2. Sort points based on Orientation
+        if (Orientation == Orientation.Vertical)
+        {
+            points.Sort((a, b) => a.Point.Y.CompareTo(b.Point.Y));
+        }
+        else
+        {
+            points.Sort((a, b) => a.Point.X.CompareTo(b.Point.X));
+        }
+
+        // 3. Draw
+        var linePen = new Pen(Stroke, StrokeThickness);
+        var dotBrush = Fill;
+        var dotRadius = DotSize / 2;
+
+        for (var i = 0; i < points.Count; i++)
+        {
+            // Normalize point to the axis line
+            var originalPoint = points[i].Point;
+            var current = Orientation == Orientation.Vertical ? new Point(0, originalPoint.Y) : new Point(originalPoint.X, 0);
+
+            // Draw Line to next point
+            if (i < points.Count - 1)
+            {
+                var nextOriginal = points[i + 1].Point;
+                var next = Orientation == Orientation.Vertical ? new Point(0, nextOriginal.Y) : new Point(nextOriginal.X, 0);
+
+                context.DrawLine(linePen, current, next);
+            }
+
+            // Draw Dot
+            context.DrawEllipse(dotBrush, null, current, dotRadius, dotRadius);
+        }
+    }
+}
