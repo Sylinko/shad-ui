@@ -17,45 +17,90 @@ public class Timeline : Decorator
 
     #region Properties
 
+    /// <summary>
+    /// Defines the <see cref="Orientation"/> property.
+    /// </summary>
     public static readonly StyledProperty<Orientation> OrientationProperty =
         AvaloniaProperty.Register<Timeline, Orientation>(nameof(Orientation), Orientation.Vertical);
 
+    /// <summary>
+    /// Gets or sets the orientation of the timeline.
+    /// </summary>
     public Orientation Orientation
     {
         get => GetValue(OrientationProperty);
         set => SetValue(OrientationProperty, value);
     }
 
+    /// <summary>
+    /// Defines the <see cref="IgnoreSingleItem"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> IgnoreSingleItemProperty =
+        AvaloniaProperty.Register<Timeline, bool>(nameof(IgnoreSingleItem));
+
+    /// <summary>
+    /// Gets or sets whether to ignore rendering when there is only a single item.
+    /// </summary>
+    public bool IgnoreSingleItem
+    {
+        get => GetValue(IgnoreSingleItemProperty);
+        set => SetValue(IgnoreSingleItemProperty, value);
+    }
+
+    /// <summary>
+    /// Defines the <see cref="DotSize"/> property.
+    /// </summary>
     public static readonly StyledProperty<double> DotSizeProperty =
         AvaloniaProperty.Register<Timeline, double>(nameof(DotSize), 10.0);
 
+    /// <summary>
+    /// Gets or sets the size of the dots on the timeline.
+    /// </summary>
     public double DotSize
     {
         get => GetValue(DotSizeProperty);
         set => SetValue(DotSizeProperty, value);
     }
 
+    /// <summary>
+    /// Defines the <see cref="Fill"/> property.
+    /// </summary>
     public static readonly StyledProperty<IBrush> FillProperty =
         AvaloniaProperty.Register<Timeline, IBrush>(nameof(Fill), Brushes.Gray);
 
+    /// <summary>
+    /// Gets or sets the fill brush for the dots on the timeline.
+    /// </summary>
     public IBrush Fill
     {
         get => GetValue(FillProperty);
         set => SetValue(FillProperty, value);
     }
 
+    /// <summary>
+    /// Defines the <see cref="StrokeThickness"/> property.
+    /// </summary>
     public static readonly StyledProperty<double> StrokeThicknessProperty =
         AvaloniaProperty.Register<Timeline, double>(nameof(StrokeThickness), 2.0);
 
+    /// <summary>
+    /// Gets or sets the stroke thickness for the timeline lines.
+    /// </summary>
     public double StrokeThickness
     {
         get => GetValue(StrokeThicknessProperty);
         set => SetValue(StrokeThicknessProperty, value);
     }
 
+    /// <summary>
+    /// Defines the <see cref="Stroke"/> property.
+    /// </summary>
     public static readonly StyledProperty<IBrush> StrokeProperty =
         AvaloniaProperty.Register<Timeline, IBrush>(nameof(Stroke), Brushes.Gray);
 
+    /// <summary>
+    /// Gets or sets the stroke brush for the timeline lines.
+    /// </summary>
     public IBrush Stroke
     {
         get => GetValue(StrokeProperty);
@@ -74,6 +119,7 @@ public class Timeline : Decorator
         AvaloniaProperty.RegisterAttached<Timeline, Control, Point?>("Anchor");
 
     public static Point? GetAnchor(Control element) => element.GetValue(AnchorProperty);
+
     public static void SetAnchor(Control element, Point? value) => element.SetValue(AnchorProperty, value);
 
     #endregion
@@ -217,7 +263,12 @@ public class Timeline : Decorator
         // Cleanup
         foreach (var item in toRemove) _items.Remove(item);
 
-        if (points.Count == 0) return;
+        switch (points.Count)
+        {
+            case 0:
+            case 1 when IgnoreSingleItem:
+                return;
+        }
 
         // 2. Sort points based on Orientation
         if (Orientation == Orientation.Vertical)
