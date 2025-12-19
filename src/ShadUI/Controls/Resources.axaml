@@ -7,6 +7,7 @@
     <ResourceInclude Source="avares://ShadUI/Controls/Breakpoint/BreakpointView.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/BusyArea/BusyArea.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Button/Button.axaml"/>
+    <ResourceInclude Source="avares://ShadUI/Controls/Button/ButtonGroup.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Calendar/Calendar.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Calendar/CalendarButton.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Calendar/CalendarDatePicker.axaml"/>
