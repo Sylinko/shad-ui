@@ -14,13 +14,13 @@
   <Color x:Key="GhostColor">#E6E6E6</Color>
   <Color x:Key="GhostHoverColor">#7FE6E6E6</Color>
   <Color x:Key="GhostHoverColor50">#33E6E6E6</Color>
-  <Color x:Key="SelectionColor">#0CE6E6E6</Color>
+  <Color x:Key="SelectionColor">#66FFFFFF</Color>
 
   <!--  theme colors  -->
-  <Color x:Key="SecondaryColor">#D9D9D9</Color>
-  <Color x:Key="SecondaryColor75">#BFD9D9D9</Color>
-  <Color x:Key="SecondaryColor50">#80D9D9D9</Color>
-  <Color x:Key="SecondaryColor10">#19D9D9D9</Color>
+  <Color x:Key="SecondaryColor">#FFFFFF</Color>
+  <Color x:Key="SecondaryColor75">#BFFFFFFF</Color>
+  <Color x:Key="SecondaryColor50">#80FFFFFF</Color>
+  <Color x:Key="SecondaryColor10">#19FFFFFF</Color>
   <Color x:Key="SecondaryForegroundColor">#08080B</Color>
   <Color x:Key="DestructiveColor">#E7000B</Color>
   <Color x:Key="DestructiveColor75">#BFE7000B</Color>

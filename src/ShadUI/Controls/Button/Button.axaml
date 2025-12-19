@@ -190,7 +190,7 @@
     <!--  Outline  -->
     <Style Selector="^.Outline">
       <Setter Property="Padding" Value="16,8"/>
-      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource GhostColor}"/>

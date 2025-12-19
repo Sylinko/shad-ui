@@ -17,10 +17,10 @@
   <Color x:Key="SelectionColor">#6609090B</Color>
 
   <!--  theme colors  -->
-  <Color x:Key="SecondaryColor">#36363a</Color>
-  <Color x:Key="SecondaryColor75">#BF36363a</Color>
-  <Color x:Key="SecondaryColor50">#8036363a</Color>
-  <Color x:Key="SecondaryColor10">#1936363a</Color>
+  <Color x:Key="SecondaryColor">#2a2a2a</Color>
+  <Color x:Key="SecondaryColor75">#BF2a2a2a</Color>
+  <Color x:Key="SecondaryColor50">#802a2a2a</Color>
+  <Color x:Key="SecondaryColor10">#192a2a2a</Color>
   <Color x:Key="SecondaryForegroundColor">#E5E5E5</Color>
   <Color x:Key="DestructiveColor">#9D4042</Color>
   <Color x:Key="DestructiveColor75">#BF9D4042</Color>
