@@ -188,7 +188,7 @@
                           </DockPanel>
                         </Panel>
                       </Border>
-                      <ContentPresenter Content="{TemplateBinding TitleBarContentOverride}"/>
+                      <ContentPresenter Content="{Binding $parent[shadui:Window].TitleBarContentOverride}"/>
                     </Panel>
                   </LayoutTransformControl>
                 </StackPanel>

@@ -20,15 +20,11 @@
             </Border.Transitions>
           </Border>
           <Border
-            Name="PART_TitleBar" Height="32"
-            Margin="16,16,16,-16" HorizontalAlignment="Stretch"
-            VerticalAlignment="Top" Background="Transparent"
-            IsVisible="False"/>
-          <Border
             Name="DialogContent"
             MinWidth="{TemplateBinding DialogMinWidth}"
             MaxWidth="{TemplateBinding DialogMaxWidth}"
-            HorizontalAlignment="Center" VerticalAlignment="Center"
+            Margin="8" HorizontalAlignment="Center"
+            VerticalAlignment="Center"
             Background="{DynamicResource DialogBackgroundColor}"
             BorderBrush="{DynamicResource BorderColor}"
             BorderThickness="1" ClipToBounds="True"
