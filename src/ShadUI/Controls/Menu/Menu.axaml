@@ -6,7 +6,7 @@
     <Setter Property="FontWeight" Value="DemiBold"/>
     <Setter Property="CornerRadius" Value="{DynamicResource MdCornerRadius}"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
-    <Setter Property="Padding" Value="12 4"/>
+    <Setter Property="Padding" Value="12,4"/>
     <Setter Property="HorizontalAlignment" Value="Center"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="shadui:MenuItemAssist.PopupVerticalOffset" Value="8"/>
@@ -90,7 +90,7 @@
                   BorderThickness="1"
                   BoxShadow="{DynamicResource Shadow}"
                   CornerRadius="{DynamicResource LgCornerRadius}">
-                  <StackPanel Margin="0,2">
+                  <StackPanel Margin="0,3">
                     <Border
                       Padding="12,8"
                       IsVisible="{TemplateBinding shadui:MenuItemAssist.Label, Converter={x:Static ObjectConverters.IsNotNull}}">

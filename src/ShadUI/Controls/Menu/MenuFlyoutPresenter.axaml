@@ -12,7 +12,7 @@
         Windows="8" macOS="10"/>
     </Setter>
     <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="Padding" Value="2"/>
+    <Setter Property="Padding" Value="2,4"/>
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
     <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
     <Setter Property="TextBlock.FontSize" Value="{DynamicResource FontSizeM}"/>

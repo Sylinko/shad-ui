@@ -65,7 +65,7 @@
 
     <!--  Outline  -->
     <Style Selector="^.Outline">
-      <Setter Property="Background" Value="{DynamicResource TransparentColor}"/>
+      <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
       <Style Selector="^:pointerover /template/ Border#RootBorder">
