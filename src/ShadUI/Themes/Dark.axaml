@@ -11,9 +11,9 @@
   <Color x:Key="BorderColor60">#9C353535</Color>
   <Color x:Key="BorderColor30">#4C353535</Color>
   <Color x:Key="OutlineColor">#3E3E3E</Color>
-  <Color x:Key="GhostColor">#252525</Color>
-  <Color x:Key="GhostHoverColor">#7F252525</Color>
-  <Color x:Key="GhostHoverColor50">#33252525</Color>
+  <Color x:Key="GhostColor">#454545</Color>
+  <Color x:Key="GhostHoverColor">#7F454545</Color>
+  <Color x:Key="GhostHoverColor50">#33454545</Color>
   <Color x:Key="SelectionColor">#6609090B</Color>
 
   <!--  theme colors  -->
@@ -70,7 +70,7 @@
   <Color x:Key="SidebarBackgroundColor">#660A0A0A</Color>
   <Color x:Key="SliderThumbBackgroundColor">#FFFAFAFA</Color>
 
-  <Color x:Key="SwitchBackgroundColor">#66282828</Color>
+  <Color x:Key="SwitchBackgroundColor">#66454545</Color>
   <Color x:Key="SwitchForegroundColor">#66FAFAFA</Color>
 
   <Color x:Key="AcrylicWindowBackgroundColor">#EE1A1A1A</Color>
