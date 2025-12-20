@@ -194,3 +194,20 @@ public class EaseInOut : Easing
         return 1.0 - Math.Pow(factor, 3) / 2.0;
     }
 }
+
+/// <summary>
+///     Provides a page-like easing function that creates a smooth transition effect.
+///     This easing function applies a back effect at both the beginning and end of the animation,
+/// </summary>
+public class PageSlideEase : Easing
+{
+    public override double Ease(double progress)
+    {
+        if (progress < 0.5)
+        {
+            return 0.5 * Math.Pow(2 * progress, 5);
+        }
+
+        return 1 - 0.5 * Math.Pow(2 - 2 * progress, 5);
+    }
+}

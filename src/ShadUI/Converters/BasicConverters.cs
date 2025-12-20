@@ -1,4 +1,6 @@
-﻿using Avalonia.Controls;
+﻿using System.Globalization;
+using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Converters;
 using Avalonia.Controls.Primitives.Converters;
 using Avalonia.Data.Converters;
@@ -78,4 +80,54 @@ public static class BasicConverters
 
     public static IValueConverter InvertOrientation { get; } =
         new FuncValueConverter<Orientation, Orientation>(x => x == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal);
+
+        public static IValueConverter TypeEquals { get; } = new FuncValueConverter<object?, object?, bool>(
+        convert: (x, parameter) => x?.GetType() == parameter as Type
+    );
+
+    public static IValueConverter FullPathToFileName { get; } = new FuncValueConverter<string, string?>(
+        convert: x => Path.GetFileName(x) is { Length: > 0 } fileName ? fileName : x // return original if no file name found (e.g. Path root)
+    );
+
+    /// <summary>
+    /// Converts an Enum Type to its values array.
+    /// </summary>
+    public static IValueConverter EnumTypeToValues { get; } = new FuncValueConverter<Type?, Type?, Array?>(
+        convert: (x, parameter) =>
+        {
+            var type = x ?? parameter;
+            return type?.IsEnum is true ? Enum.GetValues(type) : null;
+        });
+
+    public static IValueConverter IndexFromContainer { get; } = new FuncValueConverter<object?, int>(
+        convert: x =>
+        {
+            if (x is not Control itemContainer) return -1;
+            var itemsControl = ItemsControl.ItemsControlFromItemContainer(itemContainer);
+            return itemsControl?.IndexFromContainer(itemContainer) ?? -1;
+        });
+
+    public static IMultiValueConverter AllEquals { get; } = new AllEqualsConverter();
+
+    /// <summary>
+    /// Returns the first non-null and non-UnsetValue value from the input values.
+    /// </summary>
+    public static IMultiValueConverter FirstNotNull { get; } = new FirstNonNullConverter();
+
+    private class AllEqualsConverter : IMultiValueConverter
+    {
+        public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
+        {
+            var first = values.FirstOrDefault(v => v != AvaloniaProperty.UnsetValue);
+            return first != null && values.Skip(1).All(v => v == first);
+        }
+    }
+
+    private class FirstNonNullConverter : IMultiValueConverter
+    {
+        public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
+        {
+            return values.OfType<object>().FirstOrDefault(value => value != AvaloniaProperty.UnsetValue);
+        }
+    }
 }

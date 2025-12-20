@@ -31,4 +31,11 @@
         <None Include="..\..\icon.png" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Controls\Navigation\NavigationView.axaml.cs">
+        <DependentUpon>NavigationView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
 </Project>

@@ -21,4 +21,5 @@
     x:Key="StrongEaseOutBack" BounceIntensity="Strong"/>
   <shadui:EaseOut x:Key="ShadEaseOut"/>
   <shadui:EaseInOut x:Key="ShadEaseInOut"/>
+  <shadui:PageSlideEase x:Key="PageSlideEase"/>
 </ResourceDictionary>

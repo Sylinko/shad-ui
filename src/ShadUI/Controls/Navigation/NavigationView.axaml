@@ -1,0 +1,101 @@
+﻿<ResourceDictionary
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI">
+  <Design.PreviewWith>
+    <shadui:NavigationView
+      Width="800" Height="600">
+      <shadui:NavigationView.PaneHeader>
+        <TextBlock Text="Menu"/>
+      </shadui:NavigationView.PaneHeader>
+      <shadui:NavigationView.Items>
+        <ListBoxItem>Item 1</ListBoxItem>
+        <ListBoxItem>Item 2</ListBoxItem>
+      </shadui:NavigationView.Items>
+    </shadui:NavigationView>
+  </Design.PreviewWith>
+
+  <ControlTheme
+    x:Key="{x:Type shadui:NavigationView}"
+    TargetType="shadui:NavigationView">
+    <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+    <Setter Property="PageTransition">
+      <shadui:BetterPageSlide
+        FadeDuration="0:0:0.4" FadeEasing="CubicEaseInOut"
+        Orientation="Vertical" SlideDuration="0:0:0.6"
+        SlideEasing="{StaticResource PageSlideEase}"/>
+    </Setter>
+    <Setter Property="CompactPageTransition">
+      <CrossFade
+        FadeInEasing="CubicEaseInOut" FadeOutEasing="CubicEaseInOut"
+        Duration="0:0:0.4"/>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel x:Name="PART_RootPanel">
+          <Grid
+            x:Name="PART_SplitContainer" ColumnDefinitions="Auto,*,Auto">
+            <Border
+              Grid.Column="1" Width="0.5"
+              Background="{TemplateBinding BorderBrush}"/>
+          </Grid>
+
+          <TransitioningContentControl x:Name="PART_CompactContainer"/>
+
+          <DockPanel x:Name="PART_PaneRoot">
+            <!--  Pane Header  -->
+            <ContentPresenter
+              DockPanel.Dock="Top"
+              Content="{TemplateBinding PaneHeader}"
+              ContentTemplate="{TemplateBinding PaneHeaderTemplate}"
+              FontSize="18" FontWeight="Bold"
+              IsVisible="{TemplateBinding PaneHeader, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+
+            <!--  List Items  -->
+            <ScrollViewer>
+              <ItemsPresenter
+                Name="PART_ItemsPresenter"
+                ItemsPanel="{TemplateBinding ItemsPanel}"/>
+            </ScrollViewer>
+          </DockPanel>
+
+          <DockPanel x:Name="PART_ContentRoot">
+            <!--  Navigation Bar  -->
+            <DockPanel Dock="Top">
+              <!--  Back Button  -->
+              <Button
+                Classes="Ghost Icon Compact" DockPanel.Dock="Left"
+                Width="36" VerticalAlignment="Center"
+                Command="{Binding $parent[shadui:NavigationView].GoBack}"
+                IsVisible="{TemplateBinding IsCompact}">
+                <PathIcon Data="{x:Static shadui:Icons.ChevronLeft}"/>
+              </Button>
+
+              <!--  Header  -->
+              <ContentControl ContentTemplate="{TemplateBinding HeaderTemplate}">
+                <ContentPresenter.Content>
+                  <MultiBinding Converter="{x:Static shadui:BasicConverters.FirstNotNull}">
+                    <TemplateBinding Property="Header"/>
+                    <TemplateBinding Property="SelectedItem"/>
+                  </MultiBinding>
+                </ContentPresenter.Content>
+              </ContentControl>
+            </DockPanel>
+
+            <!--  Actual Content  -->
+            <TransitioningContentControl
+              Name="PART_ContentContainer"
+              Content="{TemplateBinding SelectedItem}"
+              ContentTemplate="{TemplateBinding ContentTemplate}"/>
+          </DockPanel>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:compact">
+      <Style Selector="^ /template/ Border#PaneRoot">
+        <Setter Property="BorderThickness" Value="0"/>
+      </Style>
+    </Style>
+  </ControlTheme>
+</ResourceDictionary>
