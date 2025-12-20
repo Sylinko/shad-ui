@@ -78,6 +78,21 @@ public class Timeline : Decorator
     }
 
     /// <summary>
+    /// Defines the <see cref="Spacing"/> property.
+    /// </summary>
+    public static readonly StyledProperty<double> SpacingProperty =
+        AvaloniaProperty.Register<Timeline, double>(nameof(Spacing));
+
+    /// <summary>
+    /// Gets or sets the spacing between the dot and the line.
+    /// </summary>
+    public double Spacing
+    {
+        get => GetValue(SpacingProperty);
+        set => SetValue(SpacingProperty, value);
+    }
+
+    /// <summary>
     /// Defines the <see cref="StrokeThickness"/> property.
     /// </summary>
     public static readonly StyledProperty<double> StrokeThicknessProperty =
@@ -122,6 +137,16 @@ public class Timeline : Decorator
 
     public static void SetAnchor(Control element, Point? value) => element.SetValue(AnchorProperty, value);
 
+    /// <summary>
+    /// Defines the IsBreak attached property.
+    /// </summary>
+    public static readonly AttachedProperty<bool> IsBreakProperty =
+        AvaloniaProperty.RegisterAttached<Timeline, Control, bool>("IsBreak");
+
+    public static bool GetIsBreak(Control element) => element.GetValue(IsBreakProperty);
+
+    public static void SetIsBreak(Control element, bool value) => element.SetValue(IsBreakProperty, value);
+
     #endregion
 
     static Timeline()
@@ -131,14 +156,22 @@ public class Timeline : Decorator
             DotSizeProperty,
             FillProperty,
             StrokeThicknessProperty,
-            StrokeProperty);
+            StrokeProperty,
+            SpacingProperty);
 
         AnchorProperty.Changed.AddClassHandler<Control>(OnAnchorChanged);
+        IsBreakProperty.Changed.AddClassHandler<Control>(OnIsBreakChanged);
     }
 
     public Timeline()
     {
         LayoutUpdated += (_, _) => InvalidateVisual();
+    }
+
+    private static void OnIsBreakChanged(Control control, AvaloniaPropertyChangedEventArgs e)
+    {
+        var timeline = control.FindAncestorOfType<Timeline>();
+        timeline?.InvalidateVisual();
     }
 
     private static void OnAnchorChanged(Control control, AvaloniaPropertyChangedEventArgs e)
@@ -228,7 +261,7 @@ public class Timeline : Decorator
         if (_items.Count == 0) return;
 
         // 1. Collect valid points
-        var points = new List<(Point Point, Control Item)>();
+        var allPoints = new List<(Point Point, Control Item)>();
         var toRemove = new List<Control>();
 
         foreach (var item in _items)
@@ -256,52 +289,95 @@ public class Timeline : Decorator
             if (matrix.HasValue)
             {
                 var p = anchor.Value.Transform(matrix.Value);
-                points.Add((p, item));
+                allPoints.Add((p, item));
             }
         }
 
         // Cleanup
         foreach (var item in toRemove) _items.Remove(item);
 
-        switch (points.Count)
-        {
-            case 0:
-            case 1 when IgnoreSingleItem:
-                return;
-        }
+        if (allPoints.Count == 0) return;
 
         // 2. Sort points based on Orientation
         if (Orientation == Orientation.Vertical)
         {
-            points.Sort((a, b) => a.Point.Y.CompareTo(b.Point.Y));
+            allPoints.Sort((a, b) => a.Point.Y.CompareTo(b.Point.Y));
         }
         else
         {
-            points.Sort((a, b) => a.Point.X.CompareTo(b.Point.X));
+            allPoints.Sort((a, b) => a.Point.X.CompareTo(b.Point.X));
         }
 
-        // 3. Draw
-        var linePen = new Pen(Stroke, StrokeThickness);
+        // 3. Split into segments
+        var segments = new List<List<(Point Point, Control Item)>>();
+        var currentSegment = new List<(Point Point, Control Item)>();
+
+        foreach (var point in allPoints)
+        {
+            if (GetIsBreak(point.Item))
+            {
+                if (currentSegment.Count > 0)
+                {
+                    segments.Add(currentSegment);
+                    currentSegment = [];
+                }
+            }
+            else
+            {
+                currentSegment.Add(point);
+            }
+        }
+        if (currentSegment.Count > 0)
+        {
+            segments.Add(currentSegment);
+        }
+
+        // 4. Draw
+        var linePen = new Pen(Stroke, StrokeThickness, lineCap: PenLineCap.Round, lineJoin: PenLineJoin.Round);
         var dotBrush = Fill;
         var dotRadius = DotSize / 2;
+        var spacing = Spacing;
+        var isVertical = Orientation == Orientation.Vertical;
 
-        for (var i = 0; i < points.Count; i++)
+        foreach (var segment in segments)
         {
-            // Normalize point to the axis line
-            var originalPoint = points[i].Point;
-            var current = Orientation == Orientation.Vertical ? new Point(0, originalPoint.Y) : new Point(originalPoint.X, 0);
+            if (segment.Count <= 1 && IgnoreSingleItem) continue;
 
-            // Draw Line to next point
-            if (i < points.Count - 1)
+            for (var i = 0; i < segment.Count; i++)
             {
-                var nextOriginal = points[i + 1].Point;
-                var next = Orientation == Orientation.Vertical ? new Point(0, nextOriginal.Y) : new Point(nextOriginal.X, 0);
+                var originalPoint = segment[i].Point;
+                var current = isVertical ? new Point(0, originalPoint.Y) : new Point(originalPoint.X, 0);
 
-                context.DrawLine(linePen, current, next);
+                // Draw Dot
+                context.DrawEllipse(dotBrush, null, current, dotRadius, dotRadius);
+
+                // Draw Line to next
+                if (i >= segment.Count - 1) continue;
+
+                var nextOriginal = segment[i + 1].Point;
+                var next = isVertical ? new Point(0, nextOriginal.Y) : new Point(nextOriginal.X, 0);
+
+                // Apply spacing
+                var diff = next - current;
+                var length = Math.Sqrt(diff.X * diff.X + diff.Y * diff.Y);
+                var offset = dotRadius + spacing;
+
+                if (length <= offset * 2) continue;
+
+                Point start, end;
+                if (isVertical)
+                {
+                    start = new Point(current.X, current.Y + offset);
+                    end = new Point(next.X, next.Y - offset);
+                }
+                else
+                {
+                    start = new Point(current.X + offset, current.Y);
+                    end = new Point(next.X - offset, next.Y);
+                }
+
+                context.DrawLine(linePen, start, end);
             }
-
-            // Draw Dot
-            context.DrawEllipse(dotBrush, null, current, dotRadius, dotRadius);
         }
     }
 }
