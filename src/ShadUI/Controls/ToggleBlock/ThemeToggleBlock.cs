@@ -52,12 +52,12 @@ public class ThemeToggleBlock : ContentControl
         {
             case "Light":
             {
-                Content = BuildContent(LightContent);
+                Content = LightContent?.Build(this)?.Result;
                 break;
             }
             case "Dark":
             {
-                Content = BuildContent(DarkContent);
+                Content = DarkContent?.Build(this)?.Result;
                 break;
             }
             default:
@@ -65,13 +65,6 @@ public class ThemeToggleBlock : ContentControl
                 Content = null;
                 break;
             }
-        }
-
-        Control? BuildContent(IControlTemplate? template)
-        {
-            var result = template?.Build(this)?.Result;
-            result?.DataContext = DataContext;
-            return result;
         }
     }
 }
