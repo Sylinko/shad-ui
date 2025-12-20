@@ -1,19 +1,6 @@
 ﻿<ResourceDictionary
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:shadui="clr-namespace:ShadUI">
-  <Design.PreviewWith>
-    <shadui:NavigationView
-      Width="800" Height="600">
-      <shadui:NavigationView.PaneHeader>
-        <TextBlock Text="Menu"/>
-      </shadui:NavigationView.PaneHeader>
-      <shadui:NavigationView.Items>
-        <ListBoxItem>Item 1</ListBoxItem>
-        <ListBoxItem>Item 2</ListBoxItem>
-      </shadui:NavigationView.Items>
-    </shadui:NavigationView>
-  </Design.PreviewWith>
-
   <ControlTheme
     x:Key="{x:Type shadui:NavigationView}"
     TargetType="shadui:NavigationView">
@@ -28,7 +15,7 @@
     <Setter Property="CompactPageTransition">
       <CrossFade
         FadeInEasing="CubicEaseInOut" FadeOutEasing="CubicEaseInOut"
-        Duration="0:0:0.4"/>
+        Duration="0:0:0.2"/>
     </Setter>
     <Setter Property="Template">
       <ControlTemplate>
@@ -51,12 +38,7 @@
               FontSize="18" FontWeight="Bold"
               IsVisible="{TemplateBinding PaneHeader, Converter={x:Static ObjectConverters.IsNotNull}}"/>
 
-            <!--  List Items  -->
-            <ScrollViewer>
-              <ItemsPresenter
-                Name="PART_ItemsPresenter"
-                ItemsPanel="{TemplateBinding ItemsPanel}"/>
-            </ScrollViewer>
+            <ContentPresenter Content="{TemplateBinding PaneContent}"/>
           </DockPanel>
 
           <DockPanel x:Name="PART_ContentRoot">
@@ -64,8 +46,9 @@
             <DockPanel Dock="Top">
               <!--  Back Button  -->
               <Button
-                Classes="Ghost Icon Compact" DockPanel.Dock="Left"
-                Width="36" VerticalAlignment="Center"
+                Classes="Ghost Compact" DockPanel.Dock="Left"
+                Width="24" Height="36"
+                VerticalAlignment="Center"
                 Command="{Binding $parent[shadui:NavigationView].GoBack}"
                 IsVisible="{TemplateBinding IsCompact}">
                 <PathIcon Data="{x:Static shadui:Icons.ChevronLeft}"/>

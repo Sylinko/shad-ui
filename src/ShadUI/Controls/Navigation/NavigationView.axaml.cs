@@ -18,7 +18,7 @@ namespace ShadUI;
 [TemplatePart(PaneRootPartName, typeof(DockPanel), IsRequired = true)]
 [TemplatePart(ContentRootPartName, typeof(DockPanel), IsRequired = true)]
 [TemplatePart(ContentContainerPartName, typeof(TransitioningContentControl), IsRequired = true)]
-public class NavigationView : ListBox
+public class NavigationView : TemplatedControl
 {
     private const string RootPanelPartName = "PART_RootPanel";
     private const string SplitContainerPartName = "PART_SplitContainer";
@@ -26,6 +26,21 @@ public class NavigationView : ListBox
     private const string PaneRootPartName = "PART_PaneRoot";
     private const string ContentRootPartName = "PART_ContentRoot";
     private const string ContentContainerPartName = "PART_ContentContainer";
+
+    /// <summary>
+    /// Defines the <see cref="SelectedItem"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> SelectedItemProperty =
+        AvaloniaProperty.Register<NavigationView, object?>(nameof(SelectedItem));
+
+    /// <summary>
+    /// Gets or sets the currently selected item in the navigation pane.
+    /// </summary>
+    public object? SelectedItem
+    {
+        get => GetValue(SelectedItemProperty);
+        set => SetValue(SelectedItemProperty, value);
+    }
 
     /// <summary>
     /// Defines the <see cref="ContentTemplate"/> property.
@@ -55,7 +70,7 @@ public class NavigationView : ListBox
     /// Defines the <see cref="Spacing"/> property.
     /// </summary>
     public static readonly StyledProperty<GridLength> SpacingProperty =
-        AvaloniaProperty.Register<NavigationView, GridLength>(nameof(Spacing), new GridLength(12d, GridUnitType.Pixel));
+        AvaloniaProperty.Register<NavigationView, GridLength>(nameof(Spacing), new GridLength(16d, GridUnitType.Pixel));
 
     /// <summary>
     /// Gets or sets the spacing between pane and content area.
@@ -127,6 +142,21 @@ public class NavigationView : ListBox
     }
 
     /// <summary>
+    /// Defines the <see cref="PaneContent"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> PaneContentProperty =
+        AvaloniaProperty.Register<NavigationView, object?>(nameof(PaneContent));
+
+    /// <summary>
+    /// Gets or sets the content for the navigation pane.
+    /// </summary>
+    public object? PaneContent
+    {
+        get => GetValue(PaneContentProperty);
+        set => SetValue(PaneContentProperty, value);
+    }
+
+    /// <summary>
     /// Defines the <see cref="Header"/> property.
     /// </summary>
     public static readonly StyledProperty<object?> HeaderProperty =
@@ -184,11 +214,6 @@ public class NavigationView : ListBox
     {
         get => GetValue(CompactPageTransitionProperty);
         set => SetValue(CompactPageTransitionProperty, value);
-    }
-
-    static NavigationView()
-    {
-        SelectionModeProperty.OverrideDefaultValue<NavigationView>(SelectionMode.Single);
     }
 
     private Panel? _rootPanel;

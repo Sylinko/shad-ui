@@ -53,6 +53,8 @@ public class ButtonGroup : StackPanel
         set => SetValue(BorderThicknessProperty, value);
     }
 
+    private readonly HashSet<Control> _listeningChildren = new();
+
     static ButtonGroup()
     {
         AffectsRender<ButtonGroup>(CornerRadiusProperty, BorderBrushProperty, BorderThicknessProperty);
@@ -62,7 +64,63 @@ public class ButtonGroup : StackPanel
     {
         base.ChildrenChanged(sender, e);
 
+        switch (e.Action)
+        {
+            case NotifyCollectionChangedAction.Add:
+                if (e.NewItems != null)
+                    foreach (var item in e.NewItems.OfType<Control>())
+                        StartListening(item);
+                break;
+            case NotifyCollectionChangedAction.Remove:
+                if (e.OldItems != null)
+                    foreach (var item in e.OldItems.OfType<Control>())
+                        StopListening(item);
+                break;
+            case NotifyCollectionChangedAction.Replace:
+                if (e.OldItems != null)
+                    foreach (var item in e.OldItems.OfType<Control>())
+                        StopListening(item);
+                if (e.NewItems != null)
+                    foreach (var item in e.NewItems.OfType<Control>())
+                        StartListening(item);
+                break;
+            case NotifyCollectionChangedAction.Reset:
+                foreach (var child in _listeningChildren.ToList())
+                {
+                    StopListening(child);
+                }
+                foreach (var child in Children.OfType<Control>())
+                {
+                    StartListening(child);
+                }
+                break;
+        }
+
         UpdateChildrenStyles();
+    }
+
+    private void StartListening(Control c)
+    {
+        if (_listeningChildren.Add(c))
+        {
+            c.PropertyChanged += HandleChildPropertyChanged;
+        }
+    }
+
+    private void StopListening(Control c)
+    {
+        if (_listeningChildren.Remove(c))
+        {
+            c.PropertyChanged -= HandleChildPropertyChanged;
+        }
+    }
+
+    private void HandleChildPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property == IsVisibleProperty)
+        {
+            UpdateChildrenStyles();
+        }
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -89,11 +147,16 @@ public class ButtonGroup : StackPanel
         var brush = BorderBrush;
         var thickness = BorderThickness;
 
+        Button? firstButton = null;
+        Button? lastButton = null;
+
         for (var i = 0; i < count; i++)
         {
             var button = children[i];
-            var isFirst = i == 0;
-            var isLast = i == count - 1;
+            if (!button.IsVisible) continue;
+
+            firstButton ??= button;
+            lastButton = button;
 
             // Apply BorderBrush
             if (brush != null)
@@ -110,51 +173,42 @@ public class ButtonGroup : StackPanel
             // Vertical: Middle items lose Top border (or Bottom).
             
             var newThickness = thickness;
-            if (count > 1)
+            if (button != firstButton)
             {
                 if (orientation == Orientation.Horizontal)
                 {
-                    // If not first, remove left border to avoid double thickness with previous button's right border
-                    if (!isFirst)
-                    {
-                        newThickness = new Thickness(0, thickness.Top, thickness.Right, thickness.Bottom);
-                    }
+                    newThickness = new Thickness(0, thickness.Top, thickness.Right, thickness.Bottom);
                 }
                 else
                 {
-                    // If not first, remove top border
-                    if (!isFirst)
-                    {
-                        newThickness = new Thickness(thickness.Left, 0, thickness.Right, thickness.Bottom);
-                    }
+                    newThickness = new Thickness(thickness.Left, 0, thickness.Right, thickness.Bottom);
                 }
             }
-            button.BorderThickness = newThickness;
 
-            // Apply CornerRadius
-            var newRadius = new CornerRadius(0);
-            if (count == 1)
+            button.BorderThickness = newThickness;
+            button.CornerRadius = new CornerRadius(0);
+        }
+
+        // Apply CornerRadius to first and last buttons
+        if (firstButton == null) return;
+
+        if (firstButton == lastButton)
+        {
+            // only one button
+            firstButton.CornerRadius = radius;
+        }
+        else
+        {
+            if (orientation == Orientation.Horizontal)
             {
-                newRadius = radius;
+                firstButton.CornerRadius = new CornerRadius(radius.TopLeft, 0, 0, radius.BottomLeft);
+                lastButton?.CornerRadius = new CornerRadius(0, radius.TopRight, radius.BottomRight, 0);
             }
             else
             {
-                if (orientation == Orientation.Horizontal)
-                {
-                    if (isFirst)
-                        newRadius = new CornerRadius(radius.TopLeft, 0, 0, radius.BottomLeft);
-                    else if (isLast)
-                        newRadius = new CornerRadius(0, radius.TopRight, radius.BottomRight, 0);
-                }
-                else // Vertical
-                {
-                    if (isFirst)
-                        newRadius = new CornerRadius(radius.TopLeft, radius.TopRight, 0, 0);
-                    else if (isLast)
-                        newRadius = new CornerRadius(0, 0, radius.BottomRight, radius.BottomLeft);
-                }
+                firstButton.CornerRadius = new CornerRadius(radius.TopLeft, radius.TopRight, 0, 0);
+                lastButton?.CornerRadius = new CornerRadius(0, 0, radius.BottomRight, radius.BottomLeft);
             }
-            button.CornerRadius = newRadius;
         }
     }
 }

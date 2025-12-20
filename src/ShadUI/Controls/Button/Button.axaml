@@ -242,7 +242,6 @@
     </Style>
 
     <Style Selector="^.Rounded">
-      <Setter Property="MinWidth" Value="30"/>
       <Setter Property="Height" Value="{Binding $self.Bounds.Width}"/>
       <Setter Property="Padding" Value="0"/>
       <Setter Property="CornerRadius" Value="{DynamicResource FullCornerRadius}"/>
@@ -250,7 +249,6 @@
 
     <!--  Icon  -->
     <Style Selector="^.Icon">
-      <Setter Property="MinWidth" Value="36"/>
       <Setter Property="Height" Value="{Binding $self.Bounds.Width}"/>
       <Setter Property="Background" Value="{DynamicResource GhostHoverColor50}"/>
       <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
@@ -262,7 +260,6 @@
 
     <!--  DestructiveIcon  -->
     <Style Selector="^.DestructiveIcon">
-      <Setter Property="MinWidth" Value="36"/>
       <Setter Property="Height" Value="{Binding $self.Bounds.Width}"/>
       <Setter Property="Background" Value="{DynamicResource DestructiveColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}"/>
