@@ -89,16 +89,16 @@
                     IsVisible="{Binding $parent[shadui:Window].IsTitleBarVisible}"
                     RenderTransformOrigin="0%,0%">
                     <Panel MinHeight="{Binding $parent[shadui:Window].WindowDecorationMargin.Top}">
-                      <Panel.Margin>
-                        <OnPlatform
-                          x:TypeArguments="Thickness" Linux="0"
-                          Windows="0" macOS="60,0,0,0"/>
-                      </Panel.Margin>
-
                       <Border
                         ClipToBounds="True"
                         CornerRadius="{Binding $parent[shadui:Window].RootCornerRadius, Converter={x:Static shadui:CornerRadiusConverters.TopOnly}}"
                         IsVisible="{Binding $parent[shadui:Window].TitleBarContentOverride, Converter={x:Static ObjectConverters.IsNull}}">
+                        <Border.Margin>
+                          <OnPlatform
+                            x:TypeArguments="Thickness" Linux="0"
+                            Windows="0" macOS="60,0,0,0"/>
+                        </Border.Margin>
+
                         <Panel Margin="0,-1,0,0">
                           <Border
                             x:Name="PART_TitleBarBackground" MinWidth="32"
