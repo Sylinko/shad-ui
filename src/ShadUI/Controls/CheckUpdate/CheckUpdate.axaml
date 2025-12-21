@@ -44,6 +44,10 @@
                 <Setter Property="Foreground" Value="{DynamicResource ForegroundLeadColor}"/>
                 <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
               </Style>
+              <Style Selector="TextBlock.Description">
+                <Setter Property="Foreground" Value="{DynamicResource ForegroundLeadColor}"/>
+                <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
+              </Style>
             </Panel.Styles>
             <Border x:Name="UpdateAvailableBorder">
               <Border.IsVisible>
@@ -94,19 +98,29 @@
                   Background="{DynamicResource SuccessColor60}">
                   <LucideIcon Kind="Check"/>
                 </Border>
-                <TextBlock
-                  Classes="Text" Margin="14,0,0,0">
-                  <Run
-                    Classes="Title"
+                <StackPanel
+                  DockPanel.Dock="Right" Margin="14,0,0,0"
+                  VerticalAlignment="Center">
+                  <TextBlock
+                    FontSize="{DynamicResource FontSizeM}"
+                    FontWeight="SemiBold"
                     Text="{TemplateBinding UpdateNotAvailableTitle}"/>
-                  <LineBreak/>
-                  <Run
-                    Classes="Description"
-                    Text="{TemplateBinding LastUpdateCheckTitle}"/>
-                  <Run
-                    Classes="Description"
-                    Text="{Binding LastUpdateCheckDate, StringFormat={}{0:yyyy/MM/dd HH:mm}, RelativeSource={RelativeSource TemplatedParent}}"/>
-                </TextBlock>
+                  <StackPanel
+                    Orientation="Horizontal" Spacing="4">
+                    <TextBlock
+                      Classes="Description"
+                      IsVisible="{Binding IsNeverChecked, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static BoolConverters.Not}}"
+                      Text="{TemplateBinding LastUpdateCheckTitle}"/>
+                    <TextBlock
+                      Classes="Description"
+                      IsVisible="{Binding IsNeverChecked, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static BoolConverters.Not}}"
+                      Text="{Binding LastUpdateCheckDate, StringFormat={}{0:yyyy/MM/dd HH:mm}, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <TextBlock
+                      Classes="Description"
+                      IsVisible="{Binding IsNeverChecked, RelativeSource={RelativeSource TemplatedParent}}"
+                      Text="{TemplateBinding NeverCheckedTitle}"/>
+                  </StackPanel>
+                </StackPanel>
               </DockPanel>
             </Border>
             <Border

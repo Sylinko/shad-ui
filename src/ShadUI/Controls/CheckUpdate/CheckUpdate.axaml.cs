@@ -115,4 +115,31 @@ public class CheckUpdate : TemplatedControl
         get => GetValue(CheckingUpdateDescriptionProperty);
         set => SetValue(CheckingUpdateDescriptionProperty, value);
     }
+
+    public static readonly StyledProperty<string> NeverCheckedTitleProperty =
+        AvaloniaProperty.Register<CheckUpdate, string>(nameof(NeverCheckedTitle));
+
+    public string NeverCheckedTitle
+    {
+        get => GetValue(NeverCheckedTitleProperty);
+        set => SetValue(NeverCheckedTitleProperty, value);
+    }
+
+    public static readonly DirectProperty<CheckUpdate, bool> IsNeverCheckedProperty =
+        AvaloniaProperty.RegisterDirect<CheckUpdate, bool>(nameof(IsNeverChecked), o => o.IsNeverChecked);
+
+    public bool IsNeverChecked
+    {
+        get;
+        private set => SetAndRaise(IsNeverCheckedProperty, ref field, value);
+    } = true;
+
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+        if (change.Property == LastUpdateCheckDateProperty)
+        {
+            IsNeverChecked = LastUpdateCheckDate == DateTimeOffset.MinValue;
+        }
+    }
 }

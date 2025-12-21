@@ -179,21 +179,6 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     }
 
     /// <summary>
-    ///     Whether to enable title bar animation.
-    /// </summary>
-    public static readonly StyledProperty<bool> TitleBarAnimationEnabledProperty =
-        AvaloniaProperty.Register<Window, bool>(nameof(TitleBarAnimationEnabled));
-
-    /// <summary>
-    ///     Gets or sets the value of the <see cref="TitleBarAnimationEnabledProperty" />.
-    /// </summary>
-    public bool TitleBarAnimationEnabled
-    {
-        get => GetValue(TitleBarAnimationEnabledProperty);
-        set => SetValue(TitleBarAnimationEnabledProperty, value);
-    }
-
-    /// <summary>
     ///     Whether to show the title bar background.
     /// </summary>
     public static readonly StyledProperty<bool> ShowTitlebarBackgroundProperty =
