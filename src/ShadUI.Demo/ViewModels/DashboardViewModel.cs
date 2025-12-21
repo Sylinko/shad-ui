@@ -13,19 +13,20 @@ namespace ShadUI.Demo.ViewModels;
 public sealed partial class DashboardViewModel : ViewModelBase, INavigable
 {
     private readonly PageManager _pageManager;
-    public ThemeWatcher ThemeWatcher { get; }
+    public ThemeManager ThemeManager { get; }
 
     private readonly SKTypeface _typeface;
 
     [ObservableProperty]
     private static SolidColorPaint _tooltipTextPaint = null!;
 
-    public DashboardViewModel(PageManager pageManager, ThemeWatcher themeWatcher)
+    public DashboardViewModel(PageManager pageManager, ThemeManager themeManager)
     {
         _pageManager = pageManager;
-        ThemeWatcher = themeWatcher;
-        ThemeWatcher.ThemeChanged += (_, colors) =>
+        ThemeManager = themeManager;
+        ThemeManager.ThemeChanged += (_, _) =>
         {
+            var colors = ThemeManager.ThemeColors;
             UpdateAxesLabelPaints(colors);
             UpdateSeriesFill(colors.PrimaryColor);
         };
@@ -125,7 +126,7 @@ public sealed partial class DashboardViewModel : ViewModelBase, INavigable
     public void Initialize()
     {
         ((ColumnSeries<double>)Series[0]).Values = GenerateRandomValues();
-        var primary = ThemeWatcher.ThemeColors.PrimaryColor;
+        var primary = ThemeManager.ThemeColors.PrimaryColor;
         UpdateSeriesFill(primary);
     }
 }

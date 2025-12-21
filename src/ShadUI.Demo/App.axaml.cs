@@ -29,9 +29,6 @@ public class App : Application
 
         DisableAvaloniaDataAnnotationValidation();
         var provider = new ServiceProvider();
-
-        var themeWatcher = provider.GetService<ThemeWatcher>();
-        themeWatcher.Initialize();
         var viewModel = provider.GetService<MainWindowViewModel>();
         viewModel.Initialize();
 

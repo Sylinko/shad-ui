@@ -10,7 +10,7 @@ namespace ShadUI.Demo;
 
 public sealed partial class MainWindowViewModel : ViewModelBase
 {
-    private readonly ThemeWatcher _themeWatcher;
+    private readonly ThemeManager _themeManager;
     private readonly AboutViewModel _aboutViewModel;
     private readonly DashboardViewModel _dashboardViewModel;
     private readonly ThemeViewModel _themeViewModel;
@@ -45,7 +45,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         PageManager pageManager,
         DialogManager dialogManager,
         ToastManager toastManager,
-        ThemeWatcher themeWatcher,
+        ThemeManager themeManager,
         AboutViewModel aboutViewModel,
         DashboardViewModel dashboardViewModel,
         ThemeViewModel themeViewModel,
@@ -76,7 +76,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     {
         _dialogManager = dialogManager;
         _toastManager = toastManager;
-        _themeWatcher = themeWatcher;
+        _themeManager = themeManager;
         _aboutViewModel = aboutViewModel;
         _dashboardViewModel = dashboardViewModel;
         _themeViewModel = themeViewModel;
@@ -357,7 +357,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
             _ => ThemeMode.System
         };
 
-        _themeWatcher.SwitchTheme(CurrentTheme);
+        _themeManager.SwitchTheme(CurrentTheme);
     }
 
     /// <summary>

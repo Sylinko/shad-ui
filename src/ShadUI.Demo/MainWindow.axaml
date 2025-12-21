@@ -52,383 +52,359 @@
   </shadui:Window.RightWindowTitleBarContent>
   <Panel>
     <Grid ColumnDefinitions="Auto *">
-      <shadui:Sidebar
+      <shadui:NavigationBar
         Grid.Column="0" Width="200"
         MinWidth="68" Padding="8"
         BorderBrush="{DynamicResource BorderColor30}"
-        CurrentRoute="{Binding CurrentRoute}"
-        Expanded="{Binding #Toggler.IsChecked}">
-        <shadui:Sidebar.Header>
-          <Border
-            Width="48" Height="48"
-            Margin="2,0,2,3" Padding="6"
-            HorizontalAlignment="Left" VerticalAlignment="Center"
-            Background="{DynamicResource CardBackgroundColor}"
-            CornerRadius="{DynamicResource 3XlCornerRadius}">
-            <ToggleButton
-              Name="Toggler"
-              CornerRadius="{DynamicResource FullCornerRadius}"
-              Cursor="Hand"
-              Theme="{DynamicResource SideTogglerTheme}">
-              <LucideIcon
-                Foreground="{DynamicResource ForegroundColor}"
-                Kind="PanelLeft" Size="18"/>
-            </ToggleButton>
-          </Border>
-        </shadui:Sidebar.Header>
+        CurrentRoute="{Binding CurrentRoute}">
         <Border
           Padding="6" VerticalAlignment="Top"
           Background="{DynamicResource CardBackgroundColor}"
           BorderThickness="0"
           CornerRadius="{DynamicResource 3XlCornerRadius}">
           <StackPanel Spacing="4">
-            <shadui:SidebarItemLabel
-              AsSeparator="True" Text="Get Started"/>
-            <shadui:SidebarItem
+            <shadui:NavigationBarItem
               Command="{Binding OpenDashboardCommand}"
               Content="Dashboard" IsChecked="True"
               Route="dashboard"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Dashboard'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Dashboard'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#57793;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenThemeCommand}"
               Content="Theming" Route="theme"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Theming'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Theming'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#58088;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenTypographyCommand}"
               Content="Typography" Route="typography"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Typography'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Typography'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#58887;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItemLabel
-              Margin="8,20,8,8" AsSeparator="True"
-              Text="Components"/>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenAvatarCommand}"
               Content="Avatar" Route="avatar"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Avatar'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Avatar'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#58470;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenBadgeCommand}"
               Content="Badge" Route="badge"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Badge'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Badge'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#58416;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenButtonsCommand}"
               Content="Button" Route="button"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Buttons'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Buttons'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#57636;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenCardsCommand}"
               Content="Card" Route="card"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Cards'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Cards'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#57506;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenCheckBoxesCommand}"
               Content="CheckBox" Route="checkbox"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='CheckBox'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='CheckBox'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#58568;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenCheckUpdateCommand}"
               Content="CheckUpdate" Route="checkupdate"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='CheckUpdate'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='CheckUpdate'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <LucideIcon
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Kind="BadgeCheck" Size="20"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenColorsCommand}"
               Content="Color" Route="color"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Colors'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Colors'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#57821;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenComboBoxesCommand}"
               Content="ComboBox" Route="combobox"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='ComboBox'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='ComboBox'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#57873;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenDataGridCommand}"
               Content="Data Table" Route="data-table"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Data Table'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Data Table'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#58628;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenDateCommand}"
               Content="Date Control" Route="date"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Date'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Date'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#57447;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenDialogsCommand}"
               Content="Dialog" Route="dialog"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Dialogs'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Dialogs'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#57627;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenInputsCommand}"
               Content="Input" Route="input"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Inputs'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Inputs'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#57957;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenMenusCommand}"
               Content="Menu" Route="menu"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Menus'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Menus'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#58456;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenNumericsCommand}"
               Content="Numeric Input" Route="numeric"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Numerics'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Numerics'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="ShadUIIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#xe902;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenSidebarCommand}"
-              Content="Sidebar" Route="sidebar"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Sidebar'}">
-              <shadui:SidebarItem.Icon>
+              Content="NavigationBar" Route="NavigationBar"
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='NavigationBar'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#57646;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenSlidersCommand}"
               Content="Slider" Route="slider"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Sliders'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Sliders'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#58010;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenSwitchCommand}"
               Content="Switch" Route="switch"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Switch'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Switch'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#57739;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenTabsCommand}"
               Content="Tab Control" Route="tab-control"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Tabs'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Tabs'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#58411;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenTimeCommand}"
               Content="Time" Route="time"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Time'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Time'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#57937;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenToastCommand}"
               Content="Toast" Route="toast"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Toasts'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Toasts'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#57980;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenToggleCommand}"
               Content="Toggle" Route="toggle"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Toggle'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Toggle'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#58751;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenToolTipCommand}"
               Content="Tooltip" Route="tooltip"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Tooltip'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Tooltip'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#57626;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
-            <shadui:SidebarItem
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
+            <shadui:NavigationBarItem
               Command="{Binding OpenMiscellaneousCommand}"
               Content="Miscellaneous" Route="miscellaneous"
-              ToolTip.Tip="{Binding $parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Miscellaneous'}">
-              <shadui:SidebarItem.Icon>
+              ToolTip.Tip="{Binding $parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.NullOrString}, ConverterParameter='Miscellaneous'}">
+              <shadui:NavigationBarItem.Icon>
                 <Viewbox>
                   <TextBlock
                     Classes="LucideIcon"
                     Foreground="{DynamicResource ForegroundColor}"
                     Text="&#58671;"/>
                 </Viewbox>
-              </shadui:SidebarItem.Icon>
-            </shadui:SidebarItem>
+              </shadui:NavigationBarItem.Icon>
+            </shadui:NavigationBarItem>
           </StackPanel>
         </Border>
-        <shadui:Sidebar.Footer>
+        <shadui:NavigationBar.Footer>
           <Menu Classes="Single">
             <MenuItem
               Classes="NoPressedAnimation" Padding="8,0"
@@ -440,8 +416,8 @@
                   <shadui:Avatar
                     CornerRadius="{DynamicResource LgCornerRadius}"
                     Fallback="CN"
-                    IsVisible="{Binding !$parent[shadui:Sidebar].Expanded}"
-                    Opacity="{Binding !$parent[shadui:Sidebar].Expanded, Converter={x:Static converters:BooleanConverters.Opaque}}"
+                    IsVisible="{Binding !$parent[shadui:NavigationBar].IsExpanded}"
+                    Opacity="{Binding !$parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.Opaque}}"
                     Source="../../Assets/user.png">
                     <shadui:Avatar.Transitions>
                       <Transitions>
@@ -452,7 +428,7 @@
                   </shadui:Avatar>
                   <Grid
                     Margin="0,8" ColumnDefinitions="Auto * Auto"
-                    IsVisible="{Binding $parent[shadui:Sidebar].Expanded}">
+                    IsVisible="{Binding $parent[shadui:NavigationBar].IsExpanded}">
                     <shadui:Avatar
                       Width="36" Height="36"
                       Margin="0,0,8,0"
@@ -605,8 +581,8 @@
               </MenuItem>
             </MenuItem>
           </Menu>
-        </shadui:Sidebar.Footer>
-      </shadui:Sidebar>
+        </shadui:NavigationBar.Footer>
+      </shadui:NavigationBar>
       <TransitioningContentControl
         Grid.Column="1"
         Content="{Binding SelectedPage}"/>

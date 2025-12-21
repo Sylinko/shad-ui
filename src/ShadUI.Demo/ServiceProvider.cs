@@ -59,12 +59,12 @@ namespace ShadUI.Demo;
 [Transient<MainWindowViewModel>]
 [Import<IUtilitiesModule>]
 [Singleton<IMessenger, WeakReferenceMessenger>]
-[Singleton(typeof(ThemeWatcher), Factory = nameof(ThemeWatcherFactory))]
+[Singleton(typeof(ThemeManager), Factory = nameof(ThemeWatcherFactory))]
 [Singleton(typeof(ILogger), Factory = nameof(LoggerFactory))]
 [Singleton(typeof(PageManager), Factory = nameof(PageManagerFactory))]
 public partial class ServiceProvider
 {
-    public ILogger LoggerFactory()
+    public static ILogger LoggerFactory()
     {
         var currentFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "ShadUI\\logs");
@@ -83,9 +83,9 @@ public partial class ServiceProvider
         return config;
     }
 
-    public ThemeWatcher ThemeWatcherFactory()
+    public static ThemeManager ThemeWatcherFactory()
     {
-        return new ThemeWatcher(Application.Current!);
+        return new ThemeManager(Application.Current!);
     }
 
     public PageManager PageManagerFactory()
