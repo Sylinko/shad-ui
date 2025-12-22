@@ -24,6 +24,24 @@ public static class ControlAssist
                 label.Text = args.NewValue!.ToString();
             };
         });
+        ClassNameProperty.Changed.AddClassHandler<Control>((control, args) =>
+        {
+            if (args.OldValue is string oldClassName && !string.IsNullOrEmpty(oldClassName) && oldClassName.Split(' ') is { Length: > 0 } oldClasses)
+            {
+                foreach (var oldClass in oldClasses)
+                {
+                    control.Classes.Remove(oldClass);
+                }
+            }
+
+            if (args.NewValue is string newClassName && !string.IsNullOrEmpty(newClassName) && newClassName.Split(' ') is { Length: > 0 } newClasses)
+            {
+                foreach (var newClass in newClasses)
+                {
+                    control.Classes.Add(newClass);
+                }
+            }
+        });
     }
 
     /// <summary>
@@ -198,4 +216,24 @@ public static class ControlAssist
     /// <param name="obj">The control.</param>
     /// <returns>A boolean value indicating whether the icon should be displayed.</returns>
     public static bool GetShowIcon(TemplatedControl obj) => obj.GetValue(ShowIconProperty);
+
+    /// <summary>
+    ///     Defines an attached property for setting a CSS-like class name on a control.
+    /// </summary>
+    public static readonly AttachedProperty<string?> ClassNameProperty =
+        AvaloniaProperty.RegisterAttached<Control, Control, string?>("ClassName");
+
+    /// <summary>
+    ///     Sets the value of the <see cref="ClassNameProperty" />.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetClassName(Control obj, string? value) => obj.SetValue(ClassNameProperty, value);
+
+    /// <summary>
+    ///     Gets the value of the <see cref="ClassNameProperty" />.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static string? GetClassName(Control obj) => obj.GetValue(ClassNameProperty);
 }
