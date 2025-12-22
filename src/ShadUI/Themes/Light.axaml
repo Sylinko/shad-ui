@@ -34,10 +34,10 @@
   <Color x:Key="InfoColor20">#330288D1</Color>
   <Color x:Key="InfoColor10">#190288D1</Color>
   <Color x:Key="InfoColor5">#0D0288D1</Color>
-  <Color x:Key="SuccessColor">#2E7D32</Color>
-  <Color x:Key="SuccessColor60">#992E7D32</Color>
-  <Color x:Key="SuccessColor20">#332E7D32</Color>
-  <Color x:Key="SuccessColor10">#192E7D32</Color>
+  <Color x:Key="SuccessColor">#28A745</Color>
+  <Color x:Key="SuccessColor60">#9928A745</Color>
+  <Color x:Key="SuccessColor20">#3328A745</Color>
+  <Color x:Key="SuccessColor10">#1928A745</Color>
   <Color x:Key="SuccessColor5">#0D2E7D32</Color>
   <Color x:Key="WarningColor">#ED6C02</Color>
   <Color x:Key="WarningColor60">#99ED6C02</Color>
