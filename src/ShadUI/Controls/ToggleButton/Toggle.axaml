@@ -93,6 +93,7 @@
     <Style Selector="^.Ghost">
       <Setter Property="Background" Value="{DynamicResource GhostColor}"/>
       <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
       <Style Selector="^:pointerover /template/ Border#RootBorder">
         <Setter Property="Background" Value="{DynamicResource GhostHoverColor}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GhostHoverColor}"/>
