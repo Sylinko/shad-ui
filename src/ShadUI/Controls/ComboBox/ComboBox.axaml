@@ -172,16 +172,22 @@
                         BorderThickness="1"
                         BoxShadow="{DynamicResource Shadow}"
                         CornerRadius="{TemplateBinding CornerRadius}">
-                        <ScrollViewer
-                          HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                          VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-                          <ItemsPresenter
-                            Name="PART_ItemsPresenter"
-                            ItemsPanel="{TemplateBinding ItemsPanel}"
-                            TextBlock.FontSize="{TemplateBinding FontSize}"
-                            TextBlock.FontWeight="{TemplateBinding FontWeight}"
-                            TextBlock.Foreground="{TemplateBinding Foreground}"/>
-                        </ScrollViewer>
+                        <DockPanel>
+                          <ContentPresenter
+                            DockPanel.Dock="Bottom"
+                            Content="{TemplateBinding shadui:ControlAssist.Footer}"/>
+
+                          <ScrollViewer
+                            HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                            VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                            <ItemsPresenter
+                              Name="PART_ItemsPresenter"
+                              ItemsPanel="{TemplateBinding ItemsPanel}"
+                              TextBlock.FontSize="{TemplateBinding FontSize}"
+                              TextBlock.FontWeight="{TemplateBinding FontWeight}"
+                              TextBlock.Foreground="{TemplateBinding Foreground}"/>
+                          </ScrollViewer>
+                        </DockPanel>
                       </Border>
                     </LayoutTransformControl>
                   </Popup>

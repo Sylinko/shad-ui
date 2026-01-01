@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary
-  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:shadui="clr-namespace:ShadUI">
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ControlTheme
     x:Key="ComboBoxItemTheme" TargetType="ComboBoxItem">
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
@@ -16,48 +15,47 @@
     <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Panel
+        <DockPanel
           MinHeight="{TemplateBinding MinHeight}"
           Margin="{TemplateBinding Margin}">
           <Border
-            Name="BaseBackground"
-            Background="{TemplateBinding Background}"
-            BorderBrush="{TemplateBinding BorderBrush}"
-            BorderThickness="{TemplateBinding BorderThickness}"
-            CornerRadius="{TemplateBinding CornerRadius}"
-            Opacity="1"/>
-          <Border
-            Name="HoverBackground"
-            Background="{DynamicResource GhostHoverColor}"
-            BorderBrush="{TemplateBinding BorderBrush}"
-            BorderThickness="{TemplateBinding BorderThickness}"
-            CornerRadius="{TemplateBinding CornerRadius}"
-            Opacity="0"/>
-          <Border
-            Name="SelectionBackground"
-            Background="{DynamicResource GhostColor}"
-            BorderBrush="{TemplateBinding BorderBrush}"
-            BorderThickness="{TemplateBinding BorderThickness}"
-            CornerRadius="{TemplateBinding CornerRadius}"
-            Opacity="0"/>
-          <DockPanel
-            Margin="{TemplateBinding Padding}"
-            LastChildFill="True">
-            <PathIcon
-              Name="CheckSelected" DockPanel.Dock="Right"
-              Width="12" Height="12"
-              Margin="4,0,0,0"
-              Data="{x:Static shadui:Icons.Check}"
-              Foreground="{DynamicResource ForegroundColor}"/>
+            x:Name="SelectedBorder" DockPanel.Dock="Left"
+            Width="4" Margin="0,2,2,2"
+            Background="{DynamicResource PrimaryColor}"
+            CornerRadius="2" Opacity="0"/>
+
+          <Panel>
+            <Border
+              Name="BaseBackground"
+              Background="{TemplateBinding Background}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="{TemplateBinding CornerRadius}"
+              Opacity="1"/>
+            <Border
+              Name="HoverBackground"
+              Background="{DynamicResource GhostHoverColor}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="{TemplateBinding CornerRadius}"
+              Opacity="0"/>
+            <Border
+              Name="SelectionBackground"
+              Background="{DynamicResource GhostColor}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="{TemplateBinding CornerRadius}"
+              Opacity="0"/>
             <ContentPresenter
               Name="PART_ContentPresenter"
+              Margin="{TemplateBinding Padding}"
               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
               VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
               Content="{TemplateBinding Content}"
               ContentTemplate="{TemplateBinding ContentTemplate}"
               CornerRadius="{TemplateBinding CornerRadius}"/>
-          </DockPanel>
-        </Panel>
+          </Panel>
+        </DockPanel>
       </ControlTemplate>
     </Setter>
     <Style Selector="^ /template/ Border">
@@ -68,11 +66,11 @@
         </Transitions>
       </Setter>
     </Style>
-    <Style Selector="^ /template/ PathIcon#CheckSelected">
-      <Setter Property="IsVisible" Value="False"/>
+    <Style Selector="^ /template/ Border#SelectedBorder">
+      <Setter Property="Opacity" Value="0"/>
     </Style>
-    <Style Selector="^:selected /template/ PathIcon#CheckSelected">
-      <Setter Property="IsVisible" Value="True"/>
+    <Style Selector="^:selected /template/ Border#SelectedBorder">
+      <Setter Property="Opacity" Value="1"/>
     </Style>
     <Style Selector="^:selected:not(:pointerover) /template/ Border#SelectionBackground">
       <Setter Property="Opacity" Value="1"/>

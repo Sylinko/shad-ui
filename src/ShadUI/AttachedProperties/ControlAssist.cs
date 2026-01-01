@@ -236,4 +236,24 @@ public static class ControlAssist
     /// <param name="obj"></param>
     /// <returns></returns>
     public static string? GetClassName(Control obj) => obj.GetValue(ClassNameProperty);
+
+    /// <summary>
+    ///     Defines an attached property for setting a footer content on a control.
+    /// </summary>
+    public static readonly AttachedProperty<object?> FooterProperty =
+        AvaloniaProperty.RegisterAttached<Control, Control, object?>("Footer");
+
+    /// <summary>
+    ///     Sets the value of the <see cref="FooterProperty" />.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetFooter(Control obj, object? value) => obj.SetValue(FooterProperty, value);
+
+    /// <summary>
+    ///     Gets the value of the <see cref="FooterProperty" />.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static object? GetFooter(Control obj) => obj.GetValue(FooterProperty);
 }

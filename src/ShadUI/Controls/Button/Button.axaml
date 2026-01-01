@@ -42,8 +42,8 @@
   </Design.PreviewWith>
   <ControlTheme
     x:Key="ButtonStyle" TargetType="Button">
+    <Setter Property="Padding" Value="12,8"/>
     <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
-    <Setter Property="FontWeight" Value="Medium"/>
     <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
@@ -189,7 +189,6 @@
 
     <!--  Outline  -->
     <Style Selector="^.Outline">
-      <Setter Property="Padding" Value="16,8"/>
       <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
@@ -199,7 +198,6 @@
 
     <!--  Primary  -->
     <Style Selector="^.Primary">
-      <Setter Property="Padding" Value="16,8"/>
       <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource PrimaryColor50}"/>
@@ -207,7 +205,6 @@
 
     <!--  Secondary  -->
     <Style Selector="^.Secondary">
-      <Setter Property="Padding" Value="16,8"/>
       <Setter Property="Background" Value="{DynamicResource SecondaryColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource SecondaryColor50}"/>
@@ -215,7 +212,6 @@
 
     <!--  Destructive  -->
     <Style Selector="^.Destructive">
-      <Setter Property="Padding" Value="16,8"/>
       <Setter Property="Background" Value="{DynamicResource DestructiveColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource DestructiveColor50}"/>
@@ -223,7 +219,6 @@
 
     <!--  Ghost  -->
     <Style Selector="^.Ghost">
-      <Setter Property="Padding" Value="16,8"/>
       <Setter Property="BorderThickness" Value="0"/>
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
