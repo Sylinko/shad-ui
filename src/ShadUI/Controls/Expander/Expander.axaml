@@ -11,10 +11,9 @@
     <Setter Property="Template">
       <ControlTemplate TargetType="Expander">
         <shadui:Card
-          Padding="{TemplateBinding Padding}"
+          Padding="0"
           CornerRadius="{TemplateBinding CornerRadius}">
           <Grid RowDefinitions="Auto,Auto">
-
             <LayoutTransformControl
               Name="PART_ToggleTransform" Grid.Row="0">
               <Panel>
@@ -24,13 +23,15 @@
                   </Style>
                 </Panel.Styles>
                 <ToggleButton
-                  x:Name="PART_ToggleButton" Classes="Basic"
+                  x:Name="PART_ToggleButton" Classes="Expander"
                   DockPanel.Dock="Right" HorizontalAlignment="Stretch"
                   HorizontalContentAlignment="Stretch" BorderThickness="0"
                   CornerRadius="8"
                   IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
                   IsEnabled="True"/>
-                <Grid ColumnDefinitions="Auto,*,Auto">
+                <Grid
+                  Margin="{TemplateBinding Padding}"
+                  ColumnDefinitions="Auto,*,Auto">
                   <PathIcon
                     x:Name="PART_LeftIcon" Grid.Column="0"
                     Width="12" Margin="0,0,12,0"
@@ -85,6 +86,7 @@
                 IsVisible="{Binding ElementName=PART_ToggleButton, Path=IsChecked}">
                 <shadui:ContentExpandControl
                   x:Name="PART_ContentExpand"
+                  Margin="{Binding Padding, Converter={x:Static shadui:ThicknessConverters.NoTop}, RelativeSource={RelativeSource TemplatedParent}}"
                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                   Content="{TemplateBinding Content}"
@@ -93,7 +95,6 @@
             </Border>
           </Grid>
         </shadui:Card>
-
       </ControlTemplate>
     </Setter>
 
