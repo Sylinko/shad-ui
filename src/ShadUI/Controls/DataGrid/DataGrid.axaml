@@ -47,7 +47,7 @@
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="SeparatorBrush" Value="{DynamicResource BorderColor}"/>
-    <Setter Property="Padding" Value="12,4"/>
+    <Setter Property="Padding" Value="12,11"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="ToolTip.Placement" Value="Top"/>
     <Setter Property="ToolTip.ShowDelay" Value="50"/>
@@ -181,7 +181,7 @@
               Grid.Column="1"/>
             <Rectangle
               Name="PART_BottomGridLine" Grid.Row="2"
-              Grid.Column="1" Height="1"
+              Grid.Column="1" Height="0.5"
               HorizontalAlignment="Stretch"/>
           </DataGridFrozenGrid>
         </Border>
@@ -293,7 +293,7 @@
           <Rectangle
             Name="PART_BottomGridLine" Grid.Row="1"
             Grid.Column="0" Grid.ColumnSpan="5"
-            Height="1"
+            Height="0.5"
             Fill="{TemplateBinding BorderBrush}"/>
         </DataGridFrozenGrid>
       </ControlTemplate>
@@ -342,6 +342,7 @@
                 RowDefinitions="Auto,*">
                 <Border
                   x:Name="PART_HeaderBackground"
+                  Background="{DynamicResource CardBackgroundColor}"
                   BorderBrush="{DynamicResource BorderColor}"
                   BorderThickness="0,0,0,1">
                   <DataGridColumnHeadersPresenter Name="PART_ColumnHeadersPresenter"/>

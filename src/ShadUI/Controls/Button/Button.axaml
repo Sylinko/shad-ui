@@ -212,8 +212,7 @@
 
     <!--  Destructive  -->
     <Style Selector="^.Destructive">
-      <Setter Property="Background" Value="{DynamicResource DestructiveColor}"/>
-      <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}"/>
+      <Setter Property="Foreground" Value="{DynamicResource DestructiveColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource DestructiveColor50}"/>
     </Style>
 
