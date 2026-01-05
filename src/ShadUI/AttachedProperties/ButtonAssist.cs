@@ -33,42 +33,82 @@ public static class ButtonAssist
     /// <summary>
     ///     Add button icon.
     /// </summary>
-    public static readonly AttachedProperty<object> IconProperty =
-        AvaloniaProperty.RegisterAttached<Button, object>("Icon", typeof(Button));
+    public static readonly AttachedProperty<object?> IconProperty =
+        AvaloniaProperty.RegisterAttached<Button, object?>("Icon", typeof(Button));
 
     /// <summary>
     ///     Get the value of the <see cref="IconProperty" />.
     /// </summary>
     /// <param name="textBox"></param>
     /// <returns></returns>
-    public static object GetIcon(Button textBox) => textBox.GetValue(IconProperty);
+    public static object? GetIcon(Button textBox) => textBox.GetValue(IconProperty);
 
     /// <summary>
     ///     Set the value of the <see cref="IconProperty" />.
     /// </summary>
     /// <param name="textBox"></param>
     /// <param name="value"></param>
-    public static void SetIcon(Button textBox, object value) => textBox.SetValue(IconProperty, value);
+    public static void SetIcon(Button textBox, object? value) => textBox.SetValue(IconProperty, value);
 
     /// <summary>
     ///     Attached property for setting the hover background brush of a <see cref="Button" />.
     /// </summary>
-    public static readonly AttachedProperty<IBrush> HoverBackgroundProperty =
-        AvaloniaProperty.RegisterAttached<Button, IBrush>("HoverBackground", typeof(Button));
+    public static readonly AttachedProperty<IBrush?> HoverBackgroundProperty =
+        AvaloniaProperty.RegisterAttached<Button, IBrush?>("HoverBackground", typeof(Button));
 
     /// <summary>
     ///     Sets the hover background brush for the specified <see cref="Button" />.
     /// </summary>
     /// <param name="btn">The button to set the hover background for.</param>
     /// <param name="value">The brush to use as the hover background.</param>
-    public static void SetHoverBackground(Button btn, IBrush value) => btn.SetValue(HoverBackgroundProperty, value);
+    public static void SetHoverBackground(Button btn, IBrush? value) => btn.SetValue(HoverBackgroundProperty, value);
 
     /// <summary>
     ///     Gets the hover background brush for the specified <see cref="Button" />.
     /// </summary>
     /// <param name="btn">The button to get the hover background from.</param>
     /// <returns>The brush used as the hover background.</returns>
-    public static IBrush GetHoverBackground(Button btn) => btn.GetValue(HoverBackgroundProperty);
+    public static IBrush? GetHoverBackground(Button btn) => btn.GetValue(HoverBackgroundProperty);
+
+    /// <summary>
+    ///     Attached property for setting the checked background brush of a <see cref="Button" />.
+    /// </summary>
+    public static readonly AttachedProperty<IBrush?> CheckedBackgroundProperty =
+        AvaloniaProperty.RegisterAttached<Button, Button, IBrush?>("CheckedBackground");
+
+    /// <summary>
+    ///     Sets the checked background brush for the specified <see cref="Button" />.
+    /// </summary>
+    /// <param name="btn"></param>
+    /// <param name="value"></param>
+    public static void SetCheckedBackground(Button btn, IBrush? value) => btn.SetValue(CheckedBackgroundProperty, value);
+
+    /// <summary>
+    ///     Gets the checked background brush for the specified <see cref="Button" />.
+    /// </summary>
+    /// <param name="btn"></param>
+    /// <returns></returns>
+    public static IBrush? GetCheckedBackground(Button btn) => btn.GetValue(CheckedBackgroundProperty);
+
+    /// <summary>
+    ///     Attached property for setting the checked foreground brush of a <see cref="Button" />.
+    /// </summary>
+    public static readonly AttachedProperty<IBrush?> CheckedForegroundProperty =
+        AvaloniaProperty.RegisterAttached<Button, Button, IBrush?>("CheckedForeground");
+
+    /// <summary>
+    ///     Sets the checked foreground brush for the specified <see cref="Button" />.
+    /// </summary>
+    /// <param name="btn"></param>
+    /// <param name="value"></param>
+    public static void SetCheckedForeground(Button btn, IBrush? value) => btn.SetValue(CheckedForegroundProperty, value);
+
+    /// <summary>
+    ///     Gets the checked foreground brush for the specified <see cref="Button" />.
+    /// </summary>
+    /// <param name="btn"></param>
+    /// <returns></returns>
+    public static IBrush? GetCheckedForeground(Button btn) => btn.GetValue(CheckedForegroundProperty);
 
     /// <summary>
     ///     Attached property for setting the icon size of a <see cref="Button" />.
