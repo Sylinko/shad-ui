@@ -84,8 +84,17 @@
                 </ItemsControl>
 
                 <Border
-                  x:Name="PART_TitleBarRoot" VerticalAlignment="Top"
-                  IsVisible="{Binding $parent[shadui:Window].IsTitleBarVisible}">
+                  x:Name="PART_TitleBarRoot" VerticalAlignment="Top">
+                  <Border.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Path="$parent[shadui:Window].IsTitleBarVisible"/>
+                      <Binding
+                        Converter="{x:Static ObjectConverters.NotEqual}"
+                        ConverterParameter="{x:Static WindowState.FullScreen}"
+                        Path="$parent[shadui:Window].WindowState"/>
+                    </MultiBinding>
+                  </Border.IsVisible>
+
                   <Panel MinHeight="{Binding $parent[shadui:Window].WindowDecorationMargin.Top}">
                     <Border
                       ClipToBounds="True"

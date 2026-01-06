@@ -59,7 +59,8 @@
               <Button
                 Name="PART_CloseButton" Width="24"
                 Height="24" Margin="8"
-                HorizontalAlignment="Right" VerticalAlignment="Top"
+                Padding="0" HorizontalAlignment="Right"
+                VerticalAlignment="Top"
                 CornerRadius="{DynamicResource MdCornerRadius}"
                 Cursor="Arrow" Focusable="False"
                 HotKey="Escape"
