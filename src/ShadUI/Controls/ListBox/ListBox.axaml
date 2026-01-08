@@ -126,6 +126,82 @@
     TargetType="ListBoxItem"/>
 
   <ControlTheme
+    x:Key="TabListBoxItemTheme" TargetType="ListBoxItem">
+    <Setter Property="Background" Value="{DynamicResource CardBackgroundColor}"/>
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
+    <Setter Property="FontWeight" Value="Medium"/>
+    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource MdCornerRadius}"/>
+    <Setter Property="Cursor" Value="Hand"/>
+    <Setter Property="Padding" Value="10,8"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel>
+          <Border
+            x:Name="SelectedBorder"
+            Background="{DynamicResource SelectionColor}"
+            BoxShadow="{DynamicResource Shadow}"
+            CornerRadius="{TemplateBinding CornerRadius}"
+            Opacity="0">
+            <Border.Transitions>
+              <Transitions>
+                <DoubleTransition
+                  Property="Opacity" Duration="0:0:0.20"/>
+              </Transitions>
+            </Border.Transitions>
+          </Border>
+          <Border
+            ClipToBounds="True"
+            CornerRadius="{TemplateBinding CornerRadius}">
+            <ContentPresenter
+              x:Name="ContentPresenter"
+              Padding="{TemplateBinding Padding}"
+              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              Content="{TemplateBinding Content}"
+              ContentTemplate="{TemplateBinding ContentTemplate}"
+              Foreground="{TemplateBinding Foreground}"
+              Opacity="{TemplateBinding Opacity}"
+              RecognizesAccessKey="True">
+              <ContentPresenter.Transitions>
+                <Transitions>
+                  <DoubleTransition
+                    Property="Opacity" Duration="0:0:0.20"/>
+                </Transitions>
+              </ContentPresenter.Transitions>
+            </ContentPresenter>
+          </Border>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+    <Style Selector="^:disabled /template/ ContentPresenter#ContentPresenter">
+      <Setter Property="Opacity" Value="0.50"/>
+    </Style>
+    <Style Selector="^[IsSelected=False]">
+      <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
+        <Setter Property="Opacity" Value="0.75"/>
+      </Style>
+      <Style Selector="^ /template/ Border#SelectedBorder">
+        <Setter Property="Opacity" Value="0"/>
+      </Style>
+    </Style>
+    <Style Selector="^:selected">
+      <Setter Property="Foreground" Value="{DynamicResource PrimaryColor}"/>
+      <Style Selector="^ /template/ Border#SelectedBorder">
+        <Setter Property="Opacity" Value="1"/>
+      </Style>
+      <Style Selector="^ /template/ ContentPresenter#ContentPresenter">
+        <Setter Property="Opacity" Value="1"/>
+      </Style>
+    </Style>
+  </ControlTheme>
+
+  <ControlTheme
     x:Key="{x:Type ListBox}"
     TargetType="ListBox">
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
