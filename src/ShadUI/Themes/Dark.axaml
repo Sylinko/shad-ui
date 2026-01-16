@@ -22,10 +22,10 @@
   <Color x:Key="SecondaryColor50">#802a2a2a</Color>
   <Color x:Key="SecondaryColor10">#192a2a2a</Color>
   <Color x:Key="SecondaryForegroundColor">#E5E5E5</Color>
-  <Color x:Key="DestructiveColor">#9D4042</Color>
-  <Color x:Key="DestructiveColor75">#BF9D4042</Color>
-  <Color x:Key="DestructiveColor50">#809D4042</Color>
-  <Color x:Key="DestructiveColor10">#199D4042</Color>
+  <Color x:Key="DestructiveColor">#E03131</Color>
+  <Color x:Key="DestructiveColor75">#BFE03131</Color>
+  <Color x:Key="DestructiveColor50">#80E03131</Color>
+  <Color x:Key="DestructiveColor10">#19E03131</Color>
   <Color x:Key="DestructiveForegroundColor">#E5E5E5</Color>
 
   <!--  notification colors  -->
