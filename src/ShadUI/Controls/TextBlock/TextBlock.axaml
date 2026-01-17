@@ -29,36 +29,30 @@
 
     <Style Selector="^.h2">
       <Setter Property="FontSize" Value="{DynamicResource FontSize3Xl}"/>
-      <Setter Property="LineHeight" Value="{DynamicResource LineHeight3Xl}"/>
       <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
 
     <Style Selector="^.h3">
       <Setter Property="FontSize" Value="{DynamicResource FontSize2Xl}"/>
-      <Setter Property="LineHeight" Value="{DynamicResource LineHeight2Xl}"/>
       <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
 
     <Style Selector="^.h4">
       <Setter Property="FontSize" Value="{DynamicResource FontSizeXl}"/>
-      <Setter Property="LineHeight" Value="{DynamicResource LineHeight2Xl}"/>
       <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
 
     <Style Selector="^.p">
       <Setter Property="FontSize" Value="{DynamicResource FontSizeL}"/>
-      <Setter Property="LineHeight" Value="{DynamicResource LineHeightXl}"/>
     </Style>
 
     <Style Selector="^.Lead">
       <Setter Property="FontSize" Value="{DynamicResource FontSizeXl}"/>
-      <Setter Property="LineHeight" Value="{DynamicResource LineHeight2Xl}"/>
       <Setter Property="Foreground" Value="{DynamicResource ForegroundLeadColor}"/>
     </Style>
 
     <Style Selector="^.Large">
       <Setter Property="FontSize" Value="{DynamicResource FontSizeL}"/>
-      <Setter Property="LineHeight" Value="{DynamicResource LineHeightXl}"/>
       <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
 
