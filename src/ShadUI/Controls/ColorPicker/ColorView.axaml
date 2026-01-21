@@ -42,15 +42,9 @@
                 </Border>
               </TabItem.Header>
               <Grid
-                MinHeight="248" Margin="4,0"
+                MinWidth="300" MinHeight="248"
+                Margin="4,0" ColumnDefinitions="32,*,32"
                 RowDefinitions="*">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition
-                    Width="Auto" MinWidth="32"/>
-                  <ColumnDefinition Width="*"/>
-                  <ColumnDefinition
-                    Width="Auto" MinWidth="32"/>
-                </Grid.ColumnDefinitions>
                 <primitives:ColorSlider
                   x:Name="ColorSpectrumThirdComponentSlider" Grid.Column="0"
                   Margin="0,0,8,0" HorizontalAlignment="Center"

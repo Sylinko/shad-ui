@@ -15,6 +15,8 @@
     <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}"/>
     <Setter Property="ToolTip.Placement" Value="Top"/>
     <Setter Property="ToolTip.ShowDelay" Value="50"/>
+    <Setter Property="Width" Value="280"/>
+    <Setter Property="Height" Value="280"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ColorSpectrum}">
