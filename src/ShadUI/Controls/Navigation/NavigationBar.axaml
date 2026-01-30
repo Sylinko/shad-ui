@@ -61,7 +61,6 @@
     <Setter Property="Padding" Value="8"/>
     <Setter Property="HorizontalSpacing" Value="8"/>
     <Setter Property="VerticalSpacing" Value="8"/>
-    <Setter Property="ExpandedSize" Value="256"/>
 
     <Setter Property="Transitions">
       <Transitions>

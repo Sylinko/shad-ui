@@ -120,21 +120,6 @@ public class NavigationBar : ItemsControl
     }
 
     /// <summary>
-    ///     Defines the <see cref="ExpandedSize" /> property.
-    /// </summary>
-    public static readonly StyledProperty<double> ExpandedSizeProperty =
-        AvaloniaProperty.Register<NavigationBar, double>(nameof(ExpandedSize), 180);
-
-    /// <summary>
-    ///     Gets or sets the width of the navigation bar when expanded.
-    /// </summary>
-    public double ExpandedSize
-    {
-        get => GetValue(ExpandedSizeProperty);
-        set => SetValue(ExpandedSizeProperty, value);
-    }
-
-    /// <summary>
     ///     Defines the <see cref="SelectedItem" /> property.
     /// </summary>
     public static readonly StyledProperty<NavigationBarItem?> SelectedItemProperty =
