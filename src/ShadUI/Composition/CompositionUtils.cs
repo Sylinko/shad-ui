@@ -9,15 +9,21 @@ namespace ShadUI;
 public enum CompositionAnimationTarget
 {
     None,
+
+    // CompositionVisual.generated.cs properties
+    Visible,
+    Opacity,
+    ClipToBounds,
     Offset,
-    Scale,
-    CenterPoint,
-    RotationAxis,
     Size,
     AnchorPoint,
-    Opacity,
+    CenterPoint,
     RotationAngle,
-    RotationAngleInDegrees
+    Orientation,
+    Scale,
+
+    // CompositionSolidColorVisual.generated.cs properties
+    Color,
 }
 
 /// <summary>
@@ -32,16 +38,23 @@ public static class CompositionUtils
     {
         return target switch
         {
-            CompositionAnimationTarget.Offset or
-                CompositionAnimationTarget.Scale or
-                CompositionAnimationTarget.CenterPoint or
-                CompositionAnimationTarget.RotationAxis => compositor.CreateVector3KeyFrameAnimation(),
+            CompositionAnimationTarget.Visible or
+                CompositionAnimationTarget.ClipToBounds => compositor.CreateBooleanKeyFrameAnimation(),
+
+            CompositionAnimationTarget.Opacity or
+                CompositionAnimationTarget.RotationAngle => compositor.CreateScalarKeyFrameAnimation(),
+
             CompositionAnimationTarget.Size or
                 CompositionAnimationTarget.AnchorPoint => compositor.CreateVector2KeyFrameAnimation(),
-            CompositionAnimationTarget.Opacity or
-                CompositionAnimationTarget.RotationAngle or
-                CompositionAnimationTarget.RotationAngleInDegrees =>
-                compositor.CreateScalarKeyFrameAnimation(),
+
+            CompositionAnimationTarget.Offset or
+                CompositionAnimationTarget.CenterPoint or
+                CompositionAnimationTarget.Scale => compositor.CreateVector3KeyFrameAnimation(),
+
+            CompositionAnimationTarget.Orientation => compositor.CreateQuaternionKeyFrameAnimation(),
+
+            CompositionAnimationTarget.Color => compositor.CreateColorKeyFrameAnimation(),
+
             _ => null
         };
     }

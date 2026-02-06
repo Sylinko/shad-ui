@@ -107,13 +107,14 @@
                 <ContentPresenter.Transitions>
                   <Transitions>
                     <TransformOperationsTransition
-                      Easing="{StaticResource StrongEaseOutBack}"
+                      Easing="{x:Static shadui:EaseOutBack.Strong}"
                       Property="RenderTransform" Duration="0:0:0.4"/>
                     <DoubleTransition
                       Easing="CubicEaseInOut" Property="Opacity"
                       Duration="0:0:0.2"/>
                   </Transitions>
                 </ContentPresenter.Transitions>
+
                 <ContentPresenter.DataTemplates>
                   <DataTemplate DataType="system:String">
                     <TextBlock Text="{CompiledBinding}"/>
@@ -153,7 +154,7 @@
           <Setter Property="Transitions">
             <Transitions>
               <TransformOperationsTransition
-                Easing="{StaticResource StrongEaseOutBack}"
+                Easing="{x:Static shadui:EaseOutBack.Strong}"
                 Property="RenderTransform" Duration="0:0:0.4"/>
               <DoubleTransition
                 Easing="CubicEaseInOut" Property="Opacity"

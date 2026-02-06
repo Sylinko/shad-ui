@@ -135,11 +135,14 @@ public class CompositionAnimationAction : AvaloniaObject, IAction
 
         switch (Target)
         {
-            case CompositionAnimationTarget.Offset:
-            case CompositionAnimationTarget.Scale:
-            case CompositionAnimationTarget.CenterPoint:
-            case CompositionAnimationTarget.RotationAxis:
-                ConfigureVector3Animation(animation as Vector3KeyFrameAnimation);
+            case CompositionAnimationTarget.Visible:
+            case CompositionAnimationTarget.ClipToBounds:
+                ConfigureBooleanAnimation(animation as BooleanKeyFrameAnimation);
+                break;
+
+            case CompositionAnimationTarget.Opacity:
+            case CompositionAnimationTarget.RotationAngle:
+                ConfigureScalarAnimation(animation as ScalarKeyFrameAnimation);
                 break;
 
             case CompositionAnimationTarget.Size:
@@ -147,11 +150,20 @@ public class CompositionAnimationAction : AvaloniaObject, IAction
                 ConfigureVector2Animation(animation as Vector2KeyFrameAnimation);
                 break;
 
-            case CompositionAnimationTarget.Opacity:
-            case CompositionAnimationTarget.RotationAngle:
-            case CompositionAnimationTarget.RotationAngleInDegrees:
-                ConfigureScalarAnimation(animation as ScalarKeyFrameAnimation);
+            case CompositionAnimationTarget.Offset:
+            case CompositionAnimationTarget.CenterPoint:
+            case CompositionAnimationTarget.Scale:
+                ConfigureVector3Animation(animation as Vector3KeyFrameAnimation);
                 break;
+
+            // TODO
+            // case CompositionAnimationTarget.Orientation:
+            //     ConfigureQuaternionAnimation(animation as QuaternionKeyFrameAnimation);
+            //     break;
+            //
+            // case CompositionAnimationTarget.Color:
+            //     ConfigureColorAnimation(animation as ColorKeyFrameAnimation);
+            //     break;
         }
 
         animation.Target = targetName;
@@ -163,16 +175,15 @@ public class CompositionAnimationAction : AvaloniaObject, IAction
 
         visual.StartAnimation(targetName, animation);
         return true;
-
     }
 
-    private void ConfigureVector3Animation(Vector3KeyFrameAnimation? animation)
+    private void ConfigureBooleanAnimation(BooleanKeyFrameAnimation? animation)
     {
         if (animation == null) return;
 
         var easing = Easing;
 
-        if (StartValue != null && TryParseVector3(StartValue, out var start))
+        if (StartValue != null && TryParseBoolean(StartValue, out var start))
         {
             if (easing is not null)
             {
@@ -184,38 +195,7 @@ public class CompositionAnimationAction : AvaloniaObject, IAction
             }
         }
 
-        if (EndValue != null && TryParseVector3(EndValue, out var end))
-        {
-            if (easing is not null)
-            {
-                animation.InsertKeyFrame(1f, end, easing);
-            }
-            else
-            {
-                animation.InsertKeyFrame(1f, end);
-            }
-        }
-    }
-
-    private void ConfigureVector2Animation(Vector2KeyFrameAnimation? animation)
-    {
-        if (animation == null) return;
-
-        var easing = Easing;
-
-        if (StartValue != null && TryParseVector2(StartValue, out var start))
-        {
-            if (easing is not null)
-            {
-                animation.InsertKeyFrame(0f, start, easing);
-            }
-            else
-            {
-                animation.InsertKeyFrame(0f, start);
-            }
-        }
-
-        if (EndValue != null && TryParseVector2(EndValue, out var end))
+        if (EndValue != null && TryParseBoolean(EndValue, out var end))
         {
             if (easing is not null)
             {
@@ -259,6 +239,132 @@ public class CompositionAnimationAction : AvaloniaObject, IAction
         }
     }
 
+    private void ConfigureVector2Animation(Vector2KeyFrameAnimation? animation)
+    {
+        if (animation == null) return;
+
+        var easing = Easing;
+
+        if (StartValue != null && TryParseVector2(StartValue, out var start))
+        {
+            if (easing is not null)
+            {
+                animation.InsertKeyFrame(0f, start, easing);
+            }
+            else
+            {
+                animation.InsertKeyFrame(0f, start);
+            }
+        }
+
+        if (EndValue != null && TryParseVector2(EndValue, out var end))
+        {
+            if (easing is not null)
+            {
+                animation.InsertKeyFrame(1f, end, easing);
+            }
+            else
+            {
+                animation.InsertKeyFrame(1f, end);
+            }
+        }
+    }
+
+    private void ConfigureVector3Animation(Vector3KeyFrameAnimation? animation)
+    {
+        if (animation == null) return;
+
+        var easing = Easing;
+
+        if (StartValue != null && TryParseVector3(StartValue, out var start))
+        {
+            if (easing is not null)
+            {
+                animation.InsertKeyFrame(0f, start, easing);
+            }
+            else
+            {
+                animation.InsertKeyFrame(0f, start);
+            }
+        }
+
+        if (EndValue != null && TryParseVector3(EndValue, out var end))
+        {
+            if (easing is not null)
+            {
+                animation.InsertKeyFrame(1f, end, easing);
+            }
+            else
+            {
+                animation.InsertKeyFrame(1f, end);
+            }
+        }
+    }
+
+    private static bool TryParseBoolean(object value, out bool result)
+    {
+        result = false;
+        switch (value)
+        {
+            case bool b:
+                result = b;
+                return true;
+            case string s when bool.TryParse(s, out var parsed):
+                result = parsed;
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private static bool TryParseFloat(object value, out float result)
+    {
+        result = 0;
+        switch (value)
+        {
+            case float f:
+                result = f;
+                return true;
+            case double d:
+                result = (float)d;
+                return true;
+            case int i:
+                result = i;
+                return true;
+            case string s when float.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var parsed):
+                result = parsed;
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private static bool TryParseVector2(object value, out Vector2 result)
+    {
+        result = default;
+        if (value is Vector2 v)
+        {
+            result = v;
+            return true;
+        }
+        if (value is not string s) return false;
+
+        var parts = s.Split([',', ' '], StringSplitOptions.RemoveEmptyEntries);
+        switch (parts.Length)
+        {
+            case 2 when
+                float.TryParse(parts[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var x) &&
+                float.TryParse(parts[1], NumberStyles.Any, CultureInfo.InvariantCulture, out var y):
+                result = new Vector2(x, y);
+                return true;
+            case 1 when float.TryParse(parts[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var uniform):
+                result = new Vector2(uniform, uniform);
+                return true;
+            default:
+                return false;
+        }
+    }
+
     private static bool TryParseVector3(object value, out Vector3 result)
     {
         result = default;
@@ -288,53 +394,5 @@ public class CompositionAnimationAction : AvaloniaObject, IAction
             }
         }
         return false;
-    }
-
-    private static bool TryParseVector2(object value, out Vector2 result)
-    {
-        result = default;
-        if (value is Vector2 v)
-        {
-            result = v;
-            return true;
-        }
-        if (value is not string s) return false;
-
-        var parts = s.Split([',', ' '], StringSplitOptions.RemoveEmptyEntries);
-        switch (parts.Length)
-        {
-            case 2 when
-                float.TryParse(parts[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var x) &&
-                float.TryParse(parts[1], NumberStyles.Any, CultureInfo.InvariantCulture, out var y):
-                result = new Vector2(x, y);
-                return true;
-            case 1 when float.TryParse(parts[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var uniform):
-                result = new Vector2(uniform, uniform);
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    private static bool TryParseFloat(object value, out float result)
-    {
-        result = 0;
-        switch (value)
-        {
-            case float f:
-                result = f;
-                return true;
-            case double d:
-                result = (float)d;
-                return true;
-            case int i:
-                result = i;
-                return true;
-            case string s when float.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var parsed):
-                result = parsed;
-                return true;
-            default:
-                return false;
-        }
     }
 }

@@ -65,7 +65,7 @@
     <Setter Property="Transitions">
       <Transitions>
         <DoubleTransition
-          Easing="{StaticResource StrongEaseOutBack}"
+          Easing="{x:Static shadui:EaseOutBack.Strong}"
           Property="Opacity" Duration="0:0:0.3"/>
       </Transitions>
     </Setter>

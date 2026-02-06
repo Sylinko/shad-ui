@@ -34,6 +34,10 @@ public enum EasingIntensity
 /// </summary>
 public class EaseInBackOutBack : Easing
 {
+    public static EaseInBackOutBack Soft { get; } = new() { BounceIntensity = EasingIntensity.Soft };
+    public static EaseInBackOutBack Normal { get; } = new() { BounceIntensity = EasingIntensity.Normal };
+    public static EaseInBackOutBack Strong { get; } = new() { BounceIntensity = EasingIntensity.Strong };
+
     /// <summary>
     ///     Gets or sets the bounce intensity for the easing animation.
     /// </summary>
@@ -79,6 +83,10 @@ public class EaseInBackOutBack : Easing
 /// </summary>
 public class EaseInOutBack : Easing
 {
+    public static EaseInOutBack Soft { get; } = new() { BounceIntensity = EasingIntensity.Soft };
+    public static EaseInOutBack Normal { get; } = new() { BounceIntensity = EasingIntensity.Normal };
+    public static EaseInOutBack Strong { get; } = new() { BounceIntensity = EasingIntensity.Strong };
+
     /// <summary>
     ///     Gets or sets the bounce intensity for the easing animation.
     /// </summary>
@@ -118,6 +126,10 @@ public class EaseInOutBack : Easing
 /// </summary>
 public class EaseOutBack : Easing
 {
+    public static EaseOutBack Soft { get; } = new() { BounceIntensity = EasingIntensity.Soft };
+    public static EaseOutBack Normal { get; } = new() { BounceIntensity = EasingIntensity.Normal };
+    public static EaseOutBack Strong { get; } = new() { BounceIntensity = EasingIntensity.Strong };
+
     /// <summary>
     ///     Gets or sets the bounce intensity for the easing animation.
     /// </summary>
@@ -154,6 +166,8 @@ public class EaseOutBack : Easing
 /// </summary>
 public class EaseOut : Easing
 {
+    public static EaseOut Shared { get; } = new();
+
     /// <summary>
     ///     Applies the custom ease-out function to the given progress value.
     /// </summary>
@@ -176,6 +190,8 @@ public class EaseOut : Easing
 /// </summary>
 public class EaseInOut : Easing
 {
+    public static EaseInOut Shared { get; } = new();
+
     /// <summary>
     ///     Applies the custom ease-in-out function to the given progress value.
     /// </summary>
@@ -201,6 +217,8 @@ public class EaseInOut : Easing
 /// </summary>
 public class PageSlideEase : Easing
 {
+    public static PageSlideEase Shared { get; } = new();
+
     public override double Ease(double progress)
     {
         if (progress < 0.5)
