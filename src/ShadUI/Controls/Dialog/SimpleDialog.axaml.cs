@@ -53,10 +53,10 @@ internal class SimpleDialog : TemplatedControl
         set => SetValue(PrimaryButtonContentProperty, value);
     }
 
-    public static readonly StyledProperty<DialogButtonStyle> PrimaryButtonStyleProperty =
-        AvaloniaProperty.Register<SimpleDialog, DialogButtonStyle>(nameof(PrimaryButtonStyle));
+    public static readonly StyledProperty<ButtonStyle> PrimaryButtonStyleProperty =
+        AvaloniaProperty.Register<SimpleDialog, ButtonStyle>(nameof(PrimaryButtonStyle));
 
-    public DialogButtonStyle PrimaryButtonStyle
+    public ButtonStyle PrimaryButtonStyle
     {
         get => GetValue(PrimaryButtonStyleProperty);
         set => SetValue(PrimaryButtonStyleProperty, value);
@@ -73,12 +73,12 @@ internal class SimpleDialog : TemplatedControl
         set => SetValue(SecondaryButtonContentProperty, value);
     }
 
-    public static readonly StyledProperty<DialogButtonStyle> SecondaryButtonStyleProperty =
-        AvaloniaProperty.Register<SimpleDialog, DialogButtonStyle>(
+    public static readonly StyledProperty<ButtonStyle> SecondaryButtonStyleProperty =
+        AvaloniaProperty.Register<SimpleDialog, ButtonStyle>(
             nameof(SecondaryButtonStyle),
-            DialogButtonStyle.Secondary);
+            ButtonStyle.Secondary);
 
-    public DialogButtonStyle SecondaryButtonStyle
+    public ButtonStyle SecondaryButtonStyle
     {
         get => GetValue(SecondaryButtonStyleProperty);
         set => SetValue(SecondaryButtonStyleProperty, value);
@@ -95,12 +95,12 @@ internal class SimpleDialog : TemplatedControl
         set => SetValue(TertiaryButtonContentProperty, value);
     }
 
-    public static readonly StyledProperty<DialogButtonStyle> TertiaryButtonStyleProperty =
-        AvaloniaProperty.Register<SimpleDialog, DialogButtonStyle>(
+    public static readonly StyledProperty<ButtonStyle> TertiaryButtonStyleProperty =
+        AvaloniaProperty.Register<SimpleDialog, ButtonStyle>(
             nameof(TertiaryButtonStyle),
-            DialogButtonStyle.Outline);
+            ButtonStyle.Outline);
 
-    public DialogButtonStyle TertiaryButtonStyle
+    public ButtonStyle TertiaryButtonStyle
     {
         get => GetValue(TertiaryButtonStyleProperty);
         set => SetValue(TertiaryButtonStyleProperty, value);
@@ -119,12 +119,12 @@ internal class SimpleDialog : TemplatedControl
 
     public CancelEventHandler? CancelCallback { get; set; }
 
-    public static readonly StyledProperty<DialogButtonStyle> CancelButtonStyleProperty =
-        AvaloniaProperty.Register<SimpleDialog, DialogButtonStyle>(
+    public static readonly StyledProperty<ButtonStyle> CancelButtonStyleProperty =
+        AvaloniaProperty.Register<SimpleDialog, ButtonStyle>(
             nameof(CancelButtonStyle),
-            DialogButtonStyle.Outline);
+            ButtonStyle.Outline);
 
-    public DialogButtonStyle CancelButtonStyle
+    public ButtonStyle CancelButtonStyle
     {
         get => GetValue(CancelButtonStyleProperty);
         set => SetValue(CancelButtonStyleProperty, value);

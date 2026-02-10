@@ -12,8 +12,7 @@ public sealed class DialogBuilder
 {
     private readonly DialogManager _manager;
     private readonly SimpleDialog _dialog;
-
-    public DialogOptions Options { get; } = new();
+    private readonly DialogOptions _options = new();
 
     internal DialogBuilder(DialogManager manager, object content, object? title = null)
     {
@@ -41,12 +40,12 @@ public sealed class DialogBuilder
     /// </summary>
     /// <param name="content">The button content</param>
     /// <param name="callback"></param>
-    /// <param name="buttonStyle">The style of the button. The default is <see cref="DialogButtonStyle.Primary" /></param>
+    /// <param name="buttonStyle">The style of the button. The default is <see cref="ButtonStyle.Primary" /></param>
     /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
     public DialogBuilder WithPrimaryButton(
         object content,
         CancelEventHandler? callback = null,
-        DialogButtonStyle buttonStyle = DialogButtonStyle.Primary)
+        ButtonStyle buttonStyle = ButtonStyle.Primary)
     {
         _dialog.PrimaryButtonContent = content;
         _dialog.PrimaryCallback = callback;
@@ -59,12 +58,12 @@ public sealed class DialogBuilder
     /// </summary>
     /// <param name="content">The button content</param>
     /// <param name="callback"></param>
-    /// <param name="buttonStyle">The style of the button. The default is <see cref="DialogButtonStyle.Secondary" /></param>
+    /// <param name="buttonStyle">The style of the button. The default is <see cref="ButtonStyle.Secondary" /></param>
     /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
     public DialogBuilder WithSecondaryButton(
         object content,
         CancelEventHandler? callback = null,
-        DialogButtonStyle buttonStyle = DialogButtonStyle.Secondary)
+        ButtonStyle buttonStyle = ButtonStyle.Secondary)
     {
         _dialog.SecondaryButtonContent = content;
         _dialog.SecondaryCallback = callback;
@@ -77,12 +76,12 @@ public sealed class DialogBuilder
     /// </summary>
     /// <param name="content">The button content</param>
     /// <param name="callback"></param>
-    /// <param name="buttonStyle">The style of the button. The default is <see cref="DialogButtonStyle.Outline" /></param>
+    /// <param name="buttonStyle">The style of the button. The default is <see cref="ButtonStyle.Outline" /></param>
     /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
     public DialogBuilder WithTertiaryButton(
         object content,
         CancelEventHandler? callback = null,
-        DialogButtonStyle buttonStyle = DialogButtonStyle.Outline)
+        ButtonStyle buttonStyle = ButtonStyle.Outline)
     {
         _dialog.TertiaryButtonContent = content;
         _dialog.TertiaryButtonStyle = buttonStyle;
@@ -94,12 +93,12 @@ public sealed class DialogBuilder
     /// </summary>
     /// <param name="content">The button content</param>
     /// <param name="callback"></param>
-    /// <param name="buttonStyle">The style of the button. The default is <see cref="DialogButtonStyle.Outline" /></param>
+    /// <param name="buttonStyle">The style of the button. The default is <see cref="ButtonStyle.Outline" /></param>
     /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
     public DialogBuilder WithCancelButton(
         object content,
         CancelEventHandler? callback = null,
-        DialogButtonStyle buttonStyle = DialogButtonStyle.Outline)
+        ButtonStyle buttonStyle = ButtonStyle.Outline)
     {
         _dialog.CancelButtonContent = content;
         _dialog.CancelCallback = callback;
@@ -113,7 +112,7 @@ public sealed class DialogBuilder
     /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
     public DialogBuilder Dismissible()
     {
-        Options.Dismissible = true;
+        _options.Dismissible = true;
         return this;
     }
 
@@ -124,7 +123,7 @@ public sealed class DialogBuilder
     /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
     public DialogBuilder WithMaxWidth(double maxWidth)
     {
-        Options.MaxWidth = maxWidth;
+        _options.MaxWidth = maxWidth;
         return this;
     }
 
@@ -135,7 +134,7 @@ public sealed class DialogBuilder
     /// <returns>The modified <see cref="DialogBuilder" /> instance</returns>
     public DialogBuilder WithMinWidth(double minWidth)
     {
-        Options.MinWidth = minWidth;
+        _options.MinWidth = minWidth;
         return this;
     }
 
@@ -145,7 +144,7 @@ public sealed class DialogBuilder
     public Task<DialogResult> ShowAsync(CancellationToken cancellationToken = default)
     {
         var tcs = new TaskCompletionSource<DialogResult>();
-        _manager.Show(_dialog, r => tcs.TrySetResult(r), Options);
+        _manager.Show(_dialog, r => tcs.TrySetResult(r), _options);
 
         if (cancellationToken.CanBeCanceled) cancellationToken.Register(() => Dispatcher.UIThread.InvokeOnDemand(() => _manager.Close(_dialog)));
 

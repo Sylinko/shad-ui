@@ -56,4 +56,11 @@ public sealed class ToastManager
     }
 
     internal bool IsDismissed(Toast toast) => !_toasts.Contains(toast);
+
+    /// <summary>
+    ///     Creates a new toast notification.
+    /// </summary>
+    /// <param name="title">The title of the toast</param>
+    /// <returns></returns>
+    public ToastBuilder CreateToast(string title) => new ToastBuilder(this, title);
 }

@@ -10,7 +10,7 @@ namespace ShadUI;
 ///     This class contains static converters that can be used to convert DialogButtonStyle enum values
 ///     to their corresponding CSS class names for styling purposes.
 /// </remarks>
-public static class DialogButtonStyleConverters
+public static class ButtonStyleConverters
 {
     /// <summary>
     ///     Converts a DialogButtonStyle enum value to its corresponding CSS class name.
@@ -24,13 +24,13 @@ public static class DialogButtonStyleConverters
     ///     - Destructive → "Destructive"
     /// </remarks>
     public static readonly IValueConverter ToClass =
-        new FuncValueConverter<DialogButtonStyle, string>(value => value switch
+        new FuncValueConverter<ButtonStyle, string>(value => value switch
         {
-            DialogButtonStyle.Primary => "Primary",
-            DialogButtonStyle.Secondary => "Secondary",
-            DialogButtonStyle.Outline => "Outline",
-            DialogButtonStyle.Ghost => "Ghost",
-            DialogButtonStyle.Destructive => "Destructive",
+            ButtonStyle.Primary => "Primary",
+            ButtonStyle.Secondary => "Secondary",
+            ButtonStyle.Outline => "Outline",
+            ButtonStyle.Ghost => "Ghost",
+            ButtonStyle.Destructive => "Destructive",
             _ => ""
         });
 }

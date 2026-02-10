@@ -4,7 +4,7 @@ namespace ShadUI;
 /// <summary>
 ///     Defines the style of the button in the simple dialog.
 /// </summary>
-public enum DialogButtonStyle
+public enum ButtonStyle
 {
     /// <summary>
     ///     Sets the button style class as Primary.

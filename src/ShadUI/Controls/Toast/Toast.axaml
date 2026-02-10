@@ -43,8 +43,17 @@
                   IsIndeterminate="{TemplateBinding ProgressValue, Converter={x:Static shadui:DoubleConverters.IsNaN}}"
                   IsVisible="{TemplateBinding Progress, Converter={x:Static ObjectConverters.IsNotNull}}"
                   Maximum="1" Minimum="0"
-                  Value="{TemplateBinding ProgressValue}"/>
+                  Value="{TemplateBinding ProgressValue}">
+                  <ProgressBar.Transitions>
+                    <Transitions>
+                      <DoubleTransition
+                        Easing="CubicEaseInOut" Property="Value"
+                        Duration="0:0:0.2"/>
+                    </Transitions>
+                  </ProgressBar.Transitions>
+                </ProgressBar>
               </Border>
+
               <Grid
                 Margin="16" ColumnDefinitions="Auto * Auto">
                 <PathIcon
@@ -59,14 +68,17 @@
                     Text="{TemplateBinding Title}"/>
                   <ContentPresenter
                     Name="PART_Content" Margin="0,4,0,0"
-                    Content="{TemplateBinding Content}"/>
+                    Content="{TemplateBinding Content}"
+                    IsVisible="{TemplateBinding Content, Converter={x:Static ObjectConverters.IsNotNull}}"/>
                 </StackPanel>
                 <Button
                   Name="PART_ActionButton" Grid.Column="2"
                   Margin="8,0,12,0"
-                  Content="{TemplateBinding ActionLabel}"
-                  IsVisible="{TemplateBinding Action, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                  shadui:ElementAssist.Classes="{TemplateBinding ActionButtonStyle, Converter={x:Static shadui:ButtonStyleConverters.ToClass}}"
+                  Content="{TemplateBinding ActionButtonContent}"
+                  IsVisible="{TemplateBinding ActionButtonContent, Converter={x:Static ObjectConverters.IsNotNull}}"/>
               </Grid>
+
               <Button
                 Name="PART_CloseButton" Width="20"
                 MinHeight="20" Margin="4"
