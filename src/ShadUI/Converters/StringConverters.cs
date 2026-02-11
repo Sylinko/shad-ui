@@ -36,6 +36,12 @@ public static class StringConverters
             return value.Equals(param, StringComparison.OrdinalIgnoreCase);
         });
 
+    public static IValueConverter EmptyToNull { get; } =
+        new FuncValueConverter<string, string?>(value => string.IsNullOrEmpty(value) ? null : value);
+
+    public static IValueConverter EmptyOrWhiteSpaceToNull { get; } =
+        new FuncValueConverter<string, string?>(value => string.IsNullOrWhiteSpace(value) ? null : value);
+
     public static IValueConverter ToFontFamily { get; } =
         new FuncValueConverter<string, FontFamily>(value => new FontFamily(value ?? "Segoe UI, 'Helvetica Neue', sans-serif"));
 }
