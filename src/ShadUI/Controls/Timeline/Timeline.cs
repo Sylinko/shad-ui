@@ -239,11 +239,10 @@ public class Timeline : Decorator
 
     private void AddItem(Control item)
     {
-        if (!_items.Contains(item))
-        {
-            _items.Add(item);
-            InvalidateVisual();
-        }
+        if (_items.Contains(item)) return;
+
+        _items.Add(item);
+        InvalidateVisual();
     }
 
     private void RemoveItem(Control item)
@@ -261,23 +260,22 @@ public class Timeline : Decorator
         if (_items.Count == 0) return;
 
         // 1. Collect valid points
-        var allPoints = new List<(Point Point, Control Item)>();
-        var toRemove = new List<Control>();
+        var allPoints = new List<(Point Point, Control Item)>(_items.Count);
 
-        foreach (var item in _items)
+        for (var i = 0; i < _items.Count; i++)
         {
-            if (!item.IsEffectivelyVisible)
-            {
-                // Skip invisible or detached items
-                // Optionally mark for removal if detached
-                toRemove.Add(item);
-                continue;
-            }
+            var item = _items[i];
 
             // Ensure item is still a descendant
             if (!this.IsVisualAncestorOf(item))
             {
-                toRemove.Add(item);
+                _items.RemoveAt(i--);
+                continue;
+            }
+
+            if (!item.IsEffectivelyVisible)
+            {
+                // Skip invisible or detached items
                 continue;
             }
 
@@ -292,9 +290,6 @@ public class Timeline : Decorator
                 allPoints.Add((p, item));
             }
         }
-
-        // Cleanup
-        foreach (var item in toRemove) _items.Remove(item);
 
         if (allPoints.Count == 0) return;
 
