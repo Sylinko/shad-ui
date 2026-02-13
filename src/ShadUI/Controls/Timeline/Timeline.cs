@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace ShadUI;
@@ -122,6 +123,37 @@ public class Timeline : Decorator
         set => SetValue(StrokeProperty, value);
     }
 
+    /// <summary>
+    /// Defines the <see cref="SpinnerSize"/> property.
+    /// </summary>
+    public static readonly StyledProperty<double> SpinnerSizeProperty =
+        AvaloniaProperty.Register<Timeline, double>(nameof(SpinnerSize), 13.0);
+
+    /// <summary>
+    /// Gets or sets the size of the spinner icon when an item is loading.
+    /// The spinner geometry is originally 20x20 and will be scaled to this size.
+    /// </summary>
+    public double SpinnerSize
+    {
+        get => GetValue(SpinnerSizeProperty);
+        set => SetValue(SpinnerSizeProperty, value);
+    }
+
+    /// <summary>
+    /// Defines the <see cref="SpinnerSpeed"/> property.
+    /// </summary>
+    public static readonly StyledProperty<double> SpinnerSpeedProperty =
+        AvaloniaProperty.Register<Timeline, double>(nameof(SpinnerSpeed), 360.0);
+
+    /// <summary>
+    /// Gets or sets the spinner rotation speed in degrees per second.
+    /// </summary>
+    public double SpinnerSpeed
+    {
+        get => GetValue(SpinnerSpeedProperty);
+        set => SetValue(SpinnerSpeedProperty, value);
+    }
+
     #endregion
 
     #region Attached Properties
@@ -147,7 +179,32 @@ public class Timeline : Decorator
 
     public static void SetIsBreak(Control element, bool value) => element.SetValue(IsBreakProperty, value);
 
+    /// <summary>
+    /// Defines the IsLoading attached property.
+    /// When true and the control has a valid anchor, a spinning animation is drawn instead of a dot.
+    /// </summary>
+    public static readonly AttachedProperty<bool> IsLoadingProperty =
+        AvaloniaProperty.RegisterAttached<Timeline, Control, bool>("IsLoading");
+
+    public static bool GetIsLoading(Control element) => element.GetValue(IsLoadingProperty);
+
+    public static void SetIsLoading(Control element, bool value) => element.SetValue(IsLoadingProperty, value);
+
     #endregion
+
+    /// <summary>
+    /// Geometry data for a simple spinner shape.
+    /// </summary>
+    private const string SpinnerData =
+        "M10,20c-5.51,0-10-4.49-10-10S4.49,0,10,0c1.05,0,2.09.16,3.09.49.53.17.81.73.64,1.26-.17.53-.73.81-1.26.64-.8-.26-1.63-.39-2.47-.39-4.41,0-8,3.59-8,8s3.59,8,8,8c4.41,0,8-3.59,8-8,0-.55.45-1,1-1s1,.45,1,1c0,5.51-4.49,10-10,10Z";
+
+    /// <summary>
+    /// Cached parsed geometry for the spinner shape (original 20x20, center at 10,10).
+    /// </summary>
+    private static Geometry? _cachedSpinnerGeometry;
+    private static Geometry CachedSpinnerGeometry => _cachedSpinnerGeometry ??= Geometry.Parse(SpinnerData);
+
+    private DispatcherTimer? _spinnerTimer;
 
     static Timeline()
     {
@@ -157,10 +214,13 @@ public class Timeline : Decorator
             FillProperty,
             StrokeThicknessProperty,
             StrokeProperty,
-            SpacingProperty);
+            SpacingProperty,
+            SpinnerSizeProperty,
+            SpinnerSpeedProperty);
 
         AnchorProperty.Changed.AddClassHandler<Control>(OnAnchorChanged);
         IsBreakProperty.Changed.AddClassHandler<Control>(OnIsBreakChanged);
+        IsLoadingProperty.Changed.AddClassHandler<Control>(OnIsLoadingChanged);
     }
 
     public Timeline()
@@ -172,6 +232,27 @@ public class Timeline : Decorator
     {
         var timeline = control.FindAncestorOfType<Timeline>();
         timeline?.InvalidateVisual();
+    }
+
+    private static void OnIsLoadingChanged(Control control, AvaloniaPropertyChangedEventArgs e)
+    {
+        var timeline = control.FindAncestorOfType<Timeline>();
+        timeline?.InvalidateVisual();
+    }
+
+    private void StartSpinnerTimer()
+    {
+        if (_spinnerTimer != null) return;
+        _spinnerTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
+        _spinnerTimer.Tick += (_, _) => InvalidateVisual();
+        _spinnerTimer.Start();
+    }
+
+    private void StopSpinnerTimer()
+    {
+        if (_spinnerTimer == null) return;
+        _spinnerTimer.Stop();
+        _spinnerTimer = null;
     }
 
     private static void OnAnchorChanged(Control control, AvaloniaPropertyChangedEventArgs e)
@@ -257,7 +338,11 @@ public class Timeline : Decorator
     {
         base.Render(context);
 
-        if (_items.Count == 0) return;
+        if (_items.Count == 0)
+        {
+            StopSpinnerTimer();
+            return;
+        }
 
         // 1. Collect valid points
         var allPoints = new List<(Point Point, Control Item)>(_items.Count);
@@ -291,7 +376,11 @@ public class Timeline : Decorator
             }
         }
 
-        if (allPoints.Count == 0) return;
+        if (allPoints.Count == 0)
+        {
+            StopSpinnerTimer();
+            return;
+        }
 
         // 2. Sort points based on Orientation
         if (Orientation == Orientation.Vertical)
@@ -333,6 +422,10 @@ public class Timeline : Decorator
         var dotRadius = DotSize / 2;
         var spacing = Spacing;
         var isVertical = Orientation == Orientation.Vertical;
+        var spinnerGeometry = CachedSpinnerGeometry;
+        var spinnerScale = SpinnerSize / 20.0;
+        var spinnerAngleRad = Environment.TickCount64 * SpinnerSpeed / 1000.0 * (Math.PI / 180.0);
+        var hasLoadingItems = false;
 
         foreach (var segment in segments)
         {
@@ -343,8 +436,23 @@ public class Timeline : Decorator
                 var originalPoint = segment[i].Point;
                 var current = isVertical ? new Point(0, originalPoint.Y) : new Point(originalPoint.X, 0);
 
-                // Draw Dot
-                context.DrawEllipse(dotBrush, null, current, dotRadius, dotRadius);
+                // Draw Dot or Spinner
+                if (GetIsLoading(segment[i].Item))
+                {
+                    hasLoadingItems = true;
+                    var transform = Matrix.CreateTranslation(-10, -10) // Center the spinner geometry
+                        * Matrix.CreateScale(spinnerScale, spinnerScale)
+                        * Matrix.CreateRotation(spinnerAngleRad)
+                        * Matrix.CreateTranslation(current.X, current.Y);
+                    using (context.PushTransform(transform))
+                    {
+                        context.DrawGeometry(dotBrush, null, spinnerGeometry);
+                    }
+                }
+                else
+                {
+                    context.DrawEllipse(dotBrush, null, current, dotRadius, dotRadius);
+                }
 
                 // Draw Line to next
                 if (i >= segment.Count - 1) continue;
@@ -373,6 +481,15 @@ public class Timeline : Decorator
 
                 context.DrawLine(linePen, start, end);
             }
+        }
+
+        if (hasLoadingItems)
+        {
+            StartSpinnerTimer();
+        }
+        else
+        {
+            StopSpinnerTimer();
         }
     }
 }
