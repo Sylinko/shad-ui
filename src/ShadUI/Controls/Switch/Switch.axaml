@@ -20,8 +20,8 @@
     <Setter Property="RenderTransform">
       <ScaleTransform ScaleX="1.1" ScaleY="1.1"/>
     </Setter>
-    <Setter Property="OnContent" Value=""/>
-    <Setter Property="OffContent" Value=""/>
+    <Setter Property="OnContent" Value="{x:Null}"/>
+    <Setter Property="OffContent" Value="{x:Null}"/>
     <Setter Property="HorizontalAlignment" Value="Left"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -36,6 +36,19 @@
           ReverseOrder="{TemplateBinding shadui:ToggleSwitchAssist.RightAlignedContent}"
           Spacing="8">
           <Panel>
+            <Panel.IsVisible>
+              <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                <Binding
+                  Converter="{x:Static ObjectConverters.IsNotNull}"
+                  Path="OffContent"
+                  RelativeSource="{RelativeSource TemplatedParent}"/>
+                <Binding
+                  Converter="{x:Static ObjectConverters.IsNotNull}"
+                  Path="OnContent"
+                  RelativeSource="{RelativeSource TemplatedParent}"/>
+              </MultiBinding>
+            </Panel.IsVisible>
+
             <ContentPresenter
               x:Name="PART_OffContentPresenter"
               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
