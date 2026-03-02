@@ -21,84 +21,89 @@
   </Design.PreviewWith>
   <ControlTheme
     x:Key="ToastTheme" TargetType="shadui:Toast">
+    <Setter Property="MinWidth" Value="380"/>
+    <Setter Property="MaxWidth" Value="640"/>
+    <Setter Property="Padding" Value="16"/>
+    <Setter Property="Margin" Value="16"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Border
-          Name="PART_ToastCard" Padding="12,0,12,12">
-          <Border
-            Name="PART_ToastCardInner" MinWidth="350"
-            Margin="2,0,2,4"
-            Background="{DynamicResource PopupBackgroundColor}"
-            BorderBrush="{DynamicResource BorderColor}"
-            BorderThickness="1"
-            BoxShadow="{DynamicResource Shadow}"
-            CornerRadius="{DynamicResource LgCornerRadius}">
-            <Panel>
-              <Border
-                Name="PART_InnerCardBackground" ClipToBounds="True"
-                CornerRadius="{DynamicResource MdCornerRadius}">
+          Name="PART_ToastCard" Margin="2,0,2,4"
+          Background="{DynamicResource PopupBackgroundColor}"
+          BorderBrush="{DynamicResource BorderColor}"
+          BorderThickness="1"
+          BoxShadow="{DynamicResource Shadow}"
+          CornerRadius="{DynamicResource LgCornerRadius}">
+          <Panel>
+            <Border
+              Name="PART_InnerCardBackground" ClipToBounds="True"
+              CornerRadius="{DynamicResource MdCornerRadius}">
 
-                <ProgressBar
-                  Name="PART_ProgressBar" VerticalAlignment="Stretch"
-                  IsIndeterminate="{TemplateBinding ProgressValue, Converter={x:Static shadui:DoubleConverters.IsNaN}}"
-                  IsVisible="{TemplateBinding Progress, Converter={x:Static ObjectConverters.IsNotNull}}"
-                  Maximum="1" Minimum="0"
-                  Value="{TemplateBinding ProgressValue}">
-                  <ProgressBar.Transitions>
-                    <Transitions>
-                      <DoubleTransition
-                        Easing="CubicEaseInOut" Property="Value"
-                        Duration="0:0:0.2"/>
-                    </Transitions>
-                  </ProgressBar.Transitions>
-                </ProgressBar>
-              </Border>
-
-              <Grid
-                Margin="16" ColumnDefinitions="Auto * Auto">
-                <PathIcon
-                  Name="PART_Icon" Width="20"
-                  Height="20" Margin="0,0,8,0"
-                  Data="{x:Static shadui:Icons.Warning}"
-                  Foreground="{DynamicResource ForegroundColor}"
-                  IsVisible="{CompiledBinding Data, ElementName=PART_Icon, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-                <StackPanel Grid.Column="1">
-                  <TextBlock
-                    Name="PART_Title"
-                    Text="{TemplateBinding Title}"/>
-                  <ContentPresenter
-                    Name="PART_Content" Margin="0,4,0,0"
-                    Content="{TemplateBinding Content}"
-                    IsVisible="{TemplateBinding Content, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-                </StackPanel>
-                <Button
-                  Name="PART_ActionButton" Grid.Column="2"
-                  Margin="8,0,12,0"
-                  shadui:ElementAssist.Classes="{TemplateBinding ActionButtonStyle, Converter={x:Static shadui:ButtonStyleConverters.ToClass}}"
-                  Content="{TemplateBinding ActionButtonContent}"
-                  IsVisible="{TemplateBinding ActionButtonContent, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-              </Grid>
-
-              <Button
-                Name="PART_CloseButton" Width="20"
-                MinHeight="20" Margin="4"
-                Padding="0" HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                CornerRadius="{DynamicResource FullCornerRadius}"
-                HotKey="Escape" Opacity="0">
-                <Button.Transitions>
+              <ProgressBar
+                Name="PART_ProgressBar" VerticalAlignment="Stretch"
+                IsIndeterminate="{TemplateBinding ProgressValue, Converter={x:Static shadui:DoubleConverters.IsNaN}}"
+                IsVisible="{TemplateBinding Progress, Converter={x:Static ObjectConverters.IsNotNull}}"
+                Maximum="1" Minimum="0"
+                Value="{TemplateBinding ProgressValue}">
+                <ProgressBar.Transitions>
                   <Transitions>
                     <DoubleTransition
-                      Property="Opacity" Duration="0:0:0.20"/>
+                      Easing="CubicEaseInOut" Property="Value"
+                      Duration="0:0:0.2"/>
                   </Transitions>
-                </Button.Transitions>
-                <PathIcon
-                  Name="PART_CloseButtonIcon" Width="8"
-                  Height="8"
-                  Data="{x:Static shadui:Icons.WindowClose}"/>
-              </Button>
-            </Panel>
-          </Border>
+                </ProgressBar.Transitions>
+              </ProgressBar>
+            </Border>
+
+            <Grid
+              Margin="{TemplateBinding Padding}"
+              ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+              <PathIcon
+                Name="PART_Icon" Width="20"
+                Height="20"
+                Data="{x:Static shadui:Icons.Warning}"
+                Foreground="{DynamicResource ForegroundColor}"
+                IsVisible="{CompiledBinding Data, ElementName=PART_Icon, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+              <StackPanel
+                Grid.Column="1" Spacing="4">
+                <TextBlock
+                  Name="PART_Title"
+                  IsVisible="{TemplateBinding Title, Converter={x:Static ObjectConverters.IsNotNull}}"
+                  Text="{TemplateBinding Title}"/>
+                <ContentPresenter
+                  Name="PART_Content"
+                  Content="{TemplateBinding Content}"
+                  IsVisible="{TemplateBinding Content, Converter={x:Static ObjectConverters.IsNotNull}}"
+                  TextBlock.TextWrapping="Wrap"/>
+              </StackPanel>
+              <Button
+                Name="PART_ActionButton" Grid.Column="2"
+                Margin="0,0,12,0"
+                shadui:ElementAssist.Classes="{TemplateBinding ActionButtonStyle, Converter={x:Static shadui:ButtonStyleConverters.ToClass}}"
+                Content="{TemplateBinding ActionButtonContent}"
+                IsVisible="{TemplateBinding ActionButtonContent, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+            </Grid>
+
+            <Button
+              Name="PART_CloseButton" Width="20"
+              MinHeight="20" Margin="4"
+              Padding="0" HorizontalAlignment="Right"
+              VerticalAlignment="Top"
+              CornerRadius="{DynamicResource FullCornerRadius}"
+              IsVisible="{TemplateBinding CanDismiss}"
+              Opacity="0">
+              <Button.Transitions>
+                <Transitions>
+                  <DoubleTransition
+                    Property="Opacity" Duration="0:0:0.20"/>
+                </Transitions>
+              </Button.Transitions>
+              <PathIcon
+                Name="PART_CloseButtonIcon" Width="8"
+                Height="8"
+                Data="{x:Static shadui:Icons.WindowClose}"/>
+            </Button>
+          </Panel>
         </Border>
       </ControlTemplate>
     </Setter>
@@ -141,7 +146,7 @@
       </Style>
     </Style>
     <Style Selector="^[Notification=Success]">
-      <Style Selector="^ /template/ Border#PART_ToastCardInner">
+      <Style Selector="^ /template/ Border#PART_ToastCard">
         <Setter Property="BorderBrush" Value="{DynamicResource SuccessColor20}"/>
       </Style>
       <Style Selector="^ /template/ ProgressBar#PART_ProgressBar">
@@ -181,7 +186,7 @@
       </Style>
     </Style>
     <Style Selector="^[Notification=Info]">
-      <Style Selector="^ /template/ Border#PART_ToastCardInner">
+      <Style Selector="^ /template/ Border#PART_ToastCard">
         <Setter Property="BorderBrush" Value="{DynamicResource InfoColor20}"/>
       </Style>
       <Style Selector="^ /template/ ProgressBar#PART_ProgressBar">
@@ -221,7 +226,7 @@
       </Style>
     </Style>
     <Style Selector="^[Notification=Warning]">
-      <Style Selector="^ /template/ Border#PART_ToastCardInner">
+      <Style Selector="^ /template/ Border#PART_ToastCard">
         <Setter Property="BorderBrush" Value="{DynamicResource WarningColor20}"/>
       </Style>
       <Style Selector="^ /template/ ProgressBar#PART_ProgressBar">
@@ -261,7 +266,7 @@
       </Style>
     </Style>
     <Style Selector="^[Notification=Error]">
-      <Style Selector="^ /template/ Border#PART_ToastCardInner">
+      <Style Selector="^ /template/ Border#PART_ToastCard">
         <Setter Property="BorderBrush" Value="{DynamicResource ErrorColor20}"/>
       </Style>
       <Style Selector="^ /template/ ProgressBar#PART_ProgressBar">

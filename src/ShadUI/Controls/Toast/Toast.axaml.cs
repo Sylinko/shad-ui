@@ -30,7 +30,7 @@ public enum ToastResult
 [TemplatePart("PART_ToastCard", typeof(Border))]
 [TemplatePart("PART_ActionButton", typeof(Button))]
 [TemplatePart("PART_CloseButton", typeof(Button))]
-internal class Toast : ContentControl
+public class Toast : ContentControl
 {
     /// <summary>
     ///     Delay in seconds before the toast is dismissed.
@@ -88,10 +88,10 @@ internal class Toast : ContentControl
         set => SetValue(NotificationProperty, value);
     }
 
-    public static readonly StyledProperty<string> TitleProperty =
-        AvaloniaProperty.Register<Toast, string>(nameof(Title));
+    public static readonly StyledProperty<string?> TitleProperty =
+        AvaloniaProperty.Register<Toast, string?>(nameof(Title));
 
-    public string Title
+    public string? Title
     {
         get => GetValue(TitleProperty);
         set => SetValue(TitleProperty, value);
@@ -161,6 +161,15 @@ internal class Toast : ContentControl
     {
         get => GetValue(CanDismissByClickingProperty);
         set => SetValue(CanDismissByClickingProperty, value);
+    }
+
+    public static readonly StyledProperty<bool> CanDismissProperty =
+        AvaloniaProperty.Register<Toast, bool>(nameof(CanDismiss), true);
+
+    public bool CanDismiss
+    {
+        get => GetValue(CanDismissProperty);
+        set => SetValue(CanDismissProperty, value);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
