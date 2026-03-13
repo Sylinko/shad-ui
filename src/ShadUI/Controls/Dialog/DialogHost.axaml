@@ -23,7 +23,7 @@
             Name="DialogContent"
             MinWidth="{TemplateBinding DialogMinWidth}"
             MaxWidth="{TemplateBinding DialogMaxWidth}"
-            Margin="8" HorizontalAlignment="Center"
+            Margin="16" HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Background="{DynamicResource DialogBackgroundColor}"
             BorderBrush="{DynamicResource BorderColor}"
@@ -85,7 +85,6 @@
         <Setter Property="IsHitTestVisible" Value="True"/>
       </Style>
       <Style Selector="^/template/ Border#DialogContent">
-        <Setter Property="Margin" Value="0"/>
         <Setter Property="Opacity" Value="1"/>
         <Setter Property="IsHitTestVisible" Value="True"/>
         <Setter Property="RenderTransform" Value="scale(1)"/>
