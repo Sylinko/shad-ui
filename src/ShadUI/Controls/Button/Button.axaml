@@ -203,6 +203,8 @@
     <Style Selector="^.Secondary">
       <Setter Property="Background" Value="{DynamicResource SecondaryColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource SecondaryColor50}"/>
     </Style>
 
