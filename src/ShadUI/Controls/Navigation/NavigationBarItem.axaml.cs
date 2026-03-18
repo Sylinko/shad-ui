@@ -1,9 +1,11 @@
 ﻿using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Layout;
 using Avalonia.VisualTree;
+using Lucide.Avalonia;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
@@ -14,18 +16,18 @@ namespace ShadUI;
 [TemplatePart("PART_BorderContainer", typeof(Border))]
 [TemplatePart("PART_ContentPresenter", typeof(ContentPresenter))]
 [PseudoClasses(":expanded", ":vertical", ":horizontal")]
-public class NavigationBarItem : RadioButton
+public class NavigationBarItem : ContentControl
 {
     /// <summary>
     ///     Icon property.
     /// </summary>
-    public static readonly StyledProperty<object?> IconProperty =
-        AvaloniaProperty.Register<NavigationBarItem, object?>(nameof(Icon));
+    public static readonly StyledProperty<LucideIconKind?> IconProperty =
+        AvaloniaProperty.Register<NavigationBarItem, LucideIconKind?>(nameof(Icon));
 
     /// <summary>
     ///     Gets or sets the icon of the menu item.
     /// </summary>
-    public object? Icon
+    public LucideIconKind? Icon
     {
         get => GetValue(IconProperty);
         set => SetValue(IconProperty, value);
@@ -41,42 +43,33 @@ public class NavigationBarItem : RadioButton
     }
 
     /// <summary>
-    ///     Defines the <see cref="IsExpanded" /> property.
+    ///     Defines the <see cref="GroupName" /> property.
     /// </summary>
-    public static readonly StyledProperty<bool> IsExpandedProperty =
-        NavigationBar.IsExpandedProperty.AddOwner<NavigationBarItem>();
+    public static readonly StyledProperty<string?> GroupNameProperty =
+        AvaloniaProperty.Register<NavigationBarItem, string?>(nameof(GroupName));
 
     /// <summary>
-    ///     Gets or sets a value indicating whether the navigation bar item is expanded.
+    ///     Gets or sets the name of the group that this navigation bar item belongs to. Used for grouping items together for selection behavior.
     /// </summary>
-    public bool IsExpanded
+    public string? GroupName
     {
-        get => GetValue(IsExpandedProperty);
-        set => SetValue(IsExpandedProperty, value);
-    }
-
-    public static readonly StyledProperty<Orientation> OrientationProperty =
-        NavigationBar.OrientationProperty.AddOwner<NavigationBarItem>();
-
-    public Orientation Orientation
-    {
-        get => GetValue(OrientationProperty);
-        set => SetValue(OrientationProperty, value);
+        get => GetValue(GroupNameProperty);
+        set => SetValue(GroupNameProperty, value);
     }
 
     /// <summary>
-    ///     Defines the <see cref="Spacing" /> property.
+    ///     Defines the <see cref="IsChecked" /> property.
     /// </summary>
-    public static readonly StyledProperty<double> SpacingProperty =
-        StackPanel.SpacingProperty.AddOwner<NavigationBarItem>();
+    public static readonly StyledProperty<bool> IsCheckedProperty =
+        AvaloniaProperty.Register<NavigationBarItem, bool>(nameof(IsChecked));
 
     /// <summary>
-    ///     Gets or sets the spacing between elements in the navigation bar item.
+    ///     Gets or sets a value indicating whether this navigation bar item is currently selected or active.
     /// </summary>
-    public double Spacing
+    public bool IsChecked
     {
-        get => GetValue(SpacingProperty);
-        set => SetValue(SpacingProperty, value);
+        get => GetValue(IsCheckedProperty);
+        set => SetValue(IsCheckedProperty, value);
     }
 
     /// <summary>
@@ -101,14 +94,108 @@ public class NavigationBarItem : RadioButton
         set => SetValue(RouteProperty, value);
     }
 
-    public NavigationBarItem()
+    /// <summary>
+    ///     Defines the <see cref="Children" /> property.
+    /// </summary>
+    public static readonly DirectProperty<NavigationBarItem, AvaloniaList<NavigationBarItem>> ChildrenProperty =
+        AvaloniaProperty.RegisterDirect<NavigationBarItem, AvaloniaList<NavigationBarItem>>(
+        nameof(Children),
+        o => o.Children);
+
+    /// <summary>
+    ///     Gets the collection of child navigation bar items, allowing for hierarchical navigation structures.
+    /// </summary>
+    public AvaloniaList<NavigationBarItem> Children { get; } = [];
+
+    /// <summary>
+    ///    Defines the <see cref="Index" /> property.
+    /// </summary>
+    public static readonly DirectProperty<NavigationBarItem, int> IndexProperty =
+        AvaloniaProperty.RegisterDirect<NavigationBarItem, int>(
+        nameof(Index),
+        o => o.Index);
+
+    /// <summary>
+    ///     Gets the index of this navigation bar item within its parent navigation bar. Used for animation.
+    /// </summary>
+    public int Index
     {
-        UpdatePseudoClasses();
+        get;
+        internal set => SetAndRaise(IndexProperty, ref field, value);
     }
 
-    public NavigationBarItem(object? route) : this()
+    public static readonly DirectProperty<NavigationBarItem, bool> IsChildrenCheckedProperty =
+        AvaloniaProperty.RegisterDirect<NavigationBarItem, bool>(
+        nameof(IsChildrenChecked), o => o.IsChildrenChecked);
+
+    public bool IsChildrenChecked => Children.Any(c => c.IsChecked);
+
+    private NavigationBar? _navigationBar;
+    private NavigationBarItem? _parent;
+
+    public NavigationBarItem() { }
+
+    public NavigationBarItem(object? route)
     {
         Route = route;
+    }
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+
+        _navigationBar = this.GetVisualAncestors().OfType<NavigationBar>().FirstOrDefault();
+        if (_navigationBar is not null)
+        {
+            _navigationBar.RearrangeChildrenIndex();
+            _navigationBar.PropertyChanged += HandleNavigationBarPropertyChanged;
+
+            GroupName = _navigationBar.DefaultItemsGroup;
+            PseudoClasses.Set(":expanded", _navigationBar.IsExpanded);
+            var orientation = _navigationBar.Orientation;
+            PseudoClasses.Set(":vertical", orientation == Orientation.Vertical);
+            PseudoClasses.Set(":horizontal", orientation == Orientation.Horizontal);
+        }
+
+        _parent = this.GetVisualAncestors().OfType<NavigationBarItem>().FirstOrDefault();
+        if (_parent is not null)
+        {
+            if (_parent._parent is not null)
+            {
+                throw new InvalidOperationException("NavigationBarItem cannot be nested more than two levels deep.");
+            }
+
+            GroupName = _parent.GroupName;
+        }
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+
+        _parent = null;
+
+        if (_navigationBar is not null)
+        {
+            _navigationBar.RearrangeChildrenIndex();
+            _navigationBar.PropertyChanged -= HandleNavigationBarPropertyChanged;
+            _navigationBar = null;
+        }
+    }
+
+    private void HandleNavigationBarPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property == NavigationBar.IsExpandedProperty)
+        {
+            var isExpanded = e.GetNewValue<bool>();
+            PseudoClasses.Set(":expanded", isExpanded);
+        }
+        else if (e.Property == NavigationBar.OrientationProperty)
+        {
+            var orientation = e.GetNewValue<Orientation>();
+            PseudoClasses.Set(":vertical", orientation == Orientation.Vertical);
+            PseudoClasses.Set(":horizontal", orientation == Orientation.Horizontal);
+        }
     }
 
     /// <summary>
@@ -119,32 +206,35 @@ public class NavigationBarItem : RadioButton
     {
         base.OnPropertyChanged(change);
 
-        if (change.Property == IsExpandedProperty)
+        if (change.Property != IsCheckedProperty) return;
+
         {
-            var isExpanded = change.GetNewValue<bool>();
-            PseudoClasses.Set(":expanded", isExpanded);
+            var value = IsChildrenChecked;
+            RaisePropertyChanged(IsChildrenCheckedProperty, !value, value);
+        }
+        if (_parent is not null)
+        {
+            var value = _parent.IsChildrenChecked;
+            _parent.RaisePropertyChanged(IsChildrenCheckedProperty, !value, value);
         }
 
-        if (change.Property == OrientationProperty)
+        if (change.NewValue is not true) return;
+
+        NavigationBarItem? selectedItem;
+        if (Route is not null)
         {
-            var orientation = change.GetNewValue<Orientation>();
-            PseudoClasses.Set(":vertical", orientation == Orientation.Vertical);
-            PseudoClasses.Set(":horizontal", orientation == Orientation.Horizontal);
+            selectedItem = this;
+        }
+        else if (Children.Count > 0)
+        {
+            selectedItem = Children[0];
+            selectedItem.IsChecked = true;
+        }
+        else
+        {
+            selectedItem = null;
         }
 
-        if (change.Property == IsCheckedProperty &&
-            change.NewValue is true &&
-            this.GetVisualAncestors().OfType<NavigationBar>().FirstOrDefault() is { } navigationBar)
-        {
-            navigationBar.SelectedItem = this;
-        }
-    }
-
-    private void UpdatePseudoClasses()
-    {
-        PseudoClasses.Set(":expanded", IsExpanded);
-        var orientation = Orientation;
-        PseudoClasses.Set(":vertical", orientation == Orientation.Vertical);
-        PseudoClasses.Set(":horizontal", orientation == Orientation.Horizontal);
+        _navigationBar?.SelectedItem = selectedItem;
     }
 }

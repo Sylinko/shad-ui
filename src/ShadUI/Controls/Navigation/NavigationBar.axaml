@@ -119,7 +119,9 @@
               BorderBrush="{TemplateBinding BorderBrush}"
               BorderThickness="{TemplateBinding BorderThickness}"
               CornerRadius="{TemplateBinding CornerRadius}">
-              <ScrollViewer Classes.Stack="{TemplateBinding IsExpanded, Converter={x:Static BoolConverters.Not}}">
+              <ScrollViewer
+                Classes.Stack="{TemplateBinding IsExpanded, Converter={x:Static BoolConverters.Not}}"
+                HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
                 <ItemsPresenter
                   x:Name="PART_ItemsPresenter" Grid.IsSharedSizeScope="True"
                   ItemsPanel="{TemplateBinding ItemsPanel}"/>

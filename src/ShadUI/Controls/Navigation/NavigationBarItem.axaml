@@ -1,212 +1,105 @@
 ﻿<ResourceDictionary
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:shadui="clr-namespace:ShadUI" xmlns:system="clr-namespace:System;assembly=netstandard">
+  xmlns:shadui="clr-namespace:ShadUI">
+
   <ControlTheme
     x:Key="{x:Type shadui:NavigationBarItem}"
     TargetType="{x:Type shadui:NavigationBarItem}">
+
     <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="FontWeight" Value="Medium"/>
-    <Setter Property="GroupName" Value="{Binding $parent[shadui:NavigationBar].DefaultItemsGroup}"/>
-    <Setter Property="IsExpanded" Value="{Binding $parent[shadui:NavigationBar].IsExpanded}"/>
-    <Setter Property="Orientation" Value="{Binding $parent[shadui:NavigationBar].Orientation, Converter={x:Static shadui:BasicConverters.InvertOrientation}}"/>
-    <Setter Property="Spacing" Value="12"/>
     <Setter Property="Padding" Value="8"/>
     <Setter Property="CornerRadius" Value="{DynamicResource FullCornerRadius}"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="Cursor" Value="Hand"/>
-    <Setter Property="TextBlock.TextTrimming" Value="CharacterEllipsis"/>
-    <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
-    <Setter Property="TextBlock.MaxLines" Value="2"/>
 
     <Setter Property="Template">
       <ControlTemplate>
-        <Panel
-          x:Name="RootPanel" Background="Transparent">
-          <Panel.Styles>
-            <Style Selector="LucideIcon">
-              <Setter Property="Foreground" Value="{Binding $parent[shadui:NavigationBarItem].Foreground}"/>
-            </Style>
-          </Panel.Styles>
-          <Panel.Transitions>
-            <Transitions>
-              <TransformOperationsTransition
-                Property="RenderTransform" Duration="0:0:0.10"/>
-            </Transitions>
-          </Panel.Transitions>
-          <Panel
-            x:Name="BackgroundPanel" Background="Transparent">
-            <Border
-              x:Name="BaseBackground"
-              Background="{TemplateBinding Background}"
-              BorderBrush="{TemplateBinding BorderBrush}"
-              BorderThickness="{TemplateBinding BorderThickness}"
-              CornerRadius="{TemplateBinding CornerRadius}"
-              IsHitTestVisible="False" Opacity="1">
-              <Border.Transitions>
-                <Transitions>
-                  <DoubleTransition
-                    Property="Opacity" Duration="0:0:0.20"/>
-                </Transitions>
-              </Border.Transitions>
-            </Border>
-            <Border
-              x:Name="HoverBackground"
-              Background="{DynamicResource GhostHoverColor}"
-              BorderBrush="{TemplateBinding BorderBrush}"
-              BorderThickness="{TemplateBinding BorderThickness}"
-              CornerRadius="{TemplateBinding CornerRadius}"
-              IsHitTestVisible="False" Opacity="0">
-              <Border.Transitions>
-                <Transitions>
-                  <DoubleTransition
-                    Property="Opacity" Duration="0:0:0.20"/>
-                </Transitions>
-              </Border.Transitions>
-            </Border>
-            <Border
-              x:Name="SelectedBackground"
-              Background="{DynamicResource SelectionColor}"
-              BorderBrush="{TemplateBinding BorderBrush}"
-              BorderThickness="{TemplateBinding BorderThickness}"
-              CornerRadius="{TemplateBinding CornerRadius}"
-              IsHitTestVisible="False" Opacity="0">
-              <Border.Transitions>
-                <Transitions>
-                  <DoubleTransition
-                    Property="Opacity" Duration="0:0:0.20"/>
-                </Transitions>
-              </Border.Transitions>
-            </Border>
-          </Panel>
-
-          <Border
-            x:Name="PART_BorderContainer"
+        <DockPanel>
+          <shadui:NavigationBarItemButton
+            DockPanel.Dock="Top"
             Padding="{TemplateBinding Padding}"
-            ClipToBounds="True"
-            CornerRadius="{TemplateBinding CornerRadius}"
-            IsHitTestVisible="False"
-            TextElement.Foreground="{TemplateBinding Foreground}">
-            <StackPanel
-              x:Name="PART_StackPanelContainer"
-              Orientation="{TemplateBinding Orientation}"
-              Spacing="{TemplateBinding Spacing}">
-              <ContentControl Content="{TemplateBinding Icon}"/>
-              <ContentPresenter
-                x:Name="PART_ContentPresenter"
-                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                Content="{TemplateBinding Content}"
-                RecognizesAccessKey="True"
-                TextBlock.FontSize="{TemplateBinding FontSize}"
-                TextBlock.FontWeight="{TemplateBinding FontWeight}"
-                TextBlock.MaxLines="{TemplateBinding TextBlock.MaxLines}"
-                TextBlock.TextTrimming="{TemplateBinding TextBlock.TextTrimming}"
-                TextBlock.TextWrapping="{TemplateBinding TextBlock.TextWrapping}">
-                <ContentPresenter.Transitions>
-                  <Transitions>
-                    <TransformOperationsTransition
-                      Easing="{x:Static shadui:EaseOutBack.Strong}"
-                      Property="RenderTransform" Duration="0:0:0.4"/>
-                    <DoubleTransition
-                      Easing="CubicEaseInOut" Property="Opacity"
-                      Duration="0:0:0.2"/>
-                  </Transitions>
-                </ContentPresenter.Transitions>
+            Background="{TemplateBinding Background}"
+            Content="{TemplateBinding Content}"
+            FontSize="{TemplateBinding FontSize}"
+            FontWeight="{TemplateBinding FontWeight}"
+            Foreground="{TemplateBinding Foreground}"
+            GroupName="{TemplateBinding GroupName}"
+            IsChecked="{TemplateBinding IsChecked, Mode=TwoWay}"
+            ToolTip.Tip="{TemplateBinding ToolTip}"/>
 
-                <ContentPresenter.DataTemplates>
-                  <DataTemplate DataType="system:String">
-                    <TextBlock Text="{CompiledBinding}"/>
-                  </DataTemplate>
-                </ContentPresenter.DataTemplates>
+          <shadui:NavigationBarItemChildrenExpander
+            x:Name="ChildrenExpander" ClipToBounds="True">
+            <shadui:NavigationBarItemChildrenExpander.Transitions>
+              <Transitions>
+                <DoubleTransition
+                  Easing="CubicEaseOut" Property="ExpansionProgress"
+                  Duration="0:0:0.25"/>
+                <DoubleTransition
+                  Easing="CubicEaseOut" Property="Opacity"
+                  Duration="0:0:0.25"/>
+              </Transitions>
+            </shadui:NavigationBarItemChildrenExpander.Transitions>
 
-                <Interaction.Behaviors>
-                  <shadui:DelayFromIndexBehavior
-                    Multiplier="0:0:0.05"
-                    Self="{Binding $parent[shadui:NavigationBarItem]}"
-                    Target="{Binding #PART_ContentPresenter.Transitions[0], FallbackValue={x:Null}}"/>
-                </Interaction.Behaviors>
-              </ContentPresenter>
-            </StackPanel>
-          </Border>
-        </Panel>
+            <DockPanel
+              x:Name="ChildrenDockPanel" LastChildFill="True">
+              <Border
+                DockPanel.Dock="Left" Width="1"
+                Margin="16,6,7,6"
+                Background="{DynamicResource BorderColor}"/>
+              <ItemsControl ItemsSource="{TemplateBinding Children}"/>
+            </DockPanel>
+          </shadui:NavigationBarItemChildrenExpander>
+        </DockPanel>
       </ControlTemplate>
     </Setter>
 
-    <Style Selector="^:horizontal">
-      <Style Selector="^ /template/ Panel#BackgroundPanel">
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="Width" Value="{Binding Bounds.Width, RelativeSource={RelativeSource AncestorType=StackPanel}}"/>
+    <Style Selector="^ /template/ DockPanel#ChildrenDockPanel">
+      <Setter Property="IsVisible" Value="{Binding !!Children.Count, RelativeSource={RelativeSource TemplatedParent}}"/>
+    </Style>
+
+    <Style Selector="^:vertical">
+      <Style Selector="^ /template/ shadui|NavigationBarItemButton">
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="ToolTip.Placement" Value="Right"/>
+      </Style>
+
+      <Style Selector="^:expanded">
+        <Style Selector="^ /template/ shadui|NavigationBarItemButton">
+          <Setter Property="IsExpanded" Value="True"/>
+          <Setter Property="ToolTip.Tip" Value="{x:Null}"/>
+          <Setter Property="IsHitTestVisible" Value="{Binding Route, Converter={x:Static ObjectConverters.IsNotNull}, RelativeSource={RelativeSource TemplatedParent}}"/>
+        </Style>
       </Style>
 
       <Style Selector="^:not(:expanded)">
-        <Style Selector="^ /template/ Grid#Grid">
-          <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Style Selector="^ /template/ shadui|NavigationBarItemButton">
+          <Setter Property="Width" Value="{Binding $self.Bounds.Height}"/>
+          <Setter Property="HorizontalAlignment" Value="Left"/>
+          <Setter Property="IsChildrenChecked" Value="{Binding IsChildrenChecked, RelativeSource={RelativeSource TemplatedParent}}"/>
         </Style>
 
-        <Style Selector="^ /template/ Panel#BackgroundPanel">
-          <Setter Property="ToolTip.Tip" Value="{Binding ToolTip, RelativeSource={RelativeSource TemplatedParent}}"/>
-          <Setter Property="ToolTip.Placement" Value="Right"/>
-        </Style>
-
-        <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
-          <Setter Property="Transitions">
-            <Transitions>
-              <TransformOperationsTransition
-                Easing="{x:Static shadui:EaseOutBack.Strong}"
-                Property="RenderTransform" Duration="0:0:0.4"/>
-              <DoubleTransition
-                Easing="CubicEaseInOut" Property="Opacity"
-                Duration="0:0:0.2"/>
-            </Transitions>
-          </Setter>
-          <Setter Property="RenderTransform" Value="translate(20px, 0)"/>
+        <Style Selector="^ /template/ shadui|NavigationBarItemChildrenExpander#ChildrenExpander">
+          <Setter Property="IsExpanded" Value="False"/>
           <Setter Property="Opacity" Value="0"/>
-          <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+          <Setter Property="IsHitTestVisible" Value="False"/>
         </Style>
       </Style>
     </Style>
 
-    <Style Selector="^:vertical">
+    <Style Selector="^:horizontal">
       <Setter Property="Width" Value="{Binding $self.Bounds.Height}"/>
-      <Setter Property="ToolTip.Tip" Value="{Binding $self.ToolTip}"/>
-      <Setter Property="ToolTip.Placement" Value="Top"/>
 
-      <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Transitions" Value="{x:Null}"/>
+      <Style Selector="^ /template/ shadui|NavigationBarItemButton">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="ToolTip.Placement" Value="Top"/>
+      </Style>
+
+      <Style Selector="^ /template/ shadui|NavigationBarItemChildrenExpander#ChildrenExpander">
         <Setter Property="IsVisible" Value="False"/>
       </Style>
     </Style>
 
-    <Style Selector="^:disabled">
-      <Setter Property="Opacity" Value="0.5"/>
-    </Style>
-
-    <Style Selector="^:pointerover /template/ Border#HoverBackground">
-      <Setter Property="Opacity" Value="1"/>
-    </Style>
-
-    <Style Selector="^:pointerover /template/ Border#BaseBackground">
-      <Setter Property="Opacity" Value="0"/>
-    </Style>
-
-    <Style Selector="^:checked">
-      <Setter Property="Foreground" Value="{DynamicResource PrimaryColor}"/>
-      <Style Selector="^ /template/ Border#SelectedBackground">
-        <Setter Property="Opacity" Value="1"/>
-      </Style>
-    </Style>
-
-    <Style Selector="^:pressed /template/ Panel#RootPanel">
-      <Setter Property="RenderTransform" Value="scale(0.95, 0.95)"/>
-    </Style>
-
-    <!--  NoPressedAnimation  -->
-    <Style Selector="^.NoPressedAnimation">
-      <Style Selector="^:pressed /template/ Panel#RootPanel">
-        <Setter Property="RenderTransform" Value="scale(1, 1)"/>
-      </Style>
-    </Style>
   </ControlTheme>
 </ResourceDictionary>

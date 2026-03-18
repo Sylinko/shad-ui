@@ -26,4 +26,8 @@ public static class DoubleConverters
     public static IValueConverter IsNotNaN { get; } = new FuncValueConverter<double, bool>(
         value => !double.IsNaN(value)
     );
+
+    public static IValueConverter ToNegative { get; }  = new FuncValueConverter<double, double>(
+        value => -value
+    );
 }

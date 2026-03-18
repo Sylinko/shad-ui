@@ -1,0 +1,135 @@
+﻿<ResourceDictionary
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="using:ShadUI">
+  <ControlTheme
+    x:Key="{x:Type shadui:NavigationBarItemButton}"
+    TargetType="shadui:NavigationBarItemButton">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel
+          x:Name="RootPanel" Background="Transparent">
+          <Panel x:Name="BackgroundPanel">
+            <Border
+              x:Name="BaseBackground"
+              Background="{TemplateBinding Background}"
+              CornerRadius="{DynamicResource FullCornerRadius}"
+              IsHitTestVisible="False" Opacity="1">
+              <Border.Transitions>
+                <Transitions>
+                  <DoubleTransition
+                    Property="Opacity" Duration="0:0:0.20"/>
+                </Transitions>
+              </Border.Transitions>
+            </Border>
+            <Border
+              x:Name="HoverBackground"
+              Background="{DynamicResource GhostHoverColor}"
+              CornerRadius="{DynamicResource FullCornerRadius}"
+              IsHitTestVisible="False" Opacity="0">
+              <Border.Transitions>
+                <Transitions>
+                  <DoubleTransition
+                    Property="Opacity" Duration="0:0:0.20"/>
+                </Transitions>
+              </Border.Transitions>
+            </Border>
+            <Border
+              x:Name="SelectedBackground"
+              Background="{DynamicResource SelectionColor}"
+              CornerRadius="{DynamicResource FullCornerRadius}"
+              IsHitTestVisible="False" Opacity="0">
+              <Border.Transitions>
+                <Transitions>
+                  <DoubleTransition
+                    Property="Opacity" Duration="0:0:0.20"/>
+                </Transitions>
+              </Border.Transitions>
+            </Border>
+          </Panel>
+
+          <StackPanel
+            x:Name="PART_StackPanelContainer"
+            Margin="{TemplateBinding Padding}"
+            IsHitTestVisible="False" Spacing="4">
+            <LucideIcon
+              Foreground="{TemplateBinding Foreground}"
+              IsVisible="{Binding $parent[shadui:NavigationBarItem].Icon, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue={x:False}}"
+              Kind="{Binding $parent[shadui:NavigationBarItem].Icon}"
+              Size="{DynamicResource FontSizeXl}"/>
+            <ContentPresenter
+              x:Name="PART_ContentPresenter" Margin="4,0,0,0"
+              HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+              Content="{TemplateBinding Content}"
+              Foreground="{TemplateBinding Foreground}"
+              TextBlock.FontSize="{TemplateBinding FontSize}"
+              TextBlock.FontWeight="{TemplateBinding FontWeight}">
+              <ContentPresenter.Transitions>
+                <Transitions>
+                  <TransformOperationsTransition
+                    Easing="{x:Static shadui:EaseOutBack.Strong}"
+                    Property="RenderTransform" Duration="0:0:0.4"/>
+                  <DoubleTransition
+                    Easing="CubicEaseInOut" Property="Opacity"
+                    Duration="0:0:0.2"/>
+                </Transitions>
+              </ContentPresenter.Transitions>
+
+              <Interaction.Behaviors>
+                <shadui:DelayFromIndexBehavior
+                  Index="{Binding Index, RelativeSource={RelativeSource AncestorType=shadui:NavigationBarItem}}"
+                  Multiplier="0:0:0.02"
+                  Target="{Binding #PART_ContentPresenter.Transitions[0], FallbackValue={x:Null}}"/>
+              </Interaction.Behaviors>
+            </ContentPresenter>
+          </StackPanel>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^[Orientation=Vertical]">
+      <Style Selector="^ /template/ StackPanel#PART_StackPanelContainer">
+        <Setter Property="Orientation" Value="Horizontal"/>
+      </Style>
+
+      <Style Selector="^[IsExpanded=False]">
+        <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+          <Setter Property="RenderTransform" Value="translate(20px, 0)"/>
+          <Setter Property="Opacity" Value="0"/>
+          <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+      </Style>
+    </Style>
+
+    <Style Selector="^[Orientation=Horizontal]">
+      <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Transitions" Value="{x:Null}"/>
+        <Setter Property="IsVisible" Value="False"/>
+      </Style>
+      <Style Selector="^ /template/ StackPanel#PART_StackPanelContainer">
+        <Setter Property="Orientation" Value="Vertical"/>
+      </Style>
+    </Style>
+
+    <Style Selector="^:pointerover /template/ Border#HoverBackground">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
+    <Style Selector="^:pointerover /template/ Border#BaseBackground">
+      <Setter Property="Opacity" Value="0"/>
+    </Style>
+    <Style Selector="^:checked">
+      <Setter Property="Foreground" Value="{DynamicResource PrimaryColor}"/>
+      <Style Selector="^ /template/ Border#SelectedBackground">
+        <Setter Property="Opacity" Value="1"/>
+      </Style>
+    </Style>
+    <Style Selector="^[IsChildrenChecked=True]">
+      <Setter Property="Foreground" Value="{DynamicResource PrimaryColor}"/>
+      <Style Selector="^ /template/ Border#SelectedBackground">
+        <Setter Property="Opacity" Value="1"/>
+      </Style>
+    </Style>
+    <Style Selector="^:pressed /template/ Panel#RootPanel">
+      <Setter Property="RenderTransform" Value="scale(0.95, 0.95)"/>
+    </Style>
+  </ControlTheme>
+</ResourceDictionary>

@@ -161,7 +161,9 @@ public class NavigationBar : ItemsControl
     {
         UpdatePseudoClasses();
     }
-    
+
+    private static int _groupIndex;
+
     /// <summary>
     ///     Called when the template is applied to the control.
     /// </summary>
@@ -169,8 +171,8 @@ public class NavigationBar : ItemsControl
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        DefaultItemsSharedSizeGroup = $"Shared{Guid.NewGuid():N}";
-        DefaultItemsGroup = $"Group{Guid.NewGuid():N}";
+        DefaultItemsSharedSizeGroup = $"Shared{_groupIndex}";
+        DefaultItemsGroup = $"Group{_groupIndex++}";
     }
 
     /// <summary>
@@ -217,6 +219,19 @@ public class NavigationBar : ItemsControl
     protected override Control CreateContainerForItemOverride(object? item, int index, object? recycleKey)
     {
         return new NavigationBarItem(item);
+    }
+
+    internal void RearrangeChildrenIndex()
+    {
+        var i = 0;
+        foreach (var item in Items.OfType<NavigationBarItem>())
+        {
+            item.Index = i++;
+            foreach (var child in item.Children)
+            {
+                child.Index = i++;
+            }
+        }
     }
 
     private void UpdatePseudoClasses()
