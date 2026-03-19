@@ -48,7 +48,17 @@
                 DockPanel.Dock="Left" Width="1"
                 Margin="16,6,7,6"
                 Background="{DynamicResource BorderColor}"/>
-              <ItemsControl ItemsSource="{TemplateBinding Children}"/>
+              <ItemsControl ItemsSource="{TemplateBinding Children}">
+                <ItemsControl.ItemContainerTheme>
+                  <ControlTheme
+                    BasedOn="{StaticResource {x:Type shadui:NavigationBarItem}}"
+                    TargetType="shadui:NavigationBarItem">
+                    <Style Selector="^ /template/ shadui|NavigationBarItemButton">
+                      <Setter Property="IconSize" Value="{DynamicResource FontSizeL}"/>
+                    </Style>
+                  </ControlTheme>
+                </ItemsControl.ItemContainerTheme>
+              </ItemsControl>
             </DockPanel>
           </shadui:NavigationBarItemChildrenExpander>
         </DockPanel>
@@ -100,6 +110,5 @@
         <Setter Property="IsVisible" Value="False"/>
       </Style>
     </Style>
-
   </ControlTheme>
 </ResourceDictionary>

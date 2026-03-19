@@ -4,7 +4,7 @@ using Avalonia.Layout;
 
 namespace ShadUI;
 
-public class NavigationBarItemButton : RadioButton
+internal class NavigationBarItemButton : RadioButton
 {
     public static readonly StyledProperty<Orientation> OrientationProperty =
         AvaloniaProperty.Register<NavigationBarItemButton, Orientation>(nameof(Orientation));
@@ -31,5 +31,14 @@ public class NavigationBarItemButton : RadioButton
     {
         get => GetValue(IsChildrenCheckedProperty);
         set => SetValue(IsChildrenCheckedProperty, value);
+    }
+
+    public static readonly StyledProperty<double> IconSizeProperty =
+        AvaloniaProperty.Register<NavigationBarItemButton, double>(nameof(IconSize));
+
+    public double IconSize
+    {
+        get => GetValue(IconSizeProperty);
+        set => SetValue(IconSizeProperty, value);
     }
 }

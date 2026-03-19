@@ -4,6 +4,7 @@
   <ControlTheme
     x:Key="{x:Type shadui:NavigationBarItemButton}"
     TargetType="shadui:NavigationBarItemButton">
+    <Setter Property="IconSize" Value="{DynamicResource FontSizeXl}"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Panel
@@ -55,7 +56,7 @@
               Foreground="{TemplateBinding Foreground}"
               IsVisible="{Binding $parent[shadui:NavigationBarItem].Icon, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue={x:False}}"
               Kind="{Binding $parent[shadui:NavigationBarItem].Icon}"
-              Size="{DynamicResource FontSizeXl}"/>
+              Size="{TemplateBinding IconSize}"/>
             <ContentPresenter
               x:Name="PART_ContentPresenter" Margin="4,0,0,0"
               HorizontalContentAlignment="Left" VerticalContentAlignment="Center"

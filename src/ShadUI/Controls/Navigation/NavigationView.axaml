@@ -43,11 +43,12 @@
 
           <DockPanel x:Name="PART_ContentRoot">
             <!--  Navigation Bar  -->
-            <DockPanel Dock="Top">
+            <DockPanel
+              Dock="Top" HorizontalSpacing="4">
               <!--  Back Button  -->
               <Button
                 Classes="Ghost Compact" DockPanel.Dock="Left"
-                Width="24" Height="36"
+                Width="36" Height="36"
                 VerticalAlignment="Center"
                 Command="{Binding $parent[shadui:NavigationView].GoBack}"
                 IsVisible="{TemplateBinding IsCompact}">
