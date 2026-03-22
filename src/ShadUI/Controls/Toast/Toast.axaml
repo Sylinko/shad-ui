@@ -68,7 +68,7 @@
                 Grid.Column="1" Spacing="4">
                 <TextBlock
                   Name="PART_Title"
-                  IsVisible="{TemplateBinding Title, Converter={x:Static ObjectConverters.IsNotNull}}"
+                  IsVisible="{TemplateBinding Title, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                   Text="{TemplateBinding Title}"/>
                 <ContentPresenter
                   Name="PART_Content"
