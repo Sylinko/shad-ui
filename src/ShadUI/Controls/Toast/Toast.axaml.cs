@@ -220,7 +220,7 @@ public class Toast : ContentControl
         }
         else
         {
-            dispatcher.InvokeAsync(() => ProgressValue = e);
+            dispatcher.Post(() => ProgressValue = e);
         }
     }
 
