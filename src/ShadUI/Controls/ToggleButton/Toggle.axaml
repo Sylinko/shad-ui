@@ -195,6 +195,9 @@
         <Setter Property="BorderBrush" Value="{TemplateBinding shadui:ButtonAssist.CheckedBackground}"/>
         <Setter Property="Opacity" Value="1"/>
       </Style>
+      <Style Selector="^:pointerover /template/ Border#HoverBackground">
+        <Setter Property="Opacity" Value="0.6"/>
+      </Style>
     </Style>
   </ControlTheme>
 </ResourceDictionary>
