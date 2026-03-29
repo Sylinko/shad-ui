@@ -112,10 +112,10 @@ public static class AvaloniaExtension
             return dispatcher.CheckAccess() ? Task.FromResult(func()) : dispatcher.InvokeAsync(func, priority, cancellationToken).GetTask();
         }
 
-        public void PostOnDemand(Action action)
+        public void PostOnDemand(Action action, DispatcherPriority priority = default)
         {
             if (dispatcher.CheckAccess()) action();
-            else dispatcher.Post(action);
+            else dispatcher.Post(action, priority);
         }
     }
 
