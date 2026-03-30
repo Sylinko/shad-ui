@@ -73,7 +73,7 @@
                     <NumericUpDown
                         Width="225"
                         shadui:ControlAssist.Label="Quantity"
-                        Watermark="Enter quantity" />
+                        PlaceholderText="Enter quantity" />
                 </controls:ControlBlock>
                 <controls:ControlBlock Title="With Custom Label" Xaml="{Binding WithCustomLabelCode}">
                     <NumericUpDown
@@ -83,7 +83,7 @@
                         Classes="Clearable"
                         FormatString="N2"
                         ShowButtonSpinner="False"
-                        Watermark="0.00">
+                        PlaceholderText="0.00">
                         <NumericUpDown.InnerLeftContent>
                             <TextBlock Margin="8,0,-8,0" Text="$" />
                         </NumericUpDown.InnerLeftContent>

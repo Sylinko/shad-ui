@@ -25,7 +25,6 @@ public static class TrayMenuHelper
         {
             if (window.WindowState == WindowState.Minimized)
             {
-                window.RestoreWindowState();
                 window.Show();
             }
 
@@ -36,7 +35,6 @@ public static class TrayMenuHelper
         {
             if (window.WindowState == WindowState.Minimized)
             {
-                window.RestoreWindowState();
                 window.Show();
             }
 
@@ -48,7 +46,6 @@ public static class TrayMenuHelper
         {
             if (window.WindowState == WindowState.Minimized)
             {
-                window.RestoreWindowState();
                 window.Show();
             }
 

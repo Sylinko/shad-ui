@@ -2,11 +2,12 @@
   x:Class="ShadUI.Demo.MainWindow" xmlns="https://github.com/avaloniaui"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converters="clr-namespace:ShadUI.Demo.Converters"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:demo="clr-namespace:ShadUI.Demo"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
   d:DesignWidth="800" x:Name="Window"
   Title="ShadUI App" Width="1024"
   Height="768" x:DataType="demo:MainWindowViewModel"
-  Icon="/Assets/favicon.ico" SaveWindowState="True"
+  Icon="/Assets/favicon.ico"
   TitleFontWeight="SemiBold" TransparencyLevelHint="Mica,Blur,None"
   WindowStartupLocation="CenterScreen" mc:Ignorable="d">
   <shadui:Window.LogoContent>
@@ -15,12 +16,12 @@
       Margin="8,8,0,8"
       Data="{x:Static shadui:Icons.Logo}"/>
   </shadui:Window.LogoContent>
+
   <shadui:Window.Hosts>
-    <shadui:DialogHost
-      x:Name="PART_DialogHost"
-      Manager="{Binding DialogManager}"
-      Owner="{Binding RelativeSource={RelativeSource AncestorType=shadui:Window}}"/>
+    <shadui:DialogHost Manager="{Binding DialogManager}"/>
+    <shadui:ToastHost Manager="{Binding ToastManager}"/>
   </shadui:Window.Hosts>
+
   <shadui:Window.RightWindowTitleBarContent>
     <StackPanel
       Orientation="Horizontal" Spacing="8">
@@ -50,143 +51,115 @@
       </Button>
     </StackPanel>
   </shadui:Window.RightWindowTitleBarContent>
-  <Panel>
-    <Grid ColumnDefinitions="Auto *">
-      <shadui:NavigationBar
-        Grid.Column="0"
-        CurrentRoute="{Binding CurrentRoute, Mode=TwoWay}">
-        <shadui:NavigationBarItem
-          Content="Dashboard" Icon="LayoutDashboard"
-          IsChecked="True" Route="dashboard"
-          ToolTip="Dashboard"/>
-        <shadui:NavigationBarItem
-          Content="Theming" Icon="PaintbrushVertical"
-          Route="theme" ToolTip="Theming"/>
-        <shadui:NavigationBarItem
-          Content="Typography" Icon="Type"
-          Route="typography" ToolTip="Typography"/>
-        <shadui:NavigationBarItem
-          Content="Avatar" Icon="CircleUser"
-          Route="avatar" ToolTip="Avatar"/>
-        <shadui:NavigationBarItem
-          Content="Badge" Icon="Award"
-          Route="badge" ToolTip="Badge"/>
-        <shadui:NavigationBarItem
-          Content="Button" Icon="MousePointerClick"
-          Route="button" ToolTip="Button"/>
-        <shadui:NavigationBarItem
-          Content="Card" Icon="CreditCard"
-          Route="card" ToolTip="Card"/>
-        <shadui:NavigationBarItem
-          Content="CheckBox" Icon="SquareCheck"
-          Route="checkbox" ToolTip="CheckBox"/>
-        <shadui:NavigationBarItem
-          Content="CheckUpdate" Icon="BadgeCheck"
-          Route="checkupdate" ToolTip="CheckUpdate"/>
-        <shadui:NavigationBarItem
-          Content="Color" Icon="Palette"
-          Route="color" ToolTip="Color"/>
-        <shadui:NavigationBarItem
-          Content="ComboBox" Icon="ChevronsUpDown"
-          Route="combobox" ToolTip="ComboBox"/>
-        <shadui:NavigationBarItem
-          Content="Data Table" Icon="Table"
-          Route="data-table" ToolTip="Data Table"/>
-        <shadui:NavigationBarItem
-          Content="Date Control" Icon="Calendar"
-          Route="date" ToolTip="Date"/>
-        <shadui:NavigationBarItem
-          Content="Dialog" Icon="PanelTop"
-          Route="dialog" ToolTip="Dialog"/>
-        <shadui:NavigationBarItem
-          Content="Input" Icon="TextCursorInput"
-          Route="input" ToolTip="Input"/>
-        <shadui:NavigationBarItem
-          Content="Menu" Icon="Menu"
-          Route="menu" ToolTip="Menu"/>
-        <shadui:NavigationBarItem
-          Content="Numeric Input" Icon="Calculator"
-          Route="numeric" ToolTip="Numeric Input"/>
-        <shadui:NavigationBarItem
-          Content="NavigationBar" Icon="PanelLeft"
-          Route="NavigationBar" ToolTip="NavigationBar"/>
-        <shadui:NavigationBarItem
-          Content="Slider" Icon="SlidersHorizontal"
-          Route="slider" ToolTip="Slider"/>
-        <shadui:NavigationBarItem
-          Content="Switch" Icon="ToggleLeft"
-          Route="switch" ToolTip="Switch"/>
-        <shadui:NavigationBarItem
-          Content="Tab Control" Icon="AppWindow"
-          Route="tab-control" ToolTip="Tab Control"/>
-        <shadui:NavigationBarItem
-          Content="Time" Icon="Clock4"
-          Route="time" ToolTip="Time"/>
-        <shadui:NavigationBarItem
-          Content="Toast" Icon="Bell"
-          Route="toast" ToolTip="Toast"/>
-        <shadui:NavigationBarItem
-          Content="Toggle" Icon="ToggleRight"
-          Route="toggle" ToolTip="Toggle"/>
-        <shadui:NavigationBarItem
-          Content="Tooltip" Icon="MessageCircle"
-          Route="tooltip" ToolTip="Tooltip"/>
-        <shadui:NavigationBarItem
-          Content="Miscellaneous" Icon="Shapes"
-          Route="miscellaneous" ToolTip="Miscellaneous"/>
-        <shadui:NavigationBar.Footer>
-          <Menu Classes="Single">
-            <MenuItem
-              Classes="NoPressedAnimation" Padding="8,0"
-              HorizontalAlignment="Stretch" shadui:MenuItemAssist.PopupHorizontalOffset="4"
-              shadui:MenuItemAssist.PopupPlacement="RightEdgeAlignedBottom" shadui:MenuItemAssist.PopupVerticalOffset="4"
-              CornerRadius="{DynamicResource LgCornerRadius}">
-              <MenuItem.Header>
-                <Panel>
-                  <shadui:Avatar
-                    CornerRadius="{DynamicResource LgCornerRadius}"
-                    Fallback="CN"
-                    IsVisible="{Binding !$parent[shadui:NavigationBar].IsExpanded}"
-                    Opacity="{Binding !$parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.Opaque}}"
-                    Source="../../Assets/user.png">
-                    <shadui:Avatar.Transitions>
-                      <Transitions>
-                        <DoubleTransition
-                          Property="Opacity" Duration="0:0:0.20"/>
-                      </Transitions>
-                    </shadui:Avatar.Transitions>
-                  </shadui:Avatar>
-                  <Grid
-                    Margin="0,8" ColumnDefinitions="Auto * Auto"
-                    IsVisible="{Binding $parent[shadui:NavigationBar].IsExpanded}">
-                    <shadui:Avatar
-                      Width="36" Height="36"
-                      Margin="0,0,8,0"
-                      CornerRadius="{DynamicResource XlCornerRadius}"
-                      Fallback="CN" Source="../../Assets/user.png"/>
-                    <StackPanel
-                      Grid.Column="1" VerticalAlignment="Center">
-                      <TextBlock
-                        Classes="Small" Text="shadui"/>
-                      <TextBlock
-                        Classes="Caption" Margin="0,-4,0,0"
-                        Text="m@example.com"/>
-                    </StackPanel>
-                    <Viewbox
-                      Grid.Column="2" Width="16"
-                      Height="16">
-                      <TextBlock
-                        Classes="LucideIcon"
-                        Foreground="{DynamicResource ForegroundColor}"
-                        Text="&#57873;"/>
-                    </Viewbox>
-                  </Grid>
-                </Panel>
-              </MenuItem.Header>
-              <shadui:MenuItemAssist.Label>
+
+  <Grid ColumnDefinitions="Auto *">
+    <shadui:NavigationBar
+      Grid.Column="0" Margin="8,8,0,8"
+      CurrentRoute="{Binding CurrentRoute, Mode=TwoWay}">
+      <shadui:NavigationBarItem
+        Content="Dashboard" Icon="LayoutDashboard"
+        IsChecked="True" Route="dashboard"
+        ToolTip="Dashboard"/>
+      <shadui:NavigationBarItem
+        Content="Theming" Icon="PaintbrushVertical"
+        Route="theme" ToolTip="Theming"/>
+      <shadui:NavigationBarItem
+        Content="Typography" Icon="Type"
+        Route="typography" ToolTip="Typography"/>
+      <shadui:NavigationBarItem
+        Content="Avatar" Icon="CircleUser"
+        Route="avatar" ToolTip="Avatar"/>
+      <shadui:NavigationBarItem
+        Content="Badge" Icon="Award"
+        Route="badge" ToolTip="Badge"/>
+      <shadui:NavigationBarItem
+        Content="Button" Icon="MousePointerClick"
+        Route="button" ToolTip="Button"/>
+      <shadui:NavigationBarItem
+        Content="Card" Icon="CreditCard"
+        Route="card" ToolTip="Card"/>
+      <shadui:NavigationBarItem
+        Content="CheckBox" Icon="SquareCheck"
+        Route="checkbox" ToolTip="CheckBox"/>
+      <shadui:NavigationBarItem
+        Content="CheckUpdate" Icon="BadgeCheck"
+        Route="checkupdate" ToolTip="CheckUpdate"/>
+      <shadui:NavigationBarItem
+        Content="Color" Icon="Palette"
+        Route="color" ToolTip="Color"/>
+      <shadui:NavigationBarItem
+        Content="ComboBox" Icon="ChevronsUpDown"
+        Route="combobox" ToolTip="ComboBox"/>
+      <shadui:NavigationBarItem
+        Content="Data Table" Icon="Table"
+        Route="data-table" ToolTip="Data Table"/>
+      <shadui:NavigationBarItem
+        Content="Date Control" Icon="Calendar"
+        Route="date" ToolTip="Date"/>
+      <shadui:NavigationBarItem
+        Content="Dialog" Icon="PanelTop"
+        Route="dialog" ToolTip="Dialog"/>
+      <shadui:NavigationBarItem
+        Content="Input" Icon="TextCursorInput"
+        Route="input" ToolTip="Input"/>
+      <shadui:NavigationBarItem
+        Content="Menu" Icon="Menu"
+        Route="menu" ToolTip="Menu"/>
+      <shadui:NavigationBarItem
+        Content="Numeric Input" Icon="Calculator"
+        Route="numeric" ToolTip="Numeric Input"/>
+      <shadui:NavigationBarItem
+        Content="NavigationBar" Icon="PanelLeft"
+        Route="NavigationBar" ToolTip="NavigationBar"/>
+      <shadui:NavigationBarItem
+        Content="Slider" Icon="SlidersHorizontal"
+        Route="slider" ToolTip="Slider"/>
+      <shadui:NavigationBarItem
+        Content="Switch" Icon="ToggleLeft"
+        Route="switch" ToolTip="Switch"/>
+      <shadui:NavigationBarItem
+        Content="Tab Control" Icon="AppWindow"
+        Route="tab-control" ToolTip="Tab Control"/>
+      <shadui:NavigationBarItem
+        Content="Time" Icon="Clock4"
+        Route="time" ToolTip="Time"/>
+      <shadui:NavigationBarItem
+        Content="Toast" Icon="Bell"
+        Route="toast" ToolTip="Toast"/>
+      <shadui:NavigationBarItem
+        Content="Toggle" Icon="ToggleRight"
+        Route="toggle" ToolTip="Toggle"/>
+      <shadui:NavigationBarItem
+        Content="Tooltip" Icon="MessageCircle"
+        Route="tooltip" ToolTip="Tooltip"/>
+      <shadui:NavigationBarItem
+        Content="Miscellaneous" Icon="Shapes"
+        Route="miscellaneous" ToolTip="Miscellaneous"/>
+      <shadui:NavigationBar.Footer>
+        <Menu Classes="Single">
+          <MenuItem
+            Classes="NoPressedAnimation" Padding="8,0"
+            HorizontalAlignment="Stretch" shadui:MenuItemAssist.PopupHorizontalOffset="4"
+            shadui:MenuItemAssist.PopupPlacement="RightEdgeAlignedBottom" shadui:MenuItemAssist.PopupVerticalOffset="4"
+            CornerRadius="{DynamicResource LgCornerRadius}">
+            <MenuItem.Header>
+              <Panel>
+                <shadui:Avatar
+                  CornerRadius="{DynamicResource LgCornerRadius}"
+                  Fallback="CN"
+                  IsVisible="{Binding !$parent[shadui:NavigationBar].IsExpanded}"
+                  Opacity="{Binding !$parent[shadui:NavigationBar].IsExpanded, Converter={x:Static converters:BooleanConverters.Opaque}}"
+                  Source="../../Assets/user.png">
+                  <shadui:Avatar.Transitions>
+                    <Transitions>
+                      <DoubleTransition
+                        Property="Opacity" Duration="0:0:0.20"/>
+                    </Transitions>
+                  </shadui:Avatar.Transitions>
+                </shadui:Avatar>
                 <Grid
-                  Width="220" HorizontalAlignment="Stretch"
-                  ColumnDefinitions="Auto *">
+                  Margin="0,8" ColumnDefinitions="Auto * Auto"
+                  IsVisible="{Binding $parent[shadui:NavigationBar].IsExpanded}">
                   <shadui:Avatar
                     Width="36" Height="36"
                     Margin="0,0,8,0"
@@ -200,123 +173,149 @@
                       Classes="Caption" Margin="0,-4,0,0"
                       Text="m@example.com"/>
                   </StackPanel>
+                  <Viewbox
+                    Grid.Column="2" Width="16"
+                    Height="16">
+                    <TextBlock
+                      Classes="LucideIcon"
+                      Foreground="{DynamicResource ForegroundColor}"
+                      Text="&#57873;"/>
+                  </Viewbox>
                 </Grid>
-              </shadui:MenuItemAssist.Label>
-              <Separator/>
-              <MenuItem
-                Command="{Binding ShowAboutCommand}"
-                Header="About">
-                <MenuItem.Icon>
-                  <Viewbox
-                    Width="16" Height="16">
-                    <TextBlock
-                      Classes="LucideIcon"
-                      Foreground="{DynamicResource MutedColor}"
-                      Text="&#57599;"/>
-                  </Viewbox>
-                </MenuItem.Icon>
-              </MenuItem>
-              <MenuItem
-                Command="{Binding OpenUrlCommand}"
-                CommandParameter="https://github.com/accntech/shad-ui?tab=readme-ov-file#readme" Header="Readme">
-                <MenuItem.Icon>
-                  <Viewbox
-                    Width="16" Height="16">
-                    <TextBlock
-                      Classes="LucideIcon"
-                      Foreground="{DynamicResource MutedColor}"
-                      Text="&#57443;"/>
-                  </Viewbox>
-                </MenuItem.Icon>
-              </MenuItem>
-              <MenuItem
-                Command="{Binding OpenUrlCommand}"
-                CommandParameter="https://github.com/accntech/shad-ui" Header="Source repository">
-                <MenuItem.Icon>
-                  <Viewbox
-                    Width="16" Height="16">
-                    <TextBlock
-                      Classes="LucideIcon"
-                      Foreground="{DynamicResource MutedColor}"
-                      Text="&#57862;"/>
-                  </Viewbox>
-                </MenuItem.Icon>
-              </MenuItem>
-              <Separator/>
-              <MenuItem
-                Command="{Binding OpenUrlCommand}"
-                CommandParameter="https://github.com/accntech/shad-ui?tab=MIT-1-ov-file#readme" Header="MIT License">
-                <MenuItem.Icon>
-                  <Viewbox
-                    Width="16" Height="16">
-                    <TextBlock
-                      Classes="LucideIcon"
-                      Foreground="{DynamicResource MutedColor}"
-                      Text="&#57874;"/>
-                  </Viewbox>
-                </MenuItem.Icon>
-              </MenuItem>
-              <MenuItem
-                Command="{Binding OpenUrlCommand}"
-                CommandParameter="https://github.com/accntech/shad-ui?tab=coc-ov-file#readme" Header="Code of Conduct">
-                <MenuItem.Icon>
-                  <Viewbox
-                    Width="16" Height="16">
-                    <TextBlock
-                      Classes="LucideIcon"
-                      Foreground="{DynamicResource MutedColor}"
-                      Text="&#58071;"/>
-                  </Viewbox>
-                </MenuItem.Icon>
-              </MenuItem>
-              <MenuItem
-                Command="{Binding OpenUrlCommand}"
-                CommandParameter="https://github.com/accntech/shad-ui?tab=security-ov-file" Header="Security">
-                <MenuItem.Icon>
-                  <Viewbox
-                    Width="16" Height="16">
-                    <TextBlock
-                      Classes="LucideIcon"
-                      Foreground="{DynamicResource MutedColor}"
-                      Text="&#57692;"/>
-                  </Viewbox>
-                </MenuItem.Icon>
-              </MenuItem>
-              <MenuItem
-                Command="{Binding OpenUrlCommand}"
-                CommandParameter="https://github.com/accntech/shad-ui/activity" Header="Activity">
-                <MenuItem.Icon>
-                  <Viewbox
-                    Width="16" Height="16">
-                    <TextBlock
-                      Classes="LucideIcon"
-                      Foreground="{DynamicResource MutedColor}"
-                      Text="&#57400;"/>
-                  </Viewbox>
-                </MenuItem.Icon>
-              </MenuItem>
-              <Separator/>
-              <MenuItem
-                Command="{Binding TryCloseCommand}"
-                Header="Close application">
-                <MenuItem.Icon>
-                  <Viewbox
-                    Width="16" Height="16">
-                    <TextBlock
-                      Classes="LucideIcon"
-                      Foreground="{DynamicResource MutedColor}"
-                      Text="&#57668;"/>
-                  </Viewbox>
-                </MenuItem.Icon>
-              </MenuItem>
+              </Panel>
+            </MenuItem.Header>
+            <shadui:MenuItemAssist.Label>
+              <Grid
+                Width="220" HorizontalAlignment="Stretch"
+                ColumnDefinitions="Auto *">
+                <shadui:Avatar
+                  Width="36" Height="36"
+                  Margin="0,0,8,0"
+                  CornerRadius="{DynamicResource XlCornerRadius}"
+                  Fallback="CN" Source="../../Assets/user.png"/>
+                <StackPanel
+                  Grid.Column="1" VerticalAlignment="Center">
+                  <TextBlock
+                    Classes="Small" Text="shadui"/>
+                  <TextBlock
+                    Classes="Caption" Margin="0,-4,0,0"
+                    Text="m@example.com"/>
+                </StackPanel>
+              </Grid>
+            </shadui:MenuItemAssist.Label>
+            <Separator/>
+            <MenuItem
+              Command="{Binding ShowAboutCommand}"
+              Header="About">
+              <MenuItem.Icon>
+                <Viewbox
+                  Width="16" Height="16">
+                  <TextBlock
+                    Classes="LucideIcon"
+                    Foreground="{DynamicResource MutedColor}"
+                    Text="&#57599;"/>
+                </Viewbox>
+              </MenuItem.Icon>
             </MenuItem>
-          </Menu>
-        </shadui:NavigationBar.Footer>
-      </shadui:NavigationBar>
-      <TransitioningContentControl
-        Grid.Column="1"
-        Content="{Binding SelectedPage}"/>
-    </Grid>
-    <shadui:ToastHost Manager="{Binding ToastManager}"/>
-  </Panel>
+            <MenuItem
+              Command="{Binding OpenUrlCommand}"
+              CommandParameter="https://github.com/accntech/shad-ui?tab=readme-ov-file#readme" Header="Readme">
+              <MenuItem.Icon>
+                <Viewbox
+                  Width="16" Height="16">
+                  <TextBlock
+                    Classes="LucideIcon"
+                    Foreground="{DynamicResource MutedColor}"
+                    Text="&#57443;"/>
+                </Viewbox>
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem
+              Command="{Binding OpenUrlCommand}"
+              CommandParameter="https://github.com/accntech/shad-ui" Header="Source repository">
+              <MenuItem.Icon>
+                <Viewbox
+                  Width="16" Height="16">
+                  <TextBlock
+                    Classes="LucideIcon"
+                    Foreground="{DynamicResource MutedColor}"
+                    Text="&#57862;"/>
+                </Viewbox>
+              </MenuItem.Icon>
+            </MenuItem>
+            <Separator/>
+            <MenuItem
+              Command="{Binding OpenUrlCommand}"
+              CommandParameter="https://github.com/accntech/shad-ui?tab=MIT-1-ov-file#readme" Header="MIT License">
+              <MenuItem.Icon>
+                <Viewbox
+                  Width="16" Height="16">
+                  <TextBlock
+                    Classes="LucideIcon"
+                    Foreground="{DynamicResource MutedColor}"
+                    Text="&#57874;"/>
+                </Viewbox>
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem
+              Command="{Binding OpenUrlCommand}"
+              CommandParameter="https://github.com/accntech/shad-ui?tab=coc-ov-file#readme" Header="Code of Conduct">
+              <MenuItem.Icon>
+                <Viewbox
+                  Width="16" Height="16">
+                  <TextBlock
+                    Classes="LucideIcon"
+                    Foreground="{DynamicResource MutedColor}"
+                    Text="&#58071;"/>
+                </Viewbox>
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem
+              Command="{Binding OpenUrlCommand}"
+              CommandParameter="https://github.com/accntech/shad-ui?tab=security-ov-file" Header="Security">
+              <MenuItem.Icon>
+                <Viewbox
+                  Width="16" Height="16">
+                  <TextBlock
+                    Classes="LucideIcon"
+                    Foreground="{DynamicResource MutedColor}"
+                    Text="&#57692;"/>
+                </Viewbox>
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem
+              Command="{Binding OpenUrlCommand}"
+              CommandParameter="https://github.com/accntech/shad-ui/activity" Header="Activity">
+              <MenuItem.Icon>
+                <Viewbox
+                  Width="16" Height="16">
+                  <TextBlock
+                    Classes="LucideIcon"
+                    Foreground="{DynamicResource MutedColor}"
+                    Text="&#57400;"/>
+                </Viewbox>
+              </MenuItem.Icon>
+            </MenuItem>
+            <Separator/>
+            <MenuItem
+              Command="{Binding TryCloseCommand}"
+              Header="Close application">
+              <MenuItem.Icon>
+                <Viewbox
+                  Width="16" Height="16">
+                  <TextBlock
+                    Classes="LucideIcon"
+                    Foreground="{DynamicResource MutedColor}"
+                    Text="&#57668;"/>
+                </Viewbox>
+              </MenuItem.Icon>
+            </MenuItem>
+          </MenuItem>
+        </Menu>
+      </shadui:NavigationBar.Footer>
+    </shadui:NavigationBar>
+    <TransitioningContentControl
+      Grid.Column="1"
+      Content="{Binding SelectedPage}"/>
+  </Grid>
 </shadui:Window>

@@ -16,9 +16,8 @@
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
     <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
     <Setter Property="TextBlock.FontSize" Value="{DynamicResource FontSizeM}"/>
-    <Setter Property="shadui:TopLevelAssist.SystemDecorations" Value="BorderOnly"/>
+    <Setter Property="shadui:TopLevelAssist.WindowDecorations" Value="BorderOnly"/>
     <Setter Property="shadui:TopLevelAssist.CanResize" Value="False"/>
-    <Setter Property="shadui:TopLevelAssist.ExtendClientAreaChromeHints" Value="NoChrome"/>
     <Setter Property="shadui:TopLevelAssist.ExtendClientAreaToDecorationsHint" Value="True"/>
     <Setter Property="Template">
       <ControlTemplate>

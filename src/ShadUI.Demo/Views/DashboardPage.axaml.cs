@@ -33,12 +33,12 @@ public partial class DashboardPage : UserControl
 
     private void OnThemeChanged(object? sender, ThemeVariant e)
     {
-        Dispatcher.UIThread.Post(() =>
-        {
-            CartesianChart1.CoreChart.Update(new ChartUpdateParams 
-                { IsAutomaticUpdate = false, Throttling = false });
-            CartesianChart2.CoreChart.Update(new ChartUpdateParams 
-                { IsAutomaticUpdate = false, Throttling = false });
-        });
+        // Dispatcher.UIThread.Post(() =>
+        // {
+        //     CartesianChart1.CoreChart.Update(new ChartUpdateParams
+        //         { IsAutomaticUpdate = false, Throttling = false });
+        //     CartesianChart2.CoreChart.Update(new ChartUpdateParams
+        //         { IsAutomaticUpdate = false, Throttling = false });
+        // });
     }
 }

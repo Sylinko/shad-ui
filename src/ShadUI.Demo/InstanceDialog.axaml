@@ -11,7 +11,6 @@
     CanMaximize="False"
     CanMinimize="False"
     CanResize="False"
-    ShowBottomBorder="False"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <shadui:Window.LogoContent>

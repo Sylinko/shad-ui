@@ -18,13 +18,13 @@
             shadui:ElementAssist.FocusOnLoad="True"
             Classes="Clearable"
             Text="{Binding Email, Mode=TwoWay}"
-            Watermark="user@example.com" />
+            PlaceholderText="user@example.com" />
         <TextBox
             shadui:ControlAssist.Label="Password"
             Classes="PasswordReveal"
             PasswordChar="•"
             Text="{Binding Password, Mode=TwoWay}"
-            Watermark="Enter password" />
+            PlaceholderText="Enter password" />
         <StackPanel Margin="0,24,0,0" Spacing="16">
             <Button
                 Classes="Primary"

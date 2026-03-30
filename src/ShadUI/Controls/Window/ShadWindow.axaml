@@ -1,48 +1,10 @@
 ﻿<ResourceDictionary
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:shadui="clr-namespace:ShadUI" xmlns:system="clr-namespace:System;assembly=netstandard">
+  xmlns:shadui="clr-namespace:ShadUI">
 
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://ShadUI/Controls/Constants.axaml"/>
   </ResourceDictionary.MergedDictionaries>
-
-  <ControlTheme
-    x:Key="WindowButtonStyle" TargetType="Button">
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
-    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-    <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
-    <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="Width" Value="46"/>
-    <Setter Property="Padding" Value="0"/>
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Border Background="{TemplateBinding Background}">
-          <ContentPresenter
-            Width="{TemplateBinding Width}"
-            Height="{TemplateBinding Height}"
-            Padding="{TemplateBinding Padding}"
-            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-            Content="{TemplateBinding Content}"
-            Foreground="{TemplateBinding Foreground}"
-            RecognizesAccessKey="True"/>
-        </Border>
-      </ControlTemplate>
-    </Setter>
-    <Style Selector="^:pointerover">
-      <Setter Property="Background" Value="{DynamicResource WindowButtonHoverColor}"/>
-    </Style>
-    <Style Selector="^.Close">
-      <Style Selector="^:pointerover">
-        <Setter Property="Background" Value="#C42B1C"/>
-        <Setter Property="Foreground" Value="#FFFFFF"/>
-      </Style>
-    </Style>
-    <Style Selector="^:disabled">
-      <Setter Property="Opacity" Value="0.50"/>
-    </Style>
-  </ControlTheme>
 
   <ControlTheme
     x:Key="WindowTheme" TargetType="shadui:ShadWindow">
@@ -53,10 +15,7 @@
       </MultiBinding>
     </Setter>
     <Setter Property="TransparencyLevelHint" Value="Transparent"/>
-    <Setter Property="SystemDecorations" Value="{OnPlatform Full, Linux=None, x:TypeArguments=SystemDecorations}"/>
-    <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome"/>
-    <!--  use -1 to trigger top border cursor  -->
-    <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="-1"/>
+    <Setter Property="WindowDecorations" Value="{OnPlatform Full, Linux=None, x:TypeArguments=WindowDecorations}"/>
     <Setter Property="ExtendClientAreaToDecorationsHint" Value="True"/>
     <Setter Property="TextElement.Foreground" Value="{DynamicResource ForegroundColor}"/>
     <Setter Property="BorderThickness" Value="1"/>
@@ -64,215 +23,26 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Border
-          Margin="{TemplateBinding Margin}"
           Background="{TemplateBinding Background}"
           BorderBrush="{TemplateBinding BorderBrush}"
-          BorderThickness="{TemplateBinding BorderThickness}"
-          ClipToBounds="True"
-          CornerRadius="{TemplateBinding RootCornerRadius}">
-          <VisualLayerManager IsHitTestVisible="True">
-            <VisualLayerManager.ChromeOverlayLayer>
-              <Panel>
-                <ItemsControl
-                  x:Name="PART_HostsRoot"
-                  ItemsSource="{CompiledBinding Hosts, RelativeSource={RelativeSource AncestorType={x:Type shadui:ShadWindow}}}">
-                  <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                      <Panel/>
-                    </ItemsPanelTemplate>
-                  </ItemsControl.ItemsPanel>
-                </ItemsControl>
-
-                <Border
-                  x:Name="PART_TitleBarRoot" VerticalAlignment="Top">
-                  <Border.IsVisible>
-                    <MultiBinding Converter="{x:Static BoolConverters.And}">
-                      <Binding Path="$parent[shadui:ShadWindow].IsTitleBarVisible"/>
-                      <Binding
-                        Converter="{x:Static ObjectConverters.NotEqual}"
-                        ConverterParameter="{x:Static WindowState.FullScreen}"
-                        Path="$parent[shadui:ShadWindow].WindowState"/>
-                    </MultiBinding>
-                  </Border.IsVisible>
-
-                  <Panel MinHeight="{Binding $parent[shadui:ShadWindow].WindowDecorationMargin.Top}">
-                    <Border
-                      ClipToBounds="True"
-                      CornerRadius="{Binding $parent[shadui:ShadWindow].RootCornerRadius, Converter={x:Static shadui:CornerRadiusConverters.TopOnly}}"
-                      IsVisible="{Binding $parent[shadui:ShadWindow].TitleBarContentOverride, Converter={x:Static ObjectConverters.IsNull}}">
-                      <Border.Margin>
-                        <OnPlatform
-                          x:TypeArguments="Thickness" Linux="0"
-                          Windows="0" macOS="60,0,0,0"/>
-                      </Border.Margin>
-
-                      <Panel Margin="0,-1,0,0">
-                        <Border
-                          x:Name="PART_TitleBarBackground" MinWidth="32"
-                          Background="Transparent"/>
-                        <DockPanel LastChildFill="True">
-                          <StackPanel
-                            DockPanel.Dock="Right" Orientation="Horizontal"
-                            Spacing="6">
-                            <StackPanel.Styles>
-                              <Style Selector="PathIcon">
-                                <Setter Property="Height" Value="10"/>
-                                <Setter Property="Width" Value="10"/>
-                              </Style>
-                            </StackPanel.Styles>
-                            <ContentPresenter
-                              x:Name="RightButtons" Margin="0,3,2,2"
-                              Content="{Binding $parent[shadui:ShadWindow].RightWindowTitleBarContent}"
-                              IsVisible="{Binding $parent[shadui:ShadWindow].RightWindowTitleBarContent, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-                            <StackPanel
-                              x:Name="ButtonsPanel" Orientation="Horizontal">
-                              <StackPanel.IsVisible>
-                                <OnPlatform
-                                  x:TypeArguments="system:Boolean" Linux="True"
-                                  Windows="True" macOS="False"/>
-                              </StackPanel.IsVisible>
-                              <Button
-                                x:Name="PART_MinimizeButton" Margin="0,0,0,1"
-                                IsEnabled="{Binding $parent[shadui:ShadWindow].CanMinimize}"
-                                IsVisible="{Binding $parent[shadui:ShadWindow].CanMinimize}"
-                                Theme="{StaticResource WindowButtonStyle}">
-                                <PathIcon
-                                  x:Name="MinimizeIcon"
-                                  Data="{x:Static shadui:Icons.WindowMinimize}"/>
-                              </Button>
-                              <Button
-                                x:Name="PART_MaximizeButton" Margin="0,0,0,1"
-                                IsVisible="{Binding $parent[shadui:ShadWindow].CanMaximize}"
-                                Theme="{StaticResource WindowButtonStyle}">
-                                <Button.IsEnabled>
-                                  <MultiBinding Converter="{x:Static BoolConverters.And}">
-                                    <Binding Path="$parent[shadui:ShadWindow].CanResize"/>
-                                    <Binding Path="$parent[shadui:ShadWindow].CanMaximize"/>
-                                  </MultiBinding>
-                                </Button.IsEnabled>
-                                <PathIcon
-                                  x:Name="MaximizeIcon"
-                                  Data="{x:Static shadui:Icons.WindowMaximize}"
-                                  IsHitTestVisible="False"/>
-                              </Button>
-                              <Button
-                                x:Name="PART_CloseButton" Classes="Close"
-                                Margin="0,0,0,1"
-                                Theme="{StaticResource WindowButtonStyle}">
-                                <PathIcon
-                                  x:Name="CloseIcon"
-                                  Data="{x:Static shadui:Icons.WindowClose}"
-                                  Foreground="{Binding $parent[shadui:ShadWindow].Foreground, ElementName=PART_CloseButton}"/>
-                              </Button>
-                            </StackPanel>
-                          </StackPanel>
-                          <StackPanel
-                            x:Name="AppTitlePanel" VerticalAlignment="Center"
-                            IsHitTestVisible="False" Orientation="Horizontal"
-                            Spacing="10">
-                            <ContentPresenter
-                              HorizontalAlignment="Left"
-                              Content="{Binding $parent[shadui:ShadWindow].LogoContent}"
-                              IsHitTestVisible="False"/>
-                            <StackPanel
-                              Orientation="Horizontal" Spacing="4">
-                              <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="{Binding $parent[shadui:ShadWindow].TitleFontSize}"
-                                FontWeight="{Binding $parent[shadui:ShadWindow].TitleFontWeight}"
-                                IsHitTestVisible="False"
-                                Text="{Binding $parent[shadui:ShadWindow].Title}"/>
-                              <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="{Binding $parent[shadui:ShadWindow].VersionFontSize}"
-                                FontWeight="{Binding $parent[shadui:ShadWindow].VersionFontWeight}"
-                                Foreground="{DynamicResource ForegroundLeadColor}"
-                                IsHitTestVisible="False"
-                                IsVisible="{Binding $parent[shadui:ShadWindow].Version, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                                Text="{Binding $parent[shadui:ShadWindow].Version}"/>
-                            </StackPanel>
-                          </StackPanel>
-                        </DockPanel>
-                      </Panel>
-                    </Border>
-                    <ContentPresenter Content="{Binding $parent[shadui:ShadWindow].TitleBarContentOverride}"/>
-                  </Panel>
-                </Border>
-              </Panel>
-            </VisualLayerManager.ChromeOverlayLayer>
-
+          BorderThickness="{TemplateBinding BorderThickness}">
+          <VisualLayerManager
+            x:Name="PART_VisualLayerManager"
+            Margin="{TemplateBinding WindowDecorationMargin}">
             <Panel x:Name="PART_Root">
               <ContentPresenter
+                Margin="{TemplateBinding Padding}"
                 HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                 VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                 Content="{TemplateBinding Content}"
-                ContentTemplate="{TemplateBinding ContentTemplate}"
-                CornerRadius="10" IsHitTestVisible="True"/>
+                ContentTemplate="{TemplateBinding ContentTemplate}"/>
             </Panel>
           </VisualLayerManager>
         </Border>
       </ControlTemplate>
     </Setter>
-
-    <Style Selector="^[ShowTitlebarBackground=False] /template/ ContentPresenter#MenuBar">
-      <Setter Property="Margin" Value="10,0,0,7"/>
-    </Style>
-    <Style Selector="^[WindowState=Maximized] /template/ PathIcon#MaximizeIcon">
-      <Setter Property="Data" Value="{x:Static shadui:Icons.WindowRestore}"/>
-    </Style>
-    <Style Selector="^[WindowState=Normal] /template/ PathIcon#MaximizeIcon">
-      <Setter Property="Data" Value="{x:Static shadui:Icons.WindowMaximize}"/>
-    </Style>
-    <Style Selector="^[IsTitleBarVisible=True]">
-      <Style Selector="^ /template/ Panel#PART_Root">
-        <Setter Property="Margin" Value="{TemplateBinding WindowDecorationMargin}"/>
-      </Style>
-      <Style Selector="^[IsActive=False]">
-        <Style Selector="^ /template/ Button#PART_MinimizeButton">
-          <Style Selector="^ PathIcon">
-            <Setter Property="Opacity" Value="0.5"/>
-          </Style>
-          <Style Selector="^:pointerover PathIcon">
-            <Setter Property="Opacity" Value="1"/>
-          </Style>
-        </Style>
-        <Style Selector="^ /template/ Button#PART_MaximizeButton">
-          <Style Selector="^ PathIcon">
-            <Setter Property="Opacity" Value="0.5"/>
-          </Style>
-          <Style Selector="^:pointerover PathIcon">
-            <Setter Property="Opacity" Value="1"/>
-          </Style>
-        </Style>
-        <Style Selector="^ /template/ Button#PART_CloseButton">
-          <Style Selector="^ PathIcon">
-            <Setter Property="Opacity" Value="0.5"/>
-          </Style>
-          <Style Selector="^:pointerover PathIcon">
-            <Setter Property="Opacity" Value="1"/>
-          </Style>
-        </Style>
-        <Style Selector="^ StackPanel#AppTitlePanel">
-          <Setter Property="Opacity" Value="0.60"/>
-        </Style>
-        <Style Selector="^ ContentPresenter#RightButtons">
-          <Setter Property="Opacity" Value="0.60"/>
-        </Style>
-      </Style>
-      <Style Selector="^[IsActive=True]">
-        <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-        <Style Selector="^ /template/ Button#PART_CloseButton">
-          <Style Selector="^:pointerover">
-            <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}"/>
-          </Style>
-        </Style>
-      </Style>
-    </Style>
-
-    <Style Selector="^ /template/ StackPanel#ButtonsPanel">
-      <Setter Property="MinHeight" Value="32"/>
-    </Style>
   </ControlTheme>
+
   <ControlTheme
     x:Key="{x:Type shadui:ShadWindow}"
     BasedOn="{StaticResource WindowTheme}"

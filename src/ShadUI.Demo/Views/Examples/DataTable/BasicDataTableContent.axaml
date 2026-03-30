@@ -22,7 +22,7 @@
                     shadui:ControlAssist.ShowProgress="{Binding IsSearching}"
                     Classes="Clearable"
                     Text="{Binding SearchString, Mode=TwoWay}"
-                    Watermark="Filter emails...">
+                    PlaceholderText="Filter emails...">
                     <TextBox.InnerRightContent>
                         <PathIcon
                             Width="16"

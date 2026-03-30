@@ -179,7 +179,7 @@
                 FontWeight="{TemplateBinding FontWeight}"
                 InnerLeftContent="{TemplateBinding InnerLeftContent}"
                 InnerRightContent="{TemplateBinding InnerRightContent}"
-                Watermark="{TemplateBinding Watermark}"/>
+                PlaceholderText="{TemplateBinding PlaceholderText}"/>
               <TextBlock
                 Classes="Caption Muted" Margin="0,4,0,0"
                 Cursor="Arrow"

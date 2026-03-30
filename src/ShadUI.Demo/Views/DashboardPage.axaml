@@ -186,14 +186,14 @@
                                                         FontSize="16"
                                                         FontWeight="DemiBold"
                                                         Text="Overview" />
-                                                    <avalonia:CartesianChart
-                                                        Name="CartesianChart1"
-                                                        Margin="12,0,12,12"
-                                                        Series="{Binding Series}"
-                                                        TooltipTextPaint="{Binding TooltipTextPaint}"
-                                                        TooltipTextSize="14"
-                                                        XAxes="{Binding XAxes}"
-                                                        YAxes="{Binding YAxes}" />
+                                                    <!-- <avalonia:CartesianChart -->
+                                                    <!--     Name="CartesianChart1" -->
+                                                    <!--     Margin="12,0,12,12" -->
+                                                    <!--     Series="{Binding Series}" -->
+                                                    <!--     TooltipTextPaint="{Binding TooltipTextPaint}" -->
+                                                    <!--     TooltipTextSize="14" -->
+                                                    <!--     XAxes="{Binding XAxes}" -->
+                                                    <!--     YAxes="{Binding YAxes}" /> -->
                                                 </DockPanel>
                                             </Border>
                                             <Border
@@ -328,14 +328,14 @@
                                                         FontSize="16"
                                                         FontWeight="DemiBold"
                                                         Text="Overview" />
-                                                    <avalonia:CartesianChart
-                                                        Name="CartesianChart2"
-                                                        Margin="12,0,12,12"
-                                                        Series="{Binding Series}"
-                                                        TooltipTextPaint="{Binding TooltipTextPaint}"
-                                                        TooltipTextSize="14"
-                                                        XAxes="{Binding XAxes}"
-                                                        YAxes="{Binding YAxes}" />
+                                                    <!-- <avalonia:CartesianChart -->
+                                                    <!--     Name="CartesianChart2" -->
+                                                    <!--     Margin="12,0,12,12" -->
+                                                    <!--     Series="{Binding Series}" -->
+                                                    <!--     TooltipTextPaint="{Binding TooltipTextPaint}" -->
+                                                    <!--     TooltipTextSize="14" -->
+                                                    <!--     XAxes="{Binding XAxes}" -->
+                                                    <!--     YAxes="{Binding YAxes}" /> -->
                                                 </DockPanel>
                                             </Border>
                                             <Border

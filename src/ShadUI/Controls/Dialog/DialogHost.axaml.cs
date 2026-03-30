@@ -1,10 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
-using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Reactive;
 
 // ReSharper disable once CheckNamespace
@@ -17,21 +14,6 @@ namespace ShadUI;
 [TemplatePart("PART_CloseButton", typeof(Button))]
 public class DialogHost : TemplatedControl
 {
-    /// <summary>
-    ///     Defines the <see cref="Owner" /> property.
-    /// </summary>
-    public static readonly StyledProperty<ShadWindow?> OwnerProperty =
-        AvaloniaProperty.Register<DialogHost, ShadWindow?>(nameof(Owner));
-
-    /// <summary>
-    ///     Gets or sets the owner window of the dialog host.
-    /// </summary>
-    public ShadWindow? Owner
-    {
-        get => GetValue(OwnerProperty);
-        set => SetValue(OwnerProperty, value);
-    }
-
     /// <summary>
     ///     Defines the <see cref="Manager" /> property.
     /// </summary>
@@ -181,29 +163,6 @@ public class DialogHost : TemplatedControl
         }
     }
 
-    private void OnTitleBarPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        base.OnPointerPressed(e);
-
-        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime
-            {
-                MainWindow: not null
-            } desktop)
-        {
-            desktop.MainWindow.BeginMoveDrag(e);
-        }
-    }
-
-    private void OnMaximizeButtonClicked(object? sender, RoutedEventArgs args)
-    {
-        if (Owner is not null && Owner.CanMaximize)
-        {
-            Owner.WindowState = Owner.WindowState == WindowState.Maximized
-                ? WindowState.Normal
-                : WindowState.Maximized;
-        }
-    }
-
     private void CloseDialog()
     {
         if (!Dismissible) return;
@@ -212,8 +171,6 @@ public class DialogHost : TemplatedControl
 
         Manager.RemoveLast(DialogResult.Cancel);
         Manager.OpenLast();
-
-        if (Owner is not null) Owner.HasOpenDialog = false;
     }
 
     static DialogHost()
@@ -223,8 +180,7 @@ public class DialogHost : TemplatedControl
                 OnManagerPropertyChanged(x.Sender, x)));
     }
 
-    private static void OnManagerPropertyChanged(AvaloniaObject sender,
-        AvaloniaPropertyChangedEventArgs propChanged)
+    private static void OnManagerPropertyChanged(AvaloniaObject sender, AvaloniaPropertyChangedEventArgs propChanged)
     {
         if (sender is not DialogHost host)
         {
@@ -258,8 +214,6 @@ public class DialogHost : TemplatedControl
 
     private void ManagerOnDialogShown(object? sender, DialogShownEventArgs e)
     {
-        if (Owner is null) return;
-
         Dialog = e.Control;
         Dismissible = e.Options.Dismissible;
 
@@ -268,21 +222,18 @@ public class DialogHost : TemplatedControl
 
         IsDialogOpen = true;
         HasOpenDialog = true;
-        Owner.HasOpenDialog = true;
     }
 
     private async void ManagerOnDialogClosed(object? sender, DialogClosedEventArgs e)
     {
         try
         {
-            if (Owner is null) return;
             if (e.Control != Dialog) return;
 
             IsDialogOpen = false;
             if (e.ReplaceExisting) return;
 
             HasOpenDialog = Manager.Dialogs.Count > 0;
-            Owner.HasOpenDialog = Manager.Dialogs.Count > 0;
 
             await Task.Delay(200); // Allow animations to complete
             if (!HasOpenDialog) Dialog = null;

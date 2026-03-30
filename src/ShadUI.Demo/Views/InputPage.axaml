@@ -56,28 +56,28 @@
                 Spacing="32">
                 <controls:ControlBlock Title="Default" Xaml="{Binding DefaultInputCode}">
                     <StackPanel>
-                        <TextBox Width="225" Watermark="Email" />
+                        <TextBox Width="225" PlaceholderText="Email" />
                     </StackPanel>
                 </controls:ControlBlock>
                 <controls:ControlBlock Title="Disabled" Xaml="{Binding DisabledCode}">
                     <TextBox
                         Width="225"
                         IsEnabled="False"
-                        Watermark="Email" />
+                        PlaceholderText="Email" />
                 </controls:ControlBlock>
                 <controls:ControlBlock Title="With Label" Xaml="{Binding WithLabelCode}">
                     <TextBox
                         Width="225"
                         Classes="Clearable"
-                        UseFloatingWatermark="True"
-                        Watermark="Email" />
+                        UseFloatingPlaceholder="True"
+                        PlaceholderText="Email" />
                 </controls:ControlBlock>
                 <controls:ControlBlock Title="With Custom Label" Xaml="{Binding WithCustomLabelCode}">
                     <TextBox
                         Width="225"
                         shadui:ControlAssist.Label="Email"
                         Classes="Clearable"
-                        Watermark="user@example.com" />
+                        PlaceholderText="user@example.com" />
                 </controls:ControlBlock>
                 <controls:ControlBlock Title="Search Box" Xaml="{Binding SearchBoxCode}">
                     <TextBox
@@ -85,7 +85,7 @@
                         shadui:ControlAssist.ShowProgress="{Binding IsSearching}"
                         Classes="Clearable"
                         Text="{Binding SearchString, Mode=TwoWay}"
-                        Watermark="Search here...">
+                        PlaceholderText="Search here...">
                         <TextBox.InnerRightContent>
                             <PathIcon
                                 Width="16"
@@ -103,7 +103,7 @@
                         Classes="Clearable"
                         FilterMode="Contains"
                         ItemsSource="{Binding WebFrameworks}"
-                        Watermark="Search here...">
+                        PlaceholderText="Search here...">
                         <AutoCompleteBox.InnerRightContent>
                             <PathIcon
                                 Width="16"
@@ -118,7 +118,7 @@
                         shadui:ControlAssist.Height="300"
                         shadui:ControlAssist.Label="Description"
                         AcceptsReturn="True"
-                        Watermark="Enter a long description here..." />
+                        PlaceholderText="Enter a long description here..." />
                 </controls:ControlBlock>
                 <controls:ControlBlock
                     Title="Form Validation"

@@ -45,10 +45,10 @@
                 TextWrapping="{TemplateBinding TextWrapping}">
                 <TextBlock.IsVisible>
                   <MultiBinding Converter="{x:Static BoolConverters.And}">
-                    <CompiledBinding
+                    <Binding
                       Converter="{x:Static StringConverters.IsNullOrEmpty}"
                       ElementName="PART_TextPresenter" Path="PreeditText"/>
-                    <CompiledBinding
+                    <Binding
                       Converter="{x:Static StringConverters.IsNullOrEmpty}"
                       Path="Text"
                       RelativeSource="{RelativeSource TemplatedParent}"/>
@@ -159,7 +159,7 @@
                   TextAlignment="{TemplateBinding TextAlignment}"
                   TextWrapping="NoWrap"
                   Theme="{StaticResource InnerTextBoxTheme}"
-                  Watermark="{TemplateBinding Watermark}"/>
+                  PlaceholderText="{TemplateBinding PlaceholderText}"/>
               </ButtonSpinner>
               <TextBlock
                 Classes="Caption Muted" Margin="0,4,0,0"

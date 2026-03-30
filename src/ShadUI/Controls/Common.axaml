@@ -66,11 +66,11 @@
                                 TextWrapping="{TemplateBinding TextWrapping}">
                                 <TextBlock.IsVisible>
                                     <MultiBinding Converter="{x:Static BoolConverters.And}">
-                                        <CompiledBinding
+                                        <Binding
                                             Converter="{x:Static StringConverters.IsNullOrEmpty}"
                                             ElementName="PART_TextPresenter"
                                             Path="PreeditText" />
-                                        <CompiledBinding
+                                        <Binding
                                             Converter="{x:Static StringConverters.IsNullOrEmpty}"
                                             Path="Text"
                                             RelativeSource="{RelativeSource TemplatedParent}" />

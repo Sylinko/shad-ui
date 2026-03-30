@@ -66,6 +66,7 @@
     <ResourceInclude Source="avares://ShadUI/Controls/Toast/ToastHost.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/ToggleButton/ToggleButton.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/ToolTip/ToolTip.axaml"/>
+    <ResourceInclude Source="avares://ShadUI/Controls/Window/WindowDrawnDecorations.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Window/ShadWindow.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

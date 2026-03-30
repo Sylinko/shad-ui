@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using HotAvalonia;
+// using HotAvalonia;
 
 namespace ShadUI.Demo;
 
@@ -9,16 +9,13 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-
-        Closing += OnClosing;
         Initialize();
     }
 
-    [AvaloniaHotReload]
+    // [AvaloniaHotReload]
     private void Initialize()
     {
         ToolTip.SetTip(FullscreenButton, "Fullscreen");
-        FullscreenButton.Click -= OnFullScreen;
         FullscreenButton.Click += OnFullScreen;
     }
 
@@ -26,7 +23,6 @@ public partial class MainWindow : Window
     {
         if (WindowState == WindowState.FullScreen)
         {
-            ExitFullScreen();
             ToolTip.SetTip(FullscreenButton, "Fullscreen");
         }
         else
@@ -36,9 +32,9 @@ public partial class MainWindow : Window
         }
     }
 
-    private void OnClosing(object? sender, WindowClosingEventArgs e)
+    protected override void OnClosing(WindowClosingEventArgs e)
     {
-        e.Cancel = true;
+        e.Cancel = e is { CloseReason: not WindowCloseReason.OSShutdown and not WindowCloseReason.ApplicationShutdown };
 
         if (DataContext is MainWindowViewModel viewModel)
         {

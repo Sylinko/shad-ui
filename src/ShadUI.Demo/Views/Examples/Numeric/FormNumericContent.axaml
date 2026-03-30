@@ -25,7 +25,7 @@
                 shadui:ControlAssist.Hint="You must be at least 18 years old."
                 shadui:ControlAssist.Label="Age"
                 FormatString="N0"
-                Watermark="Enter your age"
+                PlaceholderText="Enter your age"
                 Value="{Binding Age, Mode=TwoWay}" />
         </StackPanel>
         <shadui:Card.Footer>

@@ -63,7 +63,7 @@
                     MaxLength="2"
                     Text="{TemplateBinding MonthString, Mode=TwoWay}"
                     Theme="{StaticResource InputBoxTheme}"
-                    Watermark="mm"/>
+                    PlaceholderText="mm"/>
                   <TextBlock
                     Grid.Column="1" Margin="8,0,8,2"
                     VerticalAlignment="Center" FontSize="18">
@@ -75,7 +75,7 @@
                     MaxLength="2"
                     Text="{TemplateBinding DayString, Mode=TwoWay}"
                     Theme="{StaticResource InputBoxTheme}"
-                    Watermark="dd"/>
+                    PlaceholderText="dd"/>
                   <TextBlock
                     Grid.Column="3" Margin="8,0,8,2"
                     VerticalAlignment="Center"
@@ -88,7 +88,7 @@
                     MaxLength="4"
                     Text="{TemplateBinding YearString, Mode=TwoWay}"
                     Theme="{StaticResource InputBoxTheme}"
-                    Watermark="yyyy"/>
+                    PlaceholderText="yyyy"/>
                 </Grid>
               </Border>
               <TextBlock

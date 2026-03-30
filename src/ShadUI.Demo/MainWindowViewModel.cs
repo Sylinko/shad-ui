@@ -143,7 +143,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     {
         var page = value switch
         {
-            "dashboard" => (INavigable) _dashboardViewModel,
+            "dashboard" => _dashboardViewModel,
             "theme" => _themeViewModel,
             "typography" => _typographyViewModel,
             "avatar" => _avatarViewModel,

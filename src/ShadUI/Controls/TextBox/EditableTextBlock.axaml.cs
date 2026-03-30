@@ -46,10 +46,10 @@ public class EditableTextBlock : TemplatedControl
         TextBlock.TextTrimmingProperty.AddOwner<EditableTextBlock>();
 
     /// <summary>
-    /// Identifies the Watermark property.
+    /// Identifies the PlaceholderText property.
     /// </summary>
-    public static readonly StyledProperty<string?> WatermarkProperty =
-        TextBox.WatermarkProperty.AddOwner<EditableTextBlock>();
+    public static readonly StyledProperty<string?> PlaceholderTextProperty =
+        TextBox.PlaceholderTextProperty.AddOwner<EditableTextBlock>();
 
     /// <summary>
     /// Identifies the AcceptsReturn property.
@@ -106,12 +106,12 @@ public class EditableTextBlock : TemplatedControl
     }
 
     /// <summary>
-    /// Gets or sets the watermark text displayed when the control is empty.
+    /// Gets or sets the placeholder text displayed when the control is empty.
     /// </summary>
-    public string? Watermark
+    public string? PlaceholderText
     {
-        get => GetValue(WatermarkProperty);
-        set => SetValue(WatermarkProperty, value);
+        get => GetValue(PlaceholderTextProperty);
+        set => SetValue(PlaceholderTextProperty, value);
     }
 
     /// <summary>

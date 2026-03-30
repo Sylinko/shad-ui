@@ -137,7 +137,7 @@
                     Cursor="IBeam"
                     Text="{TemplateBinding HourString, Mode=TwoWay}"
                     Theme="{StaticResource InputBoxTheme}"
-                    Watermark="hh"/>
+                    PlaceholderText="hh"/>
                   <TextBlock
                     Grid.Column="1" Margin="8,0,8,2"
                     VerticalAlignment="Center"
@@ -149,7 +149,7 @@
                     Cursor="IBeam"
                     Text="{TemplateBinding MinuteString, Mode=TwoWay}"
                     Theme="{StaticResource InputBoxTheme}"
-                    Watermark="mm"/>
+                    PlaceholderText="mm"/>
                   <TextBlock
                     Grid.Column="3" Margin="8,0,8,2"
                     VerticalAlignment="Center"
@@ -163,7 +163,7 @@
                     IsVisible="{TemplateBinding UseSeconds}"
                     Text="{TemplateBinding SecondString, Mode=TwoWay}"
                     Theme="{StaticResource InputBoxTheme}"
-                    Watermark="ss"/>
+                    PlaceholderText="ss"/>
                   <ToggleButton
                     Name="PART_ToggleButton" Grid.Column="5"
                     Margin="8,0,0,0"

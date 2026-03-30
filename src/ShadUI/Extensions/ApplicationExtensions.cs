@@ -25,7 +25,7 @@ internal static class ApplicationExtensions
         return app?.ApplicationLifetime switch
         {
             IClassicDesktopStyleApplicationLifetime desktop => desktop.MainWindow,
-            ISingleViewApplicationLifetime viewApp => viewApp.MainView?.GetVisualRoot() as TopLevel,
+            ISingleViewApplicationLifetime viewApp => viewApp.MainView?.GetPresentationSource()?.RootVisual as TopLevel,
             _ => null
         };
     }

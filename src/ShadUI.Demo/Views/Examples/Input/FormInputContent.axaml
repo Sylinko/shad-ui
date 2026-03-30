@@ -26,19 +26,19 @@
                 shadui:ControlAssist.Label="Email"
                 Classes="Clearable"
                 Text="{Binding Email, Mode=TwoWay}"
-                Watermark="user@example.com" />
+                PlaceholderText="user@example.com" />
             <TextBox
                 shadui:ControlAssist.Label="Password"
                 Classes="PasswordReveal"
                 PasswordChar="•"
                 Text="{Binding Password, Mode=TwoWay}"
-                Watermark="Enter password" />
+                PlaceholderText="Enter password" />
             <TextBox
                 shadui:ControlAssist.Label="Confirm"
                 Classes="PasswordReveal"
                 PasswordChar="•"
                 Text="{Binding ConfirmPassword, Mode=TwoWay}"
-                Watermark="Confirm password" />
+                PlaceholderText="Confirm password" />
         </StackPanel>
         <shadui:Card.Footer>
             <Button Classes="Primary" Command="{Binding SubmitCommand}">Submit</Button>

@@ -39,8 +39,8 @@
               FontWeight="{TemplateBinding FontWeight}"
               IsHitTestVisible="{TemplateBinding IsEditing}"
               MaxLength="{TemplateBinding MaxLength}"
-              Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"
-              Watermark="{TemplateBinding Watermark}">
+              PlaceholderText="{TemplateBinding PlaceholderText}"
+              Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}">
               <TextBox.Template>
                 <ControlTemplate TargetType="TextBox">
                   <Panel>
@@ -53,10 +53,10 @@
                       TextWrapping="{TemplateBinding TextWrapping}">
                       <TextBlock.IsVisible>
                         <MultiBinding Converter="{x:Static BoolConverters.And}">
-                          <CompiledBinding
+                          <Binding
                             Converter="{x:Static StringConverters.IsNullOrEmpty}"
                             ElementName="PART_TextPresenter" Path="PreeditText"/>
-                          <CompiledBinding
+                          <Binding
                             Converter="{x:Static StringConverters.IsNullOrEmpty}"
                             Path="Text"
                             RelativeSource="{RelativeSource TemplatedParent}"/>

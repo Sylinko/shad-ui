@@ -66,10 +66,10 @@
             BorderThickness="0" Focusable="False">
             <RepeatButton.Opacity>
               <MultiBinding Converter="{x:Static shadui:SidebarScrollerToOpacityConverter.Up}">
-                <CompiledBinding
+                <Binding
                   Path="Value"
                   RelativeSource="{RelativeSource TemplatedParent}"/>
-                <CompiledBinding
+                <Binding
                   Path="Minimum"
                   RelativeSource="{RelativeSource TemplatedParent}"/>
               </MultiBinding>
@@ -96,10 +96,10 @@
             Focusable="False">
             <RepeatButton.IsVisible>
               <MultiBinding Converter="{x:Static shadui:SidebarScrollerToOpacityConverter.Down}">
-                <CompiledBinding
+                <Binding
                   Path="Value"
                   RelativeSource="{RelativeSource TemplatedParent}"/>
-                <CompiledBinding
+                <Binding
                   Path="Maximum"
                   RelativeSource="{RelativeSource TemplatedParent}"/>
               </MultiBinding>

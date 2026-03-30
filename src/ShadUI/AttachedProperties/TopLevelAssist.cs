@@ -1,6 +1,5 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Platform;
 using Avalonia.VisualTree;
 
 namespace ShadUI;
@@ -35,42 +34,24 @@ public class TopLevelAssist
     /// <summary>
     /// An attached property that can be used to set the system decorations on a top-level window.
     /// </summary>
-    public static readonly AttachedProperty<SystemDecorations?> SystemDecorationsProperty =
-        AvaloniaProperty.RegisterAttached<TopLevelAssist, Visual, SystemDecorations?>("SystemDecorations");
+    public static readonly AttachedProperty<WindowDecorations?> WindowDecorationsProperty =
+        AvaloniaProperty.RegisterAttached<TopLevelAssist, Visual, WindowDecorations?>("WindowDecorations");
 
     /// <summary>
     /// Sets the system decorations on a top-level window.
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="value"></param>
-    public static void SetSystemDecorations(Visual obj, SystemDecorations? value) =>
-        obj.SetValue(SystemDecorationsProperty, value);
+    public static void SetWindowDecorations(Visual obj, WindowDecorations? value) =>
+        obj.SetValue(WindowDecorationsProperty, value);
 
     /// <summary>
     /// Gets the system decorations on a top-level window.
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static SystemDecorations? GetSystemDecorations(Visual obj) =>
-        obj.GetValue(SystemDecorationsProperty);
-
-    /// <summary>
-    /// An attached property that can be used to set the ExtendClientAreaChromeHints on a top-level window.
-    /// </summary>
-    public static readonly AttachedProperty<ExtendClientAreaChromeHints?> ExtendClientAreaChromeHintsProperty =
-        AvaloniaProperty.RegisterAttached<TopLevelAssist, Visual, ExtendClientAreaChromeHints?>("ExtendClientAreaChromeHints");
-
-    /// <summary>
-    /// Sets the ExtendClientAreaChromeHints on a top-level window.
-    /// </summary>
-    public static void SetExtendClientAreaChromeHints(Visual obj, ExtendClientAreaChromeHints? value) =>
-        obj.SetValue(ExtendClientAreaChromeHintsProperty, value);
-
-    /// <summary>
-    /// Gets the ExtendClientAreaChromeHints on a top-level window.
-    /// </summary>
-    public static ExtendClientAreaChromeHints? GetExtendClientAreaChromeHints(Visual obj) =>
-        obj.GetValue(ExtendClientAreaChromeHintsProperty);
+    public static WindowDecorations? GetWindowDecorations(Visual obj) =>
+        obj.GetValue(WindowDecorationsProperty);
 
     /// <summary>
     /// An attached property that can be used to set the ExtendClientAreaToDecorationsHint on a top-level window.
@@ -129,8 +110,7 @@ public class TopLevelAssist
     static TopLevelAssist()
     {
         TransparencyLevelHintProperty.Changed.AddClassHandler<Visual>(HandleTransparencyLevelHintChanged);
-        SystemDecorationsProperty.Changed.AddClassHandler<Visual>(HandleSystemDecorationsChanged);
-        ExtendClientAreaChromeHintsProperty.Changed.AddClassHandler<Visual>(HandleExtendClientAreaChromeHintsChanged);
+        WindowDecorationsProperty.Changed.AddClassHandler<Visual>(HandleWindowDecorationsChanged);
         ExtendClientAreaToDecorationsHintProperty.Changed.AddClassHandler<Visual>(HandleExtendClientAreaToDecorationsHintChanged);
         CanResizeProperty.Changed.AddClassHandler<Visual>(HandleCanResizeChanged);
         TopmostProperty.Changed.AddClassHandler<Visual>(HandleTopmostChanged);
@@ -150,30 +130,16 @@ public class TopLevelAssist
         });
     }
 
-    private static void HandleSystemDecorationsChanged(Visual sender, AvaloniaPropertyChangedEventArgs args)
+    private static void HandleWindowDecorationsChanged(Visual sender, AvaloniaPropertyChangedEventArgs args)
     {
         ExecuteWhenAttached(sender, () =>
         {
             var topLevel = TopLevel.GetTopLevel(sender);
             if (topLevel is not Avalonia.Controls.Window window) return;
 
-            if (args.NewValue is SystemDecorations decorations)
+            if (args.NewValue is WindowDecorations hints)
             {
-                window.SystemDecorations = decorations;
-            }
-        });
-    }
-
-    private static void HandleExtendClientAreaChromeHintsChanged(Visual sender, AvaloniaPropertyChangedEventArgs args)
-    {
-        ExecuteWhenAttached(sender, () =>
-        {
-            var topLevel = TopLevel.GetTopLevel(sender);
-            if (topLevel is not Avalonia.Controls.Window window) return;
-
-            if (args.NewValue is ExtendClientAreaChromeHints hints)
-            {
-                window.ExtendClientAreaChromeHints = hints;
+                window.WindowDecorations = hints;
             }
         });
     }
