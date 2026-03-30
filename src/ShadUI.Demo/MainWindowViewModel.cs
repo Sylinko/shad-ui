@@ -139,6 +139,42 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         page.Initialize();
     }
 
+    partial void OnCurrentRouteChanged(string value)
+    {
+        var page = value switch
+        {
+            "dashboard" => (INavigable) _dashboardViewModel,
+            "theme" => _themeViewModel,
+            "typography" => _typographyViewModel,
+            "avatar" => _avatarViewModel,
+            "badge" => _badgeViewModel,
+            "button" => _buttonViewModel,
+            "card" => _cardViewModel,
+            "checkbox" => _checkBoxViewModel,
+            "checkupdate" => _checkUpdateViewModel,
+            "color" => _colorViewModel,
+            "combobox" => _comboBoxViewModel,
+            "data-table" => _dataTableViewModel,
+            "date" => _dateViewModel,
+            "dialog" => _dialogViewModel,
+            "input" => _inputViewModel,
+            "menu" => _menuViewModel,
+            "numeric" => _numericViewModel,
+            "NavigationBar" => _sidebarViewModel,
+            "slider" => _sliderViewModel,
+            "switch" => _switchViewModel,
+            "tab-control" => _tabControlViewModel,
+            "time" => _timeViewModel,
+            "toast" => _toastViewModel,
+            "toggle" => _toggleViewModel,
+            "tooltip" => _toolTipViewModel,
+            "miscellaneous" => _miscellaneousViewModel,
+            _ => (INavigable?) null
+        };
+
+        if (page is not null) SwitchPage(page, value);
+    }
+
     [RelayCommand]
     private void OpenDashboard()
     {

@@ -72,12 +72,17 @@ public sealed partial class ToastViewModel : ViewModelBase, INavigable
     private string _withTitleToastCode = string.Empty;
 
     [RelayCommand]
-    private void ShowToastWithAction()
+    private async Task ShowToastWithActionAsync()
     {
-        _toastManager.CreateToast("Uh oh! Something went wrong.")
+        var result = await _toastManager.CreateToast("Uh oh! Something went wrong.")
             .WithContent("There was a problem with your request.")
-            .WithAction("Try again", () => _toastManager.CreateToast("Retry clicked").Show())
-            .Show();
+            .WithAction("Try again")
+            .ShowAsync();
+
+        if (result == ToastResult.ActionButtonClicked)
+        {
+            await _toastManager.CreateToast("Retry clicked").ShowAsync();
+        }
     }
 
     [ObservableProperty]
@@ -132,12 +137,17 @@ public sealed partial class ToastViewModel : ViewModelBase, INavigable
     private string _warningToastCode = string.Empty;
 
     [RelayCommand]
-    private void ShowErrorToast()
+    private async Task ShowErrorToastAsync()
     {
-        _toastManager.CreateToast("Failed to create event")
+        var result = await _toastManager.CreateToast("Failed to create event")
             .WithContent("Unable to connect to the server.")
-            .WithAction("Retry", () => _toastManager.CreateToast("Retry clicked").Show())
-            .ShowError();
+            .WithAction("Retry")
+            .ShowErrorAsync();
+
+        if (result == ToastResult.ActionButtonClicked)
+        {
+            await _toastManager.CreateToast("Retry clicked").ShowAsync();
+        }
     }
 
     [ObservableProperty]
@@ -160,12 +170,17 @@ public sealed partial class ToastViewModel : ViewModelBase, INavigable
     private string _dynamicToastCode = string.Empty;
 
     [RelayCommand]
-    private void ShowToastWithType()
+    private async Task ShowToastWithTypeAsync()
     {
-        _toastManager.CreateToast("Your message has been sent.")
+        var result = await _toastManager.CreateToast("Your message has been sent.")
             .WithContent($"{DateTime.Now:dddd, MMMM d 'at' h:mm tt}")
-            .WithAction("Retry", () => _toastManager.CreateToast("Retry clicked").Show(Notification.Success))
+            .WithAction("Retry")
             .DismissOnClick()
-            .Show(SelectedNotification);
+            .ShowAsync(SelectedNotification);
+
+        if (result == ToastResult.ActionButtonClicked)
+        {
+            await _toastManager.CreateToast("Retry clicked").ShowAsync(Notification.Success);
+        }
     }
 }
