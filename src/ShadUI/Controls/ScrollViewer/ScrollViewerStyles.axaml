@@ -8,9 +8,10 @@
         <Panel>
           <Panel Name="InnerPanel">
             <Panel.OpacityMask>
-              <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Top}">
-                <Binding Path="#PART_VerticalScrollBar.Value"/>
-                <Binding Path="#PART_VerticalScrollBar.Minimum"/>
+              <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Horizontal}">
+                <Binding Path="#PART_HorizontalScrollBar.Value"/>
+                <Binding Path="#PART_HorizontalScrollBar.Minimum"/>
+                <Binding Path="#PART_HorizontalScrollBar.Maximum"/>
               </MultiBinding>
             </Panel.OpacityMask>
             <ScrollContentPresenter
@@ -23,8 +24,9 @@
               VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
               VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}">
               <ScrollContentPresenter.OpacityMask>
-                <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Bottom}">
+                <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Vertical}">
                   <Binding Path="#PART_VerticalScrollBar.Value"/>
+                  <Binding Path="#PART_VerticalScrollBar.Minimum"/>
                   <Binding Path="#PART_VerticalScrollBar.Maximum"/>
                 </MultiBinding>
               </ScrollContentPresenter.OpacityMask>

@@ -7,87 +7,60 @@ using Avalonia.Media;
 namespace ShadUI;
 
 /// <summary>
-///     Converts the value of the sidebar menu scroller to an opacity mask.
+///     Converts the scroll value, minimum, and maximum of a scrollbar to an opacity mask.
 /// </summary>
 /// <remarks>
-///     This converter is used to create gradient opacity masks for scrollable content areas.
-///     It compares two double values and returns an appropriate gradient brush based on the comparison.
+///     This converter is used to create vertical or horizontal gradient opacity masks for scrollable content areas.
+///     It fades the edges based on whether the content can be scrolled in that direction.
 /// </remarks>
 public class ScrollerToOpacityMask : IMultiValueConverter
 {
-    private readonly Func<double, double, IBrush> _func;
+    private readonly Func<double, double, double, IBrush> _func;
+
+    private static readonly IBrush NoneFadedVertical = CreateVerticalBrush(Colors.Black, Colors.Black);
+    private static readonly IBrush BottomFadedVertical = CreateVerticalBrush(Colors.Black, Colors.Transparent);
+    private static readonly IBrush TopFadedVertical = CreateVerticalBrush(Colors.Transparent, Colors.Black);
+    private static readonly IBrush BothFadedVertical = CreateVerticalBrush(Colors.Transparent, Colors.Transparent);
+
+    private static readonly IBrush NoneFadedHorizontal = CreateHorizontalBrush(Colors.Black, Colors.Black);
+    private static readonly IBrush RightFadedHorizontal = CreateHorizontalBrush(Colors.Black, Colors.Transparent);
+    private static readonly IBrush LeftFadedHorizontal = CreateHorizontalBrush(Colors.Transparent, Colors.Black);
+    private static readonly IBrush BothFadedHorizontal = CreateHorizontalBrush(Colors.Transparent, Colors.Transparent);
 
     /// <summary>
-    ///     Gets the top mask instance for creating fade-out effects at the top of scrollable content.
+    ///     Gets the vertical mask instance for creating fade-out effects at the top and bottom of scrollable content.
     /// </summary>
-    /// <remarks>
-    ///     This instance creates a gradient that fades from transparent at the top to opaque at the bottom.
-    ///     It's typically used when content can be scrolled up.
-    /// </remarks>
-    public static ScrollerToOpacityMask Top
+    public static ScrollerToOpacityMask Vertical { get; } = new((value, min, max) =>
     {
-        get
-        {
-            var topBrush = new LinearGradientBrush
-            {
-                StartPoint = new RelativePoint(0.5, 0.0, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0.5, 0.05, RelativeUnit.Relative),
-                GradientStops =
-                [
-                    new GradientStop(Colors.Transparent, 0),
-                    new GradientStop(Colors.Black, 1)
-                ]
-            };
+        bool canScrollUp = value > min;
+        bool canScrollDown = value < max;
 
-            return new ScrollerToOpacityMask((value, minimum) =>
-            {
-                topBrush.EndPoint = value > minimum ?
-                    new RelativePoint(0.5, 0.05, RelativeUnit.Relative) :
-                    new RelativePoint(0.5, 0.001, RelativeUnit.Relative);
+        if (canScrollUp && canScrollDown) return BothFadedVertical;
+        if (canScrollUp) return TopFadedVertical;
+        if (canScrollDown) return BottomFadedVertical;
 
-                return topBrush;
-            });
-        }
-    }
+        return NoneFadedVertical;
+    });
 
     /// <summary>
-    ///     Gets the bottom mask instance for creating fade-out effects at the bottom of scrollable content.
+    ///     Gets the horizontal mask instance for creating fade-out effects at the left and right of scrollable content.
     /// </summary>
-    /// <remarks>
-    ///     This instance creates a gradient that fades from opaque at the top to transparent at the bottom.
-    ///     It's typically used when content can be scrolled down.
-    /// </remarks>
-    public static ScrollerToOpacityMask Bottom
+    public static ScrollerToOpacityMask Horizontal { get; } = new((value, min, max) =>
     {
-        get
-        {
-            var bottomBrush = new LinearGradientBrush
-            {
-                StartPoint = new RelativePoint(0.5, 0.95, RelativeUnit.Relative),
-                EndPoint = new RelativePoint(0.5, 1.0, RelativeUnit.Relative),
-                GradientStops =
-                [
-                    new GradientStop(Colors.Black, 0.0),
-                    new GradientStop(Colors.Transparent, 1)
-                ]
-            };
+        bool canScrollLeft = value > min;
+        bool canScrollRight = value < max;
 
-            return new ScrollerToOpacityMask((value, maximum) =>
-            {
-                bottomBrush.StartPoint = value < maximum ?
-                    new RelativePoint(0.5, 0.95, RelativeUnit.Relative) :
-                    new RelativePoint(0.5, 0.999, RelativeUnit.Relative);
+        if (canScrollLeft && canScrollRight) return BothFadedHorizontal;
+        if (canScrollLeft) return LeftFadedHorizontal;
+        if (canScrollRight) return RightFadedHorizontal;
 
-                return bottomBrush;
-            });
-        }
-    }
+        return NoneFadedHorizontal;
+    });
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="ScrollerToOpacityMask" /> class.
     /// </summary>
-    /// <param name="func">The function that determines which brush to return based on scroll values.</param>
-    private ScrollerToOpacityMask(Func<double, double, IBrush> func)
+    private ScrollerToOpacityMask(Func<double, double, double, IBrush> func)
     {
         _func = func;
     }
@@ -95,21 +68,51 @@ public class ScrollerToOpacityMask : IMultiValueConverter
     /// <summary>
     ///     Converts the value of the scroller to an opacity mask.
     /// </summary>
-    /// <param name="values">The array of values to convert. Expects two double values representing scroll positions.</param>
-    /// <param name="targetType">The type of the binding target property.</param>
-    /// <param name="parameter">The converter parameter to use.</param>
-    /// <param name="culture">The culture to use in the converter.</param>
-    /// <returns>A gradient brush for the opacity mask, or null if conversion fails.</returns>
-    /// <remarks>
-    ///     The converter expects exactly two double values in the values array.
-    ///     The first value is typically the current scroll position, and the second is the maximum scroll position.
-    ///     Based on the comparison of these values, it returns an appropriate gradient brush for the opacity mask.
-    /// </remarks>
     public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (values.Count != 2) return null;
-        if (values[0] is not double valOne) return null;
-        if (values[1] is not double valTwo) return null;
-        return _func(valOne, valTwo);
+        if (values.Count != 3) return null;
+        if (values[0] is not double val) return null;
+        if (values[1] is not double min) return null;
+        if (values[2] is not double max) return null;
+
+        return _func(val, min, max);
+    }
+
+    /// <summary>
+    ///     Helper method to create a linear gradient brush for vertical scrolling.
+    /// </summary>
+    private static LinearGradientBrush CreateVerticalBrush(Color topColor, Color bottomColor)
+    {
+        return new LinearGradientBrush
+        {
+            StartPoint = new RelativePoint(0.5, 0.0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(0.5, 1.0, RelativeUnit.Relative),
+            GradientStops =
+            [
+                new GradientStop(topColor, 0.0),
+                new GradientStop(Colors.Black, 0.05),
+                new GradientStop(Colors.Black, 0.95),
+                new GradientStop(bottomColor, 1.0)
+            ]
+        };
+    }
+
+    /// <summary>
+    ///     Helper method to create a linear gradient brush for horizontal scrolling.
+    /// </summary>
+    private static LinearGradientBrush CreateHorizontalBrush(Color leftColor, Color rightColor)
+    {
+        return new LinearGradientBrush
+        {
+            StartPoint = new RelativePoint(0.0, 0.5, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(1.0, 0.5, RelativeUnit.Relative),
+            GradientStops =
+            [
+                new GradientStop(leftColor, 0.0),
+                new GradientStop(Colors.Black, 0.05),
+                new GradientStop(Colors.Black, 0.95),
+                new GradientStop(rightColor, 1.0)
+            ]
+        };
     }
 }
