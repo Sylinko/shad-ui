@@ -40,10 +40,10 @@
                 MaxWidth="{StaticResource PageMaxWidth}"
                 Margin="48,0,48,24"
                 Spacing="16">
-                <StackPanel
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal"
-                    Spacing="8">
+              <StackPanel
+                HorizontalAlignment="Right"
+                Orientation="Horizontal"
+                Spacing="8">
                     <CalendarDatePicker shadui:ControlAssist.Label="From" SelectedDate="{x:Static system:DateTime.Today}" />
                     <CalendarDatePicker shadui:ControlAssist.Label="To" SelectedDate="{x:Static system:DateTime.Today}" />
                     <Button
