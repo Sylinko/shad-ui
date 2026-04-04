@@ -40,7 +40,7 @@
               CornerRadius="{DynamicResource MdCornerRadius}">
 
               <ProgressBar
-                Name="PART_ProgressBar" VerticalAlignment="Stretch"
+                Name="PART_ProgressBar" VerticalAlignment="Bottom"
                 IsIndeterminate="{TemplateBinding ProgressValue, Converter={x:Static shadui:DoubleConverters.IsNaN}}"
                 IsVisible="{TemplateBinding Progress, Converter={x:Static ObjectConverters.IsNotNull}}"
                 Maximum="1" Minimum="0"
@@ -49,7 +49,7 @@
                   <Transitions>
                     <DoubleTransition
                       Easing="CubicEaseInOut" Property="Value"
-                      Duration="0:0:0.2"/>
+                      Duration="0:0:0.1"/>
                   </Transitions>
                 </ProgressBar.Transitions>
               </ProgressBar>

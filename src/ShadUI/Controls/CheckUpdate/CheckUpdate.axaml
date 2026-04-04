@@ -23,7 +23,7 @@
                 <Setter Property="DockPanel.Dock" Value="Left"/>
                 <Setter Property="Padding" Value="4"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="CornerRadius" Value="{StaticResource FullCornerRadius}"/>
+                <Setter Property="CornerRadius" Value="{DynamicResource FullCornerRadius}"/>
 
                 <Style Selector="^ LucideIcon">
                   <Setter Property="Size" Value="{DynamicResource FontSizeL}"/>
