@@ -30,11 +30,13 @@
                 </Panel.Styles>
                 <ToggleButton
                   x:Name="PART_ToggleButton" Classes="NoScale"
-                  DockPanel.Dock="Right" HorizontalAlignment="Stretch"
-                  HorizontalContentAlignment="Stretch" shadui:ButtonAssist.CheckedBackground="Transparent"
+                  DockPanel.Dock="Right" Padding="0"
+                  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                  shadui:ButtonAssist.CheckedBackground="Transparent"
                   shadui:ButtonAssist.CheckedForeground="{DynamicResource ForegroundColor}"
                   shadui:ButtonAssist.HoverBackground="{DynamicResource SecondaryColor50}"
-                  BorderThickness="0" CornerRadius="8"
+                  BorderThickness="0"
+                  CornerRadius="{TemplateBinding CornerRadius}"
                   IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
                   IsEnabled="True"/>
                 <Grid
@@ -112,6 +114,15 @@
       </Style>
     </Style>
 
+    <Style Selector="^.ReverseIcon">
+      <Style Selector="^ PathIcon#PART_LeftIcon">
+        <Setter Property="RenderTransform" Value="Rotate(180deg)"/>
+      </Style>
+      <Style Selector="^ PathIcon#PART_RightIcon">
+        <Setter Property="RenderTransform" Value="Rotate(180deg)"/>
+      </Style>
+    </Style>
+
     <Style Selector="^:expanded">
       <Style Selector="^ /template/ Border#ContentBorder">
         <Setter Property="Opacity" Value="1"/>
@@ -123,6 +134,15 @@
       </Style>
       <Style Selector="^ PathIcon#PART_RightIcon">
         <Setter Property="RenderTransform" Value="Rotate(180deg)"/>
+      </Style>
+
+      <Style Selector="^.ReverseIcon">
+        <Style Selector="^ PathIcon#PART_LeftIcon">
+          <Setter Property="RenderTransform" Value="Rotate(0deg)"/>
+        </Style>
+        <Style Selector="^ PathIcon#PART_RightIcon">
+          <Setter Property="RenderTransform" Value="Rotate(0deg)"/>
+        </Style>
       </Style>
     </Style>
 

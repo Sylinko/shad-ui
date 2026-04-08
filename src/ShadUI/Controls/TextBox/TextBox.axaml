@@ -151,6 +151,7 @@
                   <ContentPresenter
                     Grid.Column="0" VerticalAlignment="Center"
                     Content="{TemplateBinding InnerLeftContent}"/>
+
                   <ScrollViewer
                     Name="PART_ScrollViewer" Grid.Column="1"
                     AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}"
@@ -204,24 +205,22 @@
                       <Style Selector="ScrollContentPresenter#ContentPresenter">
                         <Setter Property="Cursor" Value="IBeam"/>
                       </Style>
-                      <Style Selector="ScrollBar:vertical">
-                        <Setter Property="Margin" Value="0,4"/>
-                      </Style>
                     </ScrollViewer.Styles>
                   </ScrollViewer>
+
                   <ContentPresenter
                     Name="InnerRightContent" Grid.Column="2"
-                    Margin="0,4,12,4" VerticalAlignment="Center"
+                    Margin="0,0,8,0" VerticalAlignment="Center"
                     Content="{TemplateBinding InnerRightContent}"
                     IsVisible="{TemplateBinding shadui:ControlAssist.ShowProgress, Converter={x:Static BoolConverters.Not}}"/>
                   <ContentPresenter
                     Name="ClearButton" Grid.Column="2"
-                    Margin="0,4,12,4" VerticalAlignment="Center"
+                    Margin="0,0,8,0" VerticalAlignment="Center"
                     IsVisible="{TemplateBinding shadui:ControlAssist.ShowProgress, Converter={x:Static BoolConverters.Not}}"/>
                   <ContentPresenter
                     Name="LoadingIndicator" Grid.Column="2"
                     Width="20" Height="20"
-                    Margin="0,4,12,4" VerticalAlignment="Center"
+                    Margin="0,0,8,0" VerticalAlignment="Center"
                     Content="{TemplateBinding shadui:ControlAssist.ShowProgress, Converter={x:Static shadui:BooleanConverters.ToLoading}}"
                     IsVisible="{TemplateBinding shadui:ControlAssist.ShowProgress}"/>
                 </Grid>
@@ -257,6 +256,11 @@
     </Style>
     <Style Selector="^:disabled /template/ Border#Border">
       <Setter Property="Opacity" Value="0.5"/>
+    </Style>
+
+    <Style Selector="^.Compact">
+      <Setter Property="Padding" Value="4,0"/>
+      <Setter Property="shadui:ControlAssist.MinHeight" Value="0"/>
     </Style>
 
     <Style Selector="^.Clearable[AcceptsReturn=False][IsReadOnly=False]:focus:not(TextBox:empty)">
