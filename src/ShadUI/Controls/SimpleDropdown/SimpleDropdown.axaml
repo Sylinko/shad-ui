@@ -12,7 +12,7 @@
         </shadui:SimpleDropdown.TriggerContent>
         <shadui:SimpleDropdown.MenuLabel>
           <TextBlock
-            Classes="Small" Text="Actions"/>
+            Classes="Caption" Text="Actions"/>
         </shadui:SimpleDropdown.MenuLabel>
         <Button Content="Add New"/>
         <Button

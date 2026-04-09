@@ -161,7 +161,7 @@
           <DataValidationErrors>
             <StackPanel>
               <TextBlock
-                Name="Label" Classes="Small"
+                Name="Label" Classes="Caption"
                 Margin="0,0,0,6" Cursor="Arrow"
                 IsVisible="{TemplateBinding shadui:ControlAssist.Label, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                 Text="{TemplateBinding Watermark}"/>

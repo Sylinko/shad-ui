@@ -127,7 +127,7 @@
         <StackPanel
           Background="Transparent" Focusable="False">
           <TextBlock
-            Name="PART_Label" Classes="Small"
+            Name="PART_Label" Classes="Caption"
             Margin="0,0,0,6" Cursor="Arrow"
             IsVisible="{TemplateBinding UseFloatingWatermark}"
             Text="{TemplateBinding Watermark}"/>

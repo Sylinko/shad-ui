@@ -70,8 +70,7 @@
     </Style>
 
     <Style Selector="^.Small">
-      <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
-      <Setter Property="FontWeight" Value="Medium"/>
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeXs}"/>
     </Style>
 
     <Style Selector="^.Caption">

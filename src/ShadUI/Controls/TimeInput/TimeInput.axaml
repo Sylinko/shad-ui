@@ -119,7 +119,7 @@
         <StackPanel
           Background="Transparent" Focusable="False">
           <TextBlock
-            Name="Label" Classes="Small"
+            Name="Label" Classes="Caption"
             Margin="0,0,0,6"
             IsVisible="{TemplateBinding shadui:ControlAssist.Label, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
             Text="{TemplateBinding shadui:ControlAssist.Label}"/>
