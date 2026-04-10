@@ -6,10 +6,10 @@
   <Import Project="$(ParentDirectoryPackagesProps)" Condition=" '$(ParentDirectoryPackagesProps)' != '' AND Exists('$(ParentDirectoryPackagesProps)') " />
 
   <PropertyGroup>
-    <AvaloniaVersion>12.0.0-rc1</AvaloniaVersion>
+    <AvaloniaVersion>12.0.0</AvaloniaVersion>
     <SkiaSharpVersion>3.119.3-preview.1.1</SkiaSharpVersion>
-    <AvaloniaEditVersion>12.0.0-rc1</AvaloniaEditVersion>
-    <XamlBehaviorsVersion>12.0.0-rc1</XamlBehaviorsVersion>
+    <AvaloniaEditVersion>12.0.0</AvaloniaEditVersion>
+    <XamlBehaviorsVersion>12.0.0</XamlBehaviorsVersion>
   </PropertyGroup>
 
   <ItemGroup>
