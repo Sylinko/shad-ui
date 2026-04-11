@@ -124,15 +124,23 @@
     <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <StackPanel
+        <DockPanel
           Background="Transparent" Focusable="False">
           <TextBlock
             Name="PART_Label" Classes="Caption"
-            Margin="0,0,0,6" Cursor="Arrow"
+            DockPanel.Dock="Top" Margin="0,0,0,6"
+            Cursor="Arrow"
             IsVisible="{TemplateBinding UseFloatingWatermark}"
             Text="{TemplateBinding Watermark}"/>
           <DataValidationErrors Focusable="False">
-            <StackPanel>
+            <DockPanel>
+              <TextBlock
+                Name="Hint" Classes="Caption Muted"
+                DockPanel.Dock="Bottom" Margin="0,4,0,0"
+                Cursor="Arrow"
+                IsVisible="{TemplateBinding shadui:ControlAssist.Hint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                Text="{TemplateBinding shadui:ControlAssist.Hint}"/>
+
               <Border
                 Name="Border"
                 Height="{TemplateBinding shadui:ControlAssist.Height}"
@@ -225,14 +233,9 @@
                     IsVisible="{TemplateBinding shadui:ControlAssist.ShowProgress}"/>
                 </Grid>
               </Border>
-              <TextBlock
-                Name="Hint" Classes="Caption Muted"
-                Margin="0,4,0,0" Cursor="Arrow"
-                IsVisible="{TemplateBinding shadui:ControlAssist.Hint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                Text="{TemplateBinding shadui:ControlAssist.Hint}"/>
-            </StackPanel>
+            </DockPanel>
           </DataValidationErrors>
-        </StackPanel>
+        </DockPanel>
       </ControlTemplate>
     </Setter>
 
