@@ -66,11 +66,18 @@
               </ContentControl>
             </DockPanel>
 
-            <!--  Actual Content  -->
-            <TransitioningContentControl
-              Name="PART_ContentContainer"
-              Content="{TemplateBinding SelectedItem}"
-              ContentTemplate="{TemplateBinding ContentTemplate}"/>
+            <Panel>
+              <!--  Actual Content  -->
+              <TransitioningContentControl
+                Name="PART_ContentContainer"
+                Content="{TemplateBinding SelectedItem}"
+                ContentTemplate="{TemplateBinding ContentTemplate}"/>
+
+              <ContentControl
+                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                Content="{TemplateBinding EmptyContent}"
+                IsVisible="{TemplateBinding SelectedItem, Converter={x:Static ObjectConverters.IsNull}}"/>
+            </Panel>
           </DockPanel>
         </Panel>
       </ControlTemplate>

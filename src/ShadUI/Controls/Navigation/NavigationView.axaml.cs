@@ -57,6 +57,21 @@ public class NavigationView : TemplatedControl
         set => SetValue(ContentTemplateProperty, value);
     }
 
+    /// <summary>
+    /// Defines the <see cref="EmptyContent"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> EmptyContentProperty =
+        AvaloniaProperty.Register<NavigationView, object?>(nameof(EmptyContent));
+
+    /// <summary>
+    /// Gets or sets the content when no item is selected in the navigation pane.
+    /// </summary>
+    public object? EmptyContent
+    {
+        get => GetValue(EmptyContentProperty);
+        set => SetValue(EmptyContentProperty, value);
+    }
+
     public static readonly StyledProperty<GridLength> PaneWidthProperty =
         AvaloniaProperty.Register<NavigationView, GridLength>(nameof(PaneWidth), new GridLength(320d, GridUnitType.Pixel));
 
