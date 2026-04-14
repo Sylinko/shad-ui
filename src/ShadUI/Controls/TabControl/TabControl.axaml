@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary
-  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI">
   <Design.PreviewWith>
     <Border
       Width="400" Padding="8">
@@ -76,9 +77,11 @@
           BorderThickness="{TemplateBinding BorderThickness}"
           CornerRadius="{TemplateBinding CornerRadius}">
           <Grid
+            ColumnDefinitions="Auto,*" ColumnSpan="4"
             RowDefinitions="Auto,*" RowSpacing="8">
             <LayoutTransformControl
-              Name="LayoutTransform" Grid.Row="0"
+              x:Name="LayoutTransform" Grid.Row="0"
+              Grid.Column="0"
               DockPanel.Dock="{TemplateBinding TabStripPlacement}"
               HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
               <Border
@@ -86,12 +89,18 @@
                 Background="{DynamicResource CardBackgroundColor}"
                 CornerRadius="{DynamicResource LgCornerRadius}">
                 <ItemsPresenter
-                  Name="PART_ItemsPresenter"
+                  x:Name="PART_ItemsPresenter"
                   ItemsPanel="{TemplateBinding ItemsPanel}"/>
               </Border>
             </LayoutTransformControl>
+
+            <ContentControl
+              Grid.Row="0" Grid.Column="1"
+              Content="{TemplateBinding shadui:TabControlAssist.HeaderContent}"/>
+
             <ContentPresenter
-              Name="PART_SelectedContentHost" Grid.Row="1"
+              x:Name="PART_SelectedContentHost" Grid.Row="1"
+              Grid.Column="0" Grid.ColumnSpan="2"
               Margin="{TemplateBinding Padding}"
               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
               VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"

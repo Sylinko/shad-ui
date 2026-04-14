@@ -157,7 +157,8 @@
                 </Border.Transitions>
                 <Grid ColumnDefinitions="Auto * Auto">
                   <ContentPresenter
-                    Grid.Column="0" VerticalAlignment="Center"
+                    Grid.Column="0" Margin="6,0,0,0"
+                    VerticalAlignment="Center"
                     Content="{TemplateBinding InnerLeftContent}"/>
 
                   <ScrollViewer
@@ -218,17 +219,17 @@
 
                   <ContentPresenter
                     Name="InnerRightContent" Grid.Column="2"
-                    Margin="0,0,8,0" VerticalAlignment="Center"
+                    Margin="0,0,6,0" VerticalAlignment="Center"
                     Content="{TemplateBinding InnerRightContent}"
                     IsVisible="{TemplateBinding shadui:ControlAssist.ShowProgress, Converter={x:Static BoolConverters.Not}}"/>
                   <ContentPresenter
                     Name="ClearButton" Grid.Column="2"
-                    Margin="0,0,8,0" VerticalAlignment="Center"
+                    Margin="0,0,6,0" VerticalAlignment="Center"
                     IsVisible="{TemplateBinding shadui:ControlAssist.ShowProgress, Converter={x:Static BoolConverters.Not}}"/>
                   <ContentPresenter
                     Name="LoadingIndicator" Grid.Column="2"
                     Width="20" Height="20"
-                    Margin="0,0,8,0" VerticalAlignment="Center"
+                    Margin="0,0,6,0" VerticalAlignment="Center"
                     Content="{TemplateBinding shadui:ControlAssist.ShowProgress, Converter={x:Static shadui:BooleanConverters.ToLoading}}"
                     IsVisible="{TemplateBinding shadui:ControlAssist.ShowProgress}"/>
                 </Grid>
