@@ -237,7 +237,7 @@ public class Toast : ContentControl
 
     private void StartDismissTimer()
     {
-        if (Duration.Ticks < 0) return;
+        if (Duration.Ticks <= 0) return;
 
         _dismissTimer ??= DispatcherTimer.RunOnce(
             () =>
