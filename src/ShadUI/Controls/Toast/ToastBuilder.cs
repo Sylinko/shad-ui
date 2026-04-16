@@ -35,9 +35,18 @@ public sealed class ToastBuilder
     /// <summary>
     ///     Sets the delay before the toast is dismissed in seconds.
     /// </summary>
-    public ToastBuilder WithDelay(double delay)
+    public ToastBuilder WithDurationSeconds(double durationInSeconds)
     {
-        _toast.Delay = delay;
+        _toast.Duration = TimeSpan.FromSeconds(durationInSeconds);
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets the delay before the toast is dismissed in seconds.
+    /// </summary>
+    public ToastBuilder WithDuration(TimeSpan duration)
+    {
+        _toast.Duration = duration;
         return this;
     }
 

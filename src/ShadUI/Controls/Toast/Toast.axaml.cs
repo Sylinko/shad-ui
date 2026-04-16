@@ -33,9 +33,9 @@ public enum ToastResult
 public class Toast : ContentControl
 {
     /// <summary>
-    ///     Delay in seconds before the toast is dismissed.
+    ///     Delay in seconds before the toast is auto dismissed.
     /// </summary>
-    public double Delay { get; set; }
+    public TimeSpan Duration { get; set; }
 
     public ToastPosition? Position { get; set; }
 
@@ -46,33 +46,10 @@ public class Toast : ContentControl
 
     private readonly ToastManager? _manager;
 
-    private DispatcherTimer? _timer;
-    private double _timeLapsed;
+    private IDisposable? _dismissTimer;
     private TaskCompletionSource<ToastResult>? _resultCompletionSource;
 
     public Toast() { }
-
-    private void StartCounter()
-    {
-        if (Delay <= 0) return;
-
-        if (_timer != null) return;
-
-        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _timer.Tick += OnTimeElapsed;
-
-        _timer.Start();
-    }
-
-    private void OnTimeElapsed(object? sender, EventArgs e)
-    {
-        _timeLapsed += 1;
-        if (_timeLapsed < Delay) return;
-
-        _timer?.Stop();
-        _resultCompletionSource?.TrySetResult(ToastResult.TimerElapsed);
-        _manager?.Dismiss(this);
-    }
 
     public Toast(ToastManager manager)
     {
@@ -178,9 +155,10 @@ public class Toast : ContentControl
         e.NameScope.Get<Border>("PART_ToastCard").PointerPressed += ToastCardClickedHandler;
         e.NameScope.Get<Button>("PART_ActionButton").Click += (_, _) =>
         {
+            _dismissTimer?.Dispose();
+            _dismissTimer = null;
             _resultCompletionSource?.TrySetResult(ToastResult.ActionButtonClicked);
 
-            _timer?.Stop();
             Task.Delay(500).ContinueWith(
                 _ => _manager?.Dismiss(this),
                 TaskScheduler.FromCurrentSynchronizationContext());
@@ -192,22 +170,23 @@ public class Toast : ContentControl
     {
         base.OnPointerEntered(e);
 
-        _timeLapsed = 0;
-        _timer?.Stop();
+        _dismissTimer?.Dispose();
+        _dismissTimer = null;
     }
 
     protected override void OnPointerExited(PointerEventArgs e)
     {
         base.OnPointerExited(e);
 
-        _timer?.Start();
+        StartDismissTimer();
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
 
-        _timer?.Stop();
+        _dismissTimer?.Dispose();
+        _dismissTimer = null;
         _resultCompletionSource?.TrySetResult(ToastResult.Dismissed);
     }
 
@@ -253,7 +232,20 @@ public class Toast : ContentControl
             .WithEasing(new CubicEaseInOut())
             .Start();
 
-        StartCounter();
+        StartDismissTimer();
+    }
+
+    private void StartDismissTimer()
+    {
+        if (Duration.Ticks < 0) return;
+
+        _dismissTimer ??= DispatcherTimer.RunOnce(
+            () =>
+            {
+                _resultCompletionSource?.TrySetResult(ToastResult.TimerElapsed);
+                _manager?.Dismiss(this);
+            },
+            Duration);
     }
 
     public void Dismiss()
