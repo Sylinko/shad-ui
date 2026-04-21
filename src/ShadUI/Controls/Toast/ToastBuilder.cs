@@ -159,7 +159,7 @@ public sealed class ToastBuilder
     /// <summary>
     ///     Shows a success styled toast notification
     /// </summary>
-    public void ShowSuccess() => Show(Notification.Success);
+    public void ShowSuccess(double delayInSeconds = 5d) => WithDurationSeconds(delayInSeconds).Show(Notification.Success);
 
     /// <summary>
     ///     Shows a warning styled toast notification
