@@ -15,12 +15,12 @@ namespace ShadUI;
 /// </summary>
 public static class WindowExtension
 {
-    private static readonly Dictionary<Window, EventHandler<WindowClosingEventArgs>> Handlers = new();
+    private static readonly Dictionary<ShadWindow, EventHandler<WindowClosingEventArgs>> Handlers = new();
     private static readonly Dictionary<string, WindowSettings?> Cache = new();
     private static readonly Lock CacheLock = new();
 
     /// <param name="window">The window to manage state for.</param>
-    extension(Window window)
+    extension(ShadWindow window)
     {
         /// <summary>
         ///     Enables automatic window state management for the specified window.
@@ -76,7 +76,7 @@ public static class WindowExtension
         }
     }
 
-    private static void RestoreWindowState(Window window, string file)
+    private static void RestoreWindowState(ShadWindow window, string file)
     {
         WindowSettings? state;
 
@@ -205,7 +205,7 @@ public static class WindowExtension
         public WindowState WindowState { get; set; }
     }
 
-    internal static void AddResizeGrip(this Window window, Panel rootPanel)
+    internal static void AddResizeGrip(this ShadWindow window, Panel rootPanel)
     {
         var resizeBorders = new[]
         {
@@ -307,7 +307,7 @@ public static class WindowExtension
         {
             if (!window.CanResize) return;
             if (sender is not Border { Tag: string edge }) return;
-            if (window.GetVisualRoot() is not Window w) return;
+            if (window.GetVisualRoot() is not ShadWindow w) return;
 
             var windowEdge = edge switch
             {

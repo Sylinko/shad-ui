@@ -20,13 +20,13 @@ public class DialogHost : TemplatedControl
     /// <summary>
     ///     Defines the <see cref="Owner" /> property.
     /// </summary>
-    public static readonly StyledProperty<Window?> OwnerProperty =
-        AvaloniaProperty.Register<DialogHost, Window?>(nameof(Owner));
+    public static readonly StyledProperty<ShadWindow?> OwnerProperty =
+        AvaloniaProperty.Register<DialogHost, ShadWindow?>(nameof(Owner));
 
     /// <summary>
     ///     Gets or sets the owner window of the dialog host.
     /// </summary>
-    public Window? Owner
+    public ShadWindow? Owner
     {
         get => GetValue(OwnerProperty);
         set => SetValue(OwnerProperty, value);

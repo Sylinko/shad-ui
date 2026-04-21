@@ -21,18 +21,18 @@ namespace ShadUI;
 [TemplatePart("PART_MaximizeButton", typeof(Button))]
 [TemplatePart("PART_MinimizeButton", typeof(Button))]
 [TemplatePart("PART_CloseButton", typeof(Button))]
-public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
+public class ShadWindow : Window, IRecipient<ThemeChangedMessage>
 {
     /// <summary>
     ///     The style key of the window.
     /// </summary>
-    protected override Type StyleKeyOverride => typeof(Window);
+    protected override Type StyleKeyOverride => typeof(ShadWindow);
 
     /// <summary>
     ///     The font size of the title.
     /// </summary>
     public static readonly StyledProperty<double> TitleFontSizeProperty =
-        AvaloniaProperty.Register<Window, double>(nameof(TitleFontSize), 14);
+        AvaloniaProperty.Register<ShadWindow, double>(nameof(TitleFontSize), 14);
 
     /// <summary>
     ///     Gets or sets the value of the <see cref="TitleFontSizeProperty" />.
@@ -47,7 +47,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     ///     The font weight of the title.
     /// </summary>
     public static readonly StyledProperty<FontWeight> TitleFontWeightProperty =
-        AvaloniaProperty.Register<Window, FontWeight>(nameof(TitleFontWeight), FontWeight.Medium);
+        AvaloniaProperty.Register<ShadWindow, FontWeight>(nameof(TitleFontWeight), FontWeight.Medium);
 
     /// <summary>
     ///     Gets or sets the value of the <see cref="TitleFontWeightProperty" />.
@@ -62,7 +62,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     ///     The font size of the version.
     /// </summary>
     public static readonly StyledProperty<double> VersionFontSizeProperty =
-        AvaloniaProperty.Register<Window, double>(nameof(VersionFontSize), 12.8);
+        AvaloniaProperty.Register<ShadWindow, double>(nameof(VersionFontSize), 12.8);
 
     /// <summary>
     ///     Gets or sets the value of the <see cref="TitleFontSizeProperty" />.
@@ -77,7 +77,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     ///     The font weight of the version.
     /// </summary>
     public static readonly StyledProperty<FontWeight> VersionFontWeightProperty =
-        AvaloniaProperty.Register<Window, FontWeight>(nameof(VersionFontWeight), FontWeight.Medium);
+        AvaloniaProperty.Register<ShadWindow, FontWeight>(nameof(VersionFontWeight), FontWeight.Medium);
 
     /// <summary>
     ///     Gets or sets the value of the <see cref="VersionFontWeightProperty" />.
@@ -91,7 +91,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     /// <summary>
     ///    The version text.
     /// </summary>
-    public static readonly StyledProperty<string> VersionProperty = AvaloniaProperty.Register<Window, string>(
+    public static readonly StyledProperty<string> VersionProperty = AvaloniaProperty.Register<ShadWindow, string>(
         nameof(Version));
 
     /// <summary>
@@ -107,7 +107,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     ///     The content of the logo.
     /// </summary>
     public static readonly StyledProperty<Control?> LogoContentProperty =
-        AvaloniaProperty.Register<Window, Control?>(nameof(LogoContent));
+        AvaloniaProperty.Register<ShadWindow, Control?>(nameof(LogoContent));
 
     /// <summary>
     ///     Gets or sets the value of the <see cref="LogoContentProperty" />.
@@ -122,7 +122,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     ///     Whether to show the bottom border.
     /// </summary>
     public static readonly StyledProperty<bool> ShowBottomBorderProperty =
-        AvaloniaProperty.Register<Window, bool>(nameof(ShowBottomBorder), true);
+        AvaloniaProperty.Register<ShadWindow, bool>(nameof(ShowBottomBorder), true);
 
     /// <summary>
     ///     Gets or sets the value of the <see cref="ShowBottomBorderProperty" />.
@@ -137,7 +137,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     ///     Whether to show the title bar.
     /// </summary>
     public static readonly StyledProperty<bool> IsTitleBarVisibleProperty =
-        AvaloniaProperty.Register<Window, bool>(nameof(IsTitleBarVisible), true);
+        AvaloniaProperty.Register<ShadWindow, bool>(nameof(IsTitleBarVisible), true);
 
     /// <summary>
     ///     Gets or sets the value of the <see cref="IsTitleBarVisibleProperty" />.
@@ -167,7 +167,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     ///     The content to override the title bar.
     /// </summary>
     public static readonly StyledProperty<object?> TitleBarContentOverrideProperty =
-        AvaloniaProperty.Register<Window, object?>(nameof(TitleBarContentOverride));
+        AvaloniaProperty.Register<ShadWindow, object?>(nameof(TitleBarContentOverride));
 
     /// <summary>
     ///     Gets or sets the value of the <see cref="TitleBarContentOverrideProperty" />.
@@ -182,7 +182,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     ///     Whether to show the title bar background.
     /// </summary>
     public static readonly StyledProperty<bool> ShowTitlebarBackgroundProperty =
-        AvaloniaProperty.Register<Window, bool>(nameof(ShowTitlebarBackground), true);
+        AvaloniaProperty.Register<ShadWindow, bool>(nameof(ShowTitlebarBackground), true);
 
     /// <summary>
     ///     Gets or sets the value of the <see cref="ShowTitlebarBackgroundProperty" />.
@@ -197,7 +197,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     ///     Whether to enable move.
     /// </summary>
     public static readonly StyledProperty<bool> CanMoveProperty =
-        AvaloniaProperty.Register<Window, bool>(nameof(CanMove), true);
+        AvaloniaProperty.Register<ShadWindow, bool>(nameof(CanMove), true);
 
     /// <summary>
     ///     Gets or sets the value of the <see cref="CanMoveProperty" />.
@@ -212,7 +212,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     ///     The controls on the right side of the title bar.
     /// </summary>
     public static readonly StyledProperty<object?> RightWindowTitleBarContentProperty =
-        AvaloniaProperty.Register<Window, object?>(nameof(RightWindowTitleBarContent));
+        AvaloniaProperty.Register<ShadWindow, object?>(nameof(RightWindowTitleBarContent));
 
     /// <summary>
     ///     Gets or sets the value of the <see cref="RightWindowTitleBarContentProperty" />.
@@ -228,7 +228,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     ///     Useful for things like popups.
     /// </summary>
     public static readonly StyledProperty<Avalonia.Controls.Controls> HostsProperty =
-        AvaloniaProperty.Register<Window, Avalonia.Controls.Controls>(nameof(Hosts), []);
+        AvaloniaProperty.Register<ShadWindow, Avalonia.Controls.Controls>(nameof(Hosts), []);
 
     /// <summary>
     ///     These controls are displayed above all others and fill the entire window.
@@ -242,7 +242,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     /// <summary>
     ///     Whether to save and restore the window state (position, size, etc.) between application sessions.
     /// </summary>
-    public static readonly StyledProperty<bool> SaveWindowStateProperty = AvaloniaProperty.Register<Window, bool>(
+    public static readonly StyledProperty<bool> SaveWindowStateProperty = AvaloniaProperty.Register<ShadWindow, bool>(
         nameof(SaveWindowState));
 
     /// <summary>
@@ -257,7 +257,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     /// <summary>
     ///     The thickness of the resize border.
     /// </summary>
-    public static readonly StyledProperty<Thickness> ResizeBorderThicknessProperty = AvaloniaProperty.Register<Window, Thickness>(
+    public static readonly StyledProperty<Thickness> ResizeBorderThicknessProperty = AvaloniaProperty.Register<ShadWindow, Thickness>(
         nameof(ResizeBorderThickness),
         defaultValue: new Thickness(4));
 
@@ -271,9 +271,9 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
     }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="Window" /> class.
+    ///     Initializes a new instance of the <see cref="ShadWindow" /> class.
     /// </summary>
-    protected Window()
+    protected ShadWindow()
     {
         Hosts = [];
     }
@@ -290,7 +290,7 @@ public class Window : Avalonia.Controls.Window, IRecipient<ThemeChangedMessage>
 
         if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop) return;
 
-        if (desktop.MainWindow is Window window && window != this) Icon ??= window.Icon;
+        if (desktop.MainWindow is ShadWindow window && window != this) Icon ??= window.Icon;
     }
 
     protected override void OnUnloaded(RoutedEventArgs e)
