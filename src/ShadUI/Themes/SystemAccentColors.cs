@@ -10,34 +10,51 @@ namespace ShadUI.Themes;
 /// </summary>
 public sealed class SystemAccentColors : ResourceDictionary
 {
+    /// <summary>
+    /// Gets or sets a color to override the system accent color. If set to null, the actual system accent color will be used.
+    /// </summary>
+    public static Color? ColorOverride
+    {
+        get;
+        set
+        {
+            if (field == value) return;
+            field = value;
+
+            _instance?.UpdateColors(Application.Current?.PlatformSettings);
+        }
+    }
+
     private const string PrimaryKey = "PrimaryColor";
     private const string Primary75Key = "PrimaryColor75";
     private const string Primary50Key = "PrimaryColor50";
     private const string Primary10Key = "PrimaryColor10";
     private const string PrimaryForegroundKey = "PrimaryForegroundColor";
-    
-    private static readonly Color SDefaultSystemAccentColor = Color.FromRgb(0, 120, 215);
+
+    private static SystemAccentColors? _instance;
     
     public SystemAccentColors()
     {
+        if (_instance is not null) throw new InvalidOperationException("Only one instance of SystemAccentColors is allowed.");
+        _instance = this;
+
         if (Application.Current?.PlatformSettings is { } platformSettings)
         {
             platformSettings.ColorValuesChanged += PlatformSettingsOnColorValuesChanged;
+            UpdateColors(platformSettings);
         }
-        
-        UpdateColors();
     }
 
-    private void PlatformSettingsOnColorValuesChanged(object? sender, PlatformColorValues e) => 
-        UpdateColors();
-
-    private void UpdateColors()
+    private void PlatformSettingsOnColorValuesChanged(object? sender, PlatformColorValues e)
     {
-        var platformSettings = Application.Current?.PlatformSettings;
-        var systemAccentColor = platformSettings?.GetColorValues().AccentColor1 ?? SDefaultSystemAccentColor;
+        UpdateColors(sender as IPlatformSettings);
+    }
+
+    private void UpdateColors(IPlatformSettings? platformSettings)
+    {
+        var systemAccentColor = ColorOverride ?? platformSettings?.GetColorValues().AccentColor1 ?? Color.FromRgb(0, 120, 215);
         
         var (d1, d2, d3) = CalculateAccentShades(systemAccentColor);
-        
         var luminance = (0.299 * systemAccentColor.R + 0.587 * systemAccentColor.G + 0.114 * systemAccentColor.B) / 255;
         var systemAccentForegroundColor = luminance > 0.6 ? 
             new Color(255, 29, 29, 31) : 
