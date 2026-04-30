@@ -65,7 +65,8 @@
                 Foreground="{DynamicResource ForegroundColor}"
                 IsVisible="{CompiledBinding Data, ElementName=PART_Icon, Converter={x:Static ObjectConverters.IsNotNull}}"/>
               <StackPanel
-                Grid.Column="1" Spacing="4">
+                Grid.Column="1" VerticalAlignment="Center"
+                Spacing="4">
                 <TextBlock
                   Name="PART_Title"
                   IsVisible="{TemplateBinding Title, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"

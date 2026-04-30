@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Media;
 using Avalonia.Threading;
 
 // ReSharper disable once CheckNamespace
@@ -159,9 +160,27 @@ public class Toast : ContentControl
             _dismissTimer = null;
             _resultCompletionSource?.TrySetResult(ToastResult.ActionButtonClicked);
 
-            Task.Delay(500).ContinueWith(
-                _ => _manager?.Dismiss(this),
-                TaskScheduler.FromCurrentSynchronizationContext());
+            var duration = TimeSpan.FromMilliseconds(500);
+            var easing = new CubicEaseInOut();
+            Task.WhenAll(
+                    this.Animate(SkewTransform.AngleXProperty).To(10d).WithDuration(duration).WithEasing(easing).RunAsync(),
+                    this.Animate(SkewTransform.AngleYProperty).To(10d).WithDuration(duration).WithEasing(easing).RunAsync(),
+                    Position switch
+                    {
+                        ToastPosition.TopLeft or ToastPosition.BottomLeft =>
+                            this.Animate(TranslateTransform.XProperty).To(-Bounds.Width - 20d).WithDuration(duration).WithEasing(easing).RunAsync(),
+                        ToastPosition.TopRight or ToastPosition.BottomRight =>
+                            this.Animate(TranslateTransform.XProperty).To(Bounds.Width + 20d).WithDuration(duration).WithEasing(easing).RunAsync(),
+                        ToastPosition.TopCenter =>
+                            this.Animate(TranslateTransform.YProperty).To(-Bounds.Height - 20d).WithDuration(duration).WithEasing(easing).RunAsync(),
+                        ToastPosition.BottomCenter =>
+                            this.Animate(TranslateTransform.YProperty).To(Bounds.Height + 20d).WithDuration(duration).WithEasing(easing).RunAsync(),
+                        _ => Task.CompletedTask
+                    }
+                )
+                .ContinueWith(
+                    _ => _manager?.Dismiss(this),
+                    TaskScheduler.FromCurrentSynchronizationContext());
         };
         e.NameScope.Get<Button>("PART_CloseButton").Click += (_, _) => _manager?.Dismiss(this);
     }
