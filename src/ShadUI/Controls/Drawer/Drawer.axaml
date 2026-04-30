@@ -1,0 +1,132 @@
+<ResourceDictionary
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="using:ShadUI">
+
+  <!--  Base Drawer ControlTheme  -->
+  <ControlTheme
+    x:Key="{x:Type shadui:Drawer}"
+    TargetType="shadui:Drawer">
+
+    <!--
+      Default transitions for overlay drawer slide-in/out.
+      Callers can override these via styles on the Drawer or on the template part.
+    -->
+    <Setter Property="Template">
+      <ControlTemplate TargetType="shadui:Drawer">
+        <Panel x:Name="PART_Root">
+
+          <!--  ==================== Inline Mode ====================  -->
+          <!--
+            The Grid layout is rebuilt in code-behind when Placement changes.
+            ColumnDefinitions/RowDefinitions are managed dynamically.
+          -->
+          <Grid x:Name="PART_InlineGrid">
+
+            <!--  Main content  -->
+            <ContentPresenter
+              x:Name="PART_InlineContentPresenter"
+              ContentTemplate="{TemplateBinding ContentTemplate}"/>
+
+            <!--  Splitter  -->
+            <GridSplitter
+              x:Name="PART_Splitter" ResizeDirection="Columns"
+              Theme="{TemplateBinding SplitterTheme}"/>
+
+            <!--  Drawer content  -->
+            <ContentPresenter
+              x:Name="PART_InlineDrawerPresenter"
+              ContentTemplate="{TemplateBinding DrawerContentTemplate}"/>
+          </Grid>
+
+          <!--  ==================== Overlay Mode ====================  -->
+          <!--  Main content (behind the drawer)  -->
+          <ContentPresenter
+            x:Name="PART_OverlayContentPresenter"
+            ContentTemplate="{TemplateBinding ContentTemplate}"/>
+
+          <!--
+            Backdrop: rendered behind the drawer.
+            When OverlayBrush is null, IsHitTestVisible is false (set in code-behind),
+            so pointer events pass through to underlying content.
+          -->
+          <Border
+            x:Name="PART_OverlayBackdrop"
+            Background="{TemplateBinding OverlayBrush}"
+            IsHitTestVisible="False">
+            <Border.Transitions>
+              <Transitions>
+                <DoubleTransition
+                  Easing="CubicEaseOut" Property="Opacity"
+                  Duration="0:0:0.25"/>
+              </Transitions>
+            </Border.Transitions>
+          </Border>
+
+          <!--  Drawer container: slides in/out via TranslateTransform transitions  -->
+          <Border
+            x:Name="PART_OverlayDrawerBorder"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            BoxShadow="{TemplateBinding BoxShadow}"
+            CornerRadius="{TemplateBinding CornerRadius}">
+            <Border.RenderTransform>
+              <TranslateTransform>
+                <TranslateTransform.Transitions>
+                  <Transitions>
+                    <DoubleTransition
+                      Easing="CubicEaseOut" Property="X"
+                      Duration="0:0:0.3"/>
+                    <DoubleTransition
+                      Easing="CubicEaseOut" Property="Y"
+                      Duration="0:0:0.3"/>
+                  </Transitions>
+                </TranslateTransform.Transitions>
+              </TranslateTransform>
+            </Border.RenderTransform>
+            <ContentPresenter
+              x:Name="PART_OverlayDrawerPresenter"
+              Margin="{TemplateBinding Padding}"
+              ContentTemplate="{TemplateBinding DrawerContentTemplate}"/>
+          </Border>
+
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+
+    <!--  ==================== Placement PseudoClass Styles ====================  -->
+
+    <!--  Left placement: inline drawer on the left  -->
+    <Style Selector="^:left:inline /template/ GridSplitter#PART_Splitter">
+      <Setter Property="ResizeDirection" Value="Columns"/>
+    </Style>
+
+    <!--  Right placement: inline drawer on the right  -->
+    <Style Selector="^:right:inline /template/ GridSplitter#PART_Splitter">
+      <Setter Property="ResizeDirection" Value="Columns"/>
+    </Style>
+
+    <!--  Top placement: inline drawer on the top  -->
+    <Style Selector="^:top:inline /template/ GridSplitter#PART_Splitter">
+      <Setter Property="ResizeDirection" Value="Rows"/>
+    </Style>
+
+    <!--  Bottom placement: inline drawer on the bottom  -->
+    <Style Selector="^:bottom:inline /template/ GridSplitter#PART_Splitter">
+      <Setter Property="ResizeDirection" Value="Rows"/>
+    </Style>
+
+    <!--  ==================== Closed State ====================  -->
+
+    <!--  When closed in overlay mode, hide the drawer border  -->
+    <Style Selector="^:closed:overlay /template/ Border#PART_OverlayDrawerBorder">
+      <Setter Property="IsVisible" Value="False"/>
+    </Style>
+
+    <!--  When opened in overlay mode, show the drawer border  -->
+    <Style Selector="^:opened:overlay /template/ Border#PART_OverlayDrawerBorder">
+      <Setter Property="IsVisible" Value="True"/>
+    </Style>
+
+  </ControlTheme>
+</ResourceDictionary>

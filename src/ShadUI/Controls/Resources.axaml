@@ -31,6 +31,8 @@
     <ResourceInclude Source="avares://ShadUI/Controls/DataValidation/DataValidationErrors.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/DateInput/DateInput.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Dialog/DialogHost.axaml"/>
+    <ResourceInclude Source="avares://ShadUI/Controls/Drawer/Drawer.axaml"/>
+    <ResourceInclude Source="avares://ShadUI/Controls/Drawer/ResponsiveDrawer.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Expander/Expander.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/FlyoutPresenter/FlyoutPresenter.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/HyperlinkButton/HyperlinkButton.axaml"/>

@@ -1,0 +1,13 @@
+﻿<ResourceDictionary
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="using:ShadUI">
+
+  <!-- ResponsiveDrawer inherits all template and behavior from Drawer.
+       It only adds responsive placement logic in code-behind. -->
+  <ControlTheme
+    x:Key="{x:Type shadui:ResponsiveDrawer}"
+    BasedOn="{StaticResource {x:Type shadui:Drawer}}"
+    TargetType="shadui:ResponsiveDrawer" />
+
+</ResourceDictionary>
