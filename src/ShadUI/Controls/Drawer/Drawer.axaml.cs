@@ -348,10 +348,9 @@ public class Drawer : ContentControl
 
     /// <summary>
     /// Gets or sets a value indicating whether the drawer can be automatically collapsed
-    /// when the user drags the splitter below the minimum size threshold.
+    /// when the user drags the splitter below <see cref="CollapseThreshold"/>.
     /// When <c>true</c>, dragging the splitter so that the drawer size falls below
-    /// <see cref="DrawerMinWidth"/> or <see cref="DrawerMinHeight"/> will set
-    /// <see cref="IsOpened"/> to <c>false</c>.
+    /// <see cref="CollapseThreshold"/> will set <see cref="IsOpened"/> to <c>false</c>.
     /// When <c>false</c>, the drawer size is clamped to the minimum and cannot be
     /// collapsed via the splitter.
     /// </summary>
@@ -359,6 +358,25 @@ public class Drawer : ContentControl
     {
         get => GetValue(CanAutoCollapseProperty);
         set => SetValue(CanAutoCollapseProperty, value);
+    }
+
+    /// <summary>
+    /// Defines the <see cref="CollapseThreshold"/> property.
+    /// </summary>
+    public static readonly StyledProperty<double> CollapseThresholdProperty =
+        AvaloniaProperty.Register<Drawer, double>(nameof(CollapseThreshold), 20d);
+
+    /// <summary>
+    /// Gets or sets the size threshold (in device-independent pixels) below which
+    /// the drawer will auto-collapse when <see cref="CanAutoCollapse"/> is <c>true</c>.
+    /// The drawer only collapses when the user drags the splitter so that the drawer
+    /// size falls below this value, providing a "snap-to-close" feel near zero.
+    /// Defaults to 20.
+    /// </summary>
+    public double CollapseThreshold
+    {
+        get => GetValue(CollapseThresholdProperty);
+        set => SetValue(CollapseThresholdProperty, value);
     }
 
     /// <summary>
@@ -804,9 +822,10 @@ public class Drawer : ContentControl
                 return;
             }
 
-            // Auto-collapse: if the dragged size falls below the minimum threshold,
-            // close the drawer instead of clamping.
-            if (CanAutoCollapse && width.Value < DrawerMinWidth)
+            // Auto-collapse: if the dragged size falls below the collapse threshold,
+            // close the drawer instead of clamping. This provides a "snap-to-close" feel
+            // near zero rather than triggering at the minimum size.
+            if (CanAutoCollapse && width.Value < CollapseThreshold)
             {
                 SetCurrentValue(IsOpenedProperty, false);
                 // Manually collapse the grid since OnPropertyChanged is suppressed.
@@ -853,9 +872,10 @@ public class Drawer : ContentControl
                 return;
             }
 
-            // Auto-collapse: if the dragged size falls below the minimum threshold,
-            // close the drawer instead of clamping.
-            if (CanAutoCollapse && height.Value < DrawerMinHeight)
+            // Auto-collapse: if the dragged size falls below the collapse threshold,
+            // close the drawer instead of clamping. This provides a "snap-to-close" feel
+            // near zero rather than triggering at the minimum size.
+            if (CanAutoCollapse && height.Value < CollapseThreshold)
             {
                 SetCurrentValue(IsOpenedProperty, false);
                 // Manually collapse the grid since OnPropertyChanged is suppressed.
