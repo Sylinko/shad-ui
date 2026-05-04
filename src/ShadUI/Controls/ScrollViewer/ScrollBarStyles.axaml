@@ -31,7 +31,7 @@
                   <ControlTemplate>
                     <Panel>
                       <Border
-                        Name="ThumbBarVertical" Width="2"
+                        Name="ThumbBarVertical" Width="2" Margin="0,2"
                         Background="{DynamicResource BorderColor}"
                         CornerRadius="{DynamicResource MdCornerRadius}">
                         <Border.Transitions>
