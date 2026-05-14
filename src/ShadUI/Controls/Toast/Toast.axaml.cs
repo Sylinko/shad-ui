@@ -1,3 +1,4 @@
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
@@ -44,18 +45,6 @@ public class Toast : ContentControl
     /// Use lazy initialization for performance optimization.
     /// </summary>
     public TaskCompletionSource<ToastResult> ResultCompletionSource => _resultCompletionSource ??= new TaskCompletionSource<ToastResult>();
-
-    private readonly ToastManager? _manager;
-
-    private IDisposable? _dismissTimer;
-    private TaskCompletionSource<ToastResult>? _resultCompletionSource;
-
-    public Toast() { }
-
-    public Toast(ToastManager manager)
-    {
-        _manager = manager;
-    }
 
     public static readonly StyledProperty<Notification> NotificationProperty =
         AvaloniaProperty.Register<Toast, Notification>(nameof(Notification));
@@ -148,6 +137,33 @@ public class Toast : ContentControl
     {
         get => GetValue(CanDismissProperty);
         set => SetValue(CanDismissProperty, value);
+    }
+
+    /// <summary>
+    ///     Command to execute when the toast is dismissed, either by timer or user interaction.
+    /// </summary>
+    public static readonly StyledProperty<ICommand?> DismissCommandProperty =
+        AvaloniaProperty.Register<Toast, ICommand?>(nameof(DismissCommand));
+
+    /// <summary>
+    ///     Gets or sets the command to execute when the toast is dismissed, either by timer or user interaction.
+    /// </summary>
+    public ICommand? DismissCommand
+    {
+        get => GetValue(DismissCommandProperty);
+        set => SetValue(DismissCommandProperty, value);
+    }
+
+    private readonly ToastManager? _manager;
+
+    private IDisposable? _dismissTimer;
+    private TaskCompletionSource<ToastResult>? _resultCompletionSource;
+
+    public Toast() { }
+
+    public Toast(ToastManager manager)
+    {
+        _manager = manager;
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -284,6 +300,8 @@ public class Toast : ContentControl
             .WithDuration(TimeSpan.FromMilliseconds(500))
             .WithEasing(new CubicEaseInOut())
             .Start();
+
+        if (DismissCommand is { } dismissCommand && dismissCommand.CanExecute(null)) dismissCommand.Execute(null);
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
