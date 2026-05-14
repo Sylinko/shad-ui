@@ -6,66 +6,6 @@ public static class AvaloniaExtension
 {
     extension(Dispatcher dispatcher)
     {
-        public void InvokeOnDemand(Action action)
-        {
-            if (dispatcher.CheckAccess()) action();
-            else dispatcher.Invoke(action);
-        }
-
-        public void InvokeOnDemand(Action action, in DispatcherPriority priority)
-        {
-            if (dispatcher.CheckAccess()) action();
-            else dispatcher.Invoke(action, priority);
-        }
-
-        public void InvokeOnDemand(
-            Action action,
-            in DispatcherPriority priority,
-            in CancellationToken cancellationToken)
-        {
-            if (dispatcher.CheckAccess()) action();
-            else dispatcher.Invoke(action, priority, cancellationToken);
-        }
-
-        public void InvokeOnDemand(
-            Action action,
-            in DispatcherPriority priority,
-            in CancellationToken cancellationToken,
-            in TimeSpan timeout)
-        {
-            if (dispatcher.CheckAccess()) action();
-            else dispatcher.Invoke(action, priority, cancellationToken, timeout);
-        }
-
-        public T InvokeOnDemand<T>(Func<T> func)
-        {
-            return dispatcher.CheckAccess() ? func() : dispatcher.Invoke(func);
-        }
-
-        public T InvokeOnDemand<T>(
-            Func<T> func,
-            in DispatcherPriority priority)
-        {
-            return dispatcher.CheckAccess() ? func() : dispatcher.Invoke(func, priority);
-        }
-
-        public T InvokeOnDemand<T>(
-            Func<T> func,
-            in DispatcherPriority priority,
-            in CancellationToken cancellationToken)
-        {
-            return dispatcher.CheckAccess() ? func() : dispatcher.Invoke(func, priority, cancellationToken);
-        }
-
-        public T InvokeOnDemand<T>(
-            Func<T> func,
-            in DispatcherPriority priority,
-            in CancellationToken cancellationToken,
-            in TimeSpan timeout)
-        {
-            return dispatcher.CheckAccess() ? func() : dispatcher.Invoke(func, priority, cancellationToken, timeout);
-        }
-
         public Task InvokeOnDemandAsync(Action action)
         {
             if (!dispatcher.CheckAccess()) return dispatcher.InvokeAsync(action).GetTask();
