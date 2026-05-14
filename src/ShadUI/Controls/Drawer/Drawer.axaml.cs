@@ -563,13 +563,12 @@ public class Drawer : ContentControl
 
     private void UpdateContentPresenters()
     {
-        var isInline = DisplayMode == DrawerDisplayMode.Inline;
-        if (isInline)
+        if (DisplayMode == DrawerDisplayMode.Inline)
         {
-            _inlineContentPresenter?.Content = Content;
-            _inlineDrawerPresenter?.Content = DrawerContent;
             _overlayContentPresenter?.Content = null;
             _overlayDrawerPresenter?.Content = null;
+            _inlineContentPresenter?.Content = Content;
+            _inlineDrawerPresenter?.Content = DrawerContent;
         }
         else
         {
@@ -768,9 +767,9 @@ public class Drawer : ContentControl
     {
         if (_overlayBackdrop == null) return;
 
-        var hasBrush = OverlayBrush != null;
-        _overlayBackdrop.IsHitTestVisible = hasBrush;
-        _overlayBackdrop.Opacity = hasBrush && IsOpened ? 1 : 0;
+        var isOpened = IsOpened;
+        _overlayBackdrop.IsHitTestVisible = isOpened;
+        _overlayBackdrop.Opacity = isOpened ? 1 : 0;
     }
 
     /// <summary>
