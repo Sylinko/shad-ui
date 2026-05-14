@@ -20,7 +20,7 @@ public static class ThicknessConverters
     ///     This converter finds the maximum value among all four sides of a Thickness and returns it as a double.
     ///     Useful for determining the maximum padding or margin value.
     /// </remarks>
-    public static readonly IValueConverter ToLargest =
+    public static IValueConverter ToLargest { get; } =
         new FuncValueConverter<Thickness, double>(x => Math.Max(x.Left, Math.Max(x.Top, Math.Max(x.Right, x.Bottom))));
 
     /// <summary>
@@ -30,7 +30,7 @@ public static class ThicknessConverters
     ///     This converter creates a new Thickness where the bottom value is set to 0 while preserving
     ///     the left, top, and right values from the original Thickness.
     /// </remarks>
-    public static readonly IValueConverter NoBottom =
+    public static IValueConverter NoBottom { get; } =
         new FuncValueConverter<Thickness, Thickness>(x => new Thickness(x.Left, x.Top, x.Right, 0));
 
     /// <summary>
@@ -40,7 +40,7 @@ public static class ThicknessConverters
     ///     This converter creates a new Thickness where the top value is set to 0 while preserving
     ///     the left, right, and bottom values from the original Thickness.
     /// </remarks>
-    public static readonly IValueConverter NoTop =
+    public static IValueConverter NoTop { get; } =
         new FuncValueConverter<Thickness, Thickness>(x => new Thickness(x.Left, 0, x.Right, x.Bottom));
 
     /// <summary>
@@ -50,6 +50,6 @@ public static class ThicknessConverters
     ///     This converter creates a new Thickness where only the left and right values are preserved,
     ///     with top and bottom values set to 0. Useful for horizontal-only spacing.
     /// </remarks>
-    public static readonly IValueConverter LeftRight =
+    public static IValueConverter LeftRight { get; } =
         new FuncValueConverter<Thickness, Thickness>(x => new Thickness(x.Left, 0, x.Right, 0));
 }

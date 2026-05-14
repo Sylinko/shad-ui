@@ -23,13 +23,15 @@ public sealed class ToastManager
     internal void Dismiss(Toast toast)
     {
         if (!_toasts.Contains(toast)) return;
+        
         OnToastDismissed?.Invoke(this, toast);
         _toasts.Remove(toast);
     }
 
     private void Dismiss(int count)
     {
-        if (!_toasts.Any()) return;
+        if (_toasts.Count == 0) return;
+
         if (count > _toasts.Count) count = _toasts.Count;
         for (var i = 0; i < count; i++)
         {
@@ -50,7 +52,8 @@ public sealed class ToastManager
     /// </summary>
     public void DismissAll()
     {
-        if (!_toasts.Any()) return;
+        if (_toasts.Count == 0) return;
+
         OnAllToastsDismissed?.Invoke(this, EventArgs.Empty);
         _toasts.Clear();
     }
@@ -62,5 +65,5 @@ public sealed class ToastManager
     /// </summary>
     /// <param name="title">The title of the toast</param>
     /// <returns></returns>
-    public ToastBuilder CreateToast(string title) => new ToastBuilder(this, title);
+    public ToastBuilder CreateToast(string title) => new(this, title);
 }

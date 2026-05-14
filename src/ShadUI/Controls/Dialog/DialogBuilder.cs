@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using ShadUI.Extensions;
 using Avalonia.Threading;
 
 // ReSharper disable once CheckNamespace
@@ -146,7 +145,7 @@ public sealed class DialogBuilder
         var tcs = new TaskCompletionSource<DialogResult>();
         _manager.Show(_dialog, r => tcs.TrySetResult(r), _options);
 
-        if (cancellationToken.CanBeCanceled) cancellationToken.Register(() => Dispatcher.UIThread.InvokeOnDemand(() => _manager.Close(_dialog)));
+        if (cancellationToken.CanBeCanceled) cancellationToken.Register(() => Dispatcher.UIThread.Invoke(() => _manager.Close(_dialog)));
 
         return tcs.Task;
     }

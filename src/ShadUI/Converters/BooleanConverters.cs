@@ -19,7 +19,7 @@ public static class BooleanConverters
     ///     This converter is useful for hiding elements when a condition is true.
     ///     Returns 0 (fully transparent) when the boolean is true, and 1 (fully opaque) when false.
     /// </remarks>
-    public static readonly IValueConverter ToInverseOpacity =
+    public static IValueConverter ToInverseOpacity { get; } =
         new FuncValueConverter<bool, int>(value => value ? 0 : 1);
 
     /// <summary>
@@ -29,7 +29,7 @@ public static class BooleanConverters
     ///     This converter returns a Loading control when the boolean is true, and a Panel when false.
     ///     Useful for showing loading states in UI elements.
     /// </remarks>
-    public static readonly IValueConverter ToLoading =
+    public static IValueConverter ToLoading { get; } =
         new FuncValueConverter<bool, object?>(value => value ? new Loading() : null);
 
     /// <summary>

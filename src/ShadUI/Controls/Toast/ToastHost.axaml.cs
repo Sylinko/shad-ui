@@ -184,9 +184,9 @@ public class ToastHost : ItemsControl
 
         if (SingleToast)
         {
-            foreach (var t in Items)
+            foreach (var t in Items.OfType<Toast>())
             {
-                ClearToast((Toast)t!);
+                ClearToast(t);
             }
         }
 
@@ -198,7 +198,7 @@ public class ToastHost : ItemsControl
         }
 
         var count = Items.Count;
-        foreach (var t in Items) ClearToast((Toast)t!);
+        foreach (var t in Items.OfType<Toast>()) ClearToast(t);
 
         if (count > 0)
         {

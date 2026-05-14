@@ -13,7 +13,7 @@ namespace ShadUI;
 ///     This class allows windows to automatically save and restore their position, size, and state
 ///     across application sessions in temporary files.
 /// </summary>
-public static class WindowExtension
+public static class WindowExtensions
 {
     private static readonly Dictionary<ShadWindow, EventHandler<WindowClosingEventArgs>> Handlers = new();
     private static readonly Dictionary<string, WindowSettings?> Cache = new();

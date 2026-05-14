@@ -2,7 +2,7 @@
 
 namespace ShadUI.Extensions;
 
-public static class AvaloniaExtension
+public static class AvaloniaExtensions
 {
     extension(Dispatcher dispatcher)
     {

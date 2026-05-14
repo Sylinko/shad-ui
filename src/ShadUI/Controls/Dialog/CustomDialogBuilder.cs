@@ -76,7 +76,7 @@ public sealed class CustomDialogBuilder
 
         _manager.Show(_control, callback, _options);
 
-        if (cancellationToken.CanBeCanceled) cancellationToken.Register(() => Dispatcher.UIThread.InvokeOnDemand(() => _manager.Close(_control)));
+        if (cancellationToken.CanBeCanceled) cancellationToken.Register(() => Dispatcher.UIThread.Invoke(() => _manager.Close(_control)));
 
         return tcs.Task;
     }

@@ -8,7 +8,7 @@
     <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="IsVisible">
       <Setter.Value>
-        <MultiBinding Converter="{x:Static shadui:WidthToVisibilityConverter.Instance}">
+        <MultiBinding Converter="{x:Static shadui:WidthToVisibilityConverter.Shared}">
           <CompiledBinding
             Path="Bounds.Width"
             RelativeSource="{RelativeSource AncestorType={x:Type shadui:BreakpointViewPort}}"/>

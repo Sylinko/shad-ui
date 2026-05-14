@@ -23,7 +23,7 @@ public static class ButtonStyleConverters
     ///     - Ghost → "Ghost"
     ///     - Destructive → "Destructive"
     /// </remarks>
-    public static readonly IValueConverter ToClass =
+    public static IValueConverter ToClass { get; } =
         new FuncValueConverter<ButtonStyle, string>(value => value switch
         {
             ButtonStyle.Primary => "Primary",

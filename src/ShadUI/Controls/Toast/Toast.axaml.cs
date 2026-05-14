@@ -195,10 +195,10 @@ public class Toast : ContentControl
                     }
                 )
                 .ContinueWith(
-                    _ => _manager?.Dismiss(this),
+                    _ => ExecuteDismiss(),
                     TaskScheduler.FromCurrentSynchronizationContext());
         };
-        e.NameScope.Get<Button>("PART_CloseButton").Click += (_, _) => _manager?.Dismiss(this);
+        e.NameScope.Get<Button>("PART_CloseButton").Click += (_, _) => ExecuteDismiss();
     }
 
     protected override void OnPointerEntered(PointerEventArgs e)
@@ -240,8 +240,7 @@ public class Toast : ContentControl
 
     private void ToastCardClickedHandler(object? sender, PointerPressedEventArgs e)
     {
-        if (!CanDismissByClicking) return;
-        _manager?.Dismiss(this);
+        if (CanDismissByClicking) ExecuteDismiss();
     }
 
     public void Show()
@@ -278,9 +277,15 @@ public class Toast : ContentControl
             () =>
             {
                 _resultCompletionSource?.TrySetResult(ToastResult.TimerElapsed);
-                _manager?.Dismiss(this);
+                ExecuteDismiss();
             },
             Duration);
+    }
+
+    private void ExecuteDismiss()
+    {
+        if (_manager is not null) _manager.Dismiss(this);
+        else Dismiss();
     }
 
     public void Dismiss()

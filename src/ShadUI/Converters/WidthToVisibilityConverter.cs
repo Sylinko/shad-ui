@@ -12,7 +12,7 @@ public class WidthToVisibilityConverter : IMultiValueConverter
     /// <summary>
     ///     Gets the singleton instance of the <see cref="WidthToVisibilityConverter" />.
     /// </summary>
-    public static WidthToVisibilityConverter Instance => new();
+    public static WidthToVisibilityConverter Shared { get; } = new();
 
     /// <summary>
     ///     Converts the width and breakpoint to a visibility value.
@@ -27,8 +27,7 @@ public class WidthToVisibilityConverter : IMultiValueConverter
         if (values[0] is not double width) return true;
         if (values[1] is not Breakpoint breakpoint) return true;
         if (values[2] is not bool invert) return true;
-        var isVisible = BreakpointRange.Ranges.TryGetValue(breakpoint, out var condition) &&
-                        condition(width);
+        var isVisible = BreakpointRange.Ranges.TryGetValue(breakpoint, out var condition) && condition(width);
         return invert ? !isVisible : isVisible;
     }
 }

@@ -32,8 +32,8 @@ public class ScrollerToOpacityMask : IMultiValueConverter
     /// </summary>
     public static ScrollerToOpacityMask Vertical { get; } = new((value, min, max) =>
     {
-        bool canScrollUp = value > min;
-        bool canScrollDown = value < max;
+        var canScrollUp = value > min;
+        var canScrollDown = value < max;
 
         if (canScrollUp && canScrollDown) return BothFadedVertical;
         if (canScrollUp) return TopFadedVertical;
@@ -47,8 +47,8 @@ public class ScrollerToOpacityMask : IMultiValueConverter
     /// </summary>
     public static ScrollerToOpacityMask Horizontal { get; } = new((value, min, max) =>
     {
-        bool canScrollLeft = value > min;
-        bool canScrollRight = value < max;
+        var canScrollLeft = value > min;
+        var canScrollRight = value < max;
 
         if (canScrollLeft && canScrollRight) return BothFadedHorizontal;
         if (canScrollLeft) return LeftFadedHorizontal;

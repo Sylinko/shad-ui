@@ -20,7 +20,7 @@ public static class CornerRadiusConverters
     ///     This converter takes a CornerRadius input and returns a new CornerRadius where only
     ///     the top-left and top-right corners retain their original values, while bottom corners are set to 0.
     /// </remarks>
-    public static readonly IValueConverter TopOnly =
+    public static IValueConverter TopOnly { get; } =
         new FuncValueConverter<CornerRadius, CornerRadius>(x => new CornerRadius(x.TopLeft, x.TopRight, 0, 0));
 
     /// <summary>
@@ -30,7 +30,7 @@ public static class CornerRadiusConverters
     ///     This converter takes a CornerRadius input and returns a new CornerRadius where only
     ///     the bottom-left and bottom-right corners retain their original values, while top corners are set to 0.
     /// </remarks>
-    public static readonly IValueConverter BottomOnly =
+    public static IValueConverter BottomOnly { get; } =
         new FuncValueConverter<CornerRadius, CornerRadius>(x => new CornerRadius(0, 0, x.BottomRight, x.BottomLeft));
 
     /// <summary>
@@ -40,7 +40,7 @@ public static class CornerRadiusConverters
     ///     This converter takes a CornerRadius input and returns a new CornerRadius where only
     ///     the top-left and bottom-left corners retain their original values, while right corners are set to 0.
     /// </remarks>
-    public static readonly IValueConverter LeftOnly =
+    public static IValueConverter LeftOnly { get; } =
         new FuncValueConverter<CornerRadius, CornerRadius>(x => new CornerRadius(x.TopLeft, 0, 0, x.BottomLeft));
 
     /// <summary>
@@ -50,7 +50,7 @@ public static class CornerRadiusConverters
     ///     This converter takes a CornerRadius input and returns a new CornerRadius where only
     ///     the top-right and bottom-right corners retain their original values, while left corners are set to 0.
     /// </remarks>
-    public static readonly IValueConverter RightOnly =
+    public static IValueConverter RightOnly { get; } =
         new FuncValueConverter<CornerRadius, CornerRadius>(x => new CornerRadius(0, x.TopRight, x.BottomRight, 0));
 
     /// <summary>
@@ -59,7 +59,7 @@ public static class CornerRadiusConverters
     /// <remarks>
     ///     This converter takes a CornerRadius input and returns the double value of the top-left corner.
     /// </remarks>
-    public static readonly IValueConverter TopLeft =
+    public static IValueConverter TopLeft { get; } =
         new FuncValueConverter<CornerRadius, double>(x => x.TopLeft);
 
     /// <summary>
@@ -68,6 +68,6 @@ public static class CornerRadiusConverters
     /// <remarks>
     ///     This converter takes a CornerRadius input and returns the double value of the bottom-right corner.
     /// </remarks>
-    public static readonly IValueConverter BottomRight =
+    public static IValueConverter BottomRight { get; } =
         new FuncValueConverter<CornerRadius, double>(x => x.BottomRight);
 }
