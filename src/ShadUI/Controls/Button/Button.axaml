@@ -102,6 +102,7 @@
               Cursor="Hand"
               TextElement.Foreground="{TemplateBinding Foreground}">
               <DockPanel
+                x:Name="PART_Container"
                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                 HorizontalSpacing="6">
                 <StackPanel
@@ -245,6 +246,10 @@
       <Setter Property="Height" Value="NaN"/>
       <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
       <Setter Property="FontWeight" Value="Light"/>
+
+      <Style Selector="^ /template/ DockPanel#PART_Container">
+        <Setter Property="HorizontalSpacing" Value="0"/>
+      </Style>
 
       <Style Selector="^.Uniform">
         <Setter Property="Padding" Value="4"/>
