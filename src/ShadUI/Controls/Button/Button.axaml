@@ -67,7 +67,7 @@
               </Transitions>
             </Panel.Transitions>
             <Border
-              x:Name="BaseBackground"
+              x:Name="BackgroundBorder"
               Background="{TemplateBinding Background}"
               BorderBrush="{TemplateBinding BorderBrush}"
               BorderThickness="{TemplateBinding BorderThickness}"
@@ -75,22 +75,8 @@
               Opacity="1">
               <Border.Transitions>
                 <Transitions>
-                  <DoubleTransition
-                    Property="Opacity" Duration="0:0:0.20"/>
-                </Transitions>
-              </Border.Transitions>
-            </Border>
-            <Border
-              x:Name="HoverBackground"
-              Background="{TemplateBinding shadui:ButtonAssist.HoverBackground}"
-              BorderBrush="{TemplateBinding BorderBrush}"
-              BorderThickness="{TemplateBinding BorderThickness}"
-              CornerRadius="{TemplateBinding CornerRadius}"
-              Opacity="0">
-              <Border.Transitions>
-                <Transitions>
-                  <DoubleTransition
-                    Property="Opacity" Duration="0:0:0.20"/>
+                  <BrushTransition
+                    Property="Background" Duration="0:0:0.15"/>
                 </Transitions>
               </Border.Transitions>
             </Border>
@@ -189,11 +175,8 @@
     <Style Selector="^:disabled">
       <Setter Property="Opacity" Value="0.5"/>
     </Style>
-    <Style Selector="^:pointerover /template/ Border#HoverBackground">
-      <Setter Property="Opacity" Value="1"/>
-    </Style>
-    <Style Selector="^:pointerover /template/ Border#BaseBackground">
-      <Setter Property="Opacity" Value="0"/>
+    <Style Selector="^:pointerover /template/ Border#BackgroundBorder">
+      <Setter Property="Background" Value="{TemplateBinding shadui:ButtonAssist.HoverBackground}"/>
     </Style>
     <Style Selector="^:pressed /template/ Panel#RootPanel">
       <Setter Property="RenderTransform" Value="scale(0.95, 0.95)"/>
@@ -212,7 +195,7 @@
     <Style Selector="^.Primary">
       <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
-      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource PrimaryColor50}"/>
+      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource PrimaryColor75}"/>
     </Style>
 
     <!--  Secondary  -->
@@ -233,10 +216,15 @@
     <!--  Ghost  -->
     <Style Selector="^.Ghost">
       <Setter Property="BorderThickness" Value="0"/>
-      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Background" Value="{DynamicResource TransparentColor}"/>
       <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource GhostColor}"/>
+    </Style>
+
+    <!--  Muted  -->
+    <Style Selector="^.Muted">
+      <Setter Property="Foreground" Value="{DynamicResource MutedColor}"/>
     </Style>
 
     <!--  Compact  -->
@@ -282,6 +270,13 @@
       <Style Selector="^ /template/ ContentPresenter">
         <Setter Property="Foreground" Value="{DynamicResource DestructiveForegroundColor}"/>
       </Style>
+    </Style>
+
+    <!--  Navigation  -->
+    <Style Selector="^.Navigation">
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Background" Value="#0DFFFFFF"/>
+      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="#1AFFFFFF"/>
     </Style>
 
     <!--  NoPressedAnimation  -->

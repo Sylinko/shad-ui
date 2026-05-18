@@ -27,6 +27,7 @@
 
                 <Style Selector="^ LucideIcon">
                   <Setter Property="Size" Value="{DynamicResource FontSizeL}"/>
+                  <Setter Property="Foreground" Value="{DynamicResource BadgeForegroundColor}"/>
                 </Style>
                 <Style Selector="^ shadui|Loading">
                   <Setter Property="Width" Value="{DynamicResource FontSizeL}"/>

@@ -15,6 +15,7 @@
   <Color x:Key="GhostHoverColor">#7F454545</Color>
   <Color x:Key="GhostHoverColor50">#33454545</Color>
   <Color x:Key="SelectionColor">#6609090B</Color>
+  <Color x:Key="SelectionHoverColor">#3309090B</Color>
 
   <!--  theme colors  -->
   <Color x:Key="SecondaryColor">#2a2a2a</Color>
