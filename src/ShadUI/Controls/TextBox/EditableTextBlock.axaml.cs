@@ -52,6 +52,18 @@ public class EditableTextBlock : TemplatedControl
         TextBox.WatermarkProperty.AddOwner<EditableTextBlock>();
 
     /// <summary>
+    /// Identifies the AcceptsReturn property.
+    /// </summary>
+    public static readonly StyledProperty<bool> AcceptsReturnProperty =
+        TextBox.AcceptsReturnProperty.AddOwner<EditableTextBlock>();
+
+    /// <summary>
+    /// Identifies the MaxLength property.
+    /// </summary>
+    public static readonly StyledProperty<int> MaxLengthProperty =
+        TextBox.MaxLengthProperty.AddOwner<EditableTextBlock>();
+
+    /// <summary>
     /// Indicates whether the control is in editing mode.
     /// </summary>
     public static readonly StyledProperty<bool> IsEditingProperty =
@@ -100,6 +112,24 @@ public class EditableTextBlock : TemplatedControl
     {
         get => GetValue(WatermarkProperty);
         set => SetValue(WatermarkProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the accepts return.
+    /// </summary>
+    public bool AcceptsReturn
+    {
+        get => GetValue(AcceptsReturnProperty);
+        set => SetValue(AcceptsReturnProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the max length.
+    /// </summary>
+    public int MaxLength
+    {
+        get => GetValue(MaxLengthProperty);
+        set => SetValue(MaxLengthProperty, value);
     }
 
     /// <summary>

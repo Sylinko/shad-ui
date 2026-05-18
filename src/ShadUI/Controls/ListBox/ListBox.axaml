@@ -56,30 +56,28 @@
             x:Name="SelectedBorder" DockPanel.Dock="Left"
             Width="4" Margin="0,2,2,2"
             Background="{DynamicResource PrimaryColor}"
-            CornerRadius="2" Opacity="0"/>
-
+            CornerRadius="2" Opacity="0">
+            <Border.Transitions>
+              <Transitions>
+                <DoubleTransition
+                  Property="Opacity" Duration="0:0:0.2"/>
+              </Transitions>
+            </Border.Transitions>
+          </Border>
           <Panel>
             <Border
-              Name="BaseBackground"
-              Background="{TemplateBinding Background}"
+              Name="BackgroundBorder"
+              Background="{DynamicResource TransparentColor}"
               BorderBrush="{TemplateBinding BorderBrush}"
               BorderThickness="{TemplateBinding BorderThickness}"
-              CornerRadius="{TemplateBinding CornerRadius}"
-              Opacity="1"/>
-            <Border
-              Name="HoverBackground"
-              Background="{DynamicResource GhostHoverColor}"
-              BorderBrush="{TemplateBinding BorderBrush}"
-              BorderThickness="{TemplateBinding BorderThickness}"
-              CornerRadius="{TemplateBinding CornerRadius}"
-              Opacity="0"/>
-            <Border
-              Name="SelectionBackground"
-              Background="{DynamicResource GhostColor}"
-              BorderBrush="{TemplateBinding BorderBrush}"
-              BorderThickness="{TemplateBinding BorderThickness}"
-              CornerRadius="{TemplateBinding CornerRadius}"
-              Opacity="0"/>
+              CornerRadius="{TemplateBinding CornerRadius}">
+              <Border.Transitions>
+                <Transitions>
+                  <BrushTransition
+                    Property="Background" Duration="0:0:0.2"/>
+                </Transitions>
+              </Border.Transitions>
+            </Border>
             <ContentPresenter
               Margin="{TemplateBinding Padding}"
               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -92,31 +90,31 @@
         </DockPanel>
       </ControlTemplate>
     </Setter>
-    <Style Selector="^ /template/ Border">
-      <Setter Property="Transitions">
-        <Transitions>
-          <DoubleTransition
-            Property="Opacity" Duration="0:0:0.20"/>
-        </Transitions>
-      </Setter>
+    <Style Selector="^:focus /template/ Border#BackgroundBorder">
+      <Setter Property="Background" Value="{DynamicResource ListBoxItemHoverColor}"/>
     </Style>
-    <Style Selector="^:selected:not(:pointerover) /template/ Border#SelectionBackground">
-      <Setter Property="Opacity" Value="1"/>
+    <Style Selector="^:focus:pointerover /template/ Border#BackgroundBorder">
+      <Setter Property="Background" Value="{DynamicResource ListBoxItemHoverColor}"/>
     </Style>
-    <Style Selector="^:selected /template/ Border#SelectedBorder">
-      <Setter Property="Opacity" Value="1"/>
+    <Style Selector="^:pointerover /template/ Border#BackgroundBorder">
+      <Setter Property="Background" Value="{DynamicResource ListBoxItemHoverColor}"/>
     </Style>
-    <Style Selector="^:focus /template/ Border#HoverBackground">
-      <Setter Property="Opacity" Value="1"/>
+    <Style Selector="^:not(:focus):not(:pointerover) /template/ Border#BackgroundBorder">
+      <Setter Property="Background" Value="{DynamicResource TransparentColor}"/>
     </Style>
-    <Style Selector="^:pointerover /template/ Border#HoverBackground">
-      <Setter Property="Opacity" Value="1"/>
-    </Style>
-    <Style Selector="^:focus:pointerover /template/ Border#HoverBackground">
-      <Setter Property="Opacity" Value="1"/>
-    </Style>
-    <Style Selector="^:not(:focus):not(:pointerover) /template/ Border#HoverBackground">
-      <Setter Property="Opacity" Value="0"/>
+    <Style Selector="^:selected">
+      <Style Selector="^ /template/ Border#BackgroundBorder">
+        <Setter Property="Background" Value="{DynamicResource ListBoxItemSelectedColor}"/>
+      </Style>
+      <Style Selector="^ /template/ Border#SelectedBorder">
+        <Setter Property="Opacity" Value="1"/>
+      </Style>
+      <Style Selector="^:not(:pointerover) /template/ Border#BackgroundBorder">
+        <Setter Property="Background" Value="{DynamicResource ListBoxItemHoverColor}"/>
+      </Style>
+      <Style Selector="^:not(:pointerover) /template/ Border#SelectedBorder">
+        <Setter Property="Opacity" Value="1"/>
+      </Style>
     </Style>
   </ControlTheme>
 
@@ -261,13 +259,6 @@
           <Setter Property="Template">
             <ControlTemplate TargetType="ListBoxItem">
               <Panel>
-                <Border
-                  Name="BaseBackground"
-                  Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}"
-                  CornerRadius="{TemplateBinding CornerRadius}"
-                  Opacity="1"/>
                 <Border
                   Name="HoverBackground"
                   Background="{DynamicResource GhostHoverColor}"

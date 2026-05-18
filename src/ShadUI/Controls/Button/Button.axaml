@@ -187,7 +187,7 @@
       <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource GhostColor}"/>
+      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource SelectionHoverColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
     </Style>
 
