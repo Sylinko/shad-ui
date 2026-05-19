@@ -21,10 +21,7 @@
   </Design.PreviewWith>
   <ControlTheme
     x:Key="ToastTheme" TargetType="shadui:Toast">
-    <Setter Property="MinWidth" Value="380"/>
-    <Setter Property="MaxWidth" Value="640"/>
     <Setter Property="Padding" Value="16"/>
-    <Setter Property="Margin" Value="16"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Border

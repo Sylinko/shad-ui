@@ -1,40 +1,30 @@
 using Avalonia;
+using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Layout;
-using Avalonia.Reactive;
+using Avalonia.Input;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
 
 /// <summary>
-///     The host for toast notifications.
+///     Hosts and manages the lifecycle of <see cref="Toast" /> notifications.
+///     Contains four corner-aligned <see cref="ToastCornerHost" /> instances;
+///     toasts are routed to the correct corner based on <see cref="Toast.Position" />.
 /// </summary>
-public class ToastHost : ItemsControl
+public sealed class ToastHost : TemplatedControl
 {
     /// <summary>
-    ///     Defines the toast manager.
+    ///     Defines the <see cref="MaxToasts" /> property.
     /// </summary>
-    public static readonly StyledProperty<ToastManager> ManagerProperty =
-        AvaloniaProperty.Register<ToastHost, ToastManager>(nameof(Manager));
+    public static readonly StyledProperty<byte> MaxToastsProperty =
+        AvaloniaProperty.Register<ToastHost, byte>(nameof(MaxToasts), 5);
 
     /// <summary>
-    ///     Gets or sets the toast manager.
-    /// </summary>
-    public ToastManager Manager
-    {
-        get => GetValue(ManagerProperty);
-        set => SetValue(ManagerProperty, value);
-    }
-
-    /// <summary>
-    ///     Maximum number of toasts to be displayed at a time.
-    /// </summary>
-    public static readonly StyledProperty<byte>
-        MaxToastsProperty = AvaloniaProperty.Register<ToastHost, byte>(nameof(MaxToasts), 5);
-
-    /// <summary>
-    ///     Gets or sets the maximum number of toasts to be displayed at a time.
+    ///     Gets or sets the maximum number of toasts displayed simultaneously.
+    ///     When exceeded, the oldest toasts are dismissed.
     /// </summary>
     public byte MaxToasts
     {
@@ -43,30 +33,14 @@ public class ToastHost : ItemsControl
     }
 
     /// <summary>
-    ///     Defines the position of the toast host relative to its parent.
+    ///     Defines the <see cref="SingleToast" /> property.
     /// </summary>
-    public static readonly StyledProperty<ToastPosition> PositionProperty =
-        AvaloniaProperty.Register<ToastHost, ToastPosition>(nameof(Position));
+    public static readonly StyledProperty<bool> SingleToastProperty =
+        AvaloniaProperty.Register<ToastHost, bool>(nameof(SingleToast));
 
     /// <summary>
-    ///     Gets or sets the position of the toast host.
-    /// </summary>
-    public ToastPosition Position
-    {
-        get => GetValue(PositionProperty);
-        set => SetValue(PositionProperty, value);
-    }
-
-    /// <summary>
-    ///     Gets or sets a value indicating whether only a single toast should be displayed at a time.
-    ///     If true, any new toast will clear all existing toasts before being shown.
-    /// </summary>
-    public static readonly StyledProperty<bool> SingleToastProperty = AvaloniaProperty.Register<ToastHost, bool>(
-        nameof(SingleToast));
-
-    /// <summary>
-    ///     Gets or sets a value indicating whether only a single toast should be displayed at a time.
-    ///     If true, any new toast will clear all existing toasts before being shown.
+    ///     Gets or sets a value indicating whether only a single toast is displayed at a time.
+    ///     When <c>true</c>, queuing a new toast dismisses all existing toasts first.
     /// </summary>
     public bool SingleToast
     {
@@ -74,162 +48,331 @@ public class ToastHost : ItemsControl
         set => SetValue(SingleToastProperty, value);
     }
 
-    private ToastPosition _originalPosition;
+    /// <summary>
+    ///     Defines the <see cref="ToastMaxWidth" /> property.
+    /// </summary>
+    public static readonly StyledProperty<double> ToastMaxWidthProperty =
+        AvaloniaProperty.Register<ToastHost, double>(nameof(ToastMaxWidth), 800);
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="ToastHost"/> class.
+    ///     Gets or sets the maximum width applied to each toast.
     /// </summary>
-    public ToastHost()
+    public double ToastMaxWidth
     {
-        Manager = new ToastManager();
+        get => GetValue(ToastMaxWidthProperty);
+        set => SetValue(ToastMaxWidthProperty, value);
     }
 
     /// <summary>
-    ///     Called when the template is applied.
+    ///     Defines the <see cref="ToastMaxHeight" /> property.
     /// </summary>
-    /// <param name="e"></param>
+    public static readonly StyledProperty<double> ToastMaxHeightProperty =
+        AvaloniaProperty.Register<ToastHost, double>(nameof(ToastMaxHeight), double.PositiveInfinity);
+
+    /// <summary>
+    ///     Gets or sets the maximum height applied to each toast.
+    /// </summary>
+    public double ToastMaxHeight
+    {
+        get => GetValue(ToastMaxHeightProperty);
+        set => SetValue(ToastMaxHeightProperty, value);
+    }
+
+    /// <summary>
+    ///     Defines the <see cref="ToastMinWidth" /> property.
+    /// </summary>
+    public static readonly StyledProperty<double> ToastMinWidthProperty =
+        AvaloniaProperty.Register<ToastHost, double>(nameof(ToastMinWidth), 320);
+
+    /// <summary>
+    ///     Gets or sets the minimum width applied to each toast.
+    /// </summary>
+    public double ToastMinWidth
+    {
+        get => GetValue(ToastMinWidthProperty);
+        set => SetValue(ToastMinWidthProperty, value);
+    }
+
+    /// <summary>
+    ///     Defines the <see cref="ToastMinHeight" /> property.
+    /// </summary>
+    public static readonly StyledProperty<double> ToastMinHeightProperty =
+        AvaloniaProperty.Register<ToastHost, double>(nameof(ToastMinHeight));
+
+    /// <summary>
+    ///     Gets or sets the minimum height applied to each toast.
+    /// </summary>
+    public double ToastMinHeight
+    {
+        get => GetValue(ToastMinHeightProperty);
+        set => SetValue(ToastMinHeightProperty, value);
+    }
+
+    /// <summary>
+    ///     Defines the <see cref="Spacing" /> property.
+    /// </summary>
+    public static readonly StyledProperty<double> SpacingProperty =
+        AvaloniaProperty.Register<ToastHost, double>(nameof(Spacing));
+
+    /// <summary>
+    ///     Gets or sets the spacing between toasts in the same corner.
+    /// </summary>
+    public double Spacing
+    {
+        get => GetValue(SpacingProperty);
+        set => SetValue(SpacingProperty, value);
+    }
+
+    /// <summary>
+    ///     Default animation duration used for show / hide transitions.
+    /// </summary>
+    private static readonly TimeSpan AnimationDuration = TimeSpan.FromMilliseconds(500);
+
+    private ToastCornerHost? _topLeft;
+    private ToastCornerHost? _topRight;
+    private ToastCornerHost? _bottomLeft;
+    private ToastCornerHost? _bottomRight;
+    private readonly List<Toast> _queuedToasts = [];
+
+    /// <inheritdoc />
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        OnPositionChanged(Position);
-        _originalPosition = Position; // use this as the default position if none is specified in the toast
+
+        _topLeft = e.NameScope.Get<ToastCornerHost>("PART_TopLeft");
+        _topRight = e.NameScope.Get<ToastCornerHost>("PART_TopRight");
+        _bottomLeft = e.NameScope.Get<ToastCornerHost>("PART_BottomLeft");
+        _bottomRight = e.NameScope.Get<ToastCornerHost>("PART_BottomRight");
     }
+
+    /// <inheritdoc />
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        ToastManager.Register(this);
+    }
+
+    /// <inheritdoc />
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+        ToastManager.Unregister(this);
+    }
+
+    #region Public API
 
     /// <summary>
-    ///     Called when a property is changed.
+    ///     Creates a <see cref="ToastBuilder" /> for building and showing a toast
+    ///     through this host.
     /// </summary>
-    /// <param name="change"></param>
-    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-    {
-        base.OnPropertyChanged(change);
-        if (change.Property == PositionProperty && change.NewValue is ToastPosition loc)
-        {
-            OnPositionChanged(loc);
-        }
-    }
+    /// <param name="title">The title of the toast.</param>
+    /// <returns>A fluent <see cref="ToastBuilder" /> instance.</returns>
+    public ToastBuilder CreateToast(string title) => new(this, title);
 
-    private void OnPositionChanged(ToastPosition position)
-    {
-        HorizontalAlignment = position switch
-        {
-            ToastPosition.BottomRight => HorizontalAlignment.Right,
-            ToastPosition.BottomCenter => HorizontalAlignment.Center,
-            ToastPosition.BottomLeft => HorizontalAlignment.Left,
-            ToastPosition.TopRight => HorizontalAlignment.Right,
-            ToastPosition.TopCenter => HorizontalAlignment.Center,
-            ToastPosition.TopLeft => HorizontalAlignment.Left,
-            _ => throw new ArgumentOutOfRangeException()
-        };
-        VerticalAlignment = position switch
-        {
-            ToastPosition.BottomRight => VerticalAlignment.Bottom,
-            ToastPosition.BottomCenter => VerticalAlignment.Bottom,
-            ToastPosition.BottomLeft => VerticalAlignment.Bottom,
-            ToastPosition.TopRight => VerticalAlignment.Top,
-            ToastPosition.TopCenter => VerticalAlignment.Top,
-            ToastPosition.TopLeft => VerticalAlignment.Top,
-            _ => throw new ArgumentOutOfRangeException()
-        };
-    }
-
-    private static void OnManagerPropertyChanged(AvaloniaObject sender,
-        AvaloniaPropertyChangedEventArgs propChanged)
-    {
-        if (sender is not ToastHost host)
-        {
-            throw new NullReferenceException("Dependency object is not of valid type " + nameof(ToastHost));
-        }
-
-        if (propChanged.OldValue is ToastManager oldManager)
-        {
-            host.DetachManagerEvents(oldManager);
-        }
-
-        if (propChanged.NewValue is ToastManager newManager)
-        {
-            host.AttachManagerEvents(newManager);
-        }
-    }
-
-    private void AttachManagerEvents(ToastManager manager)
-    {
-        manager.OnToastQueued += ManagerOnToastQueued;
-        manager.OnToastDismissed += ManagerOnToastDismissed;
-        manager.OnAllToastsDismissed += ManagerOnAllToastsDismissed;
-    }
-
-    private void DetachManagerEvents(ToastManager manager)
-    {
-        manager.OnToastQueued -= ManagerOnToastQueued;
-        manager.OnToastDismissed -= ManagerOnToastDismissed;
-        manager.OnAllToastsDismissed -= ManagerOnAllToastsDismissed;
-    }
-
-    private void ManagerOnToastDismissed(object? sender, Toast toast)
-    {
-        ClearToast(toast);
-    }
-
-    private void ManagerOnAllToastsDismissed(object? sender, EventArgs e)
-    {
-        foreach (var toast in Items)
-        {
-            ClearToast((Toast)toast!);
-        }
-    }
-
-    private void ManagerOnToastQueued(object? sender, Toast toast)
+    /// <summary>
+    ///     Queues a toast for display. Routes to the correct corner based on
+    ///     <see cref="Toast.Position" /> (defaults to <see cref="ToastPosition.BottomRight" />).
+    /// </summary>
+    /// <param name="toast">The toast to display.</param>
+    public void QueueToast(Toast toast)
     {
         if (MaxToasts <= 0) return;
 
-        if (SingleToast)
+        if (SingleToast) DismissAll();
+
+        _queuedToasts.Add(toast);
+
+        var corner = GetCornerHost(toast.Position ?? ToastPosition.BottomRight);
+        if (corner is null) return;
+
+        ShowToastInternal(corner, toast);
+        EnsureMaximum(MaxToasts);
+    }
+
+    /// <summary>
+    ///     Dismisses a toast with the specified result and plays the exit animation.
+    /// </summary>
+    /// <param name="toast">The toast to dismiss.</param>
+    /// <param name="result">The reason for dismissal.</param>
+    public void DismissToast(Toast toast, ToastResult result)
+    {
+        if (!_queuedToasts.Contains(toast)) return;
+
+        _queuedToasts.Remove(toast);
+        toast.DismissCts?.Cancel();
+        toast.DismissCts = null;
+
+        AnimateDismiss(toast, result, () =>
         {
-            foreach (var t in Items.OfType<Toast>())
+            // Remove from whichever corner host it's in
+            foreach (var corner in GetAllCornerHosts())
+                corner.Items.Remove(toast);
+        });
+    }
+
+    /// <summary>
+    ///     Dismisses all currently displayed toasts on all corners.
+    /// </summary>
+    public void DismissAll()
+    {
+        foreach (var toast in _queuedToasts.ToList())
+            DismissToast(toast, ToastResult.Dismissed);
+    }
+
+    #endregion
+
+    /// <summary>
+    ///     Ensures the number of toasts does not exceed <paramref name="maxAllowed" />
+    ///     by dismissing the oldest ones.
+    /// </summary>
+    private void EnsureMaximum(int maxAllowed)
+    {
+        while (_queuedToasts.Count > maxAllowed)
+        {
+            var oldest = _queuedToasts[0];
+            DismissToast(oldest, ToastResult.Dismissed);
+        }
+    }
+
+    private ToastCornerHost? GetCornerHost(ToastPosition position)
+    {
+        return position switch
+        {
+            ToastPosition.TopLeft => _topLeft,
+            ToastPosition.TopRight => _topRight,
+            ToastPosition.BottomLeft => _bottomLeft,
+            _ => _bottomRight
+        };
+    }
+
+    private IEnumerable<ToastCornerHost> GetAllCornerHosts()
+    {
+        if (_topLeft is not null) yield return _topLeft;
+        if (_topRight is not null) yield return _topRight;
+        if (_bottomLeft is not null) yield return _bottomLeft;
+        if (_bottomRight is not null) yield return _bottomRight;
+    }
+
+    private void ShowToastInternal(ToastCornerHost corner, Toast toast)
+    {
+        corner.Items.Add(toast);
+
+        // Subscribe to toast events
+        toast.CloseRequested += HandleToastCloseRequested;
+        toast.ActionButtonClicked += HandleToastActionButtonClicked;
+        toast.PointerEntered += HandleToastPointerEntered;
+        toast.PointerExited += HandleToastPointerExited;
+
+        // Play enter animation
+        AnimateShow(toast);
+
+        // Start auto-dismiss timer if duration is set
+        StartAutoDismissTimer(toast);
+    }
+
+    private void HandleToastCloseRequested(object? sender, ToastResult result)
+    {
+        if (sender is Toast toast)
+        {
+            toast.CloseRequested -= HandleToastCloseRequested;
+            DismissToast(toast, result);
+        }
+    }
+
+    private void HandleToastActionButtonClicked(object? sender, EventArgs e)
+    {
+        if (sender is Toast toast)
+        {
+            toast.ActionButtonClicked -= HandleToastActionButtonClicked;
+            DismissToast(toast, ToastResult.ActionButtonClicked);
+        }
+    }
+
+    private static void HandleToastPointerEntered(object? sender, PointerEventArgs e)
+    {
+        if (sender is Toast toast)
+        {
+            toast.DismissCts?.Cancel();
+            toast.DismissCts = null;
+        }
+    }
+
+    private void HandleToastPointerExited(object? sender, PointerEventArgs e)
+    {
+        if (sender is Toast toast)
+            StartAutoDismissTimer(toast);
+    }
+
+    private static void AnimateShow(Toast toast)
+    {
+        toast.Animate(OpacityProperty)
+            .From(0d)
+            .To(1d)
+            .WithDuration(AnimationDuration)
+            .WithEasing(new CubicEaseInOut())
+            .Start();
+    }
+
+    private static void AnimateDismiss(Toast toast, ToastResult result, Action onCompleted)
+    {
+        // Notify the toast so it can execute its own Command
+        toast.RequestClose(result);
+
+        toast.Animate(OpacityProperty)
+            .From(1d)
+            .To(0d)
+            .WithDuration(AnimationDuration)
+            .WithEasing(new CubicEaseInOut())
+            .Start();
+
+        Task.Delay(AnimationDuration)
+            .ContinueWith(_ => onCompleted(), TaskScheduler.FromCurrentSynchronizationContext());
+    }
+
+    private void StartAutoDismissTimer(Toast toast)
+    {
+        if (toast.Duration.Ticks <= 0) return;
+
+        toast.DismissCts = new CancellationTokenSource();
+        var cts = toast.DismissCts;
+
+        DispatcherTimer.RunOnce(
+            () =>
             {
-                ClearToast(t);
-            }
-        }
+                if (cts.IsCancellationRequested) return;
+                DismissToast(toast, ToastResult.TimerElapsed);
+            },
+            toast.Duration);
+    }
+}
 
-        var position = toast.Position ?? _originalPosition;
-        if (Position == position)
-        {
-            ShowToast(toast);
-            return;
-        }
+/// <summary>
+///     Corner-specific <see cref="ItemsControl" /> that binds
+///     <see cref="ToastHost.ToastMaxWidth" /> and <see cref="ToastHost.ToastMaxHeight" />
+///     onto each toast's container.
+/// </summary>
+internal sealed class ToastCornerHost : ItemsControl
+{
+    protected override Type StyleKeyOverride => typeof(ItemsControl);
 
-        var count = Items.Count;
-        foreach (var t in Items.OfType<Toast>()) ClearToast(t);
-
-        if (count > 0)
-        {
-            Task.Delay(300).ContinueWith(_ => ShowToast(toast), TaskScheduler.FromCurrentSynchronizationContext());
-        }
-        else
-        {
-            ShowToast(toast);
-        }
+    protected override Control CreateContainerForItemOverride(object? item, int index, object? recycleKey)
+    {
+        return item as Toast ?? new ContentControl();
     }
 
-    private void ShowToast(Toast toast)
+    protected override void PrepareContainerForItemOverride(Control container, object? item, int index)
     {
-        Items.Add(toast);
-        Manager.EnsureMaximum(MaxToasts);
+        base.PrepareContainerForItemOverride(container, item, index);
 
-        Position = toast.Position ?? _originalPosition;
-        toast.Show();
-    }
+        if (item is not Toast toast) return;
 
-    private void ClearToast(Toast toast)
-    {
-        if (Manager.IsDismissed(toast)) return;
-        toast.Dismiss();
-        Task.Delay(300).ContinueWith(_ => { Items.Remove(toast); }, TaskScheduler.FromCurrentSynchronizationContext());
-    }
+        // Walk up to the owning ToastHost via visual tree
+        var host = this.FindAncestorOfType<ToastHost>();
+        if (host is null) return;
 
-    static ToastHost()
-    {
-        ManagerProperty.Changed.Subscribe(
-            new AnonymousObserver<AvaloniaPropertyChangedEventArgs<ToastManager>>(x =>
-                OnManagerPropertyChanged(x.Sender, x)));
+        toast[!MaxWidthProperty] = host[!ToastHost.ToastMaxWidthProperty];
+        toast[!MaxHeightProperty] = host[!ToastHost.ToastMaxHeightProperty];
+        toast[!MinWidthProperty] = host[!ToastHost.ToastMinWidthProperty];
+        toast[!MinHeightProperty] = host[!ToastHost.ToastMinHeightProperty];
     }
 }

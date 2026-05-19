@@ -1,92 +1,101 @@
 using System.Windows.Input;
 using Avalonia;
-using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.Media;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
 
-public enum ToastResult
-{
-    /// <summary>
-    ///     The toast was dismissed.
-    /// </summary>
-    Dismissed,
-
-    /// <summary>
-    ///     The toast was dismissed after the timer elapsed.
-    /// </summary>
-    TimerElapsed,
-
-    /// <summary>
-    ///     The toast's action button was clicked.
-    /// </summary>
-    ActionButtonClicked
-}
-
+/// <summary>
+///     A pure toast notification control with no built-in lifecycle management.
+///     Use standalone in any layout by binding <see cref="Command" />,
+///     or let <see cref="ToastHost" /> manage its show / hide animations, auto-dismiss timer, and stacking.
+/// </summary>
 [TemplatePart("PART_ToastCard", typeof(Border))]
 [TemplatePart("PART_ActionButton", typeof(Button))]
 [TemplatePart("PART_CloseButton", typeof(Button))]
-public class Toast : ContentControl
+public sealed class Toast : ContentControl
 {
-    /// <summary>
-    ///     Delay in seconds before the toast is auto dismissed.
-    /// </summary>
-    public TimeSpan Duration { get; set; }
-
-    public ToastPosition? Position { get; set; }
+    #region Styled Properties
 
     /// <summary>
-    /// Use lazy initialization for performance optimization.
+    ///     Defines the <see cref="Notification" /> property.
     /// </summary>
-    public TaskCompletionSource<ToastResult> ResultCompletionSource => _resultCompletionSource ??= new TaskCompletionSource<ToastResult>();
-
     public static readonly StyledProperty<Notification> NotificationProperty =
         AvaloniaProperty.Register<Toast, Notification>(nameof(Notification));
 
+    /// <summary>
+    ///     Gets or sets the visual style of the toast notification.
+    /// </summary>
     public Notification Notification
     {
         get => GetValue(NotificationProperty);
         set => SetValue(NotificationProperty, value);
     }
 
+    /// <summary>
+    ///     Defines the <see cref="Title" /> property.
+    /// </summary>
     public static readonly StyledProperty<string?> TitleProperty =
         AvaloniaProperty.Register<Toast, string?>(nameof(Title));
 
+    /// <summary>
+    ///     Gets or sets the title text displayed on the toast.
+    /// </summary>
     public string? Title
     {
         get => GetValue(TitleProperty);
         set => SetValue(TitleProperty, value);
     }
 
+    /// <summary>
+    ///     Defines the <see cref="IsEmptyContent" /> property.
+    /// </summary>
     public static readonly StyledProperty<bool> IsEmptyContentProperty =
         AvaloniaProperty.Register<Toast, bool>(nameof(IsEmptyContent), true);
 
+    /// <summary>
+    ///     Gets a value indicating whether the <see cref="ContentControl.Content" /> is null.
+    /// </summary>
     public bool IsEmptyContent
     {
         get => Content == null;
         private set => SetValue(IsEmptyContentProperty, value);
     }
 
+    /// <summary>
+    ///     Defines the <see cref="ProgressValue" /> property.
+    /// </summary>
     public static readonly StyledProperty<double> ProgressValueProperty =
         AvaloniaProperty.Register<Toast, double>(nameof(ProgressValue));
 
+    /// <summary>
+    ///     Gets or sets the current progress value (0.0 to 1.0) displayed on the progress bar.
+    /// </summary>
     public double ProgressValue
     {
         get => GetValue(ProgressValueProperty);
         set => SetValue(ProgressValueProperty, value);
     }
 
-    public static readonly DirectProperty<Toast, Progress<double>?> ProgressProperty = AvaloniaProperty.RegisterDirect<Toast, Progress<double>?>(
-        nameof(Progress),
-        o => o.Progress,
-        (o, v) => o.Progress = v);
+    /// <summary>
+    ///     Defines the <see cref="Progress" /> direct property.
+    /// </summary>
+    public static readonly DirectProperty<Toast, Progress<double>?> ProgressProperty =
+        AvaloniaProperty.RegisterDirect<Toast, Progress<double>?>(
+            nameof(Progress),
+            o => o.Progress,
+            (o, v) => o.Progress = v);
 
+    /// <summary>
+    ///     Gets or sets an <see cref="System.Progress{T}" /> instance that drives
+    ///     <see cref="ProgressValue" />. When set, the control subscribes to progress
+    ///     change notifications and updates the UI on the dispatcher thread.
+    /// </summary>
     public Progress<double>? Progress
     {
         get;
@@ -101,38 +110,62 @@ public class Toast : ContentControl
         }
     }
 
-    public CancellationTokenSource? CancellationTokenSource { get; set; }
-
+    /// <summary>
+    ///     Defines the <see cref="ActionButtonContent" /> property.
+    /// </summary>
     public static readonly StyledProperty<object?> ActionButtonContentProperty =
         AvaloniaProperty.Register<Toast, object?>(nameof(ActionButtonContent));
 
+    /// <summary>
+    ///     Gets or sets the content displayed on the action button.
+    ///     When null, the action button is hidden.
+    /// </summary>
     public object? ActionButtonContent
     {
         get => GetValue(ActionButtonContentProperty);
         set => SetValue(ActionButtonContentProperty, value);
     }
 
+    /// <summary>
+    ///     Defines the <see cref="ActionButtonStyle" /> property.
+    /// </summary>
     public static readonly StyledProperty<ButtonStyle> ActionButtonStyleProperty =
         AvaloniaProperty.Register<Toast, ButtonStyle>(nameof(ActionButtonStyle));
 
+    /// <summary>
+    ///     Gets or sets the visual style of the action button.
+    /// </summary>
     public ButtonStyle ActionButtonStyle
     {
         get => GetValue(ActionButtonStyleProperty);
         set => SetValue(ActionButtonStyleProperty, value);
     }
 
+    /// <summary>
+    ///     Defines the <see cref="CanDismissByClicking" /> property.
+    /// </summary>
     public static readonly StyledProperty<bool> CanDismissByClickingProperty =
         AvaloniaProperty.Register<Toast, bool>(nameof(CanDismissByClicking));
 
+    /// <summary>
+    ///     Gets or sets a value indicating whether clicking anywhere on the toast card
+    ///     raises the <see cref="CloseRequested" /> event.
+    /// </summary>
     public bool CanDismissByClicking
     {
         get => GetValue(CanDismissByClickingProperty);
         set => SetValue(CanDismissByClickingProperty, value);
     }
 
+    /// <summary>
+    ///     Defines the <see cref="CanDismiss" /> property.
+    /// </summary>
     public static readonly StyledProperty<bool> CanDismissProperty =
         AvaloniaProperty.Register<Toast, bool>(nameof(CanDismiss), true);
 
+    /// <summary>
+    ///     Gets or sets a value indicating whether the close button is visible.
+    /// </summary>
     public bool CanDismiss
     {
         get => GetValue(CanDismissProperty);
@@ -140,90 +173,126 @@ public class Toast : ContentControl
     }
 
     /// <summary>
-    ///     Command to execute when the toast is dismissed, either by timer or user interaction.
+    ///     Defines the <see cref="Command" /> property.
     /// </summary>
-    public static readonly StyledProperty<ICommand?> DismissCommandProperty =
-        AvaloniaProperty.Register<Toast, ICommand?>(nameof(DismissCommand));
+    public static readonly StyledProperty<ICommand?> CommandProperty =
+        AvaloniaProperty.Register<Toast, ICommand?>(nameof(Command));
 
     /// <summary>
-    ///     Gets or sets the command to execute when the toast is dismissed, either by timer or user interaction.
+    ///     Gets or sets the command to execute when the toast is closed
+    ///     (via close button, card click with <see cref="CanDismissByClicking" />, or programmatic dismiss).
+    ///     The command receives the associated <see cref="ToastResult" /> as its parameter.
     /// </summary>
-    public ICommand? DismissCommand
+    public ICommand? Command
     {
-        get => GetValue(DismissCommandProperty);
-        set => SetValue(DismissCommandProperty, value);
+        get => GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
     }
 
-    private readonly ToastManager? _manager;
+    #endregion
 
-    private IDisposable? _dismissTimer;
-    private TaskCompletionSource<ToastResult>? _resultCompletionSource;
+    #region Events
 
-    public Toast() { }
+    /// <summary>
+    ///     Raised when the user clicks the close button, or clicks the card when
+    ///     <see cref="CanDismissByClicking" /> is <c>true</c>.
+    /// </summary>
+    public event EventHandler<ToastResult>? CloseRequested;
 
-    public Toast(ToastManager manager)
-    {
-        _manager = manager;
-    }
+    /// <summary>
+    ///     Raised when the user clicks the action button.
+    /// </summary>
+    public event EventHandler? ActionButtonClicked;
 
+    #endregion
+
+    #region Internal Fields (used by ToastHost)
+
+    /// <summary>
+    ///     Auto-dismiss duration. Set by <see cref="ToastHost" /> or
+    ///     <see cref="ToastBuilder" />. When <see cref="TimeSpan.Zero" />,
+    ///     the toast will not auto-dismiss.
+    /// </summary>
+    internal TimeSpan Duration { get; set; }
+
+    /// <summary>
+    ///     Per-toast screen position override. When <c>null</c>,
+    ///     <see cref="ToastHost" /> uses its own <see cref="ToastHost.Position" />.
+    /// </summary>
+    internal ToastPosition? Position { get; set; }
+
+    /// <summary>
+    ///     Cancellation token source for the auto-dismiss timer.
+    ///     Managed exclusively by <see cref="ToastHost" />.
+    /// </summary>
+    internal CancellationTokenSource? DismissCts { get; set; }
+
+    #endregion
+
+    #region Template Event Handlers (IDisposable)
+
+    private IDisposable? _cardPressDisposable;
+    private IDisposable? _actionButtonClickDisposable;
+    private IDisposable? _closeButtonClickDisposable;
+
+    #endregion
+
+    /// <inheritdoc />
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        e.NameScope.Get<Border>("PART_ToastCard").PointerPressed += ToastCardClickedHandler;
-        e.NameScope.Get<Button>("PART_ActionButton").Click += (_, _) =>
-        {
-            _dismissTimer?.Dispose();
-            _dismissTimer = null;
-            _resultCompletionSource?.TrySetResult(ToastResult.ActionButtonClicked);
 
-            var duration = TimeSpan.FromMilliseconds(500);
-            var easing = new CubicEaseInOut();
-            Task.WhenAll(
-                    this.Animate(SkewTransform.AngleXProperty).To(10d).WithDuration(duration).WithEasing(easing).RunAsync(),
-                    this.Animate(SkewTransform.AngleYProperty).To(10d).WithDuration(duration).WithEasing(easing).RunAsync(),
-                    Position switch
-                    {
-                        ToastPosition.TopLeft or ToastPosition.BottomLeft =>
-                            this.Animate(TranslateTransform.XProperty).To(-Bounds.Width - 20d).WithDuration(duration).WithEasing(easing).RunAsync(),
-                        ToastPosition.TopRight or ToastPosition.BottomRight =>
-                            this.Animate(TranslateTransform.XProperty).To(Bounds.Width + 20d).WithDuration(duration).WithEasing(easing).RunAsync(),
-                        ToastPosition.TopCenter =>
-                            this.Animate(TranslateTransform.YProperty).To(-Bounds.Height - 20d).WithDuration(duration).WithEasing(easing).RunAsync(),
-                        ToastPosition.BottomCenter =>
-                            this.Animate(TranslateTransform.YProperty).To(Bounds.Height + 20d).WithDuration(duration).WithEasing(easing).RunAsync(),
-                        _ => Task.CompletedTask
-                    }
-                )
-                .ContinueWith(
-                    _ => ExecuteDismiss(),
-                    TaskScheduler.FromCurrentSynchronizationContext());
-        };
-        e.NameScope.Get<Button>("PART_CloseButton").Click += (_, _) => ExecuteDismiss();
+        _cardPressDisposable?.Dispose();
+        _actionButtonClickDisposable?.Dispose();
+        _closeButtonClickDisposable?.Dispose();
+
+        _cardPressDisposable = e.NameScope.Get<Border>("PART_ToastCard")
+            .AddDisposableHandler(PointerPressedEvent, ToastCardClickedHandler, RoutingStrategies.Tunnel);
+
+        _actionButtonClickDisposable = e.NameScope.Get<Button>("PART_ActionButton")
+            .AddDisposableHandler(
+                Button.ClickEvent,
+                (_, _) =>
+                {
+                    if (Command is { } command && command.CanExecute(ToastResult.ActionButtonClicked))
+                        command.Execute(ToastResult.ActionButtonClicked);
+                    ActionButtonClicked?.Invoke(this, EventArgs.Empty);
+                });
+
+        _closeButtonClickDisposable = e.NameScope.Get<Button>("PART_CloseButton")
+            .AddDisposableHandler(Button.ClickEvent, (_, _) => RequestClose(ToastResult.Dismissed));
     }
 
-    protected override void OnPointerEntered(PointerEventArgs e)
-    {
-        base.OnPointerEntered(e);
-
-        _dismissTimer?.Dispose();
-        _dismissTimer = null;
-    }
-
-    protected override void OnPointerExited(PointerEventArgs e)
-    {
-        base.OnPointerExited(e);
-
-        StartDismissTimer();
-    }
-
+    /// <inheritdoc />
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
 
-        _dismissTimer?.Dispose();
-        _dismissTimer = null;
-        _resultCompletionSource?.TrySetResult(ToastResult.Dismissed);
+        _cardPressDisposable?.Dispose();
+        _actionButtonClickDisposable?.Dispose();
+        _closeButtonClickDisposable?.Dispose();
+
+        _cardPressDisposable = null;
+        _actionButtonClickDisposable = null;
+        _closeButtonClickDisposable = null;
     }
+
+    #region Internal Helpers
+
+    /// <summary>
+    ///     Raises <see cref="CloseRequested" /> and executes <see cref="Command" />.
+    ///     Called by <see cref="ToastHost" /> or by internal button handlers.
+    /// </summary>
+    /// <param name="result">The reason for the close request.</param>
+    internal void RequestClose(ToastResult result)
+    {
+        if (Command is { } command && command.CanExecute(result)) command.Execute(result);
+        CloseRequested?.Invoke(this, result);
+    }
+
+    #endregion
+
+    #region Private Handlers
 
     private void ProgressChangedHandler(object? sender, double e)
     {
@@ -240,75 +309,12 @@ public class Toast : ContentControl
 
     private void ToastCardClickedHandler(object? sender, PointerPressedEventArgs e)
     {
-        if (CanDismissByClicking) ExecuteDismiss();
+        if (CanDismissByClicking) RequestClose(ToastResult.Dismissed);
     }
 
-    public void Show()
-    {
-        this.Animate(OpacityProperty)
-            .From(0d)
-            .To(1d)
-            .WithDuration(TimeSpan.FromMilliseconds(500))
-            .WithEasing(new CubicEaseInOut())
-            .Start();
+    #endregion
 
-        this.Animate(MaxHeightProperty)
-            .From(0)
-            .To(500)
-            .WithDuration(TimeSpan.FromMilliseconds(500))
-            .WithEasing(new CubicEaseInOut())
-            .Start();
-
-        this.Animate(MarginProperty)
-            .From(new Thickness(0, 10, 0, -10))
-            .To(new Thickness())
-            .WithDuration(TimeSpan.FromMilliseconds(500))
-            .WithEasing(new CubicEaseInOut())
-            .Start();
-
-        StartDismissTimer();
-    }
-
-    private void StartDismissTimer()
-    {
-        if (Duration.Ticks <= 0) return;
-
-        _dismissTimer ??= DispatcherTimer.RunOnce(
-            () =>
-            {
-                _resultCompletionSource?.TrySetResult(ToastResult.TimerElapsed);
-                ExecuteDismiss();
-            },
-            Duration);
-    }
-
-    private void ExecuteDismiss()
-    {
-        if (_manager is not null) _manager.Dismiss(this);
-        else Dismiss();
-    }
-
-    public void Dismiss()
-    {
-        CancellationTokenSource?.Cancel();
-
-        this.Animate(OpacityProperty)
-            .From(1d)
-            .To(0d)
-            .WithDuration(TimeSpan.FromMilliseconds(500))
-            .WithEasing(new CubicEaseInOut())
-            .Start();
-
-        this.Animate(MarginProperty)
-            .From(new Thickness())
-            .To(new Thickness(0, 0, 0, -100))
-            .WithDuration(TimeSpan.FromMilliseconds(500))
-            .WithEasing(new CubicEaseInOut())
-            .Start();
-
-        if (DismissCommand is { } dismissCommand && dismissCommand.CanExecute(null)) dismissCommand.Execute(null);
-    }
-
+    /// <inheritdoc />
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);

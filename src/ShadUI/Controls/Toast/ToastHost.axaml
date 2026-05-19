@@ -1,22 +1,57 @@
 ﻿<ResourceDictionary
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:shadui="clr-namespace:ShadUI">
-    <ControlTheme x:Key="ToastHostTheme" TargetType="shadui:ToastHost">
-        <Setter Property="Margin" Value="5" />
-        <Setter Property="ItemsPanel">
-            <ItemsPanelTemplate>
-                <DockPanel LastChildFill="True" />
-            </ItemsPanelTemplate>
-        </Setter>
-        <Setter Property="Template">
-            <ControlTemplate>
-                <ItemsPresenter />
-            </ControlTemplate>
-        </Setter>
-    </ControlTheme>
-    <ControlTheme
-        x:Key="{x:Type shadui:ToastHost}"
-        BasedOn="{StaticResource ToastHostTheme}"
-        TargetType="shadui:ToastHost" />
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI">
+  <ControlTheme
+    x:Key="ToastHostTheme" TargetType="shadui:ToastHost">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel Margin="{TemplateBinding Padding}">
+          <shadui:ToastCornerHost
+            x:Name="PART_TopLeft" HorizontalAlignment="Left"
+            VerticalAlignment="Top">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Spacing="{Binding $parent[shadui:ToastHost].Spacing}"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+          </shadui:ToastCornerHost>
+
+          <shadui:ToastCornerHost
+            x:Name="PART_TopRight" HorizontalAlignment="Right"
+            VerticalAlignment="Top">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Spacing="{Binding $parent[shadui:ToastHost].Spacing}"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+          </shadui:ToastCornerHost>
+
+          <shadui:ToastCornerHost
+            x:Name="PART_BottomLeft" HorizontalAlignment="Left"
+            VerticalAlignment="Bottom">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Spacing="{Binding $parent[shadui:ToastHost].Spacing}"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+          </shadui:ToastCornerHost>
+
+          <shadui:ToastCornerHost
+            x:Name="PART_BottomRight" HorizontalAlignment="Right"
+            VerticalAlignment="Bottom">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Spacing="{Binding $parent[shadui:ToastHost].Spacing}"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+          </shadui:ToastCornerHost>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme
+    x:Key="{x:Type shadui:ToastHost}"
+    BasedOn="{StaticResource ToastHostTheme}"
+    TargetType="shadui:ToastHost"/>
 </ResourceDictionary>
