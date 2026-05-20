@@ -49,9 +49,9 @@
                 Dock="Top" HorizontalSpacing="4">
                 <!--  Back Button  -->
                 <Button
-                  Classes="Ghost" DockPanel.Dock="Left"
+                  Classes="Ghost Compact" DockPanel.Dock="Left"
                   Width="36" Height="36"
-                  Margin="-10,0,0,0" VerticalAlignment="Center"
+                  VerticalAlignment="Center"
                   Command="{Binding $parent[shadui:NavigationView].GoBack}"
                   IsVisible="{TemplateBinding IsCompact}">
                   <PathIcon Data="{x:Static shadui:Icons.ChevronLeft}"/>
