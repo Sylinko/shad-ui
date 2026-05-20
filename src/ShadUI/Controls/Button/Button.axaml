@@ -172,7 +172,7 @@
     </Setter>
 
     <Style Selector="^:disabled">
-      <Setter Property="Opacity" Value="0.5"/>
+      <Setter Property="Opacity" Value="0.6"/>
     </Style>
     <Style Selector="^:pointerover /template/ Border#BackgroundBorder">
       <Setter Property="Background" Value="{TemplateBinding shadui:ButtonAssist.HoverBackground}"/>
