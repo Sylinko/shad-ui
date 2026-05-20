@@ -54,6 +54,10 @@
   <!--  specific control colors  -->
   <Color x:Key="BadgeForegroundColor">#FAFAFA</Color>
   <Color x:Key="BusyAreaOverlayColor">#F2F2F2</Color>
+  <Color x:Key="NavigationBarBackgroundColor">#FAFAFA</Color>
+  <Color x:Key="SettingsItemBackgroundColor">#B3FFFFFF</Color>
+  <Color x:Key="SettingsItemHoverBackgroundColor">#99FAFAFA</Color>
+
   <Color x:Key="ListBoxItemHoverColor">#7FE6E6E6</Color>
   <Color x:Key="ListBoxItemSelectedColor">#E6E6E6</Color>
 

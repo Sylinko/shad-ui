@@ -172,20 +172,20 @@ public class ButtonGroup : StackPanel
             // Horizontal: Middle items lose Left border (or Right, depending on direction).
             // Vertical: Middle items lose Top border (or Bottom).
             
-            var newThickness = thickness;
+            var newMargin = new Thickness();
             if (button != firstButton)
             {
                 if (orientation == Orientation.Horizontal)
                 {
-                    newThickness = new Thickness(0, thickness.Top, thickness.Right, thickness.Bottom);
+                    newMargin = new Thickness(-thickness.Left, 0, 0, 0);
                 }
                 else
                 {
-                    newThickness = new Thickness(thickness.Left, 0, thickness.Right, thickness.Bottom);
+                    newMargin = new Thickness(0, -thickness.Top, 0, 0);
                 }
             }
 
-            button.BorderThickness = newThickness;
+            button.Margin = newMargin;
             button.CornerRadius = new CornerRadius(0);
         }
 

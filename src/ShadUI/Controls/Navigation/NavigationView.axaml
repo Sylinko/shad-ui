@@ -6,6 +6,7 @@
     TargetType="shadui:NavigationView">
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+    <Setter Property="Padding" Value="16"/>
     <Setter Property="PageTransition">
       <shadui:BetterPageSlide
         FadeDuration="0:0:0.4" FadeEasing="CubicEaseInOut"
@@ -21,11 +22,7 @@
       <ControlTemplate>
         <Panel x:Name="PART_RootPanel">
           <Grid
-            x:Name="PART_SplitContainer" ColumnDefinitions="Auto,*,Auto">
-            <Border
-              Grid.Column="1" Width="0.5"
-              Background="{TemplateBinding BorderBrush}"/>
-          </Grid>
+            x:Name="PART_SplitContainer" ColumnDefinitions="Auto,16,*"/>
 
           <TransitioningContentControl x:Name="PART_CompactContainer"/>
 
@@ -33,6 +30,7 @@
             <!--  Pane Header  -->
             <ContentPresenter
               DockPanel.Dock="Top"
+              MaxWidth="{TemplateBinding HeaderMaxWidth}"
               Content="{TemplateBinding PaneHeader}"
               ContentTemplate="{TemplateBinding PaneHeaderTemplate}"
               FontSize="18" FontWeight="Bold"
@@ -41,44 +39,52 @@
             <ContentPresenter Content="{TemplateBinding PaneContent}"/>
           </DockPanel>
 
-          <DockPanel x:Name="PART_ContentRoot">
-            <!--  Navigation Bar  -->
-            <DockPanel
-              Dock="Top" HorizontalSpacing="4">
-              <!--  Back Button  -->
-              <Button
-                Classes="Ghost Compact" DockPanel.Dock="Left"
-                Width="36" Height="36"
-                VerticalAlignment="Center"
-                Command="{Binding $parent[shadui:NavigationView].GoBack}"
-                IsVisible="{TemplateBinding IsCompact}">
-                <PathIcon Data="{x:Static shadui:Icons.ChevronLeft}"/>
-              </Button>
+          <Border
+            x:Name="PART_ContentRoot"
+            Padding="{TemplateBinding Padding}"
+            Background="{DynamicResource WindowBackgroundColor}"
+            BorderBrush="{DynamicResource OutlineColor}"
+            BorderThickness="1,1,0,0" CornerRadius="14,0,0,0">
+            <DockPanel>
+              <!--  Navigation Bar  -->
+              <DockPanel
+                MaxWidth="{TemplateBinding HeaderMaxWidth}"
+                Dock="Top" HorizontalSpacing="4">
+                <!--  Back Button  -->
+                <Button
+                  Classes="Ghost Compact" DockPanel.Dock="Left"
+                  Width="36" Height="36"
+                  VerticalAlignment="Center"
+                  Command="{Binding $parent[shadui:NavigationView].GoBack}"
+                  IsVisible="{TemplateBinding IsCompact}">
+                  <PathIcon Data="{x:Static shadui:Icons.ChevronLeft}"/>
+                </Button>
 
-              <!--  Header  -->
-              <ContentControl ContentTemplate="{TemplateBinding HeaderTemplate}">
-                <ContentPresenter.Content>
-                  <MultiBinding Converter="{x:Static shadui:BasicConverters.FirstNotNull}">
-                    <TemplateBinding Property="Header"/>
-                    <TemplateBinding Property="SelectedItem"/>
-                  </MultiBinding>
-                </ContentPresenter.Content>
-              </ContentControl>
+                <!--  Header  -->
+                <ContentControl ContentTemplate="{TemplateBinding HeaderTemplate}">
+                  <ContentPresenter.Content>
+                    <MultiBinding Converter="{x:Static shadui:BasicConverters.FirstNotNull}">
+                      <TemplateBinding Property="Header"/>
+                      <TemplateBinding Property="SelectedItem"/>
+                    </MultiBinding>
+                  </ContentPresenter.Content>
+                </ContentControl>
+              </DockPanel>
+
+              <Panel>
+                <!--  Actual Content  -->
+                <TransitioningContentControl
+                  Name="PART_ContentContainer"
+                  Content="{TemplateBinding SelectedItem}"
+                  ContentTemplate="{TemplateBinding ContentTemplate}"/>
+
+                <ContentControl
+                  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                  Content="{TemplateBinding EmptyContent}"
+                  IsVisible="{TemplateBinding SelectedItem, Converter={x:Static ObjectConverters.IsNull}}"/>
+              </Panel>
             </DockPanel>
-
-            <Panel>
-              <!--  Actual Content  -->
-              <TransitioningContentControl
-                Name="PART_ContentContainer"
-                Content="{TemplateBinding SelectedItem}"
-                ContentTemplate="{TemplateBinding ContentTemplate}"/>
-
-              <ContentControl
-                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                Content="{TemplateBinding EmptyContent}"
-                IsVisible="{TemplateBinding SelectedItem, Converter={x:Static ObjectConverters.IsNull}}"/>
-            </Panel>
-          </DockPanel>
+          </Border>
         </Panel>
       </ControlTemplate>
     </Setter>

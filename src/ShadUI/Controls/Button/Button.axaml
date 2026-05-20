@@ -271,11 +271,11 @@
       </Style>
     </Style>
 
-    <!--  Navigation  -->
-    <Style Selector="^.Navigation">
+    <!--  SettingsItem  -->
+    <Style Selector="^.SettingsItem">
       <Setter Property="BorderThickness" Value="0"/>
-      <Setter Property="Background" Value="#0DFFFFFF"/>
-      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="#1AFFFFFF"/>
+      <Setter Property="Background" Value="{DynamicResource SettingsItemBackgroundColor}"/>
+      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource SettingsItemHoverBackgroundColor}"/>
     </Style>
 
     <!--  NoPressedAnimation  -->
