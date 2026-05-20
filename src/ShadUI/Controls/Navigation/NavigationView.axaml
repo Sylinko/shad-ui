@@ -22,7 +22,7 @@
       <ControlTemplate>
         <Panel x:Name="PART_RootPanel">
           <Grid
-            x:Name="PART_SplitContainer" ColumnDefinitions="Auto,16,*"/>
+            x:Name="PART_SplitContainer" ColumnDefinitions="Auto,12,*"/>
 
           <TransitioningContentControl x:Name="PART_CompactContainer"/>
 
