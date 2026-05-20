@@ -19,7 +19,7 @@
           CornerRadius="{TemplateBinding CornerRadius}">
           <DockPanel>
             <LayoutTransformControl
-              Name="PART_ToggleTransform" DockPanel.Dock="Top">
+              x:Name="PART_ToggleTransform" DockPanel.Dock="Top">
               <Panel>
                 <Panel.Styles>
                   <Style Selector="ToggleButton#PART_ToggleButton:checked /template/ Border#RootBorder">
@@ -37,12 +37,12 @@
                   CornerRadius="{TemplateBinding CornerRadius}"
                   IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
                   IsEnabled="True"/>
-                <Grid
+                <DockPanel
                   Margin="{TemplateBinding Padding}"
-                  ColumnDefinitions="Auto,*,Auto">
+                  HorizontalSpacing="12">
                   <PathIcon
-                    x:Name="PART_LeftIcon" Grid.Column="0"
-                    Width="12" Margin="0,0,12,0"
+                    x:Name="PART_Icon" DockPanel.Dock="Right"
+                    Width="12"
                     Data="{x:Static shadui:Icons.ChevronDown}"
                     IsHitTestVisible="False">
                     <PathIcon.Transitions>
@@ -53,26 +53,13 @@
                       </Transitions>
                     </PathIcon.Transitions>
                   </PathIcon>
+
                   <ContentPresenter
-                    Grid.Column="1" HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                     Content="{TemplateBinding Header}"/>
-                  <PathIcon
-                    x:Name="PART_RightIcon" Grid.Column="2"
-                    Width="12" Margin="12,0,0,0"
-                    Data="{x:Static shadui:Icons.ChevronDown}"
-                    IsHitTestVisible="False">
-                    <PathIcon.Transitions>
-                      <Transitions>
-                        <TransformOperationsTransition
-                          Easing="CubicEaseInOut" Property="RenderTransform"
-                          Duration="0:0:0.3"/>
-                      </Transitions>
-                    </PathIcon.Transitions>
-                  </PathIcon>
-                </Grid>
+                </DockPanel>
               </Panel>
             </LayoutTransformControl>
 
@@ -113,10 +100,7 @@
     </Style>
 
     <Style Selector="^.ReverseIcon">
-      <Style Selector="^ PathIcon#PART_LeftIcon">
-        <Setter Property="RenderTransform" Value="Rotate(180deg)"/>
-      </Style>
-      <Style Selector="^ PathIcon#PART_RightIcon">
+      <Style Selector="^ PathIcon#PART_Icon">
         <Setter Property="RenderTransform" Value="Rotate(180deg)"/>
       </Style>
     </Style>
@@ -127,49 +111,22 @@
         <Setter Property="RenderTransform" Value="translateY(0)"/>
       </Style>
 
-      <Style Selector="^ PathIcon#PART_LeftIcon">
-        <Setter Property="RenderTransform" Value="Rotate(180deg)"/>
-      </Style>
-      <Style Selector="^ PathIcon#PART_RightIcon">
+      <Style Selector="^ PathIcon#PART_Icon">
         <Setter Property="RenderTransform" Value="Rotate(180deg)"/>
       </Style>
 
       <Style Selector="^.ReverseIcon">
-        <Style Selector="^ PathIcon#PART_LeftIcon">
-          <Setter Property="RenderTransform" Value="Rotate(0deg)"/>
-        </Style>
-        <Style Selector="^ PathIcon#PART_RightIcon">
+        <Style Selector="^ PathIcon#PART_Icon">
           <Setter Property="RenderTransform" Value="Rotate(0deg)"/>
         </Style>
       </Style>
     </Style>
 
-    <Style Selector="^ /template/ PathIcon#PART_LeftIcon">
-      <Setter Property="IsVisible" Value="False"/>
-    </Style>
-
-    <Style Selector="^.LeftIcon">
-      <Style Selector="^ PathIcon#PART_LeftIcon">
-        <Setter Property="IsVisible" Value="True"/>
-      </Style>
-      <Style Selector="^ PathIcon#PART_RightIcon">
-        <Setter Property="IsVisible" Value="False"/>
-      </Style>
-    </Style>
-
-    <Style Selector="^.NotExpandable">
-      <Style Selector="^ PathIcon#PART_LeftIcon">
-        <Setter Property="IsVisible" Value="False"/>
-      </Style>
-      <Style Selector="^ PathIcon#PART_RightIcon">
-        <Setter Property="IsVisible" Value="False"/>
-      </Style>
-      <Style Selector="^ ToggleButton#PART_ToggleButton">
-        <Setter Property="IsHitTestVisible" Value="False"/>
-      </Style>
-      <Style Selector="^ ContentControl#ContentExpandControlContainer">
-        <Setter Property="IsVisible" Value="False"/>
-      </Style>
+    <!--  Ghost  -->
+    <Style Selector="^.Ghost">
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Background" Value="{DynamicResource TransparentColor}"/>
+      <Setter Property="Padding" Value="0"/>
     </Style>
   </ControlTheme>
 </ResourceDictionary>

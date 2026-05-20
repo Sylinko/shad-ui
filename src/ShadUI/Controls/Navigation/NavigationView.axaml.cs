@@ -16,7 +16,7 @@ namespace ShadUI;
 [TemplatePart(SplitContainerPartName, typeof(Grid), IsRequired = true)]
 [TemplatePart(CompactContainerPartName, typeof(TransitioningContentControl), IsRequired = true)]
 [TemplatePart(PaneRootPartName, typeof(DockPanel), IsRequired = true)]
-[TemplatePart(ContentRootPartName, typeof(DockPanel), IsRequired = true)]
+[TemplatePart(ContentRootPartName, typeof(Control), IsRequired = true)]
 [TemplatePart(ContentContainerPartName, typeof(TransitioningContentControl), IsRequired = true)]
 public class NavigationView : TemplatedControl
 {
@@ -79,6 +79,15 @@ public class NavigationView : TemplatedControl
     {
         get => GetValue(PaneWidthProperty);
         set => SetValue(PaneWidthProperty, value);
+    }
+
+    public static readonly StyledProperty<double> HeaderMaxWidthProperty =
+        AvaloniaProperty.Register<NavigationView, double>(nameof(HeaderMaxWidth), double.PositiveInfinity);
+
+    public double HeaderMaxWidth
+    {
+        get => GetValue(HeaderMaxWidthProperty);
+        set => SetValue(HeaderMaxWidthProperty, value);
     }
 
     /// <summary>
@@ -235,7 +244,7 @@ public class NavigationView : TemplatedControl
     private Grid? _splitContainer;
     private TransitioningContentControl? _compactContainer;
     private DockPanel? _paneRoot;
-    private DockPanel? _contentRoot;
+    private Control? _contentRoot;
     private TransitioningContentControl? _contentContainer;
 
     protected override void OnSizeChanged(SizeChangedEventArgs e)
@@ -266,7 +275,7 @@ public class NavigationView : TemplatedControl
         _splitContainer = e.NameScope.Find<Grid>(SplitContainerPartName);
         _compactContainer = e.NameScope.Find<TransitioningContentControl>(CompactContainerPartName);
         _paneRoot = e.NameScope.Find<DockPanel>(PaneRootPartName);
-        _contentRoot = e.NameScope.Find<DockPanel>(ContentRootPartName);
+        _contentRoot = e.NameScope.Find<Control>(ContentRootPartName);
         _contentContainer = e.NameScope.Find<TransitioningContentControl>(ContentContainerPartName);
 
         if (_rootPanel is not null)
