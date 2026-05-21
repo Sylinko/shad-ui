@@ -17,9 +17,7 @@
   <ControlTheme
     x:Key="ToggleSwitchTheme" TargetType="ToggleSwitch">
     <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
-    <Setter Property="RenderTransform">
-      <ScaleTransform ScaleX="1.1" ScaleY="1.1"/>
-    </Setter>
+    <Setter Property="UseLayoutRounding" Value="True"/>
     <Setter Property="OnContent" Value="{x:Null}"/>
     <Setter Property="OffContent" Value="{x:Null}"/>
     <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -74,14 +72,14 @@
               VerticalAlignment="Top" RowDefinitions="6,Auto,6">
               <Border
                 Grid.Row="1" Grid.Column="0"
-                Width="32" Height="18"
+                Width="36" Height="20"
                 Background="{DynamicResource SwitchBackgroundColor}"
                 BorderThickness="0"
                 CornerRadius="{DynamicResource FullCornerRadius}"/>
               <Border
                 x:Name="SwitchBackground" Grid.Row="1"
-                Grid.Column="0" Width="32"
-                Height="18"
+                Grid.Column="0" Width="36"
+                Height="20"
                 Background="{DynamicResource PrimaryColor}"
                 BorderThickness="0" ClipToBounds="True"
                 CornerRadius="{DynamicResource FullCornerRadius}"
@@ -95,12 +93,13 @@
               </Border>
               <Canvas
                 x:Name="PART_SwitchKnob" Grid.Row="1"
-                Grid.Column="0" Width="14"
-                Height="14" HorizontalAlignment="Left">
+                Grid.Column="0" Width="16"
+                Height="16" HorizontalAlignment="Left"
+                VerticalAlignment="Center">
                 <Border
                   x:Name="SwitchKnob" Canvas.Left="0"
-                  Canvas.Top="0" Width="14"
-                  Height="14" ClipToBounds="True"
+                  Canvas.Top="0" Width="16"
+                  Height="16" ClipToBounds="True"
                   CornerRadius="{DynamicResource FullCornerRadius}">
                   <Border.Transitions>
                     <Transitions>
@@ -172,7 +171,7 @@
     </Style>
     <Style Selector="^:unchecked">
       <Style Selector="^ /template/ Border#SwitchKnob">
-        <Setter Property="Width" Value="14"/>
+        <Setter Property="Width" Value="16"/>
         <Setter Property="Canvas.Left" Value="2"/>
       </Style>
       <Style Selector="^ /template/ ContentPresenter#PART_OffContentPresenter">
@@ -193,8 +192,8 @@
         <Setter Property="Opacity" Value="1"/>
       </Style>
       <Style Selector="^/template/ Border#SwitchKnob">
-        <Setter Property="Width" Value="14"/>
-        <Setter Property="Canvas.Left" Value="16"/>
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Canvas.Left" Value="18"/>
         <Setter Property="Background" Value="{DynamicResource PrimaryForegroundColor}"/>
       </Style>
       <Style Selector="^ /template/ ContentPresenter#PART_OffContentPresenter">
