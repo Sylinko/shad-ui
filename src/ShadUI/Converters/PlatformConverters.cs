@@ -26,7 +26,7 @@ public static class PlatformConverters
                 {
                     // 0 for Windows 11, 0.9 for Windows 10
                     PlatformID.Win32NT when osVersion.Version >= new Version(10, 0, 22000) => 0.0,
-                    PlatformID.Win32NT => 0.9,
+                    PlatformID.Win32NT => 0.7,
                     PlatformID.MacOSX => 0.6,
                     _ => 1.0
                 };
