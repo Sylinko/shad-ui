@@ -7,8 +7,6 @@
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
     <Setter Property="TextBlock.FontSize" Value="{DynamicResource FontSizeL}"/>
     <Setter Property="TextBlock.FontWeight" Value="DemiBold"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate>

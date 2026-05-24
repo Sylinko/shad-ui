@@ -24,8 +24,6 @@
     <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource GhostColor}"/>
     <Setter Property="shadui:ButtonAssist.CheckedForeground" Value="{DynamicResource PrimaryForegroundColor}"/>
     <Setter Property="shadui:ButtonAssist.CheckedBackground" Value="{DynamicResource PrimaryColor75}"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <!--  Used to capture events outside the inner borders  -->

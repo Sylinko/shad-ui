@@ -9,8 +9,6 @@
     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="Padding" Value="12,8"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <DataValidationErrors Focusable="False">
@@ -49,8 +47,6 @@
     <Setter Property="SeparatorBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="Padding" Value="12,11"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Border
@@ -112,8 +108,6 @@
   <ControlTheme
     x:Key="{x:Type DataGridRowHeader}"
     TargetType="DataGridRowHeader">
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Grid
@@ -153,8 +147,6 @@
     <Setter Property="TextBlock.FontWeight" Value="{CompiledBinding $parent[DataGrid].FontWeight}"/>
     <Setter Property="TextBlock.FontSize" Value="{CompiledBinding $parent[DataGrid].FontSize}"/>
     <Setter Property="Background" Value="{CompiledBinding $parent[DataGrid].RowBackground}"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Border
@@ -209,8 +201,6 @@
   </ControlTheme>
   <ControlTheme
     x:Key="DataGridRowGroupExpanderButtonTheme" TargetType="ToggleButton">
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Border>
@@ -242,8 +232,6 @@
     <Setter Property="Background" Value="{DynamicResource GhostHoverColor}"/>
     <Setter Property="FontWeight" Value="DemiBold"/>
     <Setter Property="BorderBrush" Value="{Binding $parent[DataGrid].BorderBrush}"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate x:DataType="collections:DataGridCollectionViewGroup">
         <DataGridFrozenGrid
@@ -322,8 +310,6 @@
           Fill="{DynamicResource CardBackgroundColor}"/>
       </Template>
     </Setter>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <DataValidationErrors Focusable="False">

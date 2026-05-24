@@ -143,8 +143,6 @@
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="Foreground" Value="{DynamicResource PrimaryColor}"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Style Selector="^:horizontal">
       <Setter Property="Template">
         <ControlTemplate>

@@ -153,8 +153,6 @@
     <Setter Property="MaxDropDownHeight" Value="244"/>
     <Setter Property="shadui:ControlAssist.ShowProgress" Value="False"/>
     <Setter Property="shadui:ControlAssist.MinHeight" Value="36"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Panel Background="Transparent">

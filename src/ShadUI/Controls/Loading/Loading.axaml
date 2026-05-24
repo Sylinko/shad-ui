@@ -10,8 +10,6 @@
     x:Key="{x:Type shadui:Loading}"
     TargetType="shadui:Loading">
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <PathIcon

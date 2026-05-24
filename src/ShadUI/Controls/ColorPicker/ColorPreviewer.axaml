@@ -11,8 +11,6 @@
     <Setter Property="Height" Value="50"/>
     <Setter Property="ClipToBounds" Value="False"/>
     <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate TargetType="{x:Type ColorPreviewer}">
         <Panel>

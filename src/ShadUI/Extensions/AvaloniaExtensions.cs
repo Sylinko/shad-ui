@@ -1,4 +1,7 @@
-﻿using Avalonia.Threading;
+﻿using System.Runtime.CompilerServices;
+using Avalonia;
+using Avalonia.Data;
+using Avalonia.Threading;
 
 namespace ShadUI.Extensions;
 
@@ -123,5 +126,58 @@ public static class AvaloniaExtensions
         }
 
         return result ?? throw new InvalidOperationException("Task result is null");
+    }
+
+    extension(AvaloniaProperty avaloniaProperty)
+    {
+        public void ForceOverrideMetadata(Type type, AvaloniaPropertyMetadata metadata)
+        {
+            var metadataDictionary = avaloniaProperty.GetMetadataUnsafe();
+            var baseMetadata = metadataDictionary.GetValueOrDefault(type, avaloniaProperty.GetMetadata(type));
+            metadata.Merge(baseMetadata, avaloniaProperty);
+            metadata.Freeze();
+
+            metadataDictionary[type] = metadata;
+            avaloniaProperty.GetMetadataCacheUnsafe().Clear();
+            avaloniaProperty.GetSingleMetadataUnsafe() = null;
+            avaloniaProperty.GetSingleHostTypeUnsafe() = null;
+        }
+
+        [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_metadata")]
+        private extern ref Dictionary<Type, AvaloniaPropertyMetadata> GetMetadataUnsafe();
+
+        [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_metadataCache")]
+        private extern ref Dictionary<Type, AvaloniaPropertyMetadata> GetMetadataCacheUnsafe();
+
+        [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_singleMetadata")]
+        private extern ref AvaloniaPropertyMetadata? GetSingleMetadataUnsafe();
+
+        [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_singleHostType")]
+        private extern ref Type? GetSingleHostTypeUnsafe();
+    }
+
+    extension<TValue>(StyledProperty<TValue> styledProperty)
+    {
+        public void ForceOverrideMetadata(Type type, StyledPropertyMetadata<TValue> metadata)
+        {
+            ((AvaloniaProperty)styledProperty).ForceOverrideMetadata(type, metadata);
+
+            ref var singleDefaultValue = ref UnsafeAccessor<TValue>.GetSingleDefaultValueUnsafe(styledProperty);
+            if (singleDefaultValue != metadata.DefaultValue)
+            {
+                singleDefaultValue = default;
+            }
+        }
+
+        public void ForceOverrideDefaultValue(Type type, TValue defaultValue)
+        {
+            styledProperty.ForceOverrideMetadata(type, new StyledPropertyMetadata<TValue>(defaultValue));
+        }
+    }
+
+    private static class UnsafeAccessor<TValue>
+    {
+        [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_singleDefaultValue")]
+        public static extern ref Optional<TValue> GetSingleDefaultValueUnsafe(StyledProperty<TValue> styledProperty);
     }
 }

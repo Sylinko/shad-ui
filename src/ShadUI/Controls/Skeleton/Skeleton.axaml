@@ -24,8 +24,6 @@
     TargetType="shadui:Skeleton">
     <Setter Property="Background" Value="{DynamicResource PrimaryColor10}"/>
     <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Border

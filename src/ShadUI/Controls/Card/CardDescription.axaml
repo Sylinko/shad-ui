@@ -6,8 +6,6 @@
     TargetType="{x:Type shadui:CardDescription}">
     <Setter Property="TextBlock.Foreground" Value="{DynamicResource MutedColor}"/>
     <Setter Property="TextBlock.FontSize" Value="{DynamicResource FontSizeS}"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate>

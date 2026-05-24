@@ -44,9 +44,7 @@
       <Setter Property="BorderThickness" Value="0"/>
       <Setter Property="CornerRadius" Value="{DynamicResource ColorSliderCornerRadius}"/>
       <Setter Property="Height" Value="{DynamicResource ColorSliderSize}"/>
-      <Setter Property="ToolTip.Placement" Value="Top"/>
-      <Setter Property="ToolTip.ShowDelay" Value="50"/>
-      <Setter Property="Template">
+          <Setter Property="Template">
         <ControlTemplate TargetType="{x:Type ColorSlider}">
           <Border
             BorderBrush="{TemplateBinding BorderBrush}"

@@ -16,8 +16,6 @@
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="Padding" Value="4,12,4,8"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Panel>

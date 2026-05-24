@@ -103,8 +103,7 @@
 
       <Style Selector="^ /template/ shadui|NavigationBarItemButton">
         <Setter Property="Orientation" Value="Horizontal"/>
-        <Setter Property="ToolTip.Placement" Value="Top"/>
-      </Style>
+          </Style>
 
       <Style Selector="^ /template/ shadui|NavigationBarItemChildrenExpander#ChildrenExpander">
         <Setter Property="IsVisible" Value="False"/>

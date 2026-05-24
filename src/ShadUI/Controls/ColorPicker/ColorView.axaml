@@ -16,8 +16,6 @@
     <Setter Property="Palette">
       <controls:FluentColorPalette/>
     </Setter>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate TargetType="{x:Type ColorView}">
         <Grid RowDefinitions="Auto,Auto">

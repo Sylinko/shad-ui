@@ -21,8 +21,6 @@
         </Transitions>
       </Setter.Value>
     </Setter>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Panel Background="Transparent">

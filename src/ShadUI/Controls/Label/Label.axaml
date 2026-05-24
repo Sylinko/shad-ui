@@ -5,8 +5,6 @@
     x:Key="{x:Type Label}"
     TargetType="Label">
     <Setter Property="Padding" Value="3"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <ContentPresenter

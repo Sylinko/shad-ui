@@ -22,8 +22,6 @@
     <Setter Property="MinWidth" Value="32"/>
     <Setter Property="MinHeight" Value="32"/>
     <Setter Property="Focusable" Value="False"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Panel Name="RootPanel">

@@ -9,8 +9,6 @@
     <Setter Property="Background" Value="{DynamicResource CardBackgroundColor}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate TargetType="Expander">
         <Border

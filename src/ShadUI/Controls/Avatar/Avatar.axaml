@@ -14,8 +14,6 @@
     <Setter Property="FontWeight" Value="DemiBold"/>
     <Setter Property="CornerRadius" Value="{DynamicResource FullCornerRadius}"/>
     <Setter Property="Background" Value="{DynamicResource GhostColor}"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate>

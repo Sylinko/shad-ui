@@ -17,8 +17,6 @@
   <ControlTheme
     x:Key="{x:Type DataValidationErrors}"
     TargetType="DataValidationErrors">
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate TargetType="DataValidationErrors">
         <DockPanel LastChildFill="True">

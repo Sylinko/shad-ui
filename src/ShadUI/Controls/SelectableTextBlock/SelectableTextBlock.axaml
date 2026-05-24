@@ -22,8 +22,6 @@
     <Setter Property="SelectionBrush" Value="{DynamicResource PrimaryColor}"/>
     <Setter Property="SelectionForegroundBrush" Value="{DynamicResource PrimaryForegroundColor}"/>
     <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Style Selector="^[IsEnabled=True]">
       <Setter Property="Cursor" Value="IBeam"/>
       <Setter Property="ContextFlyout" Value="{StaticResource SelectableTextBlockContextFlyout}"/>

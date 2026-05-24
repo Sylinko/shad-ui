@@ -67,8 +67,6 @@
   <ControlTheme
     x:Key="PasswordTogglerTheme" TargetType="ToggleButton">
     <Setter Property="Cursor" Value="Arrow"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="ToggleButton">
@@ -120,8 +118,6 @@
     <Setter Property="FocusAdorner" Value="{x:Null}"/>
     <Setter Property="shadui:ControlAssist.ShowProgress" Value="False"/>
     <Setter Property="shadui:ControlAssist.MinHeight" Value="36"/>
-    <Setter Property="ToolTip.Placement" Value="Top"/>
-    <Setter Property="ToolTip.ShowDelay" Value="50"/>
     <Setter Property="Template">
       <ControlTemplate>
         <DockPanel
