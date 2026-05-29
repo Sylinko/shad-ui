@@ -1,8 +1,6 @@
 ﻿<ResourceDictionary
-  xmlns="https://github.com/avaloniaui"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
-  xmlns:system="clr-namespace:System;assembly=System.Runtime">
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI" xmlns:system="clr-namespace:System;assembly=System.Runtime">
   <ControlTheme
     x:Key="WindowButtonTheme" TargetType="Button">
     <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -41,7 +39,9 @@
     </Style>
   </ControlTheme>
 
-  <ControlTheme x:Key="{x:Type WindowDrawnDecorations}" TargetType="WindowDrawnDecorations">
+  <ControlTheme
+    x:Key="{x:Type WindowDrawnDecorations}"
+    TargetType="WindowDrawnDecorations">
     <Setter Property="DefaultTitleBarHeight" Value="30"/>
     <Setter Property="DefaultFrameThickness" Value="1"/>
     <Setter Property="DefaultShadowThickness" Value="8"/>
@@ -50,39 +50,42 @@
         <WindowDrawnDecorationsContent>
           <WindowDrawnDecorationsContent.Underlay>
             <Panel x:Name="PART_UnderlayWrapper">
-              <Border x:Name="PART_WindowBorder"
-                      Background="{DynamicResource ThemeBackgroundBrush}"
-                      BorderThickness="{TemplateBinding FrameThickness}"
-                      BorderBrush="{DynamicResource ThemeBorderMidBrush}"
-                      IsHitTestVisible="False"/>
-              <!-- Titlebar: background, title text, and drag area live in underlay -->
-              <Panel x:Name="PART_TitleBar" VerticalAlignment="Top"
-                     Height="{TemplateBinding TitleBarHeight}"
-                     Background="{DynamicResource ThemeBackgroundBrush}"
-                     IsVisible="{TemplateBinding HasTitleBar}"
-                     WindowDecorationProperties.ElementRole="TitleBar">
+              <Border
+                x:Name="PART_WindowBorder"
+                Background="{DynamicResource ThemeBackgroundBrush}"
+                BorderBrush="{DynamicResource ThemeBorderMidBrush}"
+                BorderThickness="{TemplateBinding FrameThickness}"
+                IsHitTestVisible="False"/>
+              <!--  Titlebar: background, title text, and drag area live in underlay  -->
+              <Panel
+                x:Name="PART_TitleBar"
+                Height="{TemplateBinding TitleBarHeight}"
+                VerticalAlignment="Top"
+                Background="{DynamicResource ThemeBackgroundBrush}"
+                IsVisible="{TemplateBinding HasTitleBar}"
+                WindowDecorationProperties.ElementRole="TitleBar">
                 <StackPanel
                   x:Name="AppTitlePanel" VerticalAlignment="Center"
                   IsHitTestVisible="False" Orientation="Horizontal"
                   Spacing="4">
                   <ContentPresenter
                     Margin="0,0,6,0"
-                    Content="{Binding $parent[shadui:Window].LogoContent}"
+                    Content="{Binding $parent[shadui:ShadWindow].LogoContent}"
                     IsHitTestVisible="False"/>
                   <TextBlock
                     VerticalAlignment="Center"
-                    FontSize="{Binding $parent[shadui:Window].TitleFontSize}"
-                    FontWeight="{Binding $parent[shadui:Window].TitleFontWeight}"
+                    FontSize="{Binding $parent[shadui:ShadWindow].TitleFontSize}"
+                    FontWeight="{Binding $parent[shadui:ShadWindow].TitleFontWeight}"
                     IsHitTestVisible="False"
-                    Text="{Binding $parent[shadui:Window].Title}"/>
+                    Text="{Binding $parent[shadui:ShadWindow].Title}"/>
                   <TextBlock
                     VerticalAlignment="Center"
-                    FontSize="{Binding $parent[shadui:Window].VersionFontSize}"
-                    FontWeight="{Binding $parent[shadui:Window].VersionFontWeight}"
+                    FontSize="{Binding $parent[shadui:ShadWindow].VersionFontSize}"
+                    FontWeight="{Binding $parent[shadui:ShadWindow].VersionFontWeight}"
                     Foreground="{DynamicResource ForegroundLeadColor}"
                     IsHitTestVisible="False"
-                    IsVisible="{Binding $parent[shadui:Window].Version, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                    Text="{Binding $parent[shadui:Window].Version}"/>
+                    IsVisible="{Binding $parent[shadui:ShadWindow].Version, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    Text="{Binding $parent[shadui:ShadWindow].Version}"/>
                 </StackPanel>
               </Panel>
             </Panel>
@@ -92,7 +95,7 @@
             <Panel x:Name="PART_OverlayWrapper">
               <ItemsControl
                 x:Name="PART_HostsRoot"
-                ItemsSource="{Binding $parent[shadui:Window].Hosts}">
+                ItemsSource="{Binding $parent[shadui:ShadWindow].Hosts}">
                 <ItemsControl.ItemsPanel>
                   <ItemsPanelTemplate>
                     <Panel/>
@@ -105,8 +108,7 @@
                 IsVisible="{TemplateBinding HasTitleBar}">
 
                 <Panel MinHeight="{TemplateBinding TitleBarHeight}">
-                  <Border
-                    IsVisible="{Binding $parent[shadui:Window].TitleBarContentOverride, Converter={x:Static ObjectConverters.IsNull}}">
+                  <Border IsVisible="{Binding $parent[shadui:ShadWindow].TitleBarContentOverride, Converter={x:Static ObjectConverters.IsNull}}">
                     <Border.Margin>
                       <OnPlatform
                         x:TypeArguments="Thickness" Linux="0"
@@ -118,9 +120,9 @@
                       Spacing="6">
                       <ContentPresenter
                         x:Name="RightButtons"
-                        WindowDecorationProperties.ElementRole="User"
-                        Content="{Binding $parent[shadui:Window].RightWindowTitleBarContent}"
-                        IsVisible="{Binding $self.Content, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                        Content="{Binding $parent[shadui:ShadWindow].RightWindowTitleBarContent}"
+                        IsVisible="{Binding $self.Content, Converter={x:Static ObjectConverters.IsNotNull}}"
+                        WindowDecorationProperties.ElementRole="User"/>
 
                       <StackPanel
                         x:Name="PART_ButtonsPanel" Orientation="Horizontal">
@@ -161,54 +163,56 @@
                           <PathIcon
                             x:Name="CloseIcon"
                             Data="{x:Static shadui:Icons.WindowClose}"
-                            Foreground="{Binding $parent[shadui:Window].Foreground, ElementName=PART_CloseButton}"/>
+                            Foreground="{Binding $parent[shadui:ShadWindow].Foreground, ElementName=PART_CloseButton}"/>
                         </Button>
                       </StackPanel>
                     </StackPanel>
                   </Border>
 
                   <ContentPresenter
-                    WindowDecorationProperties.ElementRole="User"
-                    Content="{Binding $parent[shadui:Window].TitleBarContentOverride}"/>
+                    Content="{Binding $parent[shadui:ShadWindow].TitleBarContentOverride}"
+                    WindowDecorationProperties.ElementRole="User"/>
                 </Panel>
               </Border>
             </Panel>
           </WindowDrawnDecorationsContent.Overlay>
 
           <WindowDrawnDecorationsContent.FullscreenPopover>
-            <!-- Shown on hover at top edge in fullscreen mode -->
-            <Panel Height="30"
-                   VerticalAlignment="Top"
-                   Background="{DynamicResource ThemeAccentBrush}"
-                   WindowDecorationProperties.ElementRole="TitleBar">
-              <TextBlock Text="{TemplateBinding Title}"
-                         VerticalAlignment="Center"
-                         Foreground="White"
-                         Margin="12,0,0,0"
-                         FontSize="12"/>
-              <StackPanel HorizontalAlignment="Right"
-                          Orientation="Horizontal"
-                          Spacing="2"
-                          TextElement.FontSize="10">
-                <Button x:Name="PART_PopoverFullScreenButton"
-                        Theme="{StaticResource WindowButtonTheme}"
-                        WindowDecorationProperties.ElementRole="FullScreenButton">
-                  <Viewbox Width="11" Margin="2">
-                    <Path Stretch="UniformToFill"
-                          Fill="{DynamicResource CaptionButtonForeground}"
-                          Data="M205 1024h819v-819h-205v469l-674 -674l-145 145l674 674h-469v205zM1374 1229h469v-205h-819v819h205v-469l674 674l145 -145z"/>
+            <!--  Shown on hover at top edge in fullscreen mode  -->
+            <Panel
+              Height="30" VerticalAlignment="Top"
+              Background="{DynamicResource ThemeAccentBrush}"
+              WindowDecorationProperties.ElementRole="TitleBar">
+              <TextBlock
+                Margin="12,0,0,0" VerticalAlignment="Center"
+                FontSize="12" Foreground="White"
+                Text="{TemplateBinding Title}"/>
+              <StackPanel
+                HorizontalAlignment="Right" Orientation="Horizontal"
+                Spacing="2" TextElement.FontSize="10">
+                <Button
+                  x:Name="PART_PopoverFullScreenButton"
+                  Theme="{StaticResource WindowButtonTheme}"
+                  WindowDecorationProperties.ElementRole="FullScreenButton">
+                  <Viewbox
+                    Width="11" Margin="2">
+                    <Path
+                      Data="M205 1024h819v-819h-205v469l-674 -674l-145 145l674 674h-469v205zM1374 1229h469v-205h-819v819h205v-469l674 674l145 -145z"
+                      Fill="{DynamicResource CaptionButtonForeground}"
+                      Stretch="UniformToFill"/>
                   </Viewbox>
                 </Button>
-                <Button x:Name="PART_PopoverCloseButton"
-                        Background="#ffe81123"
-                        BorderBrush="#fff1707a"
-                        Theme="{StaticResource WindowButtonTheme}"
-                        WindowDecorationProperties.ElementRole="CloseButton"
-                        AutomationProperties.Name="Close">
-                  <Viewbox Width="11" Margin="2">
-                    <Path Stretch="UniformToFill"
-                          Fill="{DynamicResource CaptionButtonForeground}"
-                          Data="M1169 1024l879 -879l-145 -145l-879 879l-879 -879l-145 145l879 879l-879 879l145 145l879 -879l879 879l145 -145z"/>
+                <Button
+                  x:Name="PART_PopoverCloseButton" AutomationProperties.Name="Close"
+                  Background="#ffe81123" BorderBrush="#fff1707a"
+                  Theme="{StaticResource WindowButtonTheme}"
+                  WindowDecorationProperties.ElementRole="CloseButton">
+                  <Viewbox
+                    Width="11" Margin="2">
+                    <Path
+                      Data="M1169 1024l879 -879l-145 -145l-879 879l-879 -879l-145 145l879 879l-879 879l145 145l879 -879l879 879l145 -145z"
+                      Fill="{DynamicResource CaptionButtonForeground}"
+                      Stretch="UniformToFill"/>
                   </Viewbox>
                 </Button>
               </StackPanel>
@@ -218,7 +222,7 @@
       </WindowDrawnDecorationsTemplate>
     </Setter>
 
-    <!-- Maximize icon: switch between maximize and restore based on window state -->
+    <!--  Maximize icon: switch between maximize and restore based on window state  -->
     <Style Selector="^:maximized /template/ PathIcon#MaximizeIcon">
       <Setter Property="Data" Value="{x:Static shadui:Icons.WindowRestore}"/>
     </Style>
