@@ -129,6 +129,7 @@
                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                   Content="{TemplateBinding Content}"
+                  ContentTemplate="{TemplateBinding ContentTemplate}"
                   FontSize="{TemplateBinding FontSize}"
                   FontWeight="{TemplateBinding FontWeight}"
                   RecognizesAccessKey="True"/>

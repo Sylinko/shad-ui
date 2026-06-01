@@ -64,7 +64,7 @@
     <ResourceInclude Source="avares://ShadUI/Controls/TimePicker/TimePicker.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Toast/Toast.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Toast/ToastHost.axaml"/>
-    <ResourceInclude Source="avares://ShadUI/Controls/ToggleButton/Toggle.axaml"/>
+    <ResourceInclude Source="avares://ShadUI/Controls/ToggleButton/ToggleButton.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/ToolTip/ToolTip.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Window/ShadWindow.axaml"/>
   </ResourceDictionary.MergedDictionaries>
