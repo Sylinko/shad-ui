@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Collections;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 
@@ -40,22 +41,22 @@ public static class BindingAssist
     /// <see cref="Control.Classes"/> is not settable directly in XAML, so this attached property
     /// allows binding a collection of classes to a control.
     /// </remarks>
-    public static readonly AttachedProperty<IEnumerable<string>> ClassesProperty =
-        AvaloniaProperty.RegisterAttached<Control, Control, IEnumerable<string>>("Classes");
+    public static readonly AttachedProperty<object?> ClassesProperty =
+        AvaloniaProperty.RegisterAttached<Control, Control, object?>("Classes");
 
     /// <summary>
     /// Sets the classes for the specified control.
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="value"></param>
-    public static void SetClasses(Control obj, IEnumerable<string> value) => obj.SetValue(ClassesProperty, value);
+    public static void SetClasses(Control obj, object? value) => obj.SetValue(ClassesProperty, value);
 
     /// <summary>
     /// Gets the classes for the specified control.
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static IEnumerable<string> GetClasses(Control obj) => obj.GetValue(ClassesProperty);
+    public static object? GetClasses(Control obj) => obj.GetValue(ClassesProperty);
 
     static BindingAssist()
     {
@@ -71,7 +72,29 @@ public static class BindingAssist
 
     private static void HandleClassesChanged(Control sender, AvaloniaPropertyChangedEventArgs args)
     {
-        sender.Classes.Clear();
-        if (args.NewValue is IEnumerable<string> classes) sender.Classes.AddRange(classes);
+        var oldClasses = ConvertClasses(args.OldValue).ToList();
+        if (oldClasses.Count > 0)
+        {
+            for (var i = sender.Classes.Count - 1; i >= 0; i--)
+            {
+                if (oldClasses.Contains(sender.Classes[i]))
+                {
+                    sender.Classes.RemoveAt(i);
+                }
+            }
+        }
+
+        sender.Classes.AddRange(ConvertClasses(args.NewValue));
+
+        static IEnumerable<string> ConvertClasses(object? obj)
+        {
+            return obj switch
+            {
+                IEnumerable<string> enumerable => enumerable,
+                IEnumerable enumerable => enumerable.Cast<object>().Select(x => x.ToString()).OfType<string>(),
+                _ when obj?.ToString() is { Length: > 0 } @string => [@string],
+                _ => []
+            };
+        }
     }
 }
