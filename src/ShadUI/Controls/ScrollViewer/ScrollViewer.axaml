@@ -18,6 +18,7 @@
               Name="PART_ContentPresenter"
               Padding="{TemplateBinding Padding}"
               Background="{TemplateBinding Background}"
+              CornerRadius="{TemplateBinding CornerRadius}"
               HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
               HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
               ScrollViewer.IsScrollInertiaEnabled="{TemplateBinding IsScrollInertiaEnabled}"
