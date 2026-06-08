@@ -10,6 +10,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Button
+          Classes="Ghost"
           Padding="{TemplateBinding Padding}"
           HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
           VerticalAlignment="{TemplateBinding VerticalAlignment}"
