@@ -37,7 +37,8 @@
               CornerRadius="{DynamicResource MdCornerRadius}">
 
               <ProgressBar
-                Name="PART_ProgressBar" VerticalAlignment="Bottom"
+                Name="PART_ProgressBar" Height="6"
+                VerticalAlignment="Bottom"
                 IsIndeterminate="{TemplateBinding ProgressValue, Converter={x:Static shadui:DoubleConverters.IsNaN}}"
                 IsVisible="{TemplateBinding Progress, Converter={x:Static ObjectConverters.IsNotNull}}"
                 Maximum="1" Minimum="0"
@@ -130,7 +131,7 @@
         <Setter Property="TextBlock.FontWeight" Value="Medium"/>
       </Style>
       <Style Selector="^ /template/ ProgressBar#PART_ProgressBar">
-        <Setter Property="Foreground" Value="{DynamicResource PrimaryColor10}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryColor50}"/>
       </Style>
       <Style Selector="^ /template/ Button#PART_ActionButton">
         <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
@@ -148,7 +149,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource SuccessColor20}"/>
       </Style>
       <Style Selector="^ /template/ ProgressBar#PART_ProgressBar">
-        <Setter Property="Foreground" Value="{DynamicResource SuccessColor10}"/>
+        <Setter Property="Foreground" Value="{DynamicResource SuccessColor60}"/>
       </Style>
       <Style Selector="^ /template/ Border#PART_InnerCardBackground">
         <Setter Property="Background" Value="{DynamicResource SuccessColor5}"/>
@@ -188,7 +189,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource InfoColor20}"/>
       </Style>
       <Style Selector="^ /template/ ProgressBar#PART_ProgressBar">
-        <Setter Property="Foreground" Value="{DynamicResource InfoColor10}"/>
+        <Setter Property="Foreground" Value="{DynamicResource InfoColor60}"/>
       </Style>
       <Style Selector="^ /template/ Border#PART_InnerCardBackground">
         <Setter Property="Background" Value="{DynamicResource InfoColor5}"/>
@@ -228,7 +229,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource WarningColor20}"/>
       </Style>
       <Style Selector="^ /template/ ProgressBar#PART_ProgressBar">
-        <Setter Property="Foreground" Value="{DynamicResource InfoColor10}"/>
+        <Setter Property="Foreground" Value="{DynamicResource WarningColor60}"/>
       </Style>
       <Style Selector="^ /template/ Border#PART_InnerCardBackground">
         <Setter Property="Background" Value="{DynamicResource WarningColor5}"/>
@@ -268,7 +269,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource ErrorColor20}"/>
       </Style>
       <Style Selector="^ /template/ ProgressBar#PART_ProgressBar">
-        <Setter Property="Foreground" Value="{DynamicResource ErrorColor10}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ErrorColor60}"/>
       </Style>
       <Style Selector="^ /template/ Border#PART_InnerCardBackground">
         <Setter Property="Background" Value="{DynamicResource ErrorColor5}"/>

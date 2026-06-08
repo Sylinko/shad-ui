@@ -90,6 +90,15 @@ public class NavigationView : TemplatedControl
         set => SetValue(HeaderMaxWidthProperty, value);
     }
 
+    public static readonly StyledProperty<Thickness> HeaderPaddingProperty =
+        AvaloniaProperty.Register<NavigationView, Thickness>(nameof(HeaderPadding));
+
+    public Thickness HeaderPadding
+    {
+        get => GetValue(HeaderPaddingProperty);
+        set => SetValue(HeaderPaddingProperty, value);
+    }
+
     /// <summary>
     /// Defines the <see cref="Spacing"/> property.
     /// </summary>

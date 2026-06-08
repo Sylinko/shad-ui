@@ -8,10 +8,9 @@
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="Padding" Value="16"/>
     <Setter Property="PageTransition">
-      <shadui:BetterPageSlide
-        FadeDuration="0:0:0.4" FadeEasing="CubicEaseInOut"
-        Orientation="Vertical" SlideDuration="0:0:0.6"
-        SlideEasing="{x:Static shadui:PageSlideEase.Shared}"/>
+      <CrossFade
+        FadeInEasing="CubicEaseInOut" FadeOutEasing="CubicEaseInOut"
+        Duration="0:0:0.4"/>
     </Setter>
     <Setter Property="CompactPageTransition">
       <CrossFade
@@ -61,7 +60,9 @@
                 </Button>
 
                 <!--  Header  -->
-                <ContentControl ContentTemplate="{TemplateBinding HeaderTemplate}">
+                <ContentControl
+                  Padding="{TemplateBinding HeaderPadding}"
+                  ContentTemplate="{TemplateBinding HeaderTemplate}">
                   <ContentPresenter.Content>
                     <MultiBinding Converter="{x:Static shadui:BasicConverters.FirstNotNull}">
                       <TemplateBinding Property="Header"/>
