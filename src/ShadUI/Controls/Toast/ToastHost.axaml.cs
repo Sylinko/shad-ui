@@ -199,7 +199,8 @@ public sealed class ToastHost : TemplatedControl
         if (!_queuedToasts.Contains(toast)) return;
 
         _queuedToasts.Remove(toast);
-        toast.DismissCts?.Cancel();
+        CancelAutoDismissTimer(toast);
+        CancelDismissCts(toast);
         toast.DismissCts = null;
 
         AnimateDismiss(toast, result, () =>
@@ -291,10 +292,7 @@ public sealed class ToastHost : TemplatedControl
     private static void HandleToastPointerEntered(object? sender, PointerEventArgs e)
     {
         if (sender is Toast toast)
-        {
-            toast.DismissCts?.Cancel();
-            toast.DismissCts = null;
-        }
+            CancelAutoDismissTimer(toast);
     }
 
     private void HandleToastPointerExited(object? sender, PointerEventArgs e)
@@ -333,8 +331,10 @@ public sealed class ToastHost : TemplatedControl
     {
         if (toast.Duration.Ticks <= 0) return;
 
-        toast.DismissCts = new CancellationTokenSource();
-        var cts = toast.DismissCts;
+        CancelAutoDismissTimer(toast);
+
+        toast.AutoDismissCts = new CancellationTokenSource();
+        var cts = toast.AutoDismissCts;
 
         DispatcherTimer.RunOnce(
             () =>
@@ -343,6 +343,28 @@ public sealed class ToastHost : TemplatedControl
                 DismissToast(toast, ToastResult.TimerElapsed);
             },
             toast.Duration);
+    }
+
+    internal static void CancelAutoDismissTimer(Toast toast)
+    {
+        toast.AutoDismissCts?.Cancel();
+        toast.AutoDismissCts = null;
+    }
+
+    private static void CancelDismissCts(Toast toast)
+    {
+        try
+        {
+            toast.DismissCts?.Cancel();
+        }
+        catch (ObjectDisposedException)
+        {
+            // The caller may own and dispose the source after the associated work ends.
+        }
+        finally
+        {
+            toast.DismissCts = null;
+        }
     }
 }
 

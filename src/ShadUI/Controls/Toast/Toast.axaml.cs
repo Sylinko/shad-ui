@@ -217,15 +217,21 @@ public sealed class Toast : ContentControl
 
     /// <summary>
     ///     Per-toast screen position override. When <c>null</c>,
-    ///     <see cref="ToastHost" /> uses its own <see cref="ToastHost.Position" />.
+    ///     <see cref="ToastHost" /> uses its own <see cref="Position" />.
     /// </summary>
     internal ToastPosition? Position { get; set; }
+
+    /// <summary>
+    ///     Cancellation token source provided by callers.
+    ///     Canceled when the toast is dismissed.
+    /// </summary>
+    internal CancellationTokenSource? DismissCts { get; set; }
 
     /// <summary>
     ///     Cancellation token source for the auto-dismiss timer.
     ///     Managed exclusively by <see cref="ToastHost" />.
     /// </summary>
-    internal CancellationTokenSource? DismissCts { get; set; }
+    internal CancellationTokenSource? AutoDismissCts { get; set; }
 
     #endregion
 
