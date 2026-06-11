@@ -235,7 +235,7 @@
       <Setter Property="FontWeight" Value="Light"/>
 
       <Style Selector="^ /template/ DockPanel#PART_Container">
-        <Setter Property="HorizontalSpacing" Value="0"/>
+        <Setter Property="HorizontalSpacing" Value="2"/>
       </Style>
 
       <Style Selector="^.Uniform">
