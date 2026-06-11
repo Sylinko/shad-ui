@@ -31,6 +31,7 @@
                 <Style Selector="^ shadui|Loading">
                   <Setter Property="Width" Value="{DynamicResource FontSizeL}"/>
                   <Setter Property="Height" Value="{DynamicResource FontSizeL}"/>
+                  <Setter Property="Foreground" Value="{DynamicResource BadgeForegroundColor}"/>
                 </Style>
               </Style>
               <Style Selector="TextBlock.Text">

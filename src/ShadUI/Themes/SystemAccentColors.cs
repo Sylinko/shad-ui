@@ -72,15 +72,10 @@ public sealed class SystemAccentColors : ResourceDictionary
 
     private static (Color d1, Color d2, Color d3) CalculateAccentShades(Color accentColor)
     {
-        const double dark1Step = 28.5 / 255d;
-        const double dark2Step = 49 / 255d;
-        const double dark3Step = 74.5 / 255d;
-        
-        var hslAccent = accentColor.ToHsl();
         return (
-            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L - dark1Step).ToRgb(),
-            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L - dark2Step).ToRgb(),
-            new HslColor(hslAccent.A, hslAccent.H, hslAccent.S, hslAccent.L - dark3Step).ToRgb()
+            new Color(191, accentColor.R, accentColor.G, accentColor.B),
+            new Color(128, accentColor.R, accentColor.G, accentColor.B),
+            new Color(26, accentColor.R, accentColor.G, accentColor.B)
         );
     }
 }

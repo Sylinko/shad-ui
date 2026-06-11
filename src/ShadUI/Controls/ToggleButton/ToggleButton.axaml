@@ -55,6 +55,12 @@
               CornerRadius="{TemplateBinding CornerRadius}"
               Cursor="Hand"
               TextElement.Foreground="{TemplateBinding Foreground}">
+              <Border.Transitions>
+                <Transitions>
+                  <BrushTransition
+                    Property="TextElement.Foreground" Duration="0:0:0.15"/>
+                </Transitions>
+              </Border.Transitions>
               <StackPanel
                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                 Orientation="Horizontal" Spacing="6">
@@ -137,9 +143,11 @@
     <!--  Primary  -->
     <Style Selector="^.Primary">
       <Setter Property="Background" Value="{DynamicResource TransparentColor}"/>
-      <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
+      <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource PrimaryColor75}"/>
+      <Setter Property="shadui:ButtonAssist.HoverForeground" Value="{DynamicResource PrimaryForegroundColor}"/>
       <Setter Property="shadui:ButtonAssist.CheckedBackground" Value="{DynamicResource PrimaryColor}"/>
+      <Setter Property="shadui:ButtonAssist.CheckedForeground" Value="{DynamicResource PrimaryForegroundColor}"/>
     </Style>
 
     <Style Selector="^.Secondary">
@@ -175,8 +183,11 @@
     <Style Selector="^:disabled">
       <Setter Property="Opacity" Value="0.5"/>
     </Style>
-    <Style Selector="^:pointerover /template/ Border#BackgroundBorder">
-      <Setter Property="Background" Value="{TemplateBinding shadui:ButtonAssist.HoverBackground}"/>
+    <Style Selector="^:pointerover">
+      <Setter Property="Foreground" Value="{Binding (shadui:ButtonAssist.HoverForeground), RelativeSource={RelativeSource Self}}"/>
+      <Style Selector="^ /template/ Border#BackgroundBorder">
+        <Setter Property="Background" Value="{TemplateBinding shadui:ButtonAssist.HoverBackground}"/>
+      </Style>
     </Style>
     <Style Selector="^:pressed:not(.NoScale) /template/ Panel#RootPanel">
       <Setter Property="RenderTransform" Value="scale(0.95, 0.95)"/>
