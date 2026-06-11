@@ -23,14 +23,14 @@
               <Panel>
                 <Panel.Styles>
                   <Style Selector="ToggleButton#PART_ToggleButton:checked /template/ Border#RootBorder">
-                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Background" Value="{DynamicResource TransparentColor}"/>
                   </Style>
                 </Panel.Styles>
                 <ToggleButton
                   x:Name="PART_ToggleButton" Classes="NoScale"
                   DockPanel.Dock="Right" Padding="0"
                   HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
-                  shadui:ButtonAssist.CheckedBackground="Transparent"
+                  shadui:ButtonAssist.CheckedBackground="{DynamicResource TransparentColor}"
                   shadui:ButtonAssist.CheckedForeground="{DynamicResource ForegroundColor}"
                   shadui:ButtonAssist.HoverBackground="{DynamicResource SecondaryColor50}"
                   BorderThickness="0"
