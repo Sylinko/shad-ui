@@ -112,9 +112,14 @@ public static class BasicConverters
     /// <summary>
     /// Returns the first non-null and non-UnsetValue value from the input values.
     /// </summary>
-    public static IMultiValueConverter FirstNotNull { get; } = new FirstNonNullConverter();
+    public static IMultiValueConverter FirstNotNull { get; } = new FirstNotNullConverter();
 
-    private class AllEqualsConverter : IMultiValueConverter
+    /// <summary>
+    /// Returns the first non-null, non-empty (for strings), and non-UnsetValue value from the input values.
+    /// </summary>
+    public static IMultiValueConverter FirstNotNullOrEmpty { get; } = new FirstNotNullOrEmptyConverter();
+
+    private sealed class AllEqualsConverter : IMultiValueConverter
     {
         public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
@@ -123,11 +128,24 @@ public static class BasicConverters
         }
     }
 
-    private class FirstNonNullConverter : IMultiValueConverter
+    private sealed class FirstNotNullConverter : IMultiValueConverter
     {
         public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
             return values.OfType<object>().FirstOrDefault(value => value != AvaloniaProperty.UnsetValue);
+        }
+    }
+
+    private sealed class FirstNotNullOrEmptyConverter : IMultiValueConverter
+    {
+        public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
+        {
+            return values.FirstOrDefault(value =>
+            {
+                if (value == AvaloniaProperty.UnsetValue) return false;
+                if (value is string str) return !string.IsNullOrEmpty(str);
+                return true;
+            });
         }
     }
 }
