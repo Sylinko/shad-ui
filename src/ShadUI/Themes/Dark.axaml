@@ -5,7 +5,7 @@
   <Color x:Key="TransparentColor">#00000000</Color>
   <Color x:Key="ForegroundColor">#E5E5E5</Color>
   <Color x:Key="ForegroundLeadColor">#A1A1AA</Color>
-  <Color x:Key="BackgroundColor">Transparent</Color>
+  <Color x:Key="BackgroundColor">#00000000</Color>
   <Color x:Key="MutedColor">#A0A0A9</Color>
   <Color x:Key="BorderColor">#353535</Color>
   <Color x:Key="BorderColor60">#9C353535</Color>

@@ -22,6 +22,7 @@
     <Setter Property="shadui:ButtonAssist.IconSize" Value="{DynamicResource FontSizeL}"/>
     <Setter Property="shadui:ButtonAssist.ShowProgress" Value="False"/>
     <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource GhostColor}"/>
+    <Setter Property="shadui:ButtonAssist.HoverForeground" Value="{DynamicResource ForegroundColor}"/>
     <Setter Property="shadui:ButtonAssist.CheckedForeground" Value="{DynamicResource PrimaryForegroundColor}"/>
     <Setter Property="shadui:ButtonAssist.CheckedBackground" Value="{DynamicResource PrimaryColor75}"/>
     <Setter Property="Template">
