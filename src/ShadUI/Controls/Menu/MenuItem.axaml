@@ -55,22 +55,34 @@
               Name="BorderContainer" Background="Transparent"
               ClipToBounds="True"
               CornerRadius="{TemplateBinding CornerRadius}">
-              <Grid Margin="{TemplateBinding Padding}">
+              <Grid
+                Margin="{TemplateBinding Padding}"
+                ColumnSpacing="4">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition
                     Width="Auto" SharedSizeGroup="A"/>
+                  <ColumnDefinition
+                    Width="Auto" SharedSizeGroup="B"/>
                   <ColumnDefinition Width="*"/>
                   <ColumnDefinition Width="Auto"/>
                   <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
+
+                <PathIcon
+                  x:Name="PART_Check" Grid.Column="0"
+                  Width="14" Height="14"
+                  VerticalAlignment="Center"
+                  Data="{x:Static shadui:Icons.Check}"
+                  Foreground="{DynamicResource PrimaryColor}"
+                  IsVisible="{TemplateBinding IsChecked}"/>
                 <ContentPresenter
-                  Name="Icon" Grid.Column="0"
-                  Height="16" Margin="0,0,8,0"
-                  HorizontalAlignment="Center" VerticalAlignment="Center"
+                  x:Name="PART_Icon" Grid.Column="1"
+                  Height="16" HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
                   Content="{TemplateBinding Icon}"
                   IsVisible="{TemplateBinding Icon, Converter={x:Static ObjectConverters.IsNotNull}}"/>
                 <ContentPresenter
-                  Name="HeaderPresenter" Grid.Column="1"
+                  x:Name="PART_HeaderPresenter" Grid.Column="2"
                   HorizontalAlignment="Left" VerticalAlignment="Center"
                   Content="{TemplateBinding Header}">
                   <ContentPresenter.DataTemplates>
@@ -83,15 +95,15 @@
                   </ContentPresenter.DataTemplates>
                 </ContentPresenter>
                 <PathIcon
-                  Name="RightArrow" Grid.Column="2"
-                  DockPanel.Dock="Right" Width="10"
-                  Height="10" Margin="16,0,0,0"
-                  HorizontalAlignment="Right" VerticalAlignment="Center"
+                  x:Name="PART_RightArrow" Grid.Column="3"
+                  Width="10" Height="10"
+                  Margin="8,0,0,0" HorizontalAlignment="Right"
+                  VerticalAlignment="Center"
                   Data="{x:Static shadui:Icons.ChevronRight}"
                   Foreground="{DynamicResource ForegroundColor}"/>
                 <TextBlock
-                  Name="InputGestureText" Grid.Column="3"
-                  Margin="8,0,0,0" VerticalAlignment="Center"
+                  x:Name="PART_InputGestureT" Grid.Column="4"
+                  VerticalAlignment="Center"
                   FontSize="{DynamicResource FontSizeS}"
                   IsVisible="{TemplateBinding InputGesture, Converter={x:Static ObjectConverters.IsNotNull}}"
                   Opacity="0.5"
@@ -140,7 +152,7 @@
     <Style Selector="^:not(.Menu):disabled">
       <Setter Property="Opacity" Value="0.56"/>
     </Style>
-    <Style Selector="^:empty /template/ PathIcon#RightArrow">
+    <Style Selector="^:empty /template/ PathIcon#PART_RightArrow">
       <Setter Property="IsVisible" Value="False"/>
     </Style>
     <Style Selector="^[FlowDirection=RightToLeft] /template/ Popup#Popup">
