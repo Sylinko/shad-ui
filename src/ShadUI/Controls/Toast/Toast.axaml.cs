@@ -6,6 +6,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using ShadUI.Extensions;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
@@ -20,6 +21,7 @@ namespace ShadUI;
 [TemplatePart("PART_CloseButton", typeof(Button))]
 public sealed class Toast : ContentControl
 {
+
     #region Styled Properties
 
     /// <summary>
@@ -300,17 +302,19 @@ public sealed class Toast : ContentControl
 
     #region Private Handlers
 
+    private DateTimeOffset _lastProgressUpdate = DateTimeOffset.MinValue;
+
     private void ProgressChangedHandler(object? sender, double e)
     {
-        var dispatcher = Dispatcher.UIThread;
-        if (dispatcher.CheckAccess())
-        {
-            ProgressValue = e;
-        }
-        else
-        {
-            dispatcher.Post(() => ProgressValue = e);
-        }
+        if (DateTimeOffset.Now - _lastProgressUpdate < TimeSpan.FromMilliseconds(100)) return;
+
+        Dispatcher.UIThread.PostOnDemand(
+            () =>
+            {
+                ProgressValue = e;
+                _lastProgressUpdate = DateTimeOffset.Now;
+            },
+            DispatcherPriority.Normal);
     }
 
     private void ToastCardClickedHandler(object? sender, PointerPressedEventArgs e)
