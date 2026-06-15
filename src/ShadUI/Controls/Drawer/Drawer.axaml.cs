@@ -44,35 +44,28 @@ namespace ShadUI;
 /// </para>
 /// </remarks>
 [PseudoClasses(":opened", ":closed", ":left", ":right", ":top", ":bottom", ":inline", ":overlay")]
-[TemplatePart(InlineGridPartName, typeof(Grid), IsRequired = true)]
-[TemplatePart(InlineContentPresenterPartName, typeof(ContentPresenter), IsRequired = true)]
+[TemplatePart(LayoutGridPartName, typeof(Grid), IsRequired = true)]
+[TemplatePart(ContentPresenterPartName, typeof(ContentPresenter), IsRequired = true)]
 [TemplatePart(SplitterPartName, typeof(GridSplitter), IsRequired = true)]
-[TemplatePart(InlineDrawerPresenterPartName, typeof(ContentPresenter), IsRequired = true)]
-[TemplatePart(OverlayContentPresenterPartName, typeof(ContentPresenter), IsRequired = true)]
 [TemplatePart(OverlayBackdropPartName, typeof(Border), IsRequired = true)]
-[TemplatePart(OverlayDrawerBorderPartName, typeof(Border), IsRequired = true)]
-[TemplatePart(OverlayDrawerPresenterPartName, typeof(ContentPresenter), IsRequired = true)]
+[TemplatePart(DrawerBorderPartName, typeof(Border), IsRequired = true)]
+[TemplatePart(DrawerPresenterPartName, typeof(ContentPresenter), IsRequired = true)]
 public class Drawer : ContentControl
 {
-    private const string InlineGridPartName = "PART_InlineGrid";
-    private const string InlineContentPresenterPartName = "PART_InlineContentPresenter";
+    private const string LayoutGridPartName = "PART_LayoutGrid";
+    private const string ContentPresenterPartName = "PART_ContentPresenter";
     private const string SplitterPartName = "PART_Splitter";
-    private const string InlineDrawerPresenterPartName = "PART_InlineDrawerPresenter";
-    private const string OverlayContentPresenterPartName = "PART_OverlayContentPresenter";
     private const string OverlayBackdropPartName = "PART_OverlayBackdrop";
-    private const string OverlayDrawerBorderPartName = "PART_OverlayDrawerBorder";
-    private const string OverlayDrawerPresenterPartName = "PART_OverlayDrawerPresenter";
+    private const string DrawerBorderPartName = "PART_DrawerBorder";
+    private const string DrawerPresenterPartName = "PART_DrawerPresenter";
 
     #region Template Parts
 
-    private Grid? _inlineGrid;
-    private ContentPresenter? _inlineContentPresenter;
+    private Grid? _layoutGrid;
+    private ContentPresenter? _contentPresenter;
     private GridSplitter? _splitter;
-    private ContentPresenter? _inlineDrawerPresenter;
-    private ContentPresenter? _overlayContentPresenter;
     private Border? _overlayBackdrop;
-    private Border? _overlayDrawerBorder;
-    private ContentPresenter? _overlayDrawerPresenter;
+    private Border? _drawerBorder;
 
     #endregion
 
@@ -409,14 +402,11 @@ public class Drawer : ContentControl
 
         CleanupParts();
 
-        _inlineGrid = e.NameScope.Find<Grid>(InlineGridPartName);
-        _inlineContentPresenter = e.NameScope.Find<ContentPresenter>(InlineContentPresenterPartName);
+        _layoutGrid = e.NameScope.Find<Grid>(LayoutGridPartName);
+        _contentPresenter = e.NameScope.Find<ContentPresenter>(ContentPresenterPartName);
         _splitter = e.NameScope.Find<GridSplitter>(SplitterPartName);
-        _inlineDrawerPresenter = e.NameScope.Find<ContentPresenter>(InlineDrawerPresenterPartName);
-        _overlayContentPresenter = e.NameScope.Find<ContentPresenter>(OverlayContentPresenterPartName);
         _overlayBackdrop = e.NameScope.Find<Border>(OverlayBackdropPartName);
-        _overlayDrawerBorder = e.NameScope.Find<Border>(OverlayDrawerBorderPartName);
-        _overlayDrawerPresenter = e.NameScope.Find<ContentPresenter>(OverlayDrawerPresenterPartName);
+        _drawerBorder = e.NameScope.Find<Border>(DrawerBorderPartName);
 
         if (_overlayBackdrop != null)
         {
@@ -453,32 +443,21 @@ public class Drawer : ContentControl
             case nameof(IsOpened):
             {
                 UpdatePseudoClasses();
-                UpdateGridLayout();
-                UpdateSplitter();
-                UpdateOverlayTransform();
-                UpdateOverlayBackdrop();
+                UpdateLayoutState(false);
                 break;
             }
             case nameof(Placement):
             {
                 UpdatePseudoClasses();
                 RebuildGridLayout();
-                UpdateOverlayLayout();
-                UpdateSplitter();
+                UpdateLayoutState(!IsOpened);
                 break;
             }
             case nameof(DisplayMode):
             {
                 UpdatePseudoClasses();
-                UpdateModeVisibility();
-                UpdateContentPresenters();
-                break;
-            }
-            case nameof(Content):
-            case nameof(DrawerContent):
-            case nameof(DrawerContentTemplate):
-            {
-                UpdateContentPresenters();
+                RebuildGridLayout();
+                UpdateLayoutState(!IsOpened);
                 break;
             }
             case nameof(OverlayBrush):
@@ -492,7 +471,7 @@ public class Drawer : ContentControl
                 if (!_isSyncingFromSplitter)
                 {
                     UpdateGridLayout();
-                    UpdateOverlayLayout();
+                    UpdateDrawerLayout(!IsOpened);
                 }
                 break;
             }
@@ -502,7 +481,7 @@ public class Drawer : ContentControl
             case nameof(DrawerMaxHeight):
             {
                 UpdateGridLayout();
-                UpdateOverlayLayout();
+                UpdateDrawerLayout(!IsOpened);
                 break;
             }
             case nameof(SplitterTheme):
@@ -526,13 +505,8 @@ public class Drawer : ContentControl
     private void UpdateAll()
     {
         UpdatePseudoClasses();
-        UpdateModeVisibility();
         RebuildGridLayout();
-        UpdateOverlayLayout();
-        UpdateContentPresenters();
-        UpdateSplitter();
-        UpdateOverlayBackdrop();
-        UpdateOverlayTransform();
+        UpdateLayoutState(true);
     }
 
     private void UpdatePseudoClasses()
@@ -552,40 +526,30 @@ public class Drawer : ContentControl
         PseudoClasses.Set(":overlay", displayMode == DrawerDisplayMode.Overlay);
     }
 
-    private void UpdateModeVisibility()
+    private void UpdateLayoutState(bool suppressClosedTransition)
     {
-        var isInline = DisplayMode == DrawerDisplayMode.Inline;
-        _inlineGrid?.IsVisible = isInline;
-        _overlayContentPresenter?.IsVisible = !isInline;
-        _overlayBackdrop?.IsVisible = !isInline;
-        _overlayDrawerBorder?.IsVisible = !isInline;
+        UpdateModeVisibility();
+        UpdateGridLayout();
+        UpdateDrawerLayout(suppressClosedTransition);
+        UpdateSplitter();
+        UpdateOverlayBackdrop();
     }
 
-    private void UpdateContentPresenters()
+    private void UpdateModeVisibility()
     {
-        if (DisplayMode == DrawerDisplayMode.Inline)
-        {
-            _overlayContentPresenter?.Content = null;
-            _overlayDrawerPresenter?.Content = null;
-            _inlineContentPresenter?.Content = Content;
-            _inlineDrawerPresenter?.Content = DrawerContent;
-        }
-        else
-        {
-            _inlineContentPresenter?.Content = null;
-            _inlineDrawerPresenter?.Content = null;
-            _overlayContentPresenter?.Content = Content;
-            _overlayDrawerPresenter?.Content = DrawerContent;
-        }
+        var isOverlay = DisplayMode == DrawerDisplayMode.Overlay;
+        if (_overlayBackdrop is not null) _overlayBackdrop.IsVisible = isOverlay;
+        if (_drawerBorder is not null) _drawerBorder.IsVisible = true;
     }
 
     /// <summary>
-    /// Rebuilds the inline Grid layout from scratch. Called when <see cref="Placement"/> changes.
+    /// Rebuilds the Grid layout definitions. Content and drawer presenters stay in the same visual tree;
+    /// only Grid placement changes.
     /// Disposes old subscriptions and creates new column/row definitions.
     /// </summary>
     private void RebuildGridLayout()
     {
-        if (_inlineGrid == null) return;
+        if (_layoutGrid == null) return;
 
         _drawerColumnSubscription?.Dispose();
         _drawerColumnSubscription = null;
@@ -597,31 +561,44 @@ public class Drawer : ContentControl
         _isSyncingFromSplitter = true;
         try
         {
+            if (DisplayMode == DrawerDisplayMode.Overlay)
+            {
+                _layoutGrid.ColumnDefinitions = [new ColumnDefinition(GridLength.Star)];
+                _layoutGrid.RowDefinitions = [new RowDefinition(GridLength.Star)];
+
+                SetGridPosition(_contentPresenter, 0, 0);
+                SetGridPosition(_overlayBackdrop, 0, 0);
+                SetGridPosition(_drawerBorder, 0, 0);
+                SetGridPosition(_splitter, 0, 0);
+
+                _drawerColumn = null;
+                _splitterColumn = null;
+                _contentColumn = null;
+                _drawerRow = null;
+                _splitterRow = null;
+                _contentRow = null;
+
+                return;
+            }
+
             var isHorizontal = Placement is DrawerPlacement.Left or DrawerPlacement.Right;
             if (isHorizontal)
             {
-                _inlineGrid.RowDefinitions = [new RowDefinition(GridLength.Star)];
+                _layoutGrid.RowDefinitions = [new RowDefinition(GridLength.Star)];
 
                 _drawerColumn = new ColumnDefinition();
                 _splitterColumn = new ColumnDefinition(GridLength.Auto);
                 _contentColumn = new ColumnDefinition(GridLength.Star);
 
                 var isLeft = Placement == DrawerPlacement.Left;
-                _inlineGrid.ColumnDefinitions = isLeft ?
+                _layoutGrid.ColumnDefinitions = isLeft ?
                     [_drawerColumn, _splitterColumn, _contentColumn] :
                     [_contentColumn, _splitterColumn, _drawerColumn];
 
-                if (_inlineContentPresenter != null)
-                    Grid.SetColumn(_inlineContentPresenter, isLeft ? 2 : 0);
-                if (_splitter != null)
-                    Grid.SetColumn(_splitter, 1);
-                if (_inlineDrawerPresenter != null)
-                    Grid.SetColumn(_inlineDrawerPresenter, isLeft ? 0 : 2);
-
-                // Clear row assignments to avoid stale state
-                if (_inlineContentPresenter != null) Grid.SetRow(_inlineContentPresenter, 0);
-                if (_splitter != null) Grid.SetRow(_splitter, 0);
-                if (_inlineDrawerPresenter != null) Grid.SetRow(_inlineDrawerPresenter, 0);
+                SetGridPosition(_contentPresenter, isLeft ? 2 : 0, 0);
+                SetGridPosition(_overlayBackdrop, 0, 0, 3);
+                SetGridPosition(_splitter, 1, 0);
+                SetGridPosition(_drawerBorder, isLeft ? 0 : 2, 0);
 
                 _drawerRow = null;
                 _splitterRow = null;
@@ -633,28 +610,21 @@ public class Drawer : ContentControl
             }
             else
             {
-                _inlineGrid.ColumnDefinitions = [new ColumnDefinition(GridLength.Star)];
+                _layoutGrid.ColumnDefinitions = [new ColumnDefinition(GridLength.Star)];
 
                 _drawerRow = new RowDefinition();
                 _splitterRow = new RowDefinition(GridLength.Auto);
                 _contentRow = new RowDefinition(GridLength.Star);
 
                 var isTop = Placement == DrawerPlacement.Top;
-                _inlineGrid.RowDefinitions = isTop ?
+                _layoutGrid.RowDefinitions = isTop ?
                     [_drawerRow, _splitterRow, _contentRow] :
                     [_contentRow, _splitterRow, _drawerRow];
 
-                if (_inlineContentPresenter != null)
-                    Grid.SetRow(_inlineContentPresenter, isTop ? 2 : 0);
-                if (_splitter != null)
-                    Grid.SetRow(_splitter, 1);
-                if (_inlineDrawerPresenter != null)
-                    Grid.SetRow(_inlineDrawerPresenter, isTop ? 0 : 2);
-
-                // Clear column assignments to avoid stale state
-                if (_inlineContentPresenter != null) Grid.SetColumn(_inlineContentPresenter, 0);
-                if (_splitter != null) Grid.SetColumn(_splitter, 0);
-                if (_inlineDrawerPresenter != null) Grid.SetColumn(_inlineDrawerPresenter, 0);
+                SetGridPosition(_contentPresenter, 0, isTop ? 2 : 0);
+                SetGridPosition(_overlayBackdrop, 0, 0, 1, 3);
+                SetGridPosition(_splitter, 0, 1);
+                SetGridPosition(_drawerBorder, 0, isTop ? 0 : 2);
 
                 _drawerColumn = null;
                 _splitterColumn = null;
@@ -673,6 +643,16 @@ public class Drawer : ContentControl
         UpdateGridLayout();
     }
 
+    private static void SetGridPosition(Control? control, int column, int row, int columnSpan = 1, int rowSpan = 1)
+    {
+        if (control is null) return;
+
+        Grid.SetColumn(control, column);
+        Grid.SetRow(control, row);
+        Grid.SetColumnSpan(control, columnSpan);
+        Grid.SetRowSpan(control, rowSpan);
+    }
+
     /// <summary>
     /// Updates the inline Grid's column/row definitions based on current IsOpened and size properties.
     /// When closed, the drawer and splitter definitions collapse to 0.
@@ -680,6 +660,7 @@ public class Drawer : ContentControl
     private void UpdateGridLayout()
     {
         if (_isSyncingFromSplitter) return;
+        if (DisplayMode != DrawerDisplayMode.Inline) return;
 
         var isHorizontal = Placement is DrawerPlacement.Left or DrawerPlacement.Right;
         if (isHorizontal)
@@ -697,31 +678,45 @@ public class Drawer : ContentControl
     }
 
     /// <summary>
-    /// Updates the overlay drawer's position and size based on current Placement and size properties.
+    /// Updates the drawer's position and size based on the current display mode and placement.
     /// </summary>
-    private void UpdateOverlayLayout()
+    private void UpdateDrawerLayout(bool suppressClosedTransition)
     {
-        if (_overlayDrawerBorder == null) return;
+        if (_drawerBorder == null) return;
+
+        if (DisplayMode == DrawerDisplayMode.Inline)
+        {
+            _drawerBorder.HorizontalAlignment = HorizontalAlignment.Stretch;
+            _drawerBorder.VerticalAlignment = VerticalAlignment.Stretch;
+            _drawerBorder.Width = double.NaN;
+            _drawerBorder.Height = double.NaN;
+            _drawerBorder.ZIndex = 0;
+            _drawerBorder.IsHitTestVisible = IsOpened;
+            SetDrawerTranslation(0d, 0d, suppressClosedTransition);
+            return;
+        }
 
         var isHorizontal = Placement is DrawerPlacement.Left or DrawerPlacement.Right;
         if (isHorizontal)
         {
             var width = Math.Max(DrawerMinWidth, Math.Min(DrawerMaxWidth, DrawerWidth));
-            _overlayDrawerBorder.HorizontalAlignment = Placement == DrawerPlacement.Left ? HorizontalAlignment.Left : HorizontalAlignment.Right;
-            _overlayDrawerBorder.VerticalAlignment = VerticalAlignment.Stretch;
-            _overlayDrawerBorder.Width = width;
-            _overlayDrawerBorder.Height = double.NaN;
+            _drawerBorder.HorizontalAlignment = Placement == DrawerPlacement.Left ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+            _drawerBorder.VerticalAlignment = VerticalAlignment.Stretch;
+            _drawerBorder.Width = width;
+            _drawerBorder.Height = double.NaN;
         }
         else
         {
             var height = Math.Max(DrawerMinHeight, Math.Min(DrawerMaxHeight, DrawerHeight));
-            _overlayDrawerBorder.HorizontalAlignment = HorizontalAlignment.Stretch;
-            _overlayDrawerBorder.VerticalAlignment = Placement == DrawerPlacement.Top ? VerticalAlignment.Top : VerticalAlignment.Bottom;
-            _overlayDrawerBorder.Width = double.NaN;
-            _overlayDrawerBorder.Height = height;
+            _drawerBorder.HorizontalAlignment = HorizontalAlignment.Stretch;
+            _drawerBorder.VerticalAlignment = Placement == DrawerPlacement.Top ? VerticalAlignment.Top : VerticalAlignment.Bottom;
+            _drawerBorder.Width = double.NaN;
+            _drawerBorder.Height = height;
         }
 
-        UpdateOverlayTransform();
+        _drawerBorder.ZIndex = 2;
+        _drawerBorder.IsHitTestVisible = IsOpened;
+        UpdateOverlayTransform(suppressClosedTransition);
     }
 
     /// <summary>
@@ -731,31 +726,43 @@ public class Drawer : ContentControl
     /// Reuses the <see cref="TranslateTransform"/> instance from the template
     /// so that the transitions defined in AXAML can animate the X/Y properties.
     /// </summary>
-    private void UpdateOverlayTransform()
+    private void UpdateOverlayTransform(bool suppressClosedTransition)
     {
-        if (_overlayDrawerBorder?.RenderTransform is not TranslateTransform translate) return;
-
-        if (IsOpened)
+        if (DisplayMode != DrawerDisplayMode.Overlay || IsOpened)
         {
-            translate.X = 0;
-            translate.Y = 0;
+            SetDrawerTranslation(0d, 0d, suppressClosedTransition);
+            return;
+        }
+
+        var isHorizontal = Placement is DrawerPlacement.Left or DrawerPlacement.Right;
+        if (isHorizontal)
+        {
+            var width = Math.Max(DrawerMinWidth, Math.Min(DrawerMaxWidth, DrawerWidth));
+            SetDrawerTranslation(Placement == DrawerPlacement.Left ? -width : width, 0d, suppressClosedTransition);
         }
         else
         {
-            var isHorizontal = Placement is DrawerPlacement.Left or DrawerPlacement.Right;
-            if (isHorizontal)
-            {
-                var width = Math.Max(DrawerMinWidth, Math.Min(DrawerMaxWidth, DrawerWidth));
-                translate.X = Placement == DrawerPlacement.Left ? -width : width;
-                translate.Y = 0;
-            }
-            else
-            {
-                var height = Math.Max(DrawerMinHeight, Math.Min(DrawerMaxHeight, DrawerHeight));
-                translate.X = 0;
-                translate.Y = Placement == DrawerPlacement.Top ? -height : height;
-            }
+            var height = Math.Max(DrawerMinHeight, Math.Min(DrawerMaxHeight, DrawerHeight));
+            SetDrawerTranslation(0d, Placement == DrawerPlacement.Top ? -height : height, suppressClosedTransition);
         }
+    }
+
+    private void SetDrawerTranslation(double x, double y, bool suppressTransitions)
+    {
+        if (_drawerBorder?.RenderTransform is not TranslateTransform translate) return;
+
+        if (!suppressTransitions)
+        {
+            translate.X = x;
+            translate.Y = y;
+            return;
+        }
+
+        var transitions = translate.Transitions;
+        translate.Transitions = null;
+        translate.X = x;
+        translate.Y = y;
+        translate.Transitions = transitions;
     }
 
     /// <summary>
@@ -767,9 +774,12 @@ public class Drawer : ContentControl
     {
         if (_overlayBackdrop == null) return;
 
-        var isOpened = IsOpened;
-        _overlayBackdrop.IsHitTestVisible = isOpened;
+        var isOverlay = DisplayMode == DrawerDisplayMode.Overlay;
+        var isOpened = isOverlay && IsOpened;
+        _overlayBackdrop.IsVisible = isOverlay;
+        _overlayBackdrop.IsHitTestVisible = isOpened && OverlayBrush is not null;
         _overlayBackdrop.Opacity = isOpened ? 1 : 0;
+        _overlayBackdrop.ZIndex = 1;
     }
 
     /// <summary>
@@ -793,7 +803,8 @@ public class Drawer : ContentControl
             _splitter.Height = SplitterSize;
         }
 
-        _splitter.IsVisible = IsOpened || ShowSplitterWhenCollapsed;
+        _splitter.IsVisible = DisplayMode == DrawerDisplayMode.Inline && (IsOpened || ShowSplitterWhenCollapsed);
+        _splitter.ZIndex = 1;
     }
 
     #endregion
@@ -828,8 +839,11 @@ public class Drawer : ContentControl
             {
                 SetCurrentValue(IsOpenedProperty, false);
                 // Manually collapse the grid since OnPropertyChanged is suppressed.
-                _drawerColumn!.Width = new GridLength(0);
-                _splitterColumn!.Width = ShowSplitterWhenCollapsed ? GridLength.Auto : new GridLength(0);
+                if (_drawerColumn is not null) _drawerColumn.Width = new GridLength(0);
+                if (_splitterColumn is not null)
+                {
+                    _splitterColumn.Width = ShowSplitterWhenCollapsed ? GridLength.Auto : new GridLength(0);
+                }
                 UpdatePseudoClasses();
                 UpdateSplitter();
                 return;

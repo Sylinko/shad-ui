@@ -13,36 +13,16 @@
     -->
     <Setter Property="Template">
       <ControlTemplate TargetType="shadui:Drawer">
-        <Panel x:Name="PART_Root">
-
-          <!--  ==================== Inline Mode ====================  -->
-          <!--
-            The Grid layout is rebuilt in code-behind when Placement changes.
-            ColumnDefinitions/RowDefinitions are managed dynamically.
-          -->
-          <Grid x:Name="PART_InlineGrid">
-
-            <!--  Main content  -->
+        <Panel
+          x:Name="PART_Root"
+          ClipToBounds="True">
+          <Grid
+            x:Name="PART_LayoutGrid"
+            ClipToBounds="True">
             <ContentPresenter
-              x:Name="PART_InlineContentPresenter"
+              x:Name="PART_ContentPresenter"
+              Content="{TemplateBinding Content}"
               ContentTemplate="{TemplateBinding ContentTemplate}"/>
-
-            <!--  Splitter  -->
-            <GridSplitter
-              x:Name="PART_Splitter" ResizeDirection="Columns"
-              Theme="{TemplateBinding SplitterTheme}"/>
-
-            <!--  Drawer content  -->
-            <ContentPresenter
-              x:Name="PART_InlineDrawerPresenter"
-              ContentTemplate="{TemplateBinding DrawerContentTemplate}"/>
-          </Grid>
-
-          <!--  ==================== Overlay Mode ====================  -->
-          <!--  Main content (behind the drawer)  -->
-          <ContentPresenter
-            x:Name="PART_OverlayContentPresenter"
-            ContentTemplate="{TemplateBinding ContentTemplate}"/>
 
           <!--
             Backdrop: rendered behind the drawer.
@@ -62,9 +42,8 @@
             </Border.Transitions>
           </Border>
 
-          <!--  Drawer container: slides in/out via TranslateTransform transitions  -->
           <Border
-            x:Name="PART_OverlayDrawerBorder"
+            x:Name="PART_DrawerBorder"
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
@@ -85,11 +64,16 @@
               </TranslateTransform>
             </Border.RenderTransform>
             <ContentPresenter
-              x:Name="PART_OverlayDrawerPresenter"
+              x:Name="PART_DrawerPresenter"
               Margin="{TemplateBinding Padding}"
+              Content="{TemplateBinding DrawerContent}"
               ContentTemplate="{TemplateBinding DrawerContentTemplate}"/>
           </Border>
 
+            <GridSplitter
+              x:Name="PART_Splitter" ResizeDirection="Columns"
+              Theme="{TemplateBinding SplitterTheme}"/>
+          </Grid>
         </Panel>
       </ControlTemplate>
     </Setter>
@@ -114,18 +98,6 @@
     <!--  Bottom placement: inline drawer on the bottom  -->
     <Style Selector="^:bottom:inline /template/ GridSplitter#PART_Splitter">
       <Setter Property="ResizeDirection" Value="Rows"/>
-    </Style>
-
-    <!--  ==================== Closed State ====================  -->
-
-    <!--  When closed in overlay mode, hide the drawer border  -->
-    <Style Selector="^:closed:overlay /template/ Border#PART_OverlayDrawerBorder">
-      <Setter Property="IsVisible" Value="False"/>
-    </Style>
-
-    <!--  When opened in overlay mode, show the drawer border  -->
-    <Style Selector="^:opened:overlay /template/ Border#PART_OverlayDrawerBorder">
-      <Setter Property="IsVisible" Value="True"/>
     </Style>
 
   </ControlTheme>
