@@ -1,9 +1,11 @@
 ﻿using Avalonia;
 using Avalonia.Animation;
+using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
+using Avalonia.Media;
 
 namespace ShadUI;
 
@@ -12,20 +14,18 @@ namespace ShadUI;
 /// It displays as a multi-column when there is enough space, and as a single-column with a hamburger menu when space is limited.
 /// </summary>
 [PseudoClasses(":compact", ":split", ":root", ":detail")]
-[TemplatePart(RootPanelPartName, typeof(Panel), IsRequired = true)]
 [TemplatePart(SplitContainerPartName, typeof(Grid), IsRequired = true)]
-[TemplatePart(CompactContainerPartName, typeof(TransitioningContentControl), IsRequired = true)]
 [TemplatePart(PaneRootPartName, typeof(DockPanel), IsRequired = true)]
 [TemplatePart(ContentRootPartName, typeof(Control), IsRequired = true)]
 [TemplatePart(ContentContainerPartName, typeof(TransitioningContentControl), IsRequired = true)]
 public class NavigationView : TemplatedControl
 {
-    private const string RootPanelPartName = "PART_RootPanel";
     private const string SplitContainerPartName = "PART_SplitContainer";
-    private const string CompactContainerPartName = "PART_CompactContainer";
     private const string PaneRootPartName = "PART_PaneRoot";
     private const string ContentRootPartName = "PART_ContentRoot";
     private const string ContentContainerPartName = "PART_ContentContainer";
+    private static readonly TimeSpan CompactNavigationDuration = TimeSpan.FromMilliseconds(240);
+    private static readonly Easing CompactNavigationEasing = new CubicEaseInOut();
 
     /// <summary>
     /// Defines the <see cref="SelectedItem"/> property.
@@ -249,12 +249,30 @@ public class NavigationView : TemplatedControl
         set => SetValue(CompactPageTransitionProperty, value);
     }
 
-    private Panel? _rootPanel;
     private Grid? _splitContainer;
-    private TransitioningContentControl? _compactContainer;
     private DockPanel? _paneRoot;
     private Control? _contentRoot;
     private TransitioningContentControl? _contentContainer;
+    private Control? _activeCompactRoot;
+    private TopLevel? _topLevel;
+    private CompactAnimationState? _compactAnimation;
+    private bool _clearSelectionAfterCompactBack;
+    private int _layoutStateVersion;
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+
+        _topLevel = TopLevel.GetTopLevel(this);
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        CancelCompactTransition();
+        _topLevel = null;
+
+        base.OnDetachedFromVisualTree(e);
+    }
 
     protected override void OnSizeChanged(SizeChangedEventArgs e)
     {
@@ -280,35 +298,29 @@ public class NavigationView : TemplatedControl
     {
         base.OnApplyTemplate(e);
 
-        _rootPanel = e.NameScope.Find<Panel>(RootPanelPartName);
         _splitContainer = e.NameScope.Find<Grid>(SplitContainerPartName);
-        _compactContainer = e.NameScope.Find<TransitioningContentControl>(CompactContainerPartName);
         _paneRoot = e.NameScope.Find<DockPanel>(PaneRootPartName);
         _contentRoot = e.NameScope.Find<Control>(ContentRootPartName);
         _contentContainer = e.NameScope.Find<TransitioningContentControl>(ContentContainerPartName);
 
-        if (_rootPanel is not null)
-        {
-            // Ensure pane and content roots are not direct children of root panel
-            if (_paneRoot is not null) _rootPanel.Children.Remove(_paneRoot);
-            if (_contentRoot is not null) _rootPanel.Children.Remove(_contentRoot);
-        }
-
         if (_splitContainer is not null)
         {
             _splitContainer.ColumnDefinitions.Clear();
-            _splitContainer.ColumnDefinitions.Add(new ColumnDefinition
-            {
-                [!ColumnDefinition.WidthProperty] = this[!PaneWidthProperty]
-            });
-            _splitContainer.ColumnDefinitions.Add(new ColumnDefinition
-            {
-                [!ColumnDefinition.WidthProperty] = this[!SpacingProperty]
-            });
-            _splitContainer.ColumnDefinitions.Add(new ColumnDefinition
-            {
-                Width = new GridLength(1, GridUnitType.Star)
-            });
+            _splitContainer.ColumnDefinitions.Add(
+                new ColumnDefinition
+                {
+                    [!ColumnDefinition.WidthProperty] = this[!PaneWidthProperty]
+                });
+            _splitContainer.ColumnDefinitions.Add(
+                new ColumnDefinition
+                {
+                    [!ColumnDefinition.WidthProperty] = this[!SpacingProperty]
+                });
+            _splitContainer.ColumnDefinitions.Add(
+                new ColumnDefinition
+                {
+                    Width = new GridLength(1, GridUnitType.Star)
+                });
         }
 
         UpdateLayoutState();
@@ -316,59 +328,265 @@ public class NavigationView : TemplatedControl
 
     private void UpdateLayoutState()
     {
-        if (_splitContainer == null || _compactContainer == null) return;
+        if (_splitContainer is null || _paneRoot is null || _contentRoot is null) return;
+
+        var version = ++_layoutStateVersion;
+        var wasCompact = _activeCompactRoot is not null;
+        var previousCompactRoot = _activeCompactRoot;
+
+        CancelCompactTransition();
+        ResetRootVisualState(_paneRoot);
+        ResetRootVisualState(_contentRoot);
+
+        PseudoClasses.Set(":compact", IsCompact);
+        PseudoClasses.Set(":split", !IsCompact);
+        PseudoClasses.Set(":root", IsCompact && SelectedItem is null);
+        PseudoClasses.Set(":detail", IsCompact && SelectedItem is not null);
+
+        _splitContainer.IsVisible = true;
 
         if (IsCompact)
         {
-            // Switch to Compact Mode
-            if (_splitContainer.IsVisible)
-            {
-                _splitContainer.IsVisible = false;
-                if (_paneRoot is not null) _splitContainer.Children.Remove(_paneRoot);
-                if (_contentRoot is not null) _splitContainer.Children.Remove(_contentRoot);
-            }
-
-            _compactContainer.IsVisible = true;
-
-            Control? targetContent = SelectedItem is not null ? _contentRoot : _paneRoot;
-
-            if (!Equals(_compactContainer.Content, targetContent))
-            {
-                _compactContainer.PageTransition = CompactPageTransition;
-                _compactContainer.Content = targetContent;
-            }
-
             _contentContainer?.PageTransition = null;
+
+            ConfigureCompactRoot(_paneRoot);
+            ConfigureCompactRoot(_contentRoot);
+
+            var targetRoot = SelectedItem is not null ? _contentRoot : _paneRoot;
+            var fromRoot = previousCompactRoot is not null && previousCompactRoot != targetRoot ? previousCompactRoot : null;
+
+            _activeCompactRoot = targetRoot;
+
+            if (wasCompact && fromRoot is not null)
+            {
+                StartCompactTransition(_paneRoot, _contentRoot, SelectedItem is not null, version);
+            }
+            else
+            {
+                ApplyCompactTarget(targetRoot);
+            }
         }
         else
         {
-            // Switch to Split Mode
-            if (_compactContainer.IsVisible)
-            {
-                _compactContainer.IsVisible = false;
-                _compactContainer.PageTransition = null;
-                _compactContainer.Content = null;
-            }
+            _activeCompactRoot = null;
 
-            _splitContainer.IsVisible = true;
+            ConfigureSplitRoot(_paneRoot, 0);
+            ConfigureSplitRoot(_contentRoot, 2);
+
             _contentContainer?.PageTransition = PageTransition;
-
-            if (_paneRoot is not null && !_splitContainer.Children.Contains(_paneRoot))
-            {
-                _splitContainer.Children.Add(_paneRoot);
-                Grid.SetColumn(_paneRoot, 0);
-            }
-
-            if (_contentRoot is not null && !_splitContainer.Children.Contains(_contentRoot))
-            {
-                _splitContainer.Children.Add(_contentRoot);
-                Grid.SetColumn(_contentRoot, 2);
-            }
+            _paneRoot.IsVisible = true;
+            _contentRoot.IsVisible = true;
         }
+    }
+
+    private void StartCompactTransition(DockPanel paneRoot, Control contentRoot, bool forward, int version)
+    {
+        _topLevel ??= TopLevel.GetTopLevel(this);
+
+        paneRoot.IsVisible = true;
+        paneRoot.IsHitTestVisible = false;
+        contentRoot.IsVisible = true;
+        contentRoot.IsHitTestVisible = false;
+        paneRoot.ZIndex = 0;
+        contentRoot.ZIndex = 1;
+
+        var distance = GetCompactTransitionDistance();
+        var paneOffset = -distance * 0.25d;
+        var paneTransform = new TranslateTransform(forward ? 0d : paneOffset, 0d);
+        var contentTransform = new TranslateTransform(forward ? distance : 0d, 0d);
+
+        paneRoot.RenderTransform = paneTransform;
+        contentRoot.RenderTransform = contentTransform;
+
+        _compactAnimation = new CompactAnimationState(
+            paneRoot,
+            contentRoot,
+            paneTransform,
+            contentTransform,
+            version,
+            forward,
+            forward ? 0d : paneOffset,
+            forward ? paneOffset : 0d,
+            forward ? distance : 0d,
+            forward ? 0d : distance);
+
+        if (_topLevel is { } topLevel)
+        {
+            topLevel.RequestAnimationFrame(OnCompactAnimationTick);
+            return;
+        }
+
+        CompleteCompactTransition(_compactAnimation);
+    }
+
+    private double GetCompactTransitionDistance()
+    {
+        if (_splitContainer is null) return 1d;
+
+        var width = _splitContainer.Bounds.Width;
+        return width > 0d ? width : 1d;
+    }
+
+    private void OnCompactAnimationTick(TimeSpan time)
+    {
+        var animation = _compactAnimation;
+        if (animation is null || animation.IsCancelled || animation.Version != _layoutStateVersion)
+        {
+            return;
+        }
+
+        animation.StartTime ??= time;
+
+        var elapsed = time - animation.StartTime.Value;
+        var rawProgress = elapsed.TotalMilliseconds / CompactNavigationDuration.TotalMilliseconds;
+        var progress = Math.Clamp(rawProgress, 0d, 1d);
+        var easedProgress = CompactNavigationEasing.Ease(progress);
+
+        animation.PaneTransform.X = Lerp(animation.PaneFrom, animation.PaneTo, easedProgress);
+        animation.ContentTransform.X = Lerp(animation.ContentFrom, animation.ContentTo, easedProgress);
+
+        if (progress >= 1d)
+        {
+            CompleteCompactTransition(animation);
+            return;
+        }
+
+        if (_topLevel is { } topLevel)
+        {
+            topLevel.RequestAnimationFrame(OnCompactAnimationTick);
+            return;
+        }
+
+        CompleteCompactTransition(animation);
+    }
+
+    private void CompleteCompactTransition(CompactAnimationState animation)
+    {
+        if (!ReferenceEquals(_compactAnimation, animation) || animation.IsCancelled)
+        {
+            return;
+        }
+
+        _compactAnimation = null;
+
+        var targetRoot = animation.Forward ? animation.ContentRoot : animation.PaneRoot;
+        ResetRootVisualState(animation.PaneRoot);
+        ResetRootVisualState(animation.ContentRoot);
+        ApplyCompactTarget(targetRoot);
+
+        if (_clearSelectionAfterCompactBack && !animation.Forward)
+        {
+            _clearSelectionAfterCompactBack = false;
+            SelectedItem = null;
+        }
+    }
+
+    private static double Lerp(double from, double to, double progress)
+    {
+        return from + ((to - from) * progress);
+    }
+
+    private void ApplyCompactTarget(Control targetRoot)
+    {
+        if (_paneRoot is null || _contentRoot is null) return;
+
+        _paneRoot.IsVisible = ReferenceEquals(targetRoot, _paneRoot);
+        _contentRoot.IsVisible = ReferenceEquals(targetRoot, _contentRoot);
+        _paneRoot.IsHitTestVisible = _paneRoot.IsVisible;
+        _contentRoot.IsHitTestVisible = _contentRoot.IsVisible;
+        _paneRoot.ZIndex = ReferenceEquals(targetRoot, _paneRoot) ? 1 : 0;
+        _contentRoot.ZIndex = ReferenceEquals(targetRoot, _contentRoot) ? 1 : 0;
+    }
+
+    private static void ConfigureSplitRoot(Control root, int column)
+    {
+        Grid.SetColumn(root, column);
+        Grid.SetColumnSpan(root, 1);
+        root.IsHitTestVisible = true;
+        root.ZIndex = 0;
+    }
+
+    private static void ConfigureCompactRoot(Control root)
+    {
+        Grid.SetColumn(root, 0);
+        Grid.SetColumnSpan(root, 3);
+    }
+
+    private static void ResetRootVisualState(Control root)
+    {
+        root.Opacity = 1d;
+        root.RenderTransform = null;
+        root.IsHitTestVisible = true;
+        root.ZIndex = 0;
+    }
+
+    private void CancelCompactTransition()
+    {
+        _clearSelectionAfterCompactBack = false;
+
+        if (_compactAnimation is null) return;
+
+        _compactAnimation.IsCancelled = true;
+        _compactAnimation = null;
     }
 
     public void GoBack()
     {
+        if (IsCompact && SelectedItem is not null && _paneRoot is not null && _contentRoot is not null)
+        {
+            var version = ++_layoutStateVersion;
+
+            CancelCompactTransition();
+            ResetRootVisualState(_paneRoot);
+            ResetRootVisualState(_contentRoot);
+            ConfigureCompactRoot(_paneRoot);
+            ConfigureCompactRoot(_contentRoot);
+
+            _activeCompactRoot = _paneRoot;
+            _clearSelectionAfterCompactBack = true;
+
+            StartCompactTransition(_paneRoot, _contentRoot, false, version);
+            return;
+        }
+
         SelectedItem = null;
+    }
+
+    private sealed class CompactAnimationState(
+        DockPanel paneRoot,
+        Control contentRoot,
+        TranslateTransform paneTransform,
+        TranslateTransform contentTransform,
+        int version,
+        bool forward,
+        double paneFrom,
+        double paneTo,
+        double contentFrom,
+        double contentTo
+    )
+    {
+        public DockPanel PaneRoot { get; } = paneRoot;
+
+        public Control ContentRoot { get; } = contentRoot;
+
+        public TranslateTransform PaneTransform { get; } = paneTransform;
+
+        public TranslateTransform ContentTransform { get; } = contentTransform;
+
+        public int Version { get; } = version;
+
+        public bool Forward { get; } = forward;
+
+        public double PaneFrom { get; } = paneFrom;
+
+        public double PaneTo { get; } = paneTo;
+
+        public double ContentFrom { get; } = contentFrom;
+
+        public double ContentTo { get; } = contentTo;
+
+        public TimeSpan? StartTime { get; set; }
+
+        public bool IsCancelled { get; set; }
     }
 }

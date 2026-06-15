@@ -19,13 +19,11 @@
     </Setter>
     <Setter Property="Template">
       <ControlTemplate>
-        <Panel x:Name="PART_RootPanel">
-          <Grid
-            x:Name="PART_SplitContainer" ColumnDefinitions="Auto,12,*"/>
-
-          <TransitioningContentControl x:Name="PART_CompactContainer"/>
-
-          <DockPanel x:Name="PART_PaneRoot">
+        <Grid
+          x:Name="PART_SplitContainer" ClipToBounds="True"
+          ColumnDefinitions="Auto,12,*">
+          <DockPanel
+            x:Name="PART_PaneRoot" Grid.Column="0">
             <!--  Pane Header  -->
             <ContentPresenter
               DockPanel.Dock="Top"
@@ -39,7 +37,7 @@
           </DockPanel>
 
           <Border
-            x:Name="PART_ContentRoot"
+            x:Name="PART_ContentRoot" Grid.Column="2"
             Padding="{TemplateBinding Padding}"
             Background="{DynamicResource WindowBackgroundColor}"
             BorderBrush="{DynamicResource OutlineColor}"
@@ -86,14 +84,8 @@
               </Panel>
             </DockPanel>
           </Border>
-        </Panel>
+        </Grid>
       </ControlTemplate>
     </Setter>
-
-    <Style Selector="^:compact">
-      <Style Selector="^ /template/ Border#PaneRoot">
-        <Setter Property="BorderThickness" Value="0"/>
-      </Style>
-    </Style>
   </ControlTheme>
 </ResourceDictionary>
