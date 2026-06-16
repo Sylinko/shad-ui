@@ -51,8 +51,7 @@
           <WindowDrawnDecorationsContent.Underlay>
             <Panel x:Name="PART_UnderlayWrapper">
               <Border
-                x:Name="PART_WindowBorder"
-                Background="{DynamicResource ThemeBackgroundBrush}"
+                x:Name="PART_WindowBorder" Background="Transparent"
                 BorderBrush="{DynamicResource ThemeBorderMidBrush}"
                 BorderThickness="{TemplateBinding FrameThickness}"
                 IsHitTestVisible="False"/>
@@ -60,8 +59,7 @@
               <Panel
                 x:Name="PART_TitleBar"
                 Height="{TemplateBinding TitleBarHeight}"
-                VerticalAlignment="Top"
-                Background="{DynamicResource ThemeBackgroundBrush}"
+                VerticalAlignment="Top" Background="Transparent"
                 IsVisible="{TemplateBinding HasTitleBar}"
                 WindowDecorationProperties.ElementRole="TitleBar">
                 <StackPanel
@@ -105,7 +103,9 @@
 
               <Border
                 x:Name="PART_TitleBarRoot" VerticalAlignment="Top"
-                IsVisible="{TemplateBinding HasTitleBar}">
+                Background="Transparent"
+                IsVisible="{TemplateBinding HasTitleBar}"
+                WindowDecorationProperties.ElementRole="TitleBar">
 
                 <Panel MinHeight="{TemplateBinding TitleBarHeight}">
                   <Border IsVisible="{Binding $parent[shadui:ShadWindow].TitleBarContentOverride, Converter={x:Static ObjectConverters.IsNull}}">
