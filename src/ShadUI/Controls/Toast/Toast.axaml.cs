@@ -175,7 +175,7 @@ public sealed class Toast : ContentControl
     }
 
     /// <summary>
-    ///     Defines the <see cref="Command" /> property.
+    ///     Defines the <see cref="Command"/> property.
     /// </summary>
     public static readonly StyledProperty<ICommand?> CommandProperty =
         AvaloniaProperty.Register<Toast, ICommand?>(nameof(Command));
@@ -189,6 +189,36 @@ public sealed class Toast : ContentControl
     {
         get => GetValue(CommandProperty);
         set => SetValue(CommandProperty, value);
+    }
+
+    /// <summary>
+    ///     Defines the <see cref="ActionCommand"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ICommand?> ActionCommandProperty =
+        AvaloniaProperty.Register<Toast, ICommand?>(nameof(ActionCommand));
+
+    /// <summary>
+    ///     Gets or sets the command to execute when the action button is clicked.
+    /// </summary>
+    public ICommand? ActionCommand
+    {
+        get => GetValue(ActionCommandProperty);
+        set => SetValue(ActionCommandProperty, value);
+    }
+
+    /// <summary>
+    ///     Defines the <see cref="DismissCommand"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ICommand?> DismissCommandProperty =
+        AvaloniaProperty.Register<Toast, ICommand?>(nameof(DismissCommand));
+
+    /// <summary>
+    ///     Gets or sets the command to execute when the toast is dismissed (via close button, card click with <see cref="CanDismissByClicking" />, or programmatic dismiss).
+    /// </summary>
+    public ICommand? DismissCommand
+    {
+        get => GetValue(DismissCommandProperty);
+        set => SetValue(DismissCommandProperty, value);
     }
 
     #endregion
@@ -264,6 +294,10 @@ public sealed class Toast : ContentControl
                 {
                     if (Command is { } command && command.CanExecute(ToastResult.ActionButtonClicked))
                         command.Execute(ToastResult.ActionButtonClicked);
+
+                    if (ActionCommand is { } actionCommand && actionCommand.CanExecute(null))
+                        actionCommand.Execute(null);
+
                     ActionButtonClicked?.Invoke(this, EventArgs.Empty);
                 });
 
@@ -295,6 +329,17 @@ public sealed class Toast : ContentControl
     internal void RequestClose(ToastResult result)
     {
         if (Command is { } command && command.CanExecute(result)) command.Execute(result);
+
+        switch (result)
+        {
+            case ToastResult.ActionButtonClicked when ActionCommand is { } actionCommand && actionCommand.CanExecute(null):
+                actionCommand.Execute(null);
+                break;
+            case ToastResult.Dismissed when DismissCommand is { } dismissCommand && dismissCommand.CanExecute(result):
+                dismissCommand.Execute(result);
+                break;
+        }
+
         CloseRequested?.Invoke(this, result);
     }
 
