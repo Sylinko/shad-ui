@@ -144,7 +144,7 @@ public static class BasicConverters
             {
                 if (value == AvaloniaProperty.UnsetValue) return false;
                 if (value is string str) return !string.IsNullOrEmpty(str);
-                return true;
+                return false;
             });
         }
     }
