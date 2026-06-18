@@ -3,6 +3,8 @@
   xmlns:shadui="clr-namespace:ShadUI">
   <ControlTheme
     x:Key="ToastHostTheme" TargetType="shadui:ToastHost">
+    <Setter Property="Padding" Value="8"/>
+    <Setter Property="Spacing" Value="4"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Panel Margin="{TemplateBinding Padding}">
