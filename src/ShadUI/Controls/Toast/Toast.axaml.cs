@@ -207,6 +207,21 @@ public sealed class Toast : ContentControl
     }
 
     /// <summary>
+    ///     Defines the <see cref="ActionCommandParameter"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> ActionCommandParameterProperty =
+        AvaloniaProperty.Register<Toast, object?>(nameof(ActionCommandParameter));
+
+    /// <summary>
+    ///     Gets or sets the parameter to pass to the <see cref="ActionCommand"/> when it is executed.
+    /// </summary>
+    public object? ActionCommandParameter
+    {
+        get => GetValue(ActionCommandParameterProperty);
+        set => SetValue(ActionCommandParameterProperty, value);
+    }
+
+    /// <summary>
     ///     Defines the <see cref="DismissCommand"/> property.
     /// </summary>
     public static readonly StyledProperty<ICommand?> DismissCommandProperty =
@@ -219,6 +234,21 @@ public sealed class Toast : ContentControl
     {
         get => GetValue(DismissCommandProperty);
         set => SetValue(DismissCommandProperty, value);
+    }
+
+    /// <summary>
+    ///     Defines the <see cref="DismissCommandParameter"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> DismissCommandParameterProperty =
+        AvaloniaProperty.Register<Toast, object?>(nameof(DismissCommandParameter));
+
+    /// <summary>
+    ///     Gets or sets the parameter to pass to the <see cref="DismissCommand"/> when it is executed.
+    /// </summary>
+    public object? DismissCommandParameter
+    {
+        get => GetValue(DismissCommandParameterProperty);
+        set => SetValue(DismissCommandParameterProperty, value);
     }
 
     #endregion
@@ -295,8 +325,8 @@ public sealed class Toast : ContentControl
                     if (Command is { } command && command.CanExecute(ToastResult.ActionButtonClicked))
                         command.Execute(ToastResult.ActionButtonClicked);
 
-                    if (ActionCommand is { } actionCommand && actionCommand.CanExecute(null))
-                        actionCommand.Execute(null);
+                    if (ActionCommand is { } actionCommand && actionCommand.CanExecute(ActionCommandParameter))
+                        actionCommand.Execute(ActionCommandParameter);
 
                     ActionButtonClicked?.Invoke(this, EventArgs.Empty);
                 });
@@ -332,11 +362,11 @@ public sealed class Toast : ContentControl
 
         switch (result)
         {
-            case ToastResult.ActionButtonClicked when ActionCommand is { } actionCommand && actionCommand.CanExecute(null):
-                actionCommand.Execute(null);
+            case ToastResult.ActionButtonClicked when ActionCommand is { } actionCommand && actionCommand.CanExecute(ActionCommandParameter):
+                actionCommand.Execute(ActionCommandParameter);
                 break;
-            case ToastResult.Dismissed when DismissCommand is { } dismissCommand && dismissCommand.CanExecute(result):
-                dismissCommand.Execute(result);
+            case ToastResult.Dismissed when DismissCommand is { } dismissCommand && dismissCommand.CanExecute(DismissCommandParameter):
+                dismissCommand.Execute(DismissCommandParameter);
                 break;
         }
 
