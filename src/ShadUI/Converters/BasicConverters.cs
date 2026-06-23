@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections;
+using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Converters;
@@ -81,7 +82,7 @@ public static class BasicConverters
     public static IValueConverter InvertOrientation { get; } =
         new FuncValueConverter<Orientation, Orientation>(x => x == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal);
 
-        public static IValueConverter TypeEquals { get; } = new FuncValueConverter<object?, object?, bool>(
+    public static IValueConverter TypeEquals { get; } = new FuncValueConverter<object?, object?, bool>(
         convert: (x, parameter) => x?.GetType() == parameter as Type
     );
 
@@ -99,13 +100,20 @@ public static class BasicConverters
             return type?.IsEnum is true ? Enum.GetValues(type) : null;
         });
 
-    public static IValueConverter IndexFromContainer { get; } = new FuncValueConverter<object?, int>(
-        convert: x =>
+    /// <summary>
+    /// Safe gets the item at the specified index from a list. Returns null if the index is out of bounds.
+    /// Supports IList and IEnumerable.
+    /// </summary>
+    public static IValueConverter ElementAt { get; } = new FuncValueConverter<object?, object?, object?>((v, i) =>
+    {
+        var index = Convert.ToInt32(i);
+        return v switch
         {
-            if (x is not Control itemContainer) return -1;
-            var itemsControl = ItemsControl.ItemsControlFromItemContainer(itemContainer);
-            return itemsControl?.IndexFromContainer(itemContainer) ?? -1;
-        });
+            IList list => index >= 0 && index < list.Count ? list[index] : null,
+            IEnumerable enumerable => enumerable.Cast<object>().ElementAtOrDefault(index),
+            _ => null
+        };
+    });
 
     public static IMultiValueConverter AllEquals { get; } = new AllEqualsConverter();
 

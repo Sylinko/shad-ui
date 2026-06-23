@@ -79,7 +79,7 @@
                 <shadui:DelayFromIndexBehavior
                   Index="{Binding Index, RelativeSource={RelativeSource AncestorType=shadui:NavigationBarItem}}"
                   Multiplier="0:0:0.02"
-                  Target="{Binding #PART_ContentPresenter.Transitions[0], FallbackValue={x:Null}}"/>
+                  Target="{Binding #PART_ContentPresenter.Transitions, Converter={x:Static shadui:BasicConverters.ElementAt}, ConverterParameter=0}"/>
               </Interaction.Behaviors>
             </ContentPresenter>
           </StackPanel>
