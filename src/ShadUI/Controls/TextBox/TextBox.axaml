@@ -9,17 +9,17 @@
       <StackPanel
         Width="250" Spacing="16">
         <TextBox
-          Classes="Clearable" UseFloatingWatermark="True"
-          Watermark="First Name"/>
+          Classes="Clearable" PlaceholderText="First Name"
+          UseFloatingPlaceholder="True"/>
         <TextBox
-          Classes="Clearable" UseFloatingWatermark="True"
-          Watermark="Last Name"/>
+          Classes="Clearable" PlaceholderText="Last Name"
+          UseFloatingPlaceholder="True"/>
         <TextBox
-          Classes="Clearable" Text="john"
-          Watermark="Username"/>
+          Classes="Clearable" PlaceholderText="Username"
+          Text="john"/>
         <TextBox
           Classes="Clearable" shadui:ControlAssist.Label="Search"
-          Text="12321" Watermark="Search here...">
+          PlaceholderText="Search here..." Text="12321">
           <TextBox.InnerRightContent>
             <PathIcon
               Width="16" Height="32"
@@ -29,12 +29,12 @@
         </TextBox>
         <TextBox
           Classes="ClearablePassword" shadui:ControlAssist.Label="Password"
-          PasswordChar="•" Text="12321"
-          Watermark="Enter password"/>
+          PasswordChar="•" PlaceholderText="Enter password"
+          Text="12321"/>
         <TextBox
           shadui:ControlAssist.Height="250" shadui:ControlAssist.Hint="This is hint"
           shadui:ControlAssist.Label="Description" AcceptsReturn="True"
-          Watermark="Description"/>
+          PlaceholderText="Description"/>
         <TextBox shadui:ControlAssist.Label="Error">
           <DataValidationErrors.Error>
             <system:Exception/>
@@ -109,6 +109,7 @@
     <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+    <Setter Property="ContextFlyout" Value="{StaticResource SimpleTextBoxContextFlyout}"/>
     <Setter Property="Padding" Value="6,4"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
@@ -126,8 +127,8 @@
             Name="PART_Label" Classes="Caption"
             DockPanel.Dock="Top" Margin="0,0,0,6"
             Cursor="Arrow"
-            IsVisible="{TemplateBinding UseFloatingWatermark}"
-            Text="{TemplateBinding Watermark}"/>
+            IsVisible="{TemplateBinding UseFloatingPlaceholder}"
+            Text="{TemplateBinding PlaceholderText}"/>
           <DataValidationErrors Focusable="False">
             <DockPanel>
               <TextBlock
@@ -166,12 +167,12 @@
                     VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
                     <Panel Name="TextContainer">
                       <TextBlock
-                        Name="Watermark"
+                        Name="PlaceholderText"
                         Margin="{TemplateBinding Padding}"
                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                         Opacity="0.5"
-                        Text="{TemplateBinding Watermark}"
+                        Text="{TemplateBinding PlaceholderText}"
                         TextAlignment="{TemplateBinding TextAlignment}"
                         TextWrapping="{TemplateBinding TextWrapping}">
                         <TextBlock.IsVisible>
