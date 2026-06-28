@@ -18,24 +18,32 @@
     <Setter Property="WindowDecorations" Value="{OnPlatform Full, Linux=None, x:TypeArguments=WindowDecorations}"/>
     <Setter Property="ExtendClientAreaToDecorationsHint" Value="True"/>
     <Setter Property="TextElement.Foreground" Value="{DynamicResource ForegroundColor}"/>
-    <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor60}"/>
+    <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Border
+          Margin="{TemplateBinding Padding}"
           Background="{TemplateBinding Background}"
           BorderBrush="{TemplateBinding BorderBrush}"
           BorderThickness="{TemplateBinding BorderThickness}">
-          <VisualLayerManager
-            x:Name="PART_VisualLayerManager"
-            Margin="{TemplateBinding WindowDecorationMargin}">
+          <VisualLayerManager x:Name="PART_VisualLayerManager">
             <Panel x:Name="PART_Root">
               <ContentPresenter
-                Margin="{TemplateBinding Padding}"
+                Margin="{TemplateBinding WindowDecorationMargin}"
                 HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                 VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                 Content="{TemplateBinding Content}"
                 ContentTemplate="{TemplateBinding ContentTemplate}"/>
+
+              <ItemsControl
+                x:Name="PART_HostsRoot"
+                ItemsSource="{TemplateBinding Hosts}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <Panel/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+              </ItemsControl>
             </Panel>
           </VisualLayerManager>
         </Border>

@@ -90,91 +90,79 @@
           </WindowDrawnDecorationsContent.Underlay>
 
           <WindowDrawnDecorationsContent.Overlay>
-            <Panel x:Name="PART_OverlayWrapper">
-              <ItemsControl
-                x:Name="PART_HostsRoot"
-                ItemsSource="{Binding $parent[shadui:ShadWindow].Hosts}">
-                <ItemsControl.ItemsPanel>
-                  <ItemsPanelTemplate>
-                    <Panel/>
-                  </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-              </ItemsControl>
+            <Border
+              x:Name="PART_TitleBarRoot" VerticalAlignment="Top"
+              Background="Transparent"
+              IsVisible="{TemplateBinding HasTitleBar}"
+              WindowDecorationProperties.ElementRole="TitleBar">
 
-              <Border
-                x:Name="PART_TitleBarRoot" VerticalAlignment="Top"
-                Background="Transparent"
-                IsVisible="{TemplateBinding HasTitleBar}"
-                WindowDecorationProperties.ElementRole="TitleBar">
+              <Panel MinHeight="{TemplateBinding TitleBarHeight}">
+                <Border IsVisible="{Binding $parent[shadui:ShadWindow].TitleBarContentOverride, Converter={x:Static ObjectConverters.IsNull}}">
+                  <Border.Margin>
+                    <OnPlatform
+                      x:TypeArguments="Thickness" Linux="0"
+                      Windows="0" macOS="60,0,0,0"/>
+                  </Border.Margin>
 
-                <Panel MinHeight="{TemplateBinding TitleBarHeight}">
-                  <Border IsVisible="{Binding $parent[shadui:ShadWindow].TitleBarContentOverride, Converter={x:Static ObjectConverters.IsNull}}">
-                    <Border.Margin>
-                      <OnPlatform
-                        x:TypeArguments="Thickness" Linux="0"
-                        Windows="0" macOS="60,0,0,0"/>
-                    </Border.Margin>
+                  <StackPanel
+                    HorizontalAlignment="Right" Orientation="Horizontal"
+                    Spacing="6">
+                    <ContentPresenter
+                      x:Name="RightButtons"
+                      Content="{Binding $parent[shadui:ShadWindow].RightWindowTitleBarContent}"
+                      IsVisible="{Binding $self.Content, Converter={x:Static ObjectConverters.IsNotNull}}"
+                      WindowDecorationProperties.ElementRole="User"/>
 
                     <StackPanel
-                      HorizontalAlignment="Right" Orientation="Horizontal"
-                      Spacing="6">
-                      <ContentPresenter
-                        x:Name="RightButtons"
-                        Content="{Binding $parent[shadui:ShadWindow].RightWindowTitleBarContent}"
-                        IsVisible="{Binding $self.Content, Converter={x:Static ObjectConverters.IsNotNull}}"
-                        WindowDecorationProperties.ElementRole="User"/>
+                      x:Name="PART_ButtonsPanel" Orientation="Horizontal">
+                      <StackPanel.IsVisible>
+                        <OnPlatform
+                          x:TypeArguments="system:Boolean" Linux="True"
+                          Windows="True" macOS="False"/>
+                      </StackPanel.IsVisible>
 
-                      <StackPanel
-                        x:Name="PART_ButtonsPanel" Orientation="Horizontal">
-                        <StackPanel.IsVisible>
-                          <OnPlatform
-                            x:TypeArguments="system:Boolean" Linux="True"
-                            Windows="True" macOS="False"/>
-                        </StackPanel.IsVisible>
+                      <StackPanel.Styles>
+                        <Style Selector="PathIcon">
+                          <Setter Property="Height" Value="10"/>
+                          <Setter Property="Width" Value="10"/>
+                        </Style>
+                      </StackPanel.Styles>
 
-                        <StackPanel.Styles>
-                          <Style Selector="PathIcon">
-                            <Setter Property="Height" Value="10"/>
-                            <Setter Property="Width" Value="10"/>
-                          </Style>
-                        </StackPanel.Styles>
-
-                        <Button
-                          x:Name="PART_MinimizeButton" Margin="0,0,0,1"
-                          Theme="{StaticResource WindowButtonTheme}"
-                          WindowDecorationProperties.ElementRole="MinimizeButton">
-                          <PathIcon
-                            x:Name="MinimizeIcon"
-                            Data="{x:Static shadui:Icons.WindowMinimize}"/>
-                        </Button>
-                        <Button
-                          x:Name="PART_MaximizeButton" Margin="0,0,0,1"
-                          Theme="{StaticResource WindowButtonTheme}"
-                          WindowDecorationProperties.ElementRole="MaximizeButton">
-                          <PathIcon
-                            x:Name="MaximizeIcon"
-                            Data="{x:Static shadui:Icons.WindowMaximize}"
-                            IsHitTestVisible="False"/>
-                        </Button>
-                        <Button
-                          x:Name="PART_CloseButton" Classes="Close"
-                          Theme="{StaticResource WindowButtonTheme}"
-                          WindowDecorationProperties.ElementRole="CloseButton">
-                          <PathIcon
-                            x:Name="CloseIcon"
-                            Data="{x:Static shadui:Icons.WindowClose}"
-                            Foreground="{Binding $parent[shadui:ShadWindow].Foreground, ElementName=PART_CloseButton}"/>
-                        </Button>
-                      </StackPanel>
+                      <Button
+                        x:Name="PART_MinimizeButton" Margin="0,0,0,1"
+                        Theme="{StaticResource WindowButtonTheme}"
+                        WindowDecorationProperties.ElementRole="MinimizeButton">
+                        <PathIcon
+                          x:Name="MinimizeIcon"
+                          Data="{x:Static shadui:Icons.WindowMinimize}"/>
+                      </Button>
+                      <Button
+                        x:Name="PART_MaximizeButton" Margin="0,0,0,1"
+                        Theme="{StaticResource WindowButtonTheme}"
+                        WindowDecorationProperties.ElementRole="MaximizeButton">
+                        <PathIcon
+                          x:Name="MaximizeIcon"
+                          Data="{x:Static shadui:Icons.WindowMaximize}"
+                          IsHitTestVisible="False"/>
+                      </Button>
+                      <Button
+                        x:Name="PART_CloseButton" Classes="Close"
+                        Theme="{StaticResource WindowButtonTheme}"
+                        WindowDecorationProperties.ElementRole="CloseButton">
+                        <PathIcon
+                          x:Name="CloseIcon"
+                          Data="{x:Static shadui:Icons.WindowClose}"
+                          Foreground="{Binding $parent[shadui:ShadWindow].Foreground, ElementName=PART_CloseButton}"/>
+                      </Button>
                     </StackPanel>
-                  </Border>
+                  </StackPanel>
+                </Border>
 
-                  <ContentPresenter
-                    Content="{Binding $parent[shadui:ShadWindow].TitleBarContentOverride}"
-                    WindowDecorationProperties.ElementRole="User"/>
-                </Panel>
-              </Border>
-            </Panel>
+                <ContentPresenter
+                  Content="{Binding $parent[shadui:ShadWindow].TitleBarContentOverride}"
+                  WindowDecorationProperties.ElementRole="User"/>
+              </Panel>
+            </Border>
           </WindowDrawnDecorationsContent.Overlay>
 
           <WindowDrawnDecorationsContent.FullscreenPopover>
