@@ -69,7 +69,7 @@
             <StackPanel
               x:Name="PART_ButtonsPanel"
               Height="{TemplateBinding TitleBarHeight}"
-              HorizontalAlignment="Right"
+              HorizontalAlignment="Right" VerticalAlignment="Top"
               IsVisible="{TemplateBinding HasTitleBar}"
               Orientation="Horizontal">
               <StackPanel.Styles>
