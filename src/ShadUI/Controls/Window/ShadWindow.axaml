@@ -44,6 +44,16 @@
                   </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
               </ItemsControl>
+
+              <Panel
+                x:Name="PART_TitleBar"
+                MinHeight="{Binding WindowDecorationMargin.Top, RelativeSource={RelativeSource TemplatedParent}}"
+                VerticalAlignment="Top" Background="Transparent"
+                WindowDecorationProperties.ElementRole="TitleBar">
+                <ContentPresenter
+                  Content="{TemplateBinding TitleBarContent}"
+                  WindowDecorationProperties.ElementRole="User"/>
+              </Panel>
             </Panel>
           </VisualLayerManager>
         </Border>

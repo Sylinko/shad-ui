@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Metadata;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 using CommunityToolkit.Mvvm.Messaging;
 
 // ReSharper disable once CheckNamespace
@@ -21,123 +20,18 @@ public class ShadWindow : Window, IRecipient<ThemeChangedMessage>
     protected override Type StyleKeyOverride => typeof(ShadWindow);
 
     /// <summary>
-    ///     The font size of the title.
+    ///     The content of the title bar.
     /// </summary>
-    public static readonly StyledProperty<double> TitleFontSizeProperty =
-        AvaloniaProperty.Register<ShadWindow, double>(nameof(TitleFontSize), 14);
+    public static readonly StyledProperty<object?> TitleBarContentProperty =
+        AvaloniaProperty.Register<ShadWindow, object?>(nameof(TitleBarContent));
 
     /// <summary>
-    ///     Gets or sets the value of the <see cref="TitleFontSizeProperty" />.
+    ///     Gets or sets the value of the <see cref="TitleBarContentProperty" />.
     /// </summary>
-    public double TitleFontSize
+    public object? TitleBarContent
     {
-        get => GetValue(TitleFontSizeProperty);
-        set => SetValue(TitleFontSizeProperty, value);
-    }
-
-    /// <summary>
-    ///     The font weight of the title.
-    /// </summary>
-    public static readonly StyledProperty<FontWeight> TitleFontWeightProperty =
-        AvaloniaProperty.Register<ShadWindow, FontWeight>(nameof(TitleFontWeight), FontWeight.Medium);
-
-    /// <summary>
-    ///     Gets or sets the value of the <see cref="TitleFontWeightProperty" />.
-    /// </summary>
-    public FontWeight TitleFontWeight
-    {
-        get => GetValue(TitleFontWeightProperty);
-        set => SetValue(TitleFontWeightProperty, value);
-    }
-    
-    /// <summary>
-    ///     The font size of the version.
-    /// </summary>
-    public static readonly StyledProperty<double> VersionFontSizeProperty =
-        AvaloniaProperty.Register<ShadWindow, double>(nameof(VersionFontSize), 12.8);
-
-    /// <summary>
-    ///     Gets or sets the value of the <see cref="TitleFontSizeProperty" />.
-    /// </summary>
-    public double VersionFontSize
-    {
-        get => GetValue(VersionFontSizeProperty);
-        set => SetValue(VersionFontSizeProperty, value);
-    }
-
-    /// <summary>
-    ///     The font weight of the version.
-    /// </summary>
-    public static readonly StyledProperty<FontWeight> VersionFontWeightProperty =
-        AvaloniaProperty.Register<ShadWindow, FontWeight>(nameof(VersionFontWeight), FontWeight.Medium);
-
-    /// <summary>
-    ///     Gets or sets the value of the <see cref="VersionFontWeightProperty" />.
-    /// </summary>
-    public FontWeight VersionFontWeight
-    {
-        get => GetValue(VersionFontWeightProperty);
-        set => SetValue(VersionFontWeightProperty, value);
-    }
-
-    /// <summary>
-    ///    The version text.
-    /// </summary>
-    public static readonly StyledProperty<string> VersionProperty = AvaloniaProperty.Register<ShadWindow, string>(
-        nameof(Version));
-
-    /// <summary>
-    ///     Gets or sets the value of the <see cref="VersionProperty" />.
-    /// </summary>
-    public string Version
-    {
-        get => GetValue(VersionProperty);
-        set => SetValue(VersionProperty, value);
-    }
-
-    /// <summary>
-    ///     The content of the logo.
-    /// </summary>
-    public static readonly StyledProperty<Control?> LogoContentProperty =
-        AvaloniaProperty.Register<ShadWindow, Control?>(nameof(LogoContent));
-
-    /// <summary>
-    ///     Gets or sets the value of the <see cref="LogoContentProperty" />.
-    /// </summary>
-    public Control? LogoContent
-    {
-        get => GetValue(LogoContentProperty);
-        set => SetValue(LogoContentProperty, value);
-    }
-
-    /// <summary>
-    ///     The content to override the title bar.
-    /// </summary>
-    public static readonly StyledProperty<object?> TitleBarContentOverrideProperty =
-        AvaloniaProperty.Register<ShadWindow, object?>(nameof(TitleBarContentOverride));
-
-    /// <summary>
-    ///     Gets or sets the value of the <see cref="TitleBarContentOverrideProperty" />.
-    /// </summary>
-    public object? TitleBarContentOverride
-    {
-        get => GetValue(TitleBarContentOverrideProperty);
-        set => SetValue(TitleBarContentOverrideProperty, value);
-    }
-
-    /// <summary>
-    ///     The controls on the right side of the title bar.
-    /// </summary>
-    public static readonly StyledProperty<object?> RightWindowTitleBarContentProperty =
-        AvaloniaProperty.Register<ShadWindow, object?>(nameof(RightWindowTitleBarContent));
-
-    /// <summary>
-    ///     Gets or sets the value of the <see cref="RightWindowTitleBarContentProperty" />.
-    /// </summary>
-    public object? RightWindowTitleBarContent
-    {
-        get => GetValue(RightWindowTitleBarContentProperty);
-        set => SetValue(RightWindowTitleBarContentProperty, value);
+        get => GetValue(TitleBarContentProperty);
+        set => SetValue(TitleBarContentProperty, value);
     }
 
     /// <summary>
