@@ -166,8 +166,9 @@ public sealed class ToastHost : TemplatedControl
     ///     through this host.
     /// </summary>
     /// <param name="title">The title of the toast.</param>
+    /// <param name="content">The content of the toast.</param>
     /// <returns>A fluent <see cref="ToastBuilder" /> instance.</returns>
-    public ToastBuilder CreateToast(string title) => new(this, title);
+    public ToastBuilder CreateToast(string title, object? content = null) => new(this, title, content);
 
     /// <summary>
     ///     Queues a toast for display. Routes to the correct corner based on

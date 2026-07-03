@@ -21,12 +21,14 @@ public readonly ref struct ToastBuilder
     ///     When <c>null</c>, the host is resolved via <see cref="ToastManager.ResolveHost" /> at show time.
     /// </param>
     /// <param name="title">The title text of the toast.</param>
-    internal ToastBuilder(ToastHost? host, string title)
+    /// <param name="content"></param>
+    internal ToastBuilder(ToastHost? host, string title, object? content = null)
     {
         _host = host;
         _toast = new Toast
         {
-            Title = title
+            Title = title,
+            Content = content
         };
     }
 
