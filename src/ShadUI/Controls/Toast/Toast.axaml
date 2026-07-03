@@ -68,7 +68,8 @@
                 <TextBlock
                   Name="PART_Title"
                   IsVisible="{TemplateBinding Title, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                  Text="{TemplateBinding Title}"/>
+                  Text="{TemplateBinding Title}"
+                  TextWrapping="Wrap"/>
                 <ContentPresenter
                   Name="PART_Content"
                   Content="{TemplateBinding Content}"
