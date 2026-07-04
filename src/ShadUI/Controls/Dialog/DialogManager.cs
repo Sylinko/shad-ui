@@ -35,7 +35,7 @@ public sealed class DialogManager
     /// <param name="control">Control to be shown as dialog</param>
     /// <param name="callback">Callback when dialog is closed</param>
     /// <param name="options">Dialog options</param>
-    internal void Show(Control control, Action<DialogResult> callback, DialogOptions options)
+    internal void Show(Control control, Action<DialogResult>? callback, DialogOptions options)
     {
         if (_dialogs.Count > 0)
         {
@@ -49,7 +49,7 @@ public sealed class DialogManager
         }
 
         _dialogs.TryAdd(control, options);
-        _callbacks.TryAdd(control, callback);
+        if (callback is not null) _callbacks.TryAdd(control, callback);
         OnDialogShown?.Invoke(this, new DialogShownEventArgs(control, options));
     }
 

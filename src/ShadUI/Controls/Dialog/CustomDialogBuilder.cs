@@ -11,10 +11,10 @@ namespace ShadUI;
 public sealed class CustomDialogBuilder
 {
     private readonly DialogManager _manager;
+    private readonly DialogOptions _options = new();
+    private readonly Control _control;
 
     private Action<DialogResult>? _callback;
-    private readonly DialogOptions _options = new();
-    private readonly Control? _control;
 
     internal CustomDialogBuilder(DialogManager manager, Control control)
     {
@@ -68,8 +68,6 @@ public sealed class CustomDialogBuilder
 
     public Task<DialogResult> ShowAsync(CancellationToken cancellationToken = default)
     {
-        if (_control == null) throw new InvalidOperationException("Dialog control is not set.");
-
         var tcs = new TaskCompletionSource<DialogResult>();
         var callback = _callback;
         callback += result => tcs.TrySetResult(result);
@@ -79,5 +77,35 @@ public sealed class CustomDialogBuilder
         if (cancellationToken.CanBeCanceled) cancellationToken.Register(() => Dispatcher.UIThread.Invoke(() => _manager.Close(_control)));
 
         return tcs.Task;
+    }
+
+    /// <summary>
+    ///     Shows the dialog with the provided options.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <exception cref="InvalidOperationException"></exception>
+    public void Show(CancellationToken cancellationToken = default)
+    {
+        _manager.Show(_control, _callback, _options);
+
+        if (cancellationToken.CanBeCanceled) cancellationToken.Register(() => Dispatcher.UIThread.Invoke(() => _manager.Close(_control)));
+    }
+
+    /// <summary>
+    ///     Shows the dialog with the provided options and returns a <see cref="DialogResult" /> when the dialog is closed.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public DialogResult ShowDialog(CancellationToken cancellationToken = default)
+    {
+        var tcs = new TaskCompletionSource<DialogResult>();
+        var callback = _callback;
+        callback += result => tcs.TrySetResult(result);
+
+        _manager.Show(_control, callback, _options);
+
+        if (cancellationToken.CanBeCanceled) cancellationToken.Register(() => Dispatcher.UIThread.Invoke(() => _manager.Close(_control)));
+
+        return tcs.Task.WaitOnDispatcherFrame();
     }
 }
