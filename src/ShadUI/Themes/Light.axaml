@@ -71,7 +71,7 @@
   <Color x:Key="PopupBackgroundColor">#FAFAFA</Color>
   <Color x:Key="ToolTipForegroundColor">#FAFAFA</Color>
   <Color x:Key="ToolTipBackgroundColor">#0A0A0D</Color>
-  <Color x:Key="WindowBackgroundColor">#EEE5E5E5</Color>
+  <Color x:Key="WindowBackgroundColor">#DEF5F5F5</Color>
   <Color x:Key="WindowButtonHoverColor">#0D09090B</Color>
 
   <Color x:Key="SidebarBackgroundColor">#66FFFFFF</Color>
