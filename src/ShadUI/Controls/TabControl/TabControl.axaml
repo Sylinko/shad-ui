@@ -83,7 +83,7 @@
               DockPanel.Dock="{TemplateBinding TabStripPlacement}"
               HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
               <Border
-                HorizontalAlignment="Left"
+                Padding="2,4,2,0" HorizontalAlignment="Left"
                 Background="{DynamicResource CardBackgroundColor}"
                 CornerRadius="{DynamicResource LgCornerRadius}">
                 <ItemsPresenter

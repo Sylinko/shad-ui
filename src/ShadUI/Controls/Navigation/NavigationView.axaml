@@ -41,7 +41,8 @@
             Padding="{TemplateBinding Padding}"
             Background="{DynamicResource WindowBackgroundColor}"
             BorderBrush="{DynamicResource OutlineColor}"
-            BorderThickness="1,1,0,0" CornerRadius="14,0,0,0">
+            BorderThickness="1,1,0,0" ClipToBounds="True"
+            CornerRadius="14,0,0,0">
             <DockPanel>
               <!--  Navigation Bar  -->
               <DockPanel
@@ -73,7 +74,7 @@
               <Panel>
                 <!--  Actual Content  -->
                 <TransitioningContentControl
-                  Name="PART_ContentContainer"
+                  Name="PART_ContentContainer" ClipToBounds="False"
                   Content="{TemplateBinding SelectedItem}"
                   ContentTemplate="{TemplateBinding ContentTemplate}"/>
 
