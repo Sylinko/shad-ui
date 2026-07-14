@@ -1,30 +1,32 @@
 using System.Collections.Specialized;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 
 namespace ShadUI;
 
-public class ButtonGroup : StackPanel
+public sealed class ControlGroup : StackPanel
 {
     /// <summary>
     /// Defines the <see cref="CornerRadius"/> property.
     /// </summary>
     public static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
-        Border.CornerRadiusProperty.AddOwner<ButtonGroup>();
+        Border.CornerRadiusProperty.AddOwner<ControlGroup>();
 
     /// <summary>
     /// Defines the <see cref="BorderBrush"/> property.
     /// </summary>
     public static readonly StyledProperty<IBrush?> BorderBrushProperty =
-        Border.BorderBrushProperty.AddOwner<ButtonGroup>();
+        Border.BorderBrushProperty.AddOwner<ControlGroup>();
 
     /// <summary>
     /// Defines the <see cref="BorderThickness"/> property.
     /// </summary>
     public static readonly StyledProperty<Thickness> BorderThicknessProperty =
-        Border.BorderThicknessProperty.AddOwner<ButtonGroup>();
+        Border.BorderThicknessProperty.AddOwner<ControlGroup>();
 
     /// <summary>
     /// Gets or sets the corner radius of the button group.
@@ -53,11 +55,11 @@ public class ButtonGroup : StackPanel
         set => SetValue(BorderThicknessProperty, value);
     }
 
-    private readonly HashSet<Control> _listeningChildren = new();
+    private readonly HashSet<Control> _listeningChildren = [];
 
-    static ButtonGroup()
+    static ControlGroup()
     {
-        AffectsRender<ButtonGroup>(CornerRadiusProperty, BorderBrushProperty, BorderThicknessProperty);
+        AffectsRender<ControlGroup>(CornerRadiusProperty, BorderBrushProperty, BorderThicknessProperty);
     }
 
     protected override void ChildrenChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -99,6 +101,14 @@ public class ButtonGroup : StackPanel
         UpdateChildrenStyles();
     }
 
+    protected override void OnUnloaded(RoutedEventArgs e)
+    {
+        base.OnUnloaded(e);
+
+        foreach (var child in _listeningChildren) child.PropertyChanged -= HandleChildPropertyChanged;
+        _listeningChildren.Clear();
+    }
+
     private void StartListening(Control c)
     {
         if (_listeningChildren.Add(c))
@@ -138,8 +148,8 @@ public class ButtonGroup : StackPanel
 
     private void UpdateChildrenStyles()
     {
-        var children = Children.OfType<Button>().ToList();
-        var count = children.Count;
+        var visibleChildren = Children.Where(c => c.IsVisible).ToList();
+        var count = visibleChildren.Count;
         if (count == 0) return;
 
         var orientation = Orientation;
@@ -147,67 +157,57 @@ public class ButtonGroup : StackPanel
         var brush = BorderBrush;
         var thickness = BorderThickness;
 
-        Button? firstButton = null;
-        Button? lastButton = null;
-
         for (var i = 0; i < count; i++)
         {
-            var button = children[i];
-            if (!button.IsVisible) continue;
-
-            firstButton ??= button;
-            lastButton = button;
-
-            // Apply BorderBrush
-            if (brush != null)
-            {
-                button.BorderBrush = brush;
-            }
+            var child = visibleChildren[i];
 
             // Apply BorderThickness
             // To avoid double borders, we can adjust thickness for adjacent items
-            // However, simple implementation first as requested: "set child Button's these properties"
-            // Usually ButtonGroup implies merging borders.
+            // However, simple implementation first as requested: "set child Control's these properties"
+            // Usually ControlGroup implies merging borders.
             // Let's assume standard behavior:
             // Horizontal: Middle items lose Left border (or Right, depending on direction).
             // Vertical: Middle items lose Top border (or Bottom).
-            
-            var newMargin = new Thickness();
-            if (button != firstButton)
+
+            CornerRadius cornerRadius;
+            if (count > 1 && i > 0)
             {
                 if (orientation == Orientation.Horizontal)
                 {
-                    newMargin = new Thickness(-thickness.Left, 0, 0, 0);
+                    child.Margin = new Thickness(-thickness.Left, 0, 0, 0);
+                    cornerRadius = i == count - 1 ? new CornerRadius(0, radius.TopRight, radius.BottomRight, 0) : default;
                 }
                 else
                 {
-                    newMargin = new Thickness(0, -thickness.Top, 0, 0);
+                    child.Margin = new Thickness(0, -thickness.Top, 0, 0);
+                    cornerRadius = i == count - 1 ? new CornerRadius(0, 0, radius.BottomRight, radius.BottomLeft) : default;
                 }
-            }
-
-            button.Margin = newMargin;
-            button.CornerRadius = new CornerRadius(0);
-        }
-
-        // Apply CornerRadius to first and last buttons
-        if (firstButton == null) return;
-
-        if (firstButton == lastButton)
-        {
-            // only one button
-            firstButton.CornerRadius = radius;
-        }
-        else
-        {
-            if (orientation == Orientation.Horizontal)
-            {
-                firstButton.CornerRadius = new CornerRadius(radius.TopLeft, 0, 0, radius.BottomLeft);
-                lastButton?.CornerRadius = new CornerRadius(0, radius.TopRight, radius.BottomRight, 0);
             }
             else
             {
-                firstButton.CornerRadius = new CornerRadius(radius.TopLeft, radius.TopRight, 0, 0);
-                lastButton?.CornerRadius = new CornerRadius(0, 0, radius.BottomRight, radius.BottomLeft);
+                child.Margin = new Thickness(0); // First item has no negative margin
+                cornerRadius = count == 1 ? radius : // Only 1 item, use full radius
+                    orientation == Orientation.Horizontal ? // More than 1, depending on orientation
+                        new CornerRadius(radius.TopLeft, 0, 0, radius.BottomLeft) :
+                        new CornerRadius(radius.TopLeft, radius.TopRight, 0, 0);
+            }
+
+            switch (child)
+            {
+                case TemplatedControl templatedControl:
+                {
+                    if (brush != null) templatedControl.BorderBrush = brush;
+                    templatedControl.BorderThickness = thickness;
+                    templatedControl.CornerRadius = cornerRadius;
+                    break;
+                }
+                case Border border:
+                {
+                    if (brush != null) border.BorderBrush = brush;
+                    border.BorderThickness = thickness;
+                    border.CornerRadius = cornerRadius;
+                    break;
+                }
             }
         }
     }

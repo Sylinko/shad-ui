@@ -7,7 +7,6 @@
     <ResourceInclude Source="avares://ShadUI/Controls/Breakpoint/BreakpointView.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/BusyArea/BusyArea.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Button/Button.axaml"/>
-    <ResourceInclude Source="avares://ShadUI/Controls/Button/ButtonGroup.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Calendar/Calendar.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Calendar/CalendarButton.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Calendar/CalendarDatePicker.axaml"/>
@@ -49,6 +48,7 @@
     <ResourceInclude Source="avares://ShadUI/Controls/Navigation/NavigationView.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/NumericUpDown/ButtonSpinner.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/NumericUpDown/NumericUpDown.axaml"/>
+    <ResourceInclude Source="avares://ShadUI/Controls/Panel/ControlGroup.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/ProgressBar/ProgressBar.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/SelectableTextBlock/SelectableTextBlock.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/SimpleDropdown/SimpleDropdown.axaml"/>
