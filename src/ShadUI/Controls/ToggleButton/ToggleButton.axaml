@@ -62,10 +62,11 @@
                     Property="TextElement.Foreground" Duration="0:0:0.15"/>
                 </Transitions>
               </Border.Transitions>
-              <StackPanel
+              <DockPanel
                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                Orientation="Horizontal" Spacing="6">
+                HorizontalSpacing="6">
                 <Viewbox
+                  DockPanel.Dock="Left"
                   Height="{TemplateBinding shadui:ButtonAssist.IconSize}"
                   IsVisible="{TemplateBinding shadui:ButtonAssist.ShowProgress}">
                   <Viewbox.Width>
@@ -86,7 +87,10 @@
                   </Viewbox.Transitions>
                   <ContentPresenter Content="{TemplateBinding shadui:ButtonAssist.ShowProgress, Converter={x:Static shadui:BooleanConverters.ToLoading}}"/>
                 </Viewbox>
-                <Viewbox Height="{TemplateBinding shadui:ButtonAssist.IconSize}">
+
+                <Viewbox
+                  DockPanel.Dock="Left"
+                  Height="{TemplateBinding shadui:ButtonAssist.IconSize}">
                   <Viewbox.Width>
                     <MultiBinding Converter="{x:Static shadui:BooleanConverters.Gate}">
                       <TemplateBinding Property="shadui:ButtonAssist.ShowProgress"/>
@@ -117,6 +121,7 @@
                     x:Name="Icon"
                     Content="{TemplateBinding shadui:ButtonAssist.Icon}"/>
                 </Viewbox>
+
                 <ContentPresenter
                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -125,7 +130,7 @@
                   FontSize="{TemplateBinding FontSize}"
                   FontWeight="{TemplateBinding FontWeight}"
                   RecognizesAccessKey="True"/>
-              </StackPanel>
+              </DockPanel>
             </Border>
           </Panel>
         </Border>
