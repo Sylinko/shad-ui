@@ -151,29 +151,6 @@ public static class ControlAssist
     public static void SetMinHeight(TemplatedControl control, double value) => control.SetValue(MinHeightProperty, value);
 
     /// <summary>
-    ///     Defines an attached property for setting the maximum height of a control.
-    /// </summary>
-    public static readonly AttachedProperty<double> MaxHeightProperty =
-        AvaloniaProperty.RegisterAttached<TemplatedControl, double>("MaxHeight", typeof(TemplatedControl));
-
-    /// <summary>
-    ///     Gets the value of the <see cref="MaxHeightProperty" />.
-    /// </summary>
-    /// <param name="control">The control.</param>
-    /// <returns>The maximum height value.</returns>
-    public static double GetMaxHeight(TemplatedControl control) => control.GetValue(MaxHeightProperty);
-
-    /// <summary>
-    ///     Sets the value of the <see cref="MaxHeightProperty" />.
-    /// </summary>
-    /// <param name="control">The control.</param>
-    /// <param name="value">
-    ///     The maximum height value to set. Must be used to define the actual maximum height of control
-    ///     excluding label and hint.
-    /// </param>
-    public static void SetMaxHeight(TemplatedControl control, double value) => control.SetValue(MaxHeightProperty, value);
-
-    /// <summary>
     ///     Defines an attached property that determines if a control should be read-only.
     /// </summary>
     public static readonly AttachedProperty<bool> ReadOnlyProperty =
