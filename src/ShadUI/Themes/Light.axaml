@@ -62,6 +62,7 @@
   <Color x:Key="ListBoxItemSelectedColor">#E6E6E6</Color>
 
   <Color x:Key="CardBackgroundColor">#66FFFFFF</Color>
+  <Color x:Key="LightCardBackgroundColor">#B3FFFFFF</Color>
   <Color x:Key="SecondaryCardBackgroundColor">#99E0E0E0</Color>
 
   <Color x:Key="DialogOverlayColor">#000000</Color>
