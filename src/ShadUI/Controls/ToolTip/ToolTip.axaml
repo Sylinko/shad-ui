@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:shad="using:ShadUI" xmlns:sys="using:System"
-  x:ClassModifier="internal">
+  xmlns:sys="using:System" x:ClassModifier="internal">
   <Design.PreviewWith>
     <Border Padding="20">
       <StackPanel Spacing="20">
@@ -36,10 +35,15 @@
     <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Panel
-          Name="PART_RootPanel" ClipToBounds="False"
+        <Border
+          Name="PART_LayoutRoot"
+          Padding="{TemplateBinding Padding}"
+          Background="{TemplateBinding Background}"
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}"
+          CornerRadius="{TemplateBinding CornerRadius}"
           Opacity="0" RenderTransform="scale(0.8,0.8)">
-          <Panel.Transitions>
+          <Border.Transitions>
             <Transitions>
               <DoubleTransition
                 Property="Opacity" Duration="0:0:0.2"/>
@@ -47,93 +51,22 @@
                 Easing="CubicEaseOut" Property="RenderTransform"
                 Duration="0:0:0.2"/>
             </Transitions>
-          </Panel.Transitions>
-          <Border
-            Name="PART_LayoutRoot"
-            Padding="{TemplateBinding Padding}"
-            Background="{TemplateBinding Background}"
-            BorderBrush="{TemplateBinding BorderBrush}"
-            BorderThickness="{TemplateBinding BorderThickness}"
-            CornerRadius="{TemplateBinding CornerRadius}">
-            <ContentPresenter
-              Name="PART_ContentPresenter"
-              MaxWidth="{TemplateBinding MaxWidth}"
-              Content="{TemplateBinding Content}"
-              ContentTemplate="{TemplateBinding ContentTemplate}"
-              Foreground="{TemplateBinding Foreground}"
-              TextBlock.TextWrapping="Wrap"/>
-          </Border>
-          <Path
-            Name="Arrow" Data="M 0,0 L 4,4 Q 6,6 8,4 L 12,0"
-            Fill="{TemplateBinding Background}"
-            IsVisible="False"
-            Stroke="{TemplateBinding BorderBrush}"
-            StrokeJoin="Round"
-            StrokeThickness="{TemplateBinding BorderThickness, Converter={x:Static shad:ThicknessConverters.ToLargest}}"/>
-        </Panel>
+          </Border.Transitions>
+
+          <ContentPresenter
+            Name="PART_ContentPresenter"
+            MaxWidth="{TemplateBinding MaxWidth}"
+            Content="{TemplateBinding Content}"
+            ContentTemplate="{TemplateBinding ContentTemplate}"
+            Foreground="{TemplateBinding Foreground}"
+            TextBlock.TextWrapping="Wrap"/>
+        </Border>
       </ControlTemplate>
     </Setter>
 
-    <Style Selector="^:open">
-      <Style Selector="^ Panel#PART_RootPanel">
-        <Setter Property="Opacity" Value="1"/>
-        <Setter Property="RenderTransform" Value="scale(1,1)"/>
-      </Style>
-    </Style>
-
-    <Style Selector="^[(ToolTip.Placement)=Top]">
-      <Style Selector="^ Border#PART_LayoutRoot">
-        <Setter Property="Margin" Value="0,0,0,5"/>
-      </Style>
-      <Style Selector="^ Path#Arrow">
-        <Setter Property="IsVisible" Value="True"/>
-        <Setter Property="VerticalAlignment" Value="Bottom"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-      </Style>
-    </Style>
-
-    <Style Selector="^[(ToolTip.Placement)=Bottom]">
-      <Style Selector="^ Border#PART_LayoutRoot">
-        <Setter Property="Margin" Value="0,5,0,0"/>
-      </Style>
-      <Style Selector="^ Path#Arrow">
-        <Setter Property="IsVisible" Value="True"/>
-        <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="RenderTransform">
-          <RotateTransform Angle="180"/>
-        </Setter>
-      </Style>
-    </Style>
-
-    <Style Selector="^[(ToolTip.Placement)=Left]">
-      <Style Selector="^ Border#PART_LayoutRoot">
-        <Setter Property="Margin" Value="0,0,5,0"/>
-      </Style>
-      <Style Selector="^ Path#Arrow">
-        <Setter Property="IsVisible" Value="True"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="RenderTransform">
-          <RotateTransform Angle="-90"/>
-        </Setter>
-        <Setter Property="Margin" Value="0,0,-2,0"/>
-      </Style>
-    </Style>
-
-    <Style Selector="^[(ToolTip.Placement)=Right]">
-      <Style Selector="^ Border#PART_LayoutRoot">
-        <Setter Property="Margin" Value="5,0,0,0"/>
-      </Style>
-      <Style Selector="^ Path#Arrow">
-        <Setter Property="IsVisible" Value="True"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="RenderTransform">
-          <RotateTransform Angle="90"/>
-        </Setter>
-        <Setter Property="Margin" Value="-2,0,0,0"/>
-      </Style>
+    <Style Selector="^:open /template/ Border#PART_LayoutRoot">
+      <Setter Property="Opacity" Value="1"/>
+      <Setter Property="RenderTransform" Value="scale(1,1)"/>
     </Style>
   </ControlTheme>
 </ResourceDictionary>

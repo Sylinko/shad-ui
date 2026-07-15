@@ -51,24 +51,4 @@
       <Setter Property="CornerRadius" Value="{DynamicResource FullCornerRadius}"/>
     </Style>
   </Style>
-
-  <Style Selector=":is(Control):not(ToolTip)">
-    <Style Selector="^[(ToolTip.Placement)=Top]">
-      <Setter Property="ToolTip.VerticalOffset" Value="-3"/>
-    </Style>
-
-    <Style Selector="^[(ToolTip.Placement)=Bottom]">
-      <Setter Property="ToolTip.VerticalOffset" Value="3"/>
-    </Style>
-
-    <Style Selector="^[(ToolTip.Placement)=Left]">
-      <Setter Property="ToolTip.VerticalOffset" Value="0"/>
-      <Setter Property="ToolTip.HorizontalOffset" Value="-3"/>
-    </Style>
-
-    <Style Selector="^[(ToolTip.Placement)=Right]">
-      <Setter Property="ToolTip.VerticalOffset" Value="0"/>
-      <Setter Property="ToolTip.HorizontalOffset" Value="3"/>
-    </Style>
-  </Style>
 </Styles>
