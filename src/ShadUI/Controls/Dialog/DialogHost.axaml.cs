@@ -2,253 +2,290 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
-using Avalonia.Reactive;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Threading;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
 
 /// <summary>
-///     Dialog host control that manages the display and lifecycle of dialogs within a window.
+///     Hosts the dialog stack belonging to one TopLevel and participates in global routing through
+///     <see cref="DialogManager"/> while attached to the visual tree.
 /// </summary>
 [TemplatePart("PART_DialogBackground", typeof(Border))]
 [TemplatePart("PART_CloseButton", typeof(Button))]
 public class DialogHost : TemplatedControl
 {
     /// <summary>
-    ///     Defines the <see cref="Manager" /> property.
+    /// Defines the currently presented dialog content.
     /// </summary>
-    public static readonly StyledProperty<DialogManager> ManagerProperty =
-        AvaloniaProperty.Register<DialogHost, DialogManager>(nameof(Manager));
+    public static readonly StyledProperty<Control?> DialogProperty =
+        AvaloniaProperty.Register<DialogHost, Control?>(nameof(Dialog));
 
     /// <summary>
-    ///     Gets or sets the dialog manager responsible for handling dialog operations.
+    /// Gets or sets the currently presented dialog content.
     /// </summary>
-    public DialogManager Manager
-    {
-        get => GetValue(ManagerProperty);
-        set => SetValue(ManagerProperty, value);
-    }
-
-    /// <summary>
-    ///     Defines the <see cref="Dialog" /> property.
-    /// </summary>
-    internal static readonly StyledProperty<object?> DialogProperty =
-        AvaloniaProperty.Register<DialogHost, object?>(nameof(Dialog));
-
-    /// <summary>
-    ///     Gets or sets the current dialog content.
-    /// </summary>
-    internal object? Dialog
+    public Control? Dialog
     {
         get => GetValue(DialogProperty);
         set => SetValue(DialogProperty, value);
     }
 
     /// <summary>
-    ///     Defines the <see cref="IsDialogOpen" /> property.
+    /// Defines whether the current dialog is in its open visual state.
     /// </summary>
-    internal static readonly StyledProperty<bool> IsDialogOpenProperty =
+    public static readonly StyledProperty<bool> IsDialogOpenProperty =
         AvaloniaProperty.Register<DialogHost, bool>(nameof(IsDialogOpen));
 
     /// <summary>
-    ///     Gets or sets whether a dialog is currently open.
+    /// Gets or sets whether the current dialog is in its open visual state.
     /// </summary>
-    internal bool IsDialogOpen
+    public bool IsDialogOpen
     {
         get => GetValue(IsDialogOpenProperty);
         set => SetValue(IsDialogOpenProperty, value);
     }
 
     /// <summary>
-    ///     Defines the <see cref="DialogMaxWidth" /> property.
+    /// Defines the maximum width of the current dialog.
     /// </summary>
-    internal static readonly StyledProperty<double> DialogMaxWidthProperty =
+    public static readonly StyledProperty<double> DialogMaxWidthProperty =
         AvaloniaProperty.Register<DialogHost, double>(nameof(DialogMaxWidth), double.MaxValue);
 
     /// <summary>
-    ///     Gets or sets the maximum width of the dialog.
+    /// Gets or sets the maximum width of the current dialog.
     /// </summary>
-    internal double DialogMaxWidth
+    public double DialogMaxWidth
     {
         get => GetValue(DialogMaxWidthProperty);
         set => SetValue(DialogMaxWidthProperty, value);
     }
 
     /// <summary>
-    ///     Defines the <see cref="DialogMinWidth" /> property.
+    /// Defines the minimum width of the current dialog.
     /// </summary>
-    internal static readonly StyledProperty<double> DialogMinWidthProperty =
+    public static readonly StyledProperty<double> DialogMinWidthProperty =
         AvaloniaProperty.Register<DialogHost, double>(nameof(DialogMinWidth), double.MinValue);
 
     /// <summary>
-    ///     Gets or sets the minimum width of the dialog.
+    /// Gets or sets the minimum width of the current dialog.
     /// </summary>
-    internal double DialogMinWidth
+    public double DialogMinWidth
     {
         get => GetValue(DialogMinWidthProperty);
         set => SetValue(DialogMinWidthProperty, value);
     }
 
     /// <summary>
-    ///     Defines the <see cref="Dismissible" /> property.
+    /// Defines whether the current dialog can be dismissed by the host chrome.
     /// </summary>
-    internal static readonly StyledProperty<bool> DismissibleProperty =
+    public static readonly StyledProperty<bool> DismissibleProperty =
         AvaloniaProperty.Register<DialogHost, bool>(nameof(Dismissible), true);
 
     /// <summary>
-    ///     Gets or sets whether the dialog can be dismissed.
+    /// Gets or sets whether the current dialog can be dismissed by the host chrome.
     /// </summary>
-    internal bool Dismissible
+    public bool Dismissible
     {
         get => GetValue(DismissibleProperty);
         set => SetValue(DismissibleProperty, value);
     }
 
     /// <summary>
-    ///     Defines the <see cref="HasOpenDialog" /> property.
+    /// Defines whether this host retains any dialog entries.
     /// </summary>
-    internal static readonly StyledProperty<bool> HasOpenDialogProperty =
-        AvaloniaProperty.Register<DialogHost, bool>(nameof(HasOpenDialog));
+    public static readonly DirectProperty<DialogHost, bool> HasOpenedDialogProperty =
+        AvaloniaProperty.RegisterDirect<DialogHost, bool>(nameof(HasOpenedDialog), o => o.HasOpenedDialog);
 
     /// <summary>
-    ///     Gets or sets whether the dialog can be dismissed.
+    /// Gets or sets whether this host retains any dialog entries.
     /// </summary>
-    internal bool HasOpenDialog
+    public bool HasOpenedDialog
     {
-        get => GetValue(HasOpenDialogProperty);
-        set => SetValue(HasOpenDialogProperty, value);
+        get;
+        private set => SetAndRaise(HasOpenedDialogProperty, ref field, value);
     }
 
     /// <summary>
-    ///     Defines the <see cref="CanDismissWithBackgroundClick" /> property.
+    /// Defines whether clicking the overlay may request dismissal.
     /// </summary>
-    internal static readonly StyledProperty<bool> CanDismissWithBackgroundClickProperty =
+    public static readonly StyledProperty<bool> CanDismissWithBackgroundClickProperty =
         AvaloniaProperty.Register<DialogHost, bool>(nameof(CanDismissWithBackgroundClick), true);
 
     /// <summary>
-    ///     Gets or sets whether the dialog can be dismissed by clicking the background.
+    /// Gets or sets whether clicking the overlay may request dismissal.
     /// </summary>
-    internal bool CanDismissWithBackgroundClick
+    public bool CanDismissWithBackgroundClick
     {
         get => GetValue(CanDismissWithBackgroundClickProperty);
         set => SetValue(CanDismissWithBackgroundClickProperty, value);
     }
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="DialogHost"/> class.
-    /// </summary>
-    public DialogHost()
-    {
-        Manager = new DialogManager();
-    }
+    private readonly List<DialogEntry> _dialogs = [];
+    private Border? _dialogBackground;
+    private Button? _closeButton;
 
-    /// <summary>
-    ///     Called when the control template is applied to set up event handlers and animations.
-    /// </summary>
-    /// <param name="e">The template applied event arguments.</param>
+    /// <summary>Creates a simple dialog pinned to this host.</summary>
+    public SimpleDialogBuilder CreateDialog(object content, object? title = null) => new(this, content, title);
+
+    /// <summary>Creates a custom dialog pinned to this host.</summary>
+    public CustomDialogBuilder CreateCustomDialog(Control control) => new(this, control);
+
+    /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
+        if (_dialogBackground is not null) _dialogBackground.PointerPressed -= HandleBackgroundPointerPressed;
+        if (_closeButton is not null) _closeButton.Click -= HandleCloseButtonClick;
+
         base.OnApplyTemplate(e);
-        if (e.NameScope.Find<Border>("PART_DialogBackground") is { } background)
-        {
-            background.PointerPressed += (_, _) =>
-            {
-                if (CanDismissWithBackgroundClick) CloseDialog();
-            };
-        }
 
-        if (e.NameScope.Find<Button>("PART_CloseButton") is { } closeButton)
-        {
-            closeButton.Click += (_, _) => CloseDialog();
-        }
+        _dialogBackground = e.NameScope.Find<Border>("PART_DialogBackground");
+        _closeButton = e.NameScope.Find<Button>("PART_CloseButton");
+        if (_dialogBackground is not null) _dialogBackground.PointerPressed += HandleBackgroundPointerPressed;
+        if (_closeButton is not null) _closeButton.Click += HandleCloseButtonClick;
     }
 
-    private void CloseDialog()
+    /// <inheritdoc/>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        if (!Dismissible) return;
-
-        IsDialogOpen = false;
-
-        Manager.RemoveLast(DialogResult.Cancel);
-        Manager.OpenLast();
+        base.OnAttachedToVisualTree(e);
+        DialogManager.Register(this);
     }
 
-    static DialogHost()
+    /// <inheritdoc/>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        ManagerProperty.Changed.Subscribe(
-            new AnonymousObserver<AvaloniaPropertyChangedEventArgs<DialogManager>>(x =>
-                OnManagerPropertyChanged(x.Sender, x)));
+        DialogManager.Unregister(this);
+
+        // A detached host can no longer receive user input. Complete every pending builder now so
+        // callers never retain a task and an arbitrary dialog control after its window closes.
+        CloseAll();
+        base.OnDetachedFromVisualTree(e);
     }
 
-    private static void OnManagerPropertyChanged(AvaloniaObject sender, AvaloniaPropertyChangedEventArgs propChanged)
+    private void HandleBackgroundPointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (sender is not DialogHost host)
-        {
-            throw new NullReferenceException("Dependency object is not of valid type " + nameof(DialogHost));
-        }
-
-        if (propChanged.OldValue is DialogManager oldManager)
-        {
-            host.DetachManagerEvents(oldManager);
-        }
-
-        if (propChanged.NewValue is DialogManager newManager)
-        {
-            host.AttachManagerEvents(newManager);
-        }
+        if (CanDismissWithBackgroundClick) CloseCurrent();
     }
 
-    private void AttachManagerEvents(DialogManager manager)
+    private void HandleCloseButtonClick(object? sender, RoutedEventArgs e) =>
+        CloseCurrent();
+
+    private void CloseCurrent()
     {
-        manager.OnDialogShown += ManagerOnDialogShown;
-        manager.OnDialogClosed += ManagerOnDialogClosed;
-        manager.AllowDismissChanged += AllowDismissChanged;
+        if (!Dismissible || _dialogs.Count == 0) return;
+        Close(_dialogs[^1].Control);
     }
 
-    private void DetachManagerEvents(DialogManager manager)
+    /// <summary>Adds a dialog to this host's stack and presents it as the current entry.</summary>
+    internal bool Show(Control control, Action<DialogResult>? callback, DialogOptions options)
     {
-        manager.OnDialogShown -= ManagerOnDialogShown;
-        manager.OnDialogClosed -= ManagerOnDialogClosed;
-        manager.AllowDismissChanged -= AllowDismissChanged;
+        Dispatcher.UIThread.CheckAccess();
+
+        if (_dialogs.Any(entry => ReferenceEquals(entry.Control, control))) return false;
+
+        if (_dialogs.Count > 0) IsDialogOpen = false;
+
+        var entry = new DialogEntry(control, options, callback);
+        _dialogs.Add(entry);
+        if (control is SimpleDialog simpleDialog)
+            simpleDialog.CloseRequested = result => Close(simpleDialog, result);
+
+        Present(entry);
+        return true;
     }
 
-    private void ManagerOnDialogShown(object? sender, DialogShownEventArgs e)
+    private void Present(DialogEntry entry)
     {
-        Dialog = e.Control;
-        Dismissible = e.Options.Dismissible;
-
-        if (e.Options.MaxWidth > 0) DialogMaxWidth = e.Options.MaxWidth;
-        if (e.Options.MinWidth > 0) DialogMinWidth = e.Options.MinWidth;
-
+        Dialog = entry.Control;
+        DialogMaxWidth = entry.Options.MaxWidth;
+        DialogMinWidth = entry.Options.MinWidth;
+        Dismissible = entry.Options.Dismissible;
+        HasOpenedDialog = true;
         IsDialogOpen = true;
-        HasOpenDialog = true;
     }
 
-    private async void ManagerOnDialogClosed(object? sender, DialogClosedEventArgs e)
+    /// <summary>Closes a specific dialog owned by this host.</summary>
+    public void Close(Control control, DialogResult result = DialogResult.Cancel)
+    {
+        Dispatcher.UIThread.CheckAccess();
+
+        var index = _dialogs.FindIndex(entry => ReferenceEquals(entry.Control, control));
+        if (index < 0) return;
+
+        var entry = _dialogs[index];
+        var wasCurrent = index == _dialogs.Count - 1;
+        _dialogs.RemoveAt(index);
+        if (control is SimpleDialog simpleDialog) simpleDialog.CloseRequested = null;
+
+        if (wasCurrent)
+        {
+            IsDialogOpen = false;
+            if (_dialogs.Count > 0)
+            {
+                Present(_dialogs[^1]);
+            }
+            else
+            {
+                HasOpenedDialog = false;
+                ClearDialogAfterAnimation(control);
+            }
+        }
+
+        // Restore the host to a coherent visual state before invoking application code. A callback
+        // may immediately open another dialog, and that new entry must not be overwritten here.
+        entry.Callback?.Invoke(result);
+    }
+
+    /// <summary>Closes every dialog owned by this host and completes each callback once.</summary>
+    public void CloseAll(DialogResult result = DialogResult.Cancel)
+    {
+        Dispatcher.UIThread.CheckAccess();
+        if (_dialogs.Count == 0) return;
+
+        var closedDialog = Dialog;
+        var entries = _dialogs.ToList();
+        _dialogs.Clear();
+        IsDialogOpen = false;
+        HasOpenedDialog = false;
+
+        foreach (var entry in entries)
+        {
+            if (entry.Control is SimpleDialog simpleDialog) simpleDialog.CloseRequested = null;
+            entry.Callback?.Invoke(result);
+        }
+
+        if (closedDialog is not null) ClearDialogAfterAnimation(closedDialog);
+    }
+
+    /// <summary>
+    ///     Restores the current dialog's configured dismissibility after a temporary override.
+    /// </summary>
+    public void PreventDismissal()
+    {
+        if (_dialogs.Count > 0) Dismissible = false;
+    }
+
+    /// <summary>Temporarily enables host-chrome dismissal for the current dialog.</summary>
+    public void AllowDismissal()
+    {
+        if (_dialogs.Count > 0) Dismissible = true;
+    }
+
+    private async void ClearDialogAfterAnimation(object closedDialog)
     {
         try
         {
-            if (e.Control != Dialog) return;
-
-            IsDialogOpen = false;
-            if (e.ReplaceExisting) return;
-
-            HasOpenDialog = Manager.Dialogs.Count > 0;
-
-            await Task.Delay(200); // Allow animations to complete
-            if (!HasOpenDialog) Dialog = null;
+            await Task.Delay(200);
+            if (_dialogs.Count == 0 && !IsDialogOpen && ReferenceEquals(Dialog, closedDialog))
+                Dialog = null;
         }
-        catch (Exception)
+        catch
         {
-            //ignore
+            // The delayed clear is purely visual cleanup and must not surface an async-void error.
         }
     }
 
-    private void AllowDismissChanged(object? sender, bool e)
-    {
-        if (Manager.Dialogs.Count == 0) return;
-
-        var firstDialog = Manager.Dialogs.First();
-        Dismissible = firstDialog.Value.Dismissible || e;
-    }
+    private readonly record struct DialogEntry(Control Control, DialogOptions Options, Action<DialogResult>? Callback);
 }

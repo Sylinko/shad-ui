@@ -1,6 +1,4 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 
 // ReSharper disable once CheckNamespace
@@ -23,11 +21,7 @@ namespace ShadUI;
 /// </remarks>
 public static class ToastManager
 {
-    /// <summary>
-    ///     Maps owning <see cref="TopLevel" /> → <see cref="ToastHost" />, populated on attach.
-    ///     When a window closes and the host detaches, the entry is removed.
-    /// </summary>
-    private static readonly Dictionary<TopLevel, ToastHost> TopLevelToHost = [];
+    private static readonly TopLevelHostRegistry<ToastHost> Hosts = new();
 
     #region Internal — Registration (called by ToastHost)
 
@@ -39,10 +33,7 @@ public static class ToastManager
     {
         Dispatcher.UIThread.CheckAccess();
 
-        var topLevel = TopLevel.GetTopLevel(host);
-        if (topLevel is null) return;
-
-        TopLevelToHost[topLevel] = host;
+        Hosts.Register(host);
     }
 
     /// <summary>
@@ -53,14 +44,7 @@ public static class ToastManager
     {
         Dispatcher.UIThread.CheckAccess();
 
-        foreach (var (topLevel, existing) in TopLevelToHost)
-        {
-            if (ReferenceEquals(existing, host))
-            {
-                TopLevelToHost.Remove(topLevel);
-                return;
-            }
-        }
+        Hosts.Unregister(host);
     }
 
     /// <summary>
@@ -68,44 +52,9 @@ public static class ToastManager
     ///     Must be called on the UI thread.
     /// </summary>
     /// <returns>The best host, or <c>null</c> if none is registered.</returns>
-    internal static ToastHost? ResolveHost()
+    public static ToastHost? ResolveHost(TopLevel? preferredTopLevel = null)
     {
-        Dispatcher.UIThread.CheckAccess();
-
-        switch (Application.Current?.ApplicationLifetime)
-        {
-            case IClassicDesktopStyleApplicationLifetime desktop:
-            {
-                // Active window
-                foreach (var window in desktop.Windows)
-                {
-                    if (window.IsActive && TopLevelToHost.TryGetValue(window, out var host))
-                        return host;
-                }
-
-                // Any visible window
-                foreach (var window in desktop.Windows)
-                {
-                    if (window.IsVisible && TopLevelToHost.TryGetValue(window, out var host))
-                        return host;
-                }
-
-                break;
-            }
-            case ISingleViewApplicationLifetime singleView:
-            {
-                if (singleView.MainView is TopLevel topLevel)
-                {
-                    if (TopLevelToHost.TryGetValue(topLevel, out var host))
-                        return host;
-                }
-
-                break;
-            }
-        }
-
-        // Fallback: any registered host (e.g. embedded TopLevel not tracked by Application)
-        return TopLevelToHost.Values.FirstOrDefault();
+        return Hosts.Resolve(preferredTopLevel);
     }
 
     #endregion
@@ -190,7 +139,7 @@ public static class ToastManager
     {
         Dispatcher.UIThread.Post(() =>
         {
-            foreach (var host in TopLevelToHost.Values) host.DismissAll();
+            foreach (var host in Hosts.Hosts.ToArray()) host.DismissAll();
         });
     }
 

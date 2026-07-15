@@ -14,7 +14,7 @@ public class DialogOptions
     /// <summary>
     ///     Determines the maximum width of the dialog.
     /// </summary>
-    public double MaxWidth { get; set; }
+    public double MaxWidth { get; set; } = double.PositiveInfinity;
 
     /// <summary>
     ///     Determines the minimum width of the dialog.

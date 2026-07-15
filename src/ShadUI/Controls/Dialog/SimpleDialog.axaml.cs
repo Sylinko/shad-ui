@@ -15,16 +15,11 @@ namespace ShadUI;
 [TemplatePart("PART_CancelButton", typeof(Button))]
 internal class SimpleDialog : TemplatedControl
 {
-    private readonly DialogManager? _manager;
-
-    public SimpleDialog()
-    {
-    }
-
-    public SimpleDialog(DialogManager manager)
-    {
-        _manager = manager;
-    }
+    /// <summary>
+    ///     Gets or sets the close callback installed by the owning <see cref="DialogHost"/> while
+    ///     this control is part of that host's stack.
+    /// </summary>
+    public Action<DialogResult>? CloseRequested { get; set; }
 
     public static readonly StyledProperty<object?> TitleProperty =
         AvaloniaProperty.Register<SimpleDialog, object?>(nameof(Title));
@@ -164,8 +159,7 @@ internal class SimpleDialog : TemplatedControl
                 callbackFactory()?.Invoke(this, cancelEventArgs);
                 if (cancelEventArgs.Cancel) return;
 
-                _manager?.CloseDialog(this, result);
-                _manager?.OpenLast();
+                CloseRequested?.Invoke(result);
             };
         }
     }

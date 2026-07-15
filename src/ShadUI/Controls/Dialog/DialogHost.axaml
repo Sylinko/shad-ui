@@ -91,13 +91,13 @@
       </Style>
     </Style>
     <Style Selector="^[IsDialogOpen=False]">
-      <Style Selector="^[HasOpenDialog=True]">
+      <Style Selector="^[HasOpenedDialog=True]">
         <Style Selector="^/template/ Border#PART_DialogBackground">
           <Setter Property="Opacity" Value="0.80"/>
           <Setter Property="IsHitTestVisible" Value="True"/>
         </Style>
       </Style>
-      <Style Selector="^[HasOpenDialog=False]">
+      <Style Selector="^[HasOpenedDialog=False]">
         <Style Selector="^/template/ Border#PART_DialogBackground">
           <Setter Property="Opacity" Value="0"/>
           <Setter Property="IsHitTestVisible" Value="False"/>

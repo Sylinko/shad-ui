@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Threading;
 using ShadUI.Extensions;
 
 // ReSharper disable once CheckNamespace
@@ -10,32 +9,19 @@ namespace ShadUI;
 /// </summary>
 public sealed class CustomDialogBuilder
 {
-    private readonly DialogManager _manager;
+    private readonly DialogHost? _host;
     private readonly DialogOptions _options = new();
     private readonly Control _control;
 
-    private Action<DialogResult>? _callback;
-
-    internal CustomDialogBuilder(DialogManager manager, Control control)
+    internal CustomDialogBuilder(DialogHost? host, Control control)
     {
-        _manager = manager;
+        _host = host;
         _control = control;
     }
 
     /// <summary>
-    ///     Sets the callback for the dialog.
-    /// </summary>
-    /// <param name="callback">The method that is called when the dialog is closed</param>
-    /// <returns>The modified <see cref="CustomDialogBuilder" /> instance</returns>
-    public CustomDialogBuilder WithCallback(Action<DialogResult> callback)
-    {
-        _callback = callback;
-        return this;
-    }
-
-    /// <summary>
     ///     Makes the dialog dismissible by clicking outside or pressing escape. If set to true, this will take precedence over
-    ///     toggling <see cref="DialogManager.PreventDismissal()" />
+    ///     toggling <see cref="DialogHost.PreventDismissal" />
     /// </summary>
     /// <returns>The modified <see cref="CustomDialogBuilder" /> instance</returns>
     public CustomDialogBuilder Dismissible()
@@ -68,15 +54,7 @@ public sealed class CustomDialogBuilder
 
     public Task<DialogResult> ShowAsync(CancellationToken cancellationToken = default)
     {
-        var tcs = new TaskCompletionSource<DialogResult>();
-        var callback = _callback;
-        callback += result => tcs.TrySetResult(result);
-
-        _manager.Show(_control, callback, _options);
-
-        if (cancellationToken.CanBeCanceled) cancellationToken.Register(() => Dispatcher.UIThread.Invoke(() => _manager.Close(_control)));
-
-        return tcs.Task;
+        return DialogManager.ShowAsync(_host, _control, _options, cancellationToken);
     }
 
     /// <summary>
@@ -86,9 +64,7 @@ public sealed class CustomDialogBuilder
     /// <exception cref="InvalidOperationException"></exception>
     public void Show(CancellationToken cancellationToken = default)
     {
-        _manager.Show(_control, _callback, _options);
-
-        if (cancellationToken.CanBeCanceled) cancellationToken.Register(() => Dispatcher.UIThread.Invoke(() => _manager.Close(_control)));
+        DialogManager.Show(_host, _control, null, _options, cancellationToken);
     }
 
     /// <summary>
@@ -98,14 +74,6 @@ public sealed class CustomDialogBuilder
     /// <returns></returns>
     public DialogResult ShowDialog(CancellationToken cancellationToken = default)
     {
-        var tcs = new TaskCompletionSource<DialogResult>();
-        var callback = _callback;
-        callback += result => tcs.TrySetResult(result);
-
-        _manager.Show(_control, callback, _options);
-
-        if (cancellationToken.CanBeCanceled) cancellationToken.Register(() => Dispatcher.UIThread.Invoke(() => _manager.Close(_control)));
-
-        return tcs.Task.WaitOnDispatcherFrame();
+        return ShowAsync(cancellationToken).WaitOnDispatcherFrame();
     }
 }
