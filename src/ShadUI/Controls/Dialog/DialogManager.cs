@@ -33,8 +33,8 @@ public static class DialogManager
         Hosts.Resolve(preferredTopLevel);
 
     /// <summary>Creates a simple dialog whose host is resolved when it is shown.</summary>
-    public static SimpleDialogBuilder CreateDialog(object content, object? title = null) =>
-        new(null, content, title);
+    public static SimpleDialogBuilder CreateDialog(object content, object? title = null, TopLevel? preferredTopLevel = null) =>
+        new(ResolveHost(preferredTopLevel), content, title);
 
     /// <summary>Creates a custom dialog whose host is resolved when it is shown.</summary>
     public static CustomDialogBuilder CreateCustomDialog(Control control) => new(null, control);
