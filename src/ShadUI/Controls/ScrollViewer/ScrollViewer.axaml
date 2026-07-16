@@ -6,7 +6,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Panel>
-          <Panel Name="InnerPanel">
+          <Panel x:Name="InnerPanel">
             <Panel.OpacityMask>
               <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Horizontal}">
                 <Binding Path="#PART_HorizontalScrollBar.Value"/>
@@ -15,9 +15,10 @@
               </MultiBinding>
             </Panel.OpacityMask>
             <ScrollContentPresenter
-              Name="PART_ContentPresenter"
+              x:Name="PART_ContentPresenter"
               Padding="{TemplateBinding Padding}"
               Background="{TemplateBinding Background}"
+              ClipToBounds="{TemplateBinding ClipToBounds}"
               CornerRadius="{TemplateBinding CornerRadius}"
               HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
               HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
@@ -46,22 +47,22 @@
             </ScrollContentPresenter>
           </Panel>
           <Grid
-            Name="BasicScroll" ColumnDefinitions="*,Auto"
+            x:Name="BasicScroll" ColumnDefinitions="*,Auto"
             RowDefinitions="*,Auto">
             <ScrollBar
-              Name="PART_HorizontalScrollBar" Grid.Row="1"
+              x:Name="PART_HorizontalScrollBar" Grid.Row="1"
               Grid.Column="0" Orientation="Horizontal"/>
             <ScrollBar
-              Name="PART_VerticalScrollBar" Grid.Row="0"
+              x:Name="PART_VerticalScrollBar" Grid.Row="0"
               Grid.Column="1" Orientation="Vertical"/>
             <Panel
-              Name="PART_ScrollBarsSeparator" Grid.Row="1"
+              x:Name="PART_ScrollBarsSeparator" Grid.Row="1"
               Grid.Column="1" Background="Transparent"/>
           </Grid>
           <Panel
-            Name="StackScrollPanel" IsVisible="False">
+            x:Name="StackScrollPanel" IsVisible="False">
             <ScrollBar
-              Name="StackVerticalScrollBar" Classes="Stack"
+              x:Name="StackVerticalScrollBar" Classes="Stack"
               HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
               Orientation="Vertical"/>
           </Panel>

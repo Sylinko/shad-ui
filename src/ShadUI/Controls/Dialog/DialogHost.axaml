@@ -4,11 +4,12 @@
   <ControlTheme
     x:Key="DialogHostTheme" TargetType="shadui:DialogHost">
     <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}"/>
+    <Setter Property="Padding" Value="16"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Panel>
           <Border
-            Name="PART_DialogBackground" HorizontalAlignment="Stretch"
+            x:Name="PART_DialogBackground" HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Background="{DynamicResource DialogOverlayColor}"
             Opacity="0">
@@ -20,11 +21,11 @@
             </Border.Transitions>
           </Border>
           <Border
-            Name="DialogContent"
+            x:Name="DialogContent"
             MinWidth="{TemplateBinding DialogMinWidth}"
             MaxWidth="{TemplateBinding DialogMaxWidth}"
-            Margin="16" HorizontalAlignment="Center"
-            VerticalAlignment="Center"
+            Margin="{TemplateBinding Padding}"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
             Background="{DynamicResource DialogBackgroundColor}"
             BorderBrush="{DynamicResource BorderColor}"
             BorderThickness="1" ClipToBounds="True"
@@ -48,16 +49,12 @@
               </Transitions>
             </Border.Transitions>
             <Panel>
-              <Border>
-                <ScrollViewer>
-                  <ContentControl
-                    Name="PART_DialogContainer"
-                    Content="{TemplateBinding Dialog}"
-                    KeyboardNavigation.TabNavigation="Cycle"/>
-                </ScrollViewer>
-              </Border>
+              <ContentControl
+                x:Name="PART_DialogContainer"
+                Content="{TemplateBinding Dialog}"
+                KeyboardNavigation.TabNavigation="Cycle"/>
               <Button
-                Name="PART_CloseButton" Width="24"
+                x:Name="PART_CloseButton" Width="24"
                 Height="24" Margin="8"
                 Padding="0" HorizontalAlignment="Right"
                 VerticalAlignment="Top"
