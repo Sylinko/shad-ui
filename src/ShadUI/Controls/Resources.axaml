@@ -51,7 +51,6 @@
     <ResourceInclude Source="avares://ShadUI/Controls/Panel/ControlGroup.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/ProgressBar/ProgressBar.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/SelectableTextBlock/SelectableTextBlock.axaml"/>
-    <ResourceInclude Source="avares://ShadUI/Controls/SimpleDropdown/SimpleDropdown.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Skeleton/Skeleton.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Slider/Slider.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Switch/Switch.axaml"/>
