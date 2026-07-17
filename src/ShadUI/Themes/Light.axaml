@@ -4,9 +4,9 @@
   <!--  basic colors  -->
   <Color x:Key="TransparentColor">#00FFFFFF</Color>
   <Color x:Key="ForegroundColor">#08080B</Color>
-  <Color x:Key="ForegroundLeadColor">#71717A</Color>
+  <Color x:Key="ForegroundLeadColor">#212121</Color>
   <Color x:Key="BackgroundColor">#00FFFFFF</Color>
-  <Color x:Key="MutedColor">#71717A</Color>
+  <Color x:Key="MutedColor">#212121</Color>
   <Color x:Key="BorderColor">#DEDEDE</Color>
   <Color x:Key="BorderColor60">#9CDEDEDE</Color>
   <Color x:Key="BorderColor30">#4CDEDEDE</Color>

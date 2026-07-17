@@ -56,9 +56,7 @@ public sealed class SystemAccentColors : ResourceDictionary
         
         var (d1, d2, d3) = CalculateAccentShades(systemAccentColor);
         var luminance = (0.299 * systemAccentColor.R + 0.587 * systemAccentColor.G + 0.114 * systemAccentColor.B) / 255;
-        var systemAccentForegroundColor = luminance > 0.6 ? 
-            new Color(255, 29, 29, 31) : 
-            new Color(255, 245, 245, 247);
+        var systemAccentForegroundColor = luminance > 0.6 ? new Color(255, 29, 29, 31) : new Color(255, 245, 245, 247);
 
         SetItems(
         [
