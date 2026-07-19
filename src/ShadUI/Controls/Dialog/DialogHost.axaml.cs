@@ -245,7 +245,7 @@ public class DialogHost : TemplatedControl
         if (_dialogs.Count == 0) return;
 
         var closedDialog = Dialog;
-        var entries = _dialogs.ToList();
+        var entries = _dialogs.ToArray();
         _dialogs.Clear();
         IsDialogOpen = false;
         HasOpenedDialog = false;

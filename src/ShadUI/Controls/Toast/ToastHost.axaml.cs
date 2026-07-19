@@ -217,7 +217,7 @@ public sealed class ToastHost : TemplatedControl
     /// </summary>
     public void DismissAll()
     {
-        foreach (var toast in _queuedToasts.ToList())
+        foreach (var toast in _queuedToasts.ToArray())
             DismissToast(toast, ToastResult.Dismissed);
     }
 

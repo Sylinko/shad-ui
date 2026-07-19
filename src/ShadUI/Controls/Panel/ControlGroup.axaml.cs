@@ -87,7 +87,7 @@ public sealed class ControlGroup : StackPanel
                         StartListening(item);
                 break;
             case NotifyCollectionChangedAction.Reset:
-                foreach (var child in _listeningChildren.ToList())
+                foreach (var child in _listeningChildren.ToArray())
                 {
                     StopListening(child);
                 }
@@ -148,8 +148,8 @@ public sealed class ControlGroup : StackPanel
 
     private void UpdateChildrenStyles()
     {
-        var visibleChildren = Children.Where(c => c.IsVisible).ToList();
-        var count = visibleChildren.Count;
+        var visibleChildren = Children.Where(c => c.IsVisible).ToArray();
+        var count = visibleChildren.Length;
         if (count == 0) return;
 
         var orientation = Orientation;

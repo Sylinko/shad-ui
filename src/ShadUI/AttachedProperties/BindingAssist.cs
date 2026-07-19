@@ -72,8 +72,8 @@ public static class BindingAssist
 
     private static void HandleClassesChanged(Control sender, AvaloniaPropertyChangedEventArgs args)
     {
-        var oldClasses = ConvertClasses(args.OldValue).ToList();
-        if (oldClasses.Count > 0)
+        var oldClasses = ConvertClasses(args.OldValue).ToArray();
+        if (oldClasses.Length > 0)
         {
             for (var i = sender.Classes.Count - 1; i >= 0; i--)
             {
