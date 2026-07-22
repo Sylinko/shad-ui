@@ -74,19 +74,20 @@ public static class AvaloniaExtensions
         var frame = new DispatcherFrame();
         AggregateException? capturedException = null;
 
-        if (cancellationToken != CancellationToken.None)
+        if (cancellationToken.CanBeCanceled)
         {
             cancellationToken.Register(() => frame.Continue = false);
         }
+
         task.ContinueWith(
             t =>
             {
                 capturedException = t.Exception;
-                frame.Continue = false; // 结束消息循环
+                frame.Continue = false;
             },
             TaskContinuationOptions.AttachedToParent);
 
-        Dispatcher.UIThread.PushFrame(frame);
+        Dispatcher.UIThread.PushFrame(frame); // This will wait until `frame.Continue = false`
 
         if (capturedException != null)
         {
@@ -98,34 +99,39 @@ public static class AvaloniaExtensions
     /// Run and wait for a Task on the DispatcherFrame, allowing the UI thread to remain responsive
     /// </summary>
     /// <param name="task"></param>
+    /// <param name="cancellationToken"></param>
     /// <typeparam name="TResult"></typeparam>
     /// <returns></returns>
     /// <exception cref="AggregateException"></exception>
-    public static TResult WaitOnDispatcherFrame<TResult>(this Task<TResult> task)
+    public static TResult WaitOnDispatcherFrame<TResult>(this Task<TResult> task, CancellationToken cancellationToken = default)
     {
         var frame = new DispatcherFrame();
 
-        TResult? result = default;
-
+        TResult result = default!;
         AggregateException? capturedException = null;
+
+        if (cancellationToken.CanBeCanceled)
+        {
+            cancellationToken.Register(() => frame.Continue = false);
+        }
 
         task.ContinueWith(
             t =>
             {
                 capturedException = t.Exception;
                 result = t.Result;
-                frame.Continue = false; // 结束消息循环
+                frame.Continue = false;
             },
             TaskContinuationOptions.AttachedToParent);
 
-        Dispatcher.UIThread.PushFrame(frame);
+        Dispatcher.UIThread.PushFrame(frame); // This will wait until `frame.Continue = false`
 
         if (capturedException != null)
         {
             throw capturedException;
         }
 
-        return result ?? throw new InvalidOperationException("Task result is null");
+        return result;
     }
 
     extension(AvaloniaProperty avaloniaProperty)
