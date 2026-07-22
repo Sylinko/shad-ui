@@ -3,6 +3,7 @@
   xmlns:shadui="clr-namespace:ShadUI" xmlns:system="clr-namespace:System;assembly=netstandard">
   <ControlTheme
     x:Key="TopLevelMenuItem" TargetType="MenuItem">
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="FontWeight" Value="DemiBold"/>
     <Setter Property="CornerRadius" Value="{DynamicResource MdCornerRadius}"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
@@ -143,12 +144,12 @@
       </Style.Animations>
     </Style>
 
+    <Style Selector="^:pressed:not(.NoScale) /template/ Panel#RootPanel">
+      <Setter Property="RenderTransform" Value="scale(0.95, 0.95)"/>
+    </Style>
+
     <!--  Primary  -->
     <Style Selector="^.Primary">
-      <Setter Property="Height" Value="36"/>
-      <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
-      <Setter Property="Padding" Value="16,8"/>
-      <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
       <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
       <Style Selector="^ /template/ TextBlock">
@@ -160,25 +161,13 @@
       <Style Selector="^ /template/ Border#BorderContainer:pointerover">
         <Setter Property="Cursor" Value="Hand"/>
       </Style>
-      <Style Selector="^:pressed /template/ Panel#RootPanel">
-        <Setter Property="RenderTransform" Value="scale(0.95, 0.95)"/>
-      </Style>
       <Style Selector="^ /template/ Border#HoverBackground">
         <Setter Property="Background" Value="{DynamicResource PrimaryColor50}"/>
-      </Style>
-      <Style Selector="^.NoPressedAnimation">
-        <Style Selector="^:pressed /template/ Panel#RootPanel">
-          <Setter Property="RenderTransform" Value="scale(1, 1)"/>
-        </Style>
       </Style>
     </Style>
 
     <!--  Secondary  -->
     <Style Selector="^.Secondary">
-      <Setter Property="Height" Value="36"/>
-      <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
-      <Setter Property="Padding" Value="16,8"/>
-      <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
       <Setter Property="Background" Value="{DynamicResource SecondaryColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}"/>
       <Style Selector="^ /template/ TextBlock">
@@ -190,27 +179,15 @@
       <Style Selector="^ /template/ Border#BorderContainer:pointerover">
         <Setter Property="Cursor" Value="Hand"/>
       </Style>
-      <Style Selector="^:pressed /template/ Panel#RootPanel">
-        <Setter Property="RenderTransform" Value="scale(0.95, 0.95)"/>
-      </Style>
       <Style Selector="^ /template/ Border#HoverBackground">
         <Setter Property="Background" Value="{DynamicResource SecondaryColor50}"/>
-      </Style>
-      <Style Selector="^.NoPressedAnimation">
-        <Style Selector="^:pressed /template/ Panel#RootPanel">
-          <Setter Property="RenderTransform" Value="scale(1, 1)"/>
-        </Style>
       </Style>
     </Style>
 
     <!--  Outline  -->
     <Style Selector="^.Outline">
-      <Setter Property="Height" Value="36"/>
-      <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
-      <Setter Property="Padding" Value="16,8"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-      <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
       <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
       <Style Selector="^ /template/ TextBlock">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
@@ -221,60 +198,30 @@
       <Style Selector="^ /template/ Border#BorderContainer:pointerover">
         <Setter Property="Cursor" Value="Hand"/>
       </Style>
-      <Style Selector="^:pressed /template/ Panel#RootPanel">
-        <Setter Property="RenderTransform" Value="scale(0.95, 0.95)"/>
-      </Style>
       <Style Selector="^ /template/ Border#HoverBackground">
         <Setter Property="Background" Value="{DynamicResource OutlineColor}"/>
-      </Style>
-      <Style Selector="^.NoPressedAnimation">
-        <Style Selector="^:pressed /template/ Panel#RootPanel">
-          <Setter Property="RenderTransform" Value="scale(1, 1)"/>
-        </Style>
       </Style>
     </Style>
 
     <!--  Ghost  -->
     <Style Selector="^.Ghost">
-      <Setter Property="Height" Value="36"/>
-      <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
-      <Setter Property="Padding" Value="16,8"/>
-      <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
-      <Style Selector="^:pressed /template/ Panel#RootPanel">
-        <Setter Property="RenderTransform" Value="scale(0.95, 0.95)"/>
-      </Style>
       <Style Selector="^ /template/ Border#HoverBackground">
         <Setter Property="Background" Value="{DynamicResource GhostHoverColor}"/>
       </Style>
       <Style Selector="^ /template/ Border#BorderContainer:pointerover">
         <Setter Property="Cursor" Value="Hand"/>
       </Style>
-      <Style Selector="^.NoPressedAnimation">
-        <Style Selector="^:pressed /template/ Panel#RootPanel">
-          <Setter Property="RenderTransform" Value="scale(1, 1)"/>
-        </Style>
-      </Style>
     </Style>
 
     <!--  Icon  -->
     <Style Selector="^.Icon">
-      <Setter Property="Height" Value="36"/>
       <Setter Property="Width" Value="36"/>
       <Setter Property="Background" Value="{DynamicResource GhostHoverColor50}"/>
-      <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
-      <Style Selector="^:pressed /template/ Panel#RootPanel">
-        <Setter Property="RenderTransform" Value="scale(0.95, 0.95)"/>
-      </Style>
       <Style Selector="^ /template/ Border#HoverBackground">
         <Setter Property="Background" Value="{DynamicResource GhostColor}"/>
       </Style>
       <Style Selector="^ /template/ Border#BorderContainer:pointerover">
         <Setter Property="Cursor" Value="Hand"/>
-      </Style>
-      <Style Selector="^.NoPressedAnimation">
-        <Style Selector="^:pressed /template/ Panel#RootPanel">
-          <Setter Property="RenderTransform" Value="scale(1, 1)"/>
-        </Style>
       </Style>
     </Style>
   </ControlTheme>

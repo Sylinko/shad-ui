@@ -21,22 +21,20 @@
           <DockPanel>
             <LayoutTransformControl
               x:Name="PART_ToggleTransform" DockPanel.Dock="Top">
-              <Panel>
-                <ToggleButton
-                  x:Name="PART_ToggleButton" Classes="NoScale"
-                  DockPanel.Dock="Right" Padding="0"
-                  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
-                  shadui:ButtonAssist.CheckedBackground="{TemplateBinding shadui:ExpanderAssist.HeaderBackground}"
-                  shadui:ButtonAssist.CheckedForeground="{DynamicResource ForegroundColor}"
-                  shadui:ButtonAssist.HoverBackground="{DynamicResource SecondaryColor50}"
-                  Background="{TemplateBinding shadui:ExpanderAssist.HeaderBackground}"
-                  BorderThickness="0"
-                  CornerRadius="{TemplateBinding CornerRadius}"
-                  IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
-                  IsEnabled="True"/>
-                <DockPanel
-                  Margin="{TemplateBinding Padding}"
-                  HorizontalSpacing="12">
+              <ToggleButton
+                x:Name="PART_ToggleButton" Classes="NoScale"
+                DockPanel.Dock="Right"
+                Padding="{TemplateBinding Padding}"
+                HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                shadui:ButtonAssist.CheckedBackground="{TemplateBinding shadui:ExpanderAssist.HeaderBackground}"
+                shadui:ButtonAssist.CheckedForeground="{DynamicResource ForegroundColor}"
+                shadui:ButtonAssist.HoverBackground="{DynamicResource SecondaryColor50}"
+                Background="{TemplateBinding shadui:ExpanderAssist.HeaderBackground}"
+                BorderThickness="0"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
+                IsEnabled="True">
+                <DockPanel HorizontalSpacing="12">
                   <PathIcon
                     x:Name="PART_Icon" DockPanel.Dock="Right"
                     Width="12"
@@ -57,7 +55,7 @@
                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                     Content="{TemplateBinding Header}"/>
                 </DockPanel>
-              </Panel>
+              </ToggleButton>
             </LayoutTransformControl>
 
             <Border

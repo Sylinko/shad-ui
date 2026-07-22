@@ -42,7 +42,7 @@
             Text="{TemplateBinding shadui:ControlAssist.Label}"/>
           <Panel>
             <ToggleButton
-              Name="DropDownButton" Classes="NoPressedAnimation Outline"
+              Name="DropDownButton" Classes="NoScale Outline"
               HorizontalContentAlignment="Stretch">
               <Grid ColumnDefinitions="* Auto">
                 <ContentControl Content="{TemplateBinding Content}"/>

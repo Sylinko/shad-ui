@@ -55,118 +55,107 @@
     <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource GhostColor}"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <!--  Used to capture events outside the inner borders  -->
-        <Border Background="Transparent">
-          <Panel x:Name="RootPanel">
-            <Panel.Transitions>
-              <Transitions>
-                <TransformOperationsTransition
-                  Property="RenderTransform" Duration="0:0:0.10"/>
-              </Transitions>
-            </Panel.Transitions>
-            <Border
-              x:Name="BackgroundBorder"
-              Background="{TemplateBinding Background}"
-              BorderBrush="{TemplateBinding BorderBrush}"
-              BorderThickness="{TemplateBinding BorderThickness}"
-              CornerRadius="{TemplateBinding CornerRadius}"
-              Opacity="1">
-              <Border.Transitions>
-                <Transitions>
-                  <BrushTransition
-                    Property="Background" Duration="0:0:0.15"/>
-                </Transitions>
-              </Border.Transitions>
-            </Border>
-            <Border
-              x:Name="BorderContainer"
-              Padding="{TemplateBinding Padding}"
-              Background="Transparent" ClipToBounds="True"
-              CornerRadius="{TemplateBinding CornerRadius}"
-              Cursor="Hand"
-              TextElement.Foreground="{TemplateBinding Foreground}">
-              <DockPanel
-                x:Name="PART_Container"
-                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                HorizontalSpacing="6">
-                <StackPanel
-                  Orientation="Horizontal" Spacing="6">
-                  <StackPanel.IsVisible>
-                    <MultiBinding Converter="{x:Static BoolConverters.Or}">
-                      <Binding
-                        ElementName="PART_IconViewbox" Path="#PART_IconViewbox.IsVisible"/>
-                      <Binding
-                        ElementName="PART_ProgressViewbox" Path="#PART_ProgressViewbox.IsVisible"/>
-                    </MultiBinding>
-                  </StackPanel.IsVisible>
-                  <Viewbox
-                    x:Name="PART_ProgressViewbox"
-                    Height="{TemplateBinding shadui:ButtonAssist.IconSize}"
-                    IsVisible="{TemplateBinding shadui:ButtonAssist.ShowProgress}">
-                    <Viewbox.Width>
-                      <MultiBinding Converter="{x:Static shadui:BooleanConverters.Gate}">
-                        <TemplateBinding Property="shadui:ButtonAssist.ShowProgress"/>
-                        <TemplateBinding Property="shadui:ButtonAssist.IconSize"/>
-                        <Binding Source="{x:Static system:Double.NegativeZero}"/>
-                      </MultiBinding>
-                    </Viewbox.Width>
-                    <Viewbox.Transitions>
-                      <Transitions>
-                        <BoolTransition
-                          Property="IsVisible" Duration="0:0:0.10"/>
-                        <DoubleTransition
-                          Easing="CubicEaseInOut" Property="Width"
-                          Duration="0:0:0.10"/>
-                      </Transitions>
-                    </Viewbox.Transitions>
-                    <ContentPresenter Content="{TemplateBinding shadui:ButtonAssist.ShowProgress, Converter={x:Static shadui:BooleanConverters.ToLoading}}"/>
-                  </Viewbox>
-                  <Viewbox
-                    x:Name="PART_IconViewbox"
-                    Height="{TemplateBinding shadui:ButtonAssist.IconSize}">
-                    <Viewbox.Width>
-                      <MultiBinding Converter="{x:Static shadui:BooleanConverters.Gate}">
-                        <TemplateBinding Property="shadui:ButtonAssist.ShowProgress"/>
-                        <Binding Source="{x:Static system:Double.NegativeZero}"/>
-                        <TemplateBinding Property="shadui:ButtonAssist.IconSize"/>
-                      </MultiBinding>
-                    </Viewbox.Width>
-                    <Viewbox.IsVisible>
-                      <MultiBinding Converter="{x:Static BoolConverters.And}">
-                        <TemplateBinding
-                          Converter="{x:Static BoolConverters.Not}"
-                          Property="shadui:ButtonAssist.ShowProgress"/>
-                        <TemplateBinding
-                          Converter="{x:Static ObjectConverters.IsNotNull}"
-                          Property="shadui:ButtonAssist.Icon"/>
-                      </MultiBinding>
-                    </Viewbox.IsVisible>
-                    <Viewbox.Transitions>
-                      <Transitions>
-                        <BoolTransition
-                          Property="IsVisible" Duration="0:0:0.10"/>
-                        <DoubleTransition
-                          Easing="CubicEaseInOut" Property="Width"
-                          Duration="0:0:0.10"/>
-                      </Transitions>
-                    </Viewbox.Transitions>
-                    <ContentPresenter
-                      x:Name="Icon"
-                      Content="{TemplateBinding shadui:ButtonAssist.Icon}"/>
-                  </Viewbox>
-                </StackPanel>
+        <Border
+          x:Name="BackgroundBorder"
+          Padding="{TemplateBinding Padding}"
+          Background="{TemplateBinding Background}"
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}"
+          ClipToBounds="True"
+          CornerRadius="{TemplateBinding CornerRadius}"
+          Cursor="Hand"
+          TextElement.Foreground="{TemplateBinding Foreground}">
+          <Border.Transitions>
+            <Transitions>
+              <TransformOperationsTransition
+                Property="RenderTransform" Duration="0:0:0.10"/>
+              <BrushTransition
+                Property="Background" Duration="0:0:0.15"/>
+              <BrushTransition
+                Property="TextElement.Foreground" Duration="0:0:0.15"/>
+            </Transitions>
+          </Border.Transitions>
 
+          <DockPanel
+            x:Name="PART_Container"
+            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+            HorizontalSpacing="6">
+            <StackPanel
+              Orientation="Horizontal" Spacing="6">
+              <StackPanel.IsVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                  <Binding
+                    ElementName="PART_IconViewbox" Path="#PART_IconViewbox.IsVisible"/>
+                  <Binding
+                    ElementName="PART_ProgressViewbox" Path="#PART_ProgressViewbox.IsVisible"/>
+                </MultiBinding>
+              </StackPanel.IsVisible>
+              <Viewbox
+                x:Name="PART_ProgressViewbox"
+                Height="{TemplateBinding shadui:ButtonAssist.IconSize}"
+                IsVisible="{TemplateBinding shadui:ButtonAssist.ShowProgress}">
+                <Viewbox.Width>
+                  <MultiBinding Converter="{x:Static shadui:BooleanConverters.Gate}">
+                    <TemplateBinding Property="shadui:ButtonAssist.ShowProgress"/>
+                    <TemplateBinding Property="shadui:ButtonAssist.IconSize"/>
+                    <Binding Source="{x:Static system:Double.NegativeZero}"/>
+                  </MultiBinding>
+                </Viewbox.Width>
+                <Viewbox.Transitions>
+                  <Transitions>
+                    <BoolTransition
+                      Property="IsVisible" Duration="0:0:0.10"/>
+                    <DoubleTransition
+                      Easing="CubicEaseInOut" Property="Width"
+                      Duration="0:0:0.10"/>
+                  </Transitions>
+                </Viewbox.Transitions>
+                <ContentPresenter Content="{TemplateBinding shadui:ButtonAssist.ShowProgress, Converter={x:Static shadui:BooleanConverters.ToLoading}}"/>
+              </Viewbox>
+              <Viewbox
+                x:Name="PART_IconViewbox"
+                Height="{TemplateBinding shadui:ButtonAssist.IconSize}">
+                <Viewbox.Width>
+                  <MultiBinding Converter="{x:Static shadui:BooleanConverters.Gate}">
+                    <TemplateBinding Property="shadui:ButtonAssist.ShowProgress"/>
+                    <Binding Source="{x:Static system:Double.NegativeZero}"/>
+                    <TemplateBinding Property="shadui:ButtonAssist.IconSize"/>
+                  </MultiBinding>
+                </Viewbox.Width>
+                <Viewbox.IsVisible>
+                  <MultiBinding Converter="{x:Static BoolConverters.And}">
+                    <TemplateBinding
+                      Converter="{x:Static BoolConverters.Not}"
+                      Property="shadui:ButtonAssist.ShowProgress"/>
+                    <TemplateBinding
+                      Converter="{x:Static ObjectConverters.IsNotNull}"
+                      Property="shadui:ButtonAssist.Icon"/>
+                  </MultiBinding>
+                </Viewbox.IsVisible>
+                <Viewbox.Transitions>
+                  <Transitions>
+                    <BoolTransition
+                      Property="IsVisible" Duration="0:0:0.10"/>
+                    <DoubleTransition
+                      Easing="CubicEaseInOut" Property="Width"
+                      Duration="0:0:0.10"/>
+                  </Transitions>
+                </Viewbox.Transitions>
                 <ContentPresenter
-                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                  Content="{TemplateBinding Content}"
-                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                  FontSize="{TemplateBinding FontSize}"
-                  FontWeight="{TemplateBinding FontWeight}"
-                  RecognizesAccessKey="True"/>
-              </DockPanel>
-            </Border>
-          </Panel>
+                  x:Name="Icon"
+                  Content="{TemplateBinding shadui:ButtonAssist.Icon}"/>
+              </Viewbox>
+            </StackPanel>
+
+            <ContentPresenter
+              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+              Content="{TemplateBinding Content}"
+              ContentTemplate="{TemplateBinding ContentTemplate}"
+              FontSize="{TemplateBinding FontSize}"
+              FontWeight="{TemplateBinding FontWeight}"
+              RecognizesAccessKey="True"/>
+          </DockPanel>
         </Border>
       </ControlTemplate>
     </Setter>
@@ -177,7 +166,7 @@
     <Style Selector="^:pointerover /template/ Border#BackgroundBorder">
       <Setter Property="Background" Value="{TemplateBinding shadui:ButtonAssist.HoverBackground}"/>
     </Style>
-    <Style Selector="^:pressed /template/ Panel#RootPanel">
+    <Style Selector="^:pressed:not(.NoScale) /template/ Border#BackgroundBorder">
       <Setter Property="RenderTransform" Value="scale(0.95, 0.95)"/>
     </Style>
 
@@ -276,13 +265,6 @@
       <Setter Property="BorderThickness" Value="0"/>
       <Setter Property="Background" Value="{DynamicResource SettingsItemBackgroundColor}"/>
       <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource SettingsItemHoverBackgroundColor}"/>
-    </Style>
-
-    <!--  NoPressedAnimation  -->
-    <Style Selector="^.NoPressedAnimation">
-      <Style Selector="^:pressed /template/ Panel#RootPanel">
-        <Setter Property="RenderTransform" Value="scale(1, 1)"/>
-      </Style>
     </Style>
   </ControlTheme>
 
