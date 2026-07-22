@@ -1,6 +1,7 @@
 using System.Collections.Specialized;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
@@ -127,7 +128,7 @@ public sealed class ControlGroup : StackPanel
 
     private void HandleChildPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
-        if (e.Property == IsVisibleProperty)
+        if (e.Property == IsVisibleProperty || sender is ContentPresenter && e.Property == ContentPresenter.ChildProperty)
         {
             UpdateChildrenStyles();
         }
@@ -192,22 +193,31 @@ public sealed class ControlGroup : StackPanel
                         new CornerRadius(radius.TopLeft, radius.TopRight, 0, 0);
             }
 
-            switch (child)
+            while (true)
             {
-                case TemplatedControl templatedControl:
+                switch (child)
                 {
-                    if (brush != null) templatedControl.BorderBrush = brush;
-                    templatedControl.BorderThickness = thickness;
-                    templatedControl.CornerRadius = cornerRadius;
-                    break;
+                    case TemplatedControl templatedControl:
+                    {
+                        if (brush != null) templatedControl.BorderBrush = brush;
+                        templatedControl.BorderThickness = thickness;
+                        templatedControl.CornerRadius = cornerRadius;
+                        break;
+                    }
+                    case Border border:
+                    {
+                        if (brush != null) border.BorderBrush = brush;
+                        border.BorderThickness = thickness;
+                        border.CornerRadius = cornerRadius;
+                        break;
+                    }
+                    case ContentPresenter { Child: { } nestedChild }:
+                    {
+                        child = nestedChild;
+                        continue;
+                    }
                 }
-                case Border border:
-                {
-                    if (brush != null) border.BorderBrush = brush;
-                    border.BorderThickness = thickness;
-                    border.CornerRadius = cornerRadius;
-                    break;
-                }
+                break;
             }
         }
     }
