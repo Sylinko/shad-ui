@@ -110,12 +110,13 @@
                   Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"/>
               </Grid>
             </Border>
+            <!-- Menu items may be hosted by either Menu or MenuFlyoutPresenter. -->
             <Popup
               Name="PART_Popup" HorizontalOffset="-24"
               IsLightDismissEnabled="False"
               IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
               Opacity="0"
-              OverlayInputPassThroughElement="{CompiledBinding $parent[Menu]}"
+              OverlayInputPassThroughElement="{CompiledBinding $parent[MenuBase]}"
               Placement="RightEdgeAlignedTop">
               <LayoutTransformControl
                 Name="LayoutTransform" RenderTransformOrigin="0%, 0%">
