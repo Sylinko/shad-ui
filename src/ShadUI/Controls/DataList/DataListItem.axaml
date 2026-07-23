@@ -42,7 +42,7 @@
             ContentTemplate="{TemplateBinding ContentTemplate}"
             CornerRadius="{TemplateBinding CornerRadius}"/>
           <Button
-            x:Name="PART_RemoveButton" Classes="Ghost Compact"
+            x:Name="PART_RemoveButton" Classes="Ghost Compact Uniform"
             Grid.Column="1" VerticalAlignment="Center"
             Content="{LucideIconContent Minus, Size=18}"/>
         </Grid>
