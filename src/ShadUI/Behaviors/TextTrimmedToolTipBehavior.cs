@@ -27,6 +27,21 @@ public sealed class TextTrimmedToolTipBehavior : Behavior<TextBlock>
         set => SetValue(TipProperty, value);
     }
 
+    /// <summary>
+    /// Defines the <see cref="Target"/> property.
+    /// </summary>
+    public static readonly StyledProperty<Control?> TargetProperty =
+        AvaloniaProperty.Register<TextTrimmedToolTipBehavior, Control?>(nameof(Target));
+
+    /// <summary>
+    /// Gets or sets the target Control for the <see cref="Tip"/>
+    /// </summary>
+    public Control? Target
+    {
+        get => GetValue(TargetProperty);
+        set => SetValue(TargetProperty, value);
+    }
+
     protected override void OnAttached()
     {
         AssociatedObject?.LayoutUpdated += HandleLayoutUpdated;
@@ -43,19 +58,22 @@ public sealed class TextTrimmedToolTipBehavior : Behavior<TextBlock>
 
         if (change.Property == TipProperty && AssociatedObject?.TextLayout.TextLines.Any(x => x.HasCollapsed) is true)
         {
-            ToolTip.SetTip(AssociatedObject, Tip);
+            ToolTip.SetTip(Target ?? AssociatedObject, Tip);
         }
     }
 
     private void HandleLayoutUpdated(object? sender, EventArgs e)
     {
+        var target = Target ?? AssociatedObject;
+        if (target is null) return;
+
         if (AssociatedObject?.TextLayout.TextLines.Any(x => x.HasCollapsed) is true)
         {
-            ToolTip.SetTip(AssociatedObject, Tip);
+            ToolTip.SetTip(target, Tip);
         }
         else if (AssociatedObject is not null)
         {
-            ToolTip.SetTip(AssociatedObject, null);
+            ToolTip.SetTip(target, null);
         }
     }
 }
