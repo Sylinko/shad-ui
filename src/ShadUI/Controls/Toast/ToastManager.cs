@@ -62,15 +62,17 @@ public static class ToastManager
     #region Public API
 
     /// <summary>
-    ///     Creates a <see cref="ToastBuilder" /> for building and showing a toast.
-    ///     The host is resolved lazily when <see cref="ToastBuilder.Show" /> is called.
+    /// Creates a <see cref="ToastBuilder" /> for building and showing a toast.
+    /// The host is resolved lazily when <see cref="ToastBuilder.Show" /> is called.
+    /// This can be called on non-UI threads; the dismissal will be dispatched to the UI thread automatically.
     /// </summary>
     /// <param name="title">The title text of the toast.</param>
     /// <returns>A fluent <see cref="ToastBuilder" /> instance.</returns>
     public static ToastBuilder Create(string title) => new(null, title);
 
     /// <summary>
-    ///     Shows a success-styled toast notification with default 5s duration.
+    /// Shows a success-styled toast notification with default 5s duration.
+    /// This can be called on non-UI threads; the dismissal will be dispatched to the UI thread automatically.
     /// </summary>
     /// <param name="title">The title text.</param>
     /// <param name="content">Optional body content.</param>
@@ -91,7 +93,8 @@ public static class ToastManager
     }
 
     /// <summary>
-    ///     Shows a warning-styled toast notification.
+    /// Shows a warning-styled toast notification.
+    /// This can be called on non-UI threads; the dismissal will be dispatched to the UI thread automatically.
     /// </summary>
     /// <param name="title">The title text.</param>
     /// <param name="content">Optional body content.</param>
@@ -112,7 +115,8 @@ public static class ToastManager
     }
 
     /// <summary>
-    ///     Shows an error-styled toast notification.
+    /// Shows an error-styled toast notification.
+    /// This can be called on non-UI threads; the toast will be dispatched to the UI thread automatically.
     /// </summary>
     /// <param name="title">The title text.</param>
     /// <param name="message">Optional error message displayed as content.</param>
@@ -133,7 +137,8 @@ public static class ToastManager
     }
 
     /// <summary>
-    ///     Dismisses all toasts on all registered hosts.
+    /// Dismisses all toasts on all registered hosts.
+    /// This can be called on non-UI threads; the dismissal will be dispatched to the UI thread automatically.
     /// </summary>
     public static void DismissAll()
     {
