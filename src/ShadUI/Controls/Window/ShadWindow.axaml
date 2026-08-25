@@ -25,7 +25,8 @@
           Margin="{TemplateBinding Padding}"
           Background="{TemplateBinding Background}"
           BorderBrush="{TemplateBinding BorderBrush}"
-          BorderThickness="{TemplateBinding BorderThickness}">
+          BorderThickness="{TemplateBinding BorderThickness}"
+          CornerRadius="{TemplateBinding CornerRadius}">
           <VisualLayerManager x:Name="PART_VisualLayerManager">
             <Panel x:Name="PART_Root">
               <ContentPresenter
