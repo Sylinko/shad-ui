@@ -24,8 +24,7 @@
         <Border
           Margin="{TemplateBinding Padding}"
           Background="{TemplateBinding Background}"
-          BorderBrush="{TemplateBinding BorderBrush}"
-          BorderThickness="{TemplateBinding BorderThickness}"
+          ClipToBounds="True"
           CornerRadius="{TemplateBinding CornerRadius}">
           <VisualLayerManager x:Name="PART_VisualLayerManager">
             <Panel x:Name="PART_Root">
@@ -55,6 +54,11 @@
                   Content="{TemplateBinding TitleBarContent}"
                   WindowDecorationProperties.ElementRole="User"/>
               </Panel>
+
+              <Border
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"/>
             </Panel>
           </VisualLayerManager>
         </Border>
