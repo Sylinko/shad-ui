@@ -58,10 +58,32 @@ public static class BindingAssist
     /// <returns></returns>
     public static object? GetClasses(Control obj) => obj.GetValue(ClassesProperty);
 
+    /// <summary>
+    /// Defines the <see cref="ToolTip"/> attached property.
+    /// </summary>
+    public static readonly AttachedProperty<object?> ToolTipProperty =
+        AvaloniaProperty.RegisterAttached<Control, Control, object?>("ToolTip");
+
+    /// <summary>
+    /// Sets the tooltip for the specified control. If the value is a non-empty string, it will be used as the tooltip.
+    /// If the value is null or an empty string, the tooltip will be cleared.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetToolTip(Control obj, object? value) => obj.SetValue(ToolTipProperty, value);
+
+    /// <summary>
+    /// Gets the tooltip for the specified control.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static object? GetToolTip(Control obj) => obj.GetValue(ToolTipProperty);
+
     static BindingAssist()
     {
         DataTemplatesProperty.Changed.AddClassHandler<Control>(HandleDataTemplatesChanged);
         ClassesProperty.Changed.AddClassHandler<Control>(HandleClassesChanged);
+        ToolTipProperty.Changed.AddClassHandler<Control>(HandleToolTipChanged);
     }
 
     private static void HandleDataTemplatesChanged(Control sender, AvaloniaPropertyChangedEventArgs args)
@@ -95,6 +117,18 @@ public static class BindingAssist
                 _ when obj?.ToString() is { Length: > 0 } @string => [@string],
                 _ => []
             };
+        }
+    }
+
+    private static void HandleToolTipChanged(Control sender, AvaloniaPropertyChangedEventArgs args)
+    {
+        if (args.NewValue is not string str || !string.IsNullOrWhiteSpace(str))
+        {
+            ToolTip.SetTip(sender, args.NewValue);
+        }
+        else
+        {
+            sender.ClearValue(ToolTip.TipProperty);
         }
     }
 }
