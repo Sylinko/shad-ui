@@ -28,6 +28,7 @@ public sealed class SystemAccentColors : ResourceDictionary
     private const string PrimaryKey = "PrimaryColor";
     private const string Primary75Key = "PrimaryColor75";
     private const string Primary50Key = "PrimaryColor50";
+    private const string Primary25Key = "PrimaryColor25";
     private const string Primary10Key = "PrimaryColor10";
     private const string PrimaryForegroundKey = "PrimaryForegroundColor";
 
@@ -54,7 +55,7 @@ public sealed class SystemAccentColors : ResourceDictionary
     {
         var systemAccentColor = ColorOverride ?? platformSettings?.GetColorValues().AccentColor1 ?? Color.FromRgb(0, 120, 215);
         
-        var (d1, d2, d3) = CalculateAccentShades(systemAccentColor);
+        var (d1, d2, d3, d4) = CalculateAccentShades(systemAccentColor);
         var luminance = (0.299 * systemAccentColor.R + 0.587 * systemAccentColor.G + 0.114 * systemAccentColor.B) / 255;
         var systemAccentForegroundColor = luminance > 0.6 ? new Color(255, 29, 29, 31) : new Color(255, 245, 245, 247);
 
@@ -63,16 +64,18 @@ public sealed class SystemAccentColors : ResourceDictionary
             new KeyValuePair<object, object?>(PrimaryKey, systemAccentColor),
             new KeyValuePair<object, object?>(Primary75Key, d1),
             new KeyValuePair<object, object?>(Primary50Key, d2),
-            new KeyValuePair<object, object?>(Primary10Key, d3),
+            new KeyValuePair<object, object?>(Primary25Key, d3),
+            new KeyValuePair<object, object?>(Primary10Key, d4),
             new KeyValuePair<object, object?>(PrimaryForegroundKey, systemAccentForegroundColor),
         ]);
     }
 
-    private static (Color d1, Color d2, Color d3) CalculateAccentShades(Color accentColor)
+    private static (Color d1, Color d2, Color d3, Color d4) CalculateAccentShades(Color accentColor)
     {
         return (
             new Color(191, accentColor.R, accentColor.G, accentColor.B),
             new Color(128, accentColor.R, accentColor.G, accentColor.B),
+            new Color(64, accentColor.R, accentColor.G, accentColor.B),
             new Color(26, accentColor.R, accentColor.G, accentColor.B)
         );
     }

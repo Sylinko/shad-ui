@@ -23,6 +23,7 @@ public class ThemeColors
     public Color PrimaryColor { get; set; }
     public Color PrimaryColor75 { get; set; }
     public Color PrimaryColor50 { get; set; }
+    public Color PrimaryColor25 { get; set; }
     public Color PrimaryColor10 { get; set; }
     public Color PrimaryForegroundColor { get; set; }
     public Color SecondaryColor { get; set; }

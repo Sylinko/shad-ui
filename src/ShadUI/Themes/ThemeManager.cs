@@ -74,6 +74,7 @@ public class ThemeManager
             PrimaryColor = TryGetColor("PrimaryColor"),
             PrimaryColor75 = TryGetColor("PrimaryColor75"),
             PrimaryColor50 = TryGetColor("PrimaryColor50"),
+            PrimaryColor25 = TryGetColor("PrimaryColor25"),
             PrimaryColor10 = TryGetColor("PrimaryColor10"),
             PrimaryForegroundColor = TryGetColor("PrimaryForegroundColor"),
             SecondaryColor = TryGetColor("SecondaryColor"),
