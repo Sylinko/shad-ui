@@ -22,7 +22,7 @@
           x:Name="LayoutRoot" Margin="6"
           BoxShadow="0 0 11 0 #66000000"
           CornerRadius="{TemplateBinding CornerRadius}">
-          <Border
+          <shadui:SmoothBorder
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
@@ -33,7 +33,7 @@
               Grid.IsSharedSizeScope="True"
               ItemsPanel="{TemplateBinding ItemsPanel}"
               KeyboardNavigation.TabNavigation="Continue"/>
-          </Border>
+          </shadui:SmoothBorder>
         </Border>
       </ControlTemplate>
     </Setter>

@@ -211,6 +211,13 @@ public sealed class ControlGroup : StackPanel
                         border.CornerRadius = cornerRadius;
                         break;
                     }
+                    case SmoothBorder smoothBorder:
+                    {
+                        if (brush != null) smoothBorder.BorderBrush = brush;
+                        smoothBorder.BorderThickness = thickness;
+                        smoothBorder.CornerRadius = cornerRadius;
+                        break;
+                    }
                     case ContentPresenter { Child: { } nestedChild }:
                     {
                         child = nestedChild;

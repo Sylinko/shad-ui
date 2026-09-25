@@ -16,7 +16,7 @@ namespace ShadUI;
 ///     Use standalone in any layout by binding <see cref="Command" />,
 ///     or let <see cref="ToastHost" /> manage its show / hide animations, auto-dismiss timer, and stacking.
 /// </summary>
-[TemplatePart("PART_ToastCard", typeof(Border))]
+[TemplatePart("PART_ToastCard", typeof(SmoothBorder))]
 [TemplatePart("PART_ActionButton", typeof(Button))]
 [TemplatePart("PART_CloseButton", typeof(Button))]
 public sealed class Toast : ContentControl
@@ -314,7 +314,7 @@ public sealed class Toast : ContentControl
         _actionButtonClickDisposable?.Dispose();
         _closeButtonClickDisposable?.Dispose();
 
-        _cardPressDisposable = e.NameScope.Get<Border>("PART_ToastCard")
+        _cardPressDisposable = e.NameScope.Get<SmoothBorder>("PART_ToastCard")
             .AddDisposableHandler(PointerPressedEvent, ToastCardClickedHandler, RoutingStrategies.Tunnel);
 
         _actionButtonClickDisposable = e.NameScope.Get<Button>("PART_ActionButton")
