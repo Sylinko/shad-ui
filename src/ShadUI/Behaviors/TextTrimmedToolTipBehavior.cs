@@ -58,7 +58,7 @@ public sealed class TextTrimmedToolTipBehavior : Behavior<TextBlock>
 
         if (change.Property == TipProperty && AssociatedObject?.TextLayout.TextLines.Any(x => x.HasCollapsed) is true)
         {
-            ToolTip.SetTip(Target ?? AssociatedObject, Tip);
+            ToolTip.SetTip(Target ?? AssociatedObject, Tip ?? AssociatedObject.Text);
         }
     }
 
@@ -69,7 +69,7 @@ public sealed class TextTrimmedToolTipBehavior : Behavior<TextBlock>
 
         if (AssociatedObject?.TextLayout.TextLines.Any(x => x.HasCollapsed) is true)
         {
-            ToolTip.SetTip(target, Tip);
+            ToolTip.SetTip(target, Tip ?? AssociatedObject.Text);
         }
         else if (AssociatedObject is not null)
         {
