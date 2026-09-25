@@ -1,12 +1,36 @@
 ﻿<ResourceDictionary
-  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI.Controls;assembly=ShadUI">
   <ControlTheme
     x:Key="{x:Type FlyoutPresenter}"
     TargetType="FlyoutPresenter">
     <Setter Property="Background" Value="{DynamicResource PopupBackgroundColor}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="Padding" Value="6"/>
+    <Setter Property="shadui:TopLevelAssist.TransparencyLevelHint" Value="Transparent"/>
+    <Setter Property="shadui:TopLevelAssist.WindowDecorations" Value="None"/>
+    <Setter Property="shadui:TopLevelAssist.CanResize" Value="False"/>
+    <Setter Property="shadui:TopLevelAssist.ExtendClientAreaToDecorationsHint" Value="True"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border
+          x:Name="LayoutRoot" Margin="6"
+          BoxShadow="0 0 11 0 #66000000"
+          CornerRadius="{TemplateBinding CornerRadius}">
+          <Border
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            ClipToBounds="True"
+            CornerRadius="{TemplateBinding CornerRadius}">
+            <ContentPresenter
+              Margin="{TemplateBinding Padding}"
+              Content="{TemplateBinding Content}"/>
+          </Border>
+        </Border>
+      </ControlTemplate>
+    </Setter>
   </ControlTheme>
 </ResourceDictionary>

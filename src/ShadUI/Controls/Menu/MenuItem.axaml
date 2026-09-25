@@ -7,7 +7,7 @@
     x:Key="{x:Type MenuItem}"
     TargetType="MenuItem">
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource MdCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}"/>
     <Setter Property="BorderThickness" Value="1.5"/>
     <Setter Property="Margin" Value="0"/>
     <Setter Property="Padding" Value="8,4"/>
@@ -110,7 +110,7 @@
                   Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"/>
               </Grid>
             </Border>
-            <!-- Menu items may be hosted by either Menu or MenuFlyoutPresenter. -->
+            <!--  Menu items may be hosted by either Menu or MenuFlyoutPresenter.  -->
             <Popup
               Name="PART_Popup" HorizontalOffset="-24"
               IsLightDismissEnabled="False"

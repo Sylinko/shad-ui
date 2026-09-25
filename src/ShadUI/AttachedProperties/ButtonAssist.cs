@@ -71,6 +71,26 @@ public static class ButtonAssist
     public static IBrush? GetHoverBackground(Button btn) => btn.GetValue(HoverBackgroundProperty);
 
     /// <summary>
+    ///     Attached property for setting the pressed background brush of a <see cref="Button" />.
+    /// </summary>
+    public static readonly AttachedProperty<IBrush?> PressedBackgroundProperty =
+        AvaloniaProperty.RegisterAttached<Button, IBrush?>("PressedBackground", typeof(Button));
+
+    /// <summary>
+    ///     Sets the pressed background brush for the specified <see cref="Button" />.
+    /// </summary>
+    /// <param name="btn">The button to set the pressed background for.</param>
+    /// <param name="value">The brush to use as the pressed background.</param>
+    public static void SetPressedBackground(Button btn, IBrush? value) => btn.SetValue(PressedBackgroundProperty, value);
+
+    /// <summary>
+    ///     Gets the pressed background brush for the specified <see cref="Button" />.
+    /// </summary>
+    /// <param name="btn">The button to get the pressed background from.</param>
+    /// <returns>The brush used as the pressed background.</returns>
+    public static IBrush? GetPressedBackground(Button btn) => btn.GetValue(PressedBackgroundProperty);
+
+    /// <summary>
     ///     Attached property for setting the hover foreground brush of a <see cref="Button" />.
     /// </summary>
     public static readonly AttachedProperty<IBrush?> HoverForegroundProperty =

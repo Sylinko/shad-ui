@@ -6,36 +6,34 @@
     TargetType="MenuFlyoutPresenter">
     <Setter Property="Background" Value="{DynamicResource PopupBackgroundColor}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-    <Setter Property="CornerRadius">
-      <OnPlatform
-        x:TypeArguments="CornerRadius" Linux="0"
-        Windows="8" macOS="10"/>
-    </Setter>
+    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="Padding" Value="2,4"/>
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
     <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
     <Setter Property="TextBlock.FontSize" Value="{DynamicResource FontSizeM}"/>
-    <Setter Property="shadui:TopLevelAssist.WindowDecorations" Value="BorderOnly"/>
+    <Setter Property="shadui:TopLevelAssist.TransparencyLevelHint" Value="Transparent"/>
+    <Setter Property="shadui:TopLevelAssist.WindowDecorations" Value="None"/>
     <Setter Property="shadui:TopLevelAssist.CanResize" Value="False"/>
     <Setter Property="shadui:TopLevelAssist.ExtendClientAreaToDecorationsHint" Value="True"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Border
-          Name="LayoutRoot"
-          Background="{TemplateBinding Background}"
-          BorderBrush="{TemplateBinding BorderBrush}"
-          BorderThickness="{TemplateBinding BorderThickness}"
+          x:Name="LayoutRoot" Margin="6"
+          BoxShadow="0 0 11 0 #66000000"
           CornerRadius="{TemplateBinding CornerRadius}">
-          <ScrollViewer
-            HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-            VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+          <Border
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            ClipToBounds="True"
+            CornerRadius="{TemplateBinding CornerRadius}">
             <ItemsPresenter
               Margin="{TemplateBinding Padding}"
               Grid.IsSharedSizeScope="True"
               ItemsPanel="{TemplateBinding ItemsPanel}"
               KeyboardNavigation.TabNavigation="Continue"/>
-          </ScrollViewer>
+          </Border>
         </Border>
       </ControlTemplate>
     </Setter>
