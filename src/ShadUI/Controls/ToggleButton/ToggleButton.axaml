@@ -166,8 +166,19 @@
       <Setter Property="FontWeight" Value="Light"/>
     </Style>
 
+    <Style Selector="^.LargeIcon">
+      <Setter Property="shadui:ButtonAssist.IconSize" Value="{DynamicResource FontSizeXl}"/>
+      <Style Selector="^ /template/ DockPanel#PART_Container">
+        <Setter Property="HorizontalSpacing" Value="12"/>
+      </Style>
+    </Style>
+
     <Style Selector="^.Uniform">
       <Setter Property="Padding" Value="4"/>
+    </Style>
+
+    <Style Selector="^.NoPadding">
+      <Setter Property="Padding" Value="0"/>
     </Style>
 
     <Style Selector="^:disabled">
