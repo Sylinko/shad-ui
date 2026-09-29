@@ -61,7 +61,6 @@
             CornerRadius="{TemplateBinding CornerRadius}">
             <ContentPresenter
               x:Name="PART_ContentPresenter"
-              MaxWidth="{TemplateBinding MaxWidth}"
               Content="{TemplateBinding Content}"
               ContentTemplate="{TemplateBinding ContentTemplate}"
               Foreground="{TemplateBinding Foreground}"

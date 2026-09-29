@@ -17,7 +17,6 @@
   <ControlTheme
     x:Key="ToggleSwitchTheme" TargetType="ToggleSwitch">
     <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
-    <Setter Property="UseLayoutRounding" Value="True"/>
     <Setter Property="OnContent" Value="{x:Null}"/>
     <Setter Property="OffContent" Value="{x:Null}"/>
     <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -28,7 +27,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <ReversibleStackPanel
-          Name="PART_Container" Orientation="Horizontal"
+          x:Name="PART_Container" Orientation="Horizontal"
           ReverseOrder="{TemplateBinding shadui:ToggleSwitchAssist.RightAlignedContent}"
           Spacing="8">
           <Panel>
@@ -58,18 +57,18 @@
               Content="{TemplateBinding OnContent}"
               ContentTemplate="{TemplateBinding OnContentTemplate}"/>
           </Panel>
-          <Grid
-            Name="PART_ToggleContainer" Background="Transparent"
-            RowDefinitions="Auto,*">
+
+          <DockPanel
+            x:Name="PART_ToggleContainer" Background="Transparent">
             <ContentPresenter
-              x:Name="PART_ContentPresenter" Grid.Row="0"
-              VerticalAlignment="Top"
+              x:Name="PART_ContentPresenter" DockPanel.Dock="Top"
               Content="{TemplateBinding Content}"
               ContentTemplate="{TemplateBinding ContentTemplate}"
               RecognizesAccessKey="True"/>
+
             <Grid
-              Grid.Row="1" HorizontalAlignment="Left"
-              VerticalAlignment="Top" RowDefinitions="6,Auto,6">
+              HorizontalAlignment="Left" VerticalAlignment="Top"
+              RowDefinitions="6,Auto,6">
               <Border
                 Grid.Row="1" Grid.Column="0"
                 Width="36" Height="20"
@@ -119,7 +118,7 @@
                   </Border.Transitions>
                   <Panel>
                     <Border
-                      Name="KnobOff"
+                      x:Name="KnobOff"
                       Background="{DynamicResource SwitchForegroundColor}"
                       Opacity="1">
                       <Border.Transitions>
@@ -134,7 +133,7 @@
                       </Border.Transitions>
                     </Border>
                     <Border
-                      Name="KnobOn"
+                      x:Name="KnobOn"
                       Background="{DynamicResource PrimaryForegroundColor}"
                       Opacity="0">
                       <Border.Transitions>
@@ -154,21 +153,25 @@
                 <!--  to enable toggle animation  -->
               </Canvas>
             </Grid>
-          </Grid>
+          </DockPanel>
         </ReversibleStackPanel>
       </ControlTemplate>
     </Setter>
+
     <Style Selector="^[IsEnabled=False] /template/ ReversibleStackPanel#PART_Container">
       <Setter Property="Opacity" Value="0.5"/>
     </Style>
-    <Style Selector="^[IsEnabled=True] /template/ Grid#PART_ToggleContainer">
+
+    <Style Selector="^[IsEnabled=True] /template/ DockPanel#PART_ToggleContainer">
       <Style Selector="^:pointerover">
         <Setter Property="Cursor" Value="Hand"/>
       </Style>
     </Style>
+
     <Style Selector="^:disabled /template/ Border#SwitchBackground">
       <Setter Property="Background" Value="{DynamicResource PrimaryColor50}"/>
     </Style>
+
     <Style Selector="^:unchecked">
       <Style Selector="^ /template/ Border#SwitchKnob">
         <Setter Property="Width" Value="16"/>
@@ -187,6 +190,7 @@
         <Setter Property="Opacity" Value="0"/>
       </Style>
     </Style>
+
     <Style Selector="^:checked">
       <Style Selector="^/template/ Border#SwitchBackground">
         <Setter Property="Opacity" Value="1"/>

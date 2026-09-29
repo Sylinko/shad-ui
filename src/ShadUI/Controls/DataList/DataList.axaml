@@ -27,7 +27,7 @@
                 Orientation="Horizontal">
                 <ContentPresenter/>
                 <Button
-                  x:Name="PART_AddButton" Classes="Ghost Compact Uniform"
+                  x:Name="PART_AddButton" Classes="Ghost Compact"
                   Content="{LucideIconContent Plus, Size=18}"/>
               </StackPanel>
               <ScrollViewer

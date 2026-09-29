@@ -210,7 +210,7 @@
 
     <!--  Compact  -->
     <Style Selector="^.Compact">
-      <Setter Property="Padding" Value="6,4"/>
+      <Setter Property="Padding" Value="4"/>
       <Setter Property="MinHeight" Value="0"/>
       <Setter Property="Height" Value="NaN"/>
       <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
@@ -219,16 +219,12 @@
       <Style Selector="^ /template/ DockPanel#PART_Container">
         <Setter Property="HorizontalSpacing" Value="2"/>
       </Style>
+    </Style>
 
-      <Style Selector="^.LargeIcon">
-        <Setter Property="shadui:ButtonAssist.IconSize" Value="{DynamicResource FontSizeXl}"/>
-        <Style Selector="^ /template/ DockPanel#PART_Container">
-          <Setter Property="HorizontalSpacing" Value="12"/>
-        </Style>
-      </Style>
-
-      <Style Selector="^.Uniform">
-        <Setter Property="Padding" Value="4"/>
+    <Style Selector="^.LargeIcon">
+      <Setter Property="shadui:ButtonAssist.IconSize" Value="{DynamicResource FontSizeXl}"/>
+      <Style Selector="^ /template/ DockPanel#PART_Container">
+        <Setter Property="HorizontalSpacing" Value="12"/>
       </Style>
     </Style>
 

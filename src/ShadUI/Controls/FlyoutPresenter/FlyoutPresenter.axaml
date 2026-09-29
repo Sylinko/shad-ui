@@ -8,7 +8,6 @@
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
-    <Setter Property="Padding" Value="6"/>
     <Setter Property="shadui:TopLevelAssist.TransparencyLevelHint" Value="Transparent"/>
     <Setter Property="shadui:TopLevelAssist.WindowDecorations" Value="None"/>
     <Setter Property="shadui:TopLevelAssist.CanResize" Value="False"/>
@@ -26,7 +25,8 @@
             ClipToBounds="True"
             CornerRadius="{TemplateBinding CornerRadius}">
             <ContentPresenter
-              Margin="{TemplateBinding Padding}"
+              Margin="{TemplateBinding Margin}"
+              Padding="{TemplateBinding Padding}"
               Content="{TemplateBinding Content}"/>
           </shadui:SmoothBorder>
         </Border>
