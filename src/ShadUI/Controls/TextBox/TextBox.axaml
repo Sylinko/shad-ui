@@ -112,7 +112,7 @@
     <Setter Property="ContextFlyout" Value="{StaticResource SimpleTextBoxContextFlyout}"/>
     <Setter Property="Padding" Value="6,4"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="SelectionBrush" Value="{DynamicResource PrimaryColor}"/>
     <Setter Property="SelectionForegroundBrush" Value="{DynamicResource PrimaryForegroundColor}"/>
     <Setter Property="CaretBrush" Value="{DynamicResource ForegroundColor}"/>
@@ -124,7 +124,7 @@
         <DockPanel
           Background="Transparent" Focusable="False">
           <TextBlock
-            Name="PART_Label" Classes="Caption"
+            x:Name="PART_Label" Classes="Caption"
             DockPanel.Dock="Top" Margin="0,0,0,6"
             Cursor="Arrow"
             IsVisible="{TemplateBinding UseFloatingPlaceholder}"
@@ -132,26 +132,26 @@
           <DataValidationErrors Focusable="False">
             <DockPanel>
               <TextBlock
-                Name="Hint" Classes="Caption Muted"
+                x:Name="Hint" Classes="Caption Muted"
                 DockPanel.Dock="Bottom" Margin="0,4,0,0"
                 Cursor="Arrow"
                 IsVisible="{TemplateBinding shadui:ControlAssist.Hint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                 Text="{TemplateBinding shadui:ControlAssist.Hint}"/>
 
-              <Border
-                Name="Border"
+              <shadui:SmoothBorder
+                x:Name="RootBorder"
                 Height="{TemplateBinding shadui:ControlAssist.Height}"
                 MinHeight="{TemplateBinding shadui:ControlAssist.MinHeight}"
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
                 CornerRadius="{TemplateBinding CornerRadius}">
-                <Border.Transitions>
+                <shadui:SmoothBorder.Transitions>
                   <Transitions>
                     <BrushTransition
                       Property="BorderBrush" Duration="0:0:0.1"/>
                   </Transitions>
-                </Border.Transitions>
+                </shadui:SmoothBorder.Transitions>
                 <Grid ColumnDefinitions="Auto * Auto">
                   <ContentPresenter
                     Grid.Column="0" Margin="6,0,0,0"
@@ -159,15 +159,15 @@
                     Content="{TemplateBinding InnerLeftContent}"/>
 
                   <ScrollViewer
-                    Name="PART_ScrollViewer" Grid.Column="1"
+                    x:Name="PART_ScrollViewer" Grid.Column="1"
                     AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}"
                     BringIntoViewOnFocusChange="{TemplateBinding (ScrollViewer.BringIntoViewOnFocusChange)}"
                     HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
                     IsScrollChainingEnabled="{TemplateBinding (ScrollViewer.IsScrollChainingEnabled)}"
                     VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}">
-                    <Panel Name="TextContainer">
+                    <Panel x:Name="TextContainer">
                       <TextBlock
-                        Name="PlaceholderText"
+                        x:Name="PlaceholderText"
                         Margin="{TemplateBinding Padding}"
                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -188,7 +188,7 @@
                         </TextBlock.IsVisible>
                       </TextBlock>
                       <TextPresenter
-                        Name="PART_TextPresenter"
+                        x:Name="PART_TextPresenter"
                         Margin="{TemplateBinding Padding}"
                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -215,36 +215,36 @@
                   </ScrollViewer>
 
                   <ContentPresenter
-                    Name="InnerRightContent" Grid.Column="2"
+                    x:Name="InnerRightContent" Grid.Column="2"
                     Margin="0,0,6,0" VerticalAlignment="Center"
                     Content="{TemplateBinding InnerRightContent}"
                     IsVisible="{TemplateBinding shadui:ControlAssist.ShowProgress, Converter={x:Static BoolConverters.Not}}"/>
                   <ContentPresenter
-                    Name="ClearButton" Grid.Column="2"
+                    x:Name="ClearButton" Grid.Column="2"
                     Margin="0,0,6,0" VerticalAlignment="Center"
                     IsVisible="{TemplateBinding shadui:ControlAssist.ShowProgress, Converter={x:Static BoolConverters.Not}}"/>
                   <ContentPresenter
-                    Name="LoadingIndicator" Grid.Column="2"
+                    x:Name="LoadingIndicator" Grid.Column="2"
                     Width="20" Height="20"
                     Margin="0,0,6,0" VerticalAlignment="Center"
                     Content="{TemplateBinding shadui:ControlAssist.ShowProgress, Converter={x:Static shadui:BooleanConverters.ToLoading}}"
                     IsVisible="{TemplateBinding shadui:ControlAssist.ShowProgress}"/>
                 </Grid>
-              </Border>
+              </shadui:SmoothBorder>
             </DockPanel>
           </DataValidationErrors>
         </DockPanel>
       </ControlTemplate>
     </Setter>
 
-    <Style Selector="^:pointerover /template/ Border#Border">
+    <Style Selector="^:pointerover /template/ shadui|SmoothBorder#RootBorder">
       <Setter Property="BorderBrush" Value="{DynamicResource OutlineColor}"/>
     </Style>
-    <Style Selector="^:focus /template/ Border#Border">
+    <Style Selector="^:focus /template/ shadui|SmoothBorder#RootBorder">
       <Setter Property="BorderBrush" Value="{DynamicResource PrimaryColor}"/>
     </Style>
     <Style Selector="^:error">
-      <Style Selector="^/template/ Border#Border">
+      <Style Selector="^/template/ shadui|SmoothBorder#RootBorder">
         <Setter Property="BorderBrush" Value="{DynamicResource ErrorColor}"/>
       </Style>
       <Style Selector="^/template/ TextBlock#PART_Label">
@@ -255,7 +255,7 @@
     <Style Selector="^ /template/ StackPanel">
       <Setter Property="Cursor" Value="IBeam"/>
     </Style>
-    <Style Selector="^:disabled /template/ Border#Border">
+    <Style Selector="^:disabled /template/ shadui|SmoothBorder#RootBorder">
       <Setter Property="Opacity" Value="0.5"/>
     </Style>
 

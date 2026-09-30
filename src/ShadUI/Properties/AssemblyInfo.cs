@@ -1,7 +1,6 @@
 using System.Runtime.CompilerServices;
 using Avalonia.Metadata;
 
-[assembly: XmlnsDefinition("clr-namespace:ShadUI.Controls;assembly=ShadUI", "ShadUI")]
-[assembly: XmlnsDefinition("clr-namespace:ShadUI.Controls;assembly=ShadUI", "ShadUI.Controls")]
-[assembly: XmlnsPrefix("clr-namespace:ShadUI.Controls;assembly=ShadUI", "shadui")]
+[assembly: XmlnsDefinition("clr-namespace:ShadUI;assembly=ShadUI", "ShadUI")]
+[assembly: XmlnsPrefix("clr-namespace:ShadUI;assembly=ShadUI", "shadui")]
 [assembly: InternalsVisibleTo("ShadUI.Tests")]

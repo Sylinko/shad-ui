@@ -1,22 +1,23 @@
 ﻿<ResourceDictionary
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:shadui="clr-namespace:ShadUI.Controls;assembly=ShadUI">
+  xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI">
   <ControlTheme
     x:Key="{x:Type shadui:DataList}"
     TargetType="shadui:DataList">
-    <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
+    <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="Padding" Value="3"/>
+    <Setter Property="Padding" Value="6,4"/>
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
     <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
     <Setter Property="ScrollViewer.IsScrollChainingEnabled" Value="True"/>
     <Setter Property="Template">
       <ControlTemplate TargetType="shadui:DataList">
         <DataValidationErrors Focusable="False">
-          <Border
+          <shadui:SmoothBorder
             x:Name="DataListBorder"
+            Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
             ClipToBounds="{TemplateBinding ClipToBounds}"
@@ -28,13 +29,13 @@
                 <ContentPresenter/>
                 <Button
                   x:Name="PART_AddButton" Classes="Ghost Compact"
-                  Content="{LucideIconContent Plus, Size=18}"/>
+                  shadui:ButtonAssist.Icon="{LucideIconContent Plus}"
+                  shadui:ButtonAssist.IconSize="{DynamicResource FontSizeL}"/>
               </StackPanel>
               <ScrollViewer
-                Name="PART_ScrollViewer" Margin="0,0,-3,0"
+                x:Name="PART_ScrollViewer" Margin="0,0,-3,0"
                 Padding="0,0,3,0"
                 AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}"
-                Background="{TemplateBinding Background}"
                 BringIntoViewOnFocusChange="{TemplateBinding (ScrollViewer.BringIntoViewOnFocusChange)}"
                 HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
                 HorizontalSnapPointsType="{TemplateBinding (ScrollViewer.HorizontalSnapPointsType)}"
@@ -43,17 +44,17 @@
                 VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
                 VerticalSnapPointsType="{TemplateBinding (ScrollViewer.VerticalSnapPointsType)}">
                 <ItemsPresenter
-                  Name="PART_ItemsPresenter"
+                  x:Name="PART_ItemsPresenter"
                   ItemsPanel="{TemplateBinding ItemsPanel}"/>
               </ScrollViewer>
             </DockPanel>
-          </Border>
+          </shadui:SmoothBorder>
         </DataValidationErrors>
       </ControlTemplate>
     </Setter>
 
     <Style Selector="^:error">
-      <Style Selector="^/template/ Border#DataListBorder">
+      <Style Selector="^/template/ shadui|SmoothBorder#DataListBorder">
         <Setter Property="BorderBrush" Value="{DynamicResource ErrorColor}"/>
       </Style>
     </Style>

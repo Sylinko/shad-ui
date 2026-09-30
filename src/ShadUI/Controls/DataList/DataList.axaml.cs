@@ -7,7 +7,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Interactivity;
 
-namespace ShadUI.Controls;
+namespace ShadUI;
 
 [TemplatePart("PART_AddButton", typeof(Button))]
 public class DataList : ListBox

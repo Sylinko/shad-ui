@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:shadui="clr-namespace:ShadUI.Controls;assembly=ShadUI" xmlns:system="clr-namespace:System;assembly=System.Runtime">
+  xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI" xmlns:system="clr-namespace:System;assembly=System.Runtime">
   <Design.PreviewWith>
     <StackPanel Spacing="12">
       <ToggleButton Classes="Default">Default</ToggleButton>
@@ -49,8 +49,10 @@
           </Border.Transitions>
 
           <DockPanel
+            x:Name="PART_Container"
             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-            HorizontalSpacing="6">
+            HorizontalSpacing="6"
+            LastChildFill="{TemplateBinding Content, Converter={x:Static ObjectConverters.IsNotNull}}">
             <Viewbox
               DockPanel.Dock="Left"
               Height="{TemplateBinding shadui:ButtonAssist.IconSize}"
@@ -115,6 +117,7 @@
               ContentTemplate="{TemplateBinding ContentTemplate}"
               FontSize="{TemplateBinding FontSize}"
               FontWeight="{TemplateBinding FontWeight}"
+              IsVisible="{TemplateBinding Content, Converter={x:Static ObjectConverters.IsNotNull}}"
               RecognizesAccessKey="True"/>
           </DockPanel>
         </Border>
@@ -134,9 +137,9 @@
     <Style Selector="^.Primary">
       <Setter Property="Background" Value="{DynamicResource TransparentColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource PrimaryColor75}"/>
+      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource PrimaryColor25}"/>
       <Setter Property="shadui:ButtonAssist.HoverForeground" Value="{DynamicResource PrimaryForegroundColor}"/>
-      <Setter Property="shadui:ButtonAssist.CheckedBackground" Value="{DynamicResource PrimaryColor}"/>
+      <Setter Property="shadui:ButtonAssist.CheckedBackground" Value="{DynamicResource PrimaryColor50}"/>
       <Setter Property="shadui:ButtonAssist.CheckedForeground" Value="{DynamicResource PrimaryForegroundColor}"/>
     </Style>
 
@@ -160,10 +163,13 @@
     <!--  Compact  -->
     <Style Selector="^.Compact">
       <Setter Property="Padding" Value="4"/>
-      <Setter Property="MinHeight" Value="0"/>
-      <Setter Property="Height" Value="NaN"/>
       <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
       <Setter Property="FontWeight" Value="Light"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+
+      <Style Selector="^ /template/ DockPanel#PART_Container">
+        <Setter Property="HorizontalSpacing" Value="2"/>
+      </Style>
     </Style>
 
     <Style Selector="^.LargeIcon">

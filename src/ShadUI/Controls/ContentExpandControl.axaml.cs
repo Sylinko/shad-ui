@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
 
-namespace ShadUI.Controls;
+namespace ShadUI;
 
 /// <summary>
 /// A ContentControl that expands its content by a multiplier in a given orientation.

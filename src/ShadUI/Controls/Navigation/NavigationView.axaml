@@ -36,7 +36,7 @@
             <ContentPresenter Content="{TemplateBinding PaneContent}"/>
           </DockPanel>
 
-          <Border
+          <shadui:SmoothBorder
             x:Name="PART_ContentRoot" Grid.Column="2"
             Padding="{TemplateBinding Padding}"
             Background="{DynamicResource WindowBackgroundColor}"
@@ -84,7 +84,7 @@
                   IsVisible="{TemplateBinding SelectedItem, Converter={x:Static ObjectConverters.IsNull}}"/>
               </Panel>
             </DockPanel>
-          </Border>
+          </shadui:SmoothBorder>
         </Grid>
       </ControlTemplate>
     </Setter>

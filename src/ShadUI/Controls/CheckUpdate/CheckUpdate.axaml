@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:shadui="clr-namespace:ShadUI.Controls;assembly=ShadUI" x:ClassModifier="internal">
+  xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI" x:ClassModifier="internal">
   <ControlTheme
     x:Key="{x:Type shadui:CheckUpdate}"
     TargetType="shadui:CheckUpdate">

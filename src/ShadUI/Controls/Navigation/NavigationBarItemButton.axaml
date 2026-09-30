@@ -9,44 +9,25 @@
       <ControlTemplate>
         <Panel
           x:Name="RootPanel" Background="Transparent">
-          <Panel x:Name="BackgroundPanel">
-            <Border
-              x:Name="BaseBackground"
-              Background="{TemplateBinding Background}"
-              CornerRadius="{DynamicResource FullCornerRadius}"
-              IsHitTestVisible="False" Opacity="1">
-              <Border.Transitions>
-                <Transitions>
-                  <DoubleTransition
-                    Property="Opacity" Duration="0:0:0.20"/>
-                </Transitions>
-              </Border.Transitions>
-            </Border>
-            <Border
-              x:Name="HoverBackground"
-              Background="{DynamicResource GhostHoverColor}"
-              CornerRadius="{DynamicResource FullCornerRadius}"
-              IsHitTestVisible="False" Opacity="0">
-              <Border.Transitions>
-                <Transitions>
-                  <DoubleTransition
-                    Property="Opacity" Duration="0:0:0.20"/>
-                </Transitions>
-              </Border.Transitions>
-            </Border>
-            <Border
-              x:Name="SelectedBackground"
-              Background="{DynamicResource SelectionColor}"
-              CornerRadius="{DynamicResource FullCornerRadius}"
-              IsHitTestVisible="False" Opacity="0">
-              <Border.Transitions>
-                <Transitions>
-                  <DoubleTransition
-                    Property="Opacity" Duration="0:0:0.20"/>
-                </Transitions>
-              </Border.Transitions>
-            </Border>
-          </Panel>
+          <Panel.Transitions>
+            <Transitions>
+              <TransformOperationsTransition
+                Property="RenderTransform" Duration="0:0:0.10"/>
+            </Transitions>
+          </Panel.Transitions>
+
+          <Border
+            x:Name="BackgroundBorder"
+            Background="{TemplateBinding Background}"
+            CornerRadius="{DynamicResource FullCornerRadius}"
+            IsHitTestVisible="False">
+            <Border.Transitions>
+              <Transitions>
+                <BrushTransition
+                  Property="Background" Duration="0:0:0.15"/>
+              </Transitions>
+            </Border.Transitions>
+          </Border>
 
           <StackPanel
             x:Name="PART_StackPanelContainer"
@@ -111,22 +92,19 @@
       </Style>
     </Style>
 
-    <Style Selector="^:pointerover /template/ Border#HoverBackground">
-      <Setter Property="Opacity" Value="1"/>
-    </Style>
-    <Style Selector="^:pointerover /template/ Border#BaseBackground">
-      <Setter Property="Opacity" Value="0"/>
+    <Style Selector="^:pointerover /template/ Border#BackgroundBorder">
+      <Setter Property="Background" Value="{DynamicResource GhostHoverColor}"/>
     </Style>
     <Style Selector="^:checked">
       <Setter Property="Foreground" Value="{DynamicResource PrimaryColor}"/>
-      <Style Selector="^ /template/ Border#SelectedBackground">
-        <Setter Property="Opacity" Value="1"/>
+      <Style Selector="^ /template/ Border#BackgroundBorder">
+        <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
       </Style>
     </Style>
     <Style Selector="^[IsChildrenChecked=True]">
       <Setter Property="Foreground" Value="{DynamicResource PrimaryColor}"/>
-      <Style Selector="^ /template/ Border#SelectedBackground">
-        <Setter Property="Opacity" Value="1"/>
+      <Style Selector="^ /template/ Border#BackgroundBorder">
+        <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
       </Style>
     </Style>
     <Style Selector="^:pressed /template/ Panel#RootPanel">

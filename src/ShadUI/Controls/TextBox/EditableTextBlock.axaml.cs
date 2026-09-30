@@ -6,7 +6,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 
-namespace ShadUI.Controls;
+namespace ShadUI;
 
 /// <summary>
 /// In normal use cases, this control behaves like a TextBlock.

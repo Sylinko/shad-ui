@@ -44,7 +44,7 @@
     x:Key="ButtonStyle" TargetType="Button">
     <Setter Property="Padding" Value="12,8"/>
     <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -55,7 +55,7 @@
     <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource GhostColor}"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Border
+        <shadui:SmoothBorder
           x:Name="BackgroundBorder"
           Padding="{TemplateBinding Padding}"
           Background="{TemplateBinding Background}"
@@ -65,7 +65,7 @@
           CornerRadius="{TemplateBinding CornerRadius}"
           Cursor="Hand"
           TextElement.Foreground="{TemplateBinding Foreground}">
-          <Border.Transitions>
+          <shadui:SmoothBorder.Transitions>
             <Transitions>
               <TransformOperationsTransition
                 Property="RenderTransform" Duration="0:0:0.10"/>
@@ -74,12 +74,13 @@
               <BrushTransition
                 Property="TextElement.Foreground" Duration="0:0:0.15"/>
             </Transitions>
-          </Border.Transitions>
+          </shadui:SmoothBorder.Transitions>
 
           <DockPanel
             x:Name="PART_Container"
             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-            HorizontalSpacing="6">
+            HorizontalSpacing="6"
+            LastChildFill="{TemplateBinding Content, Converter={x:Static ObjectConverters.IsNotNull}}">
             <Viewbox
               x:Name="PART_ProgressViewbox" DockPanel.Dock="Left"
               Height="{TemplateBinding shadui:ButtonAssist.IconSize}"
@@ -144,22 +145,23 @@
               ContentTemplate="{TemplateBinding ContentTemplate}"
               FontSize="{TemplateBinding FontSize}"
               FontWeight="{TemplateBinding FontWeight}"
+              IsVisible="{TemplateBinding Content, Converter={x:Static ObjectConverters.IsNotNull}}"
               RecognizesAccessKey="True"/>
           </DockPanel>
-        </Border>
+        </shadui:SmoothBorder>
       </ControlTemplate>
     </Setter>
 
     <Style Selector="^:disabled">
       <Setter Property="Opacity" Value="0.6"/>
     </Style>
-    <Style Selector="^:pointerover /template/ Border#BackgroundBorder">
+    <Style Selector="^:pointerover /template/ shadui|SmoothBorder#BackgroundBorder">
       <Setter Property="Background" Value="{TemplateBinding shadui:ButtonAssist.HoverBackground}"/>
     </Style>
-    <Style Selector="^:pressed:not(.NoScale) /template/ Border#BackgroundBorder">
+    <Style Selector="^:pressed:not(.NoScale) /template/ shadui|SmoothBorder#BackgroundBorder">
       <Setter Property="RenderTransform" Value="scale(0.95, 0.95)"/>
     </Style>
-    <Style Selector="^:pressed.NoScale /template/ Border#BackgroundBorder">
+    <Style Selector="^:pressed.NoScale /template/ shadui|SmoothBorder#BackgroundBorder">
       <Setter Property="Background" Value="{TemplateBinding shadui:ButtonAssist.PressedBackground}"/>
     </Style>
 
@@ -176,7 +178,7 @@
     <Style Selector="^.Primary">
       <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
-      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource PrimaryColor75}"/>
+      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource PrimaryColor50}"/>
     </Style>
 
     <!--  Secondary  -->
@@ -191,7 +193,7 @@
     <!--  Destructive  -->
     <Style Selector="^.Destructive">
       <Setter Property="Foreground" Value="{DynamicResource DestructiveColor}"/>
-      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource DestructiveColor50}"/>
+      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource DestructiveColor10}"/>
     </Style>
 
     <!--  Ghost  -->
@@ -211,10 +213,9 @@
     <!--  Compact  -->
     <Style Selector="^.Compact">
       <Setter Property="Padding" Value="4"/>
-      <Setter Property="MinHeight" Value="0"/>
-      <Setter Property="Height" Value="NaN"/>
       <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
       <Setter Property="FontWeight" Value="Light"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
 
       <Style Selector="^ /template/ DockPanel#PART_Container">
         <Setter Property="HorizontalSpacing" Value="2"/>

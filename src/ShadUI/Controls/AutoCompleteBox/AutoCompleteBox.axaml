@@ -73,7 +73,7 @@
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
     <Setter Property="Padding" Value="10,8"/>
     <Setter Property="Margin" Value="1"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource MdCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}"/>
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -85,19 +85,19 @@
         <Panel
           MinHeight="{TemplateBinding MinHeight}"
           Margin="{TemplateBinding Margin}">
-          <Border
+          <shadui:SmoothBorder
             x:Name="BackgroundBorder"
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
             CornerRadius="{TemplateBinding CornerRadius}">
-            <Border.Transitions>
+            <shadui:SmoothBorder.Transitions>
               <Transitions>
                 <BrushTransition
                   Property="Background" Duration="0:0:0.15"/>
               </Transitions>
-            </Border.Transitions>
-          </Border>
+            </shadui:SmoothBorder.Transitions>
+          </shadui:SmoothBorder>
           <ContentPresenter
             Margin="{TemplateBinding Padding}"
             HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -107,13 +107,13 @@
         </Panel>
       </ControlTemplate>
     </Setter>
-    <Style Selector="^:selected /template/ Border#BackgroundBorder">
+    <Style Selector="^:selected /template/ shadui|SmoothBorder#BackgroundBorder">
       <Setter Property="Background" Value="{DynamicResource GhostColor}"/>
     </Style>
-    <Style Selector="^:focus /template/ Border#BackgroundBorder">
+    <Style Selector="^:focus /template/ shadui|SmoothBorder#BackgroundBorder">
       <Setter Property="Background" Value="{DynamicResource GhostHoverColor}"/>
     </Style>
-    <Style Selector="^:pointerover /template/ Border#BackgroundBorder">
+    <Style Selector="^:pointerover /template/ shadui|SmoothBorder#BackgroundBorder">
       <Setter Property="Background" Value="{DynamicResource GhostHoverColor}"/>
     </Style>
   </ControlTheme>
@@ -127,7 +127,7 @@
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="Padding" Value="12,4"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="FocusAdorner" Value="{x:Null}"/>
     <Setter Property="MaxDropDownHeight" Value="244"/>
     <Setter Property="shadui:ControlAssist.ShowProgress" Value="False"/>
@@ -174,7 +174,7 @@
             VerticalOffset="5">
             <LayoutTransformControl
               x:Name="LayoutTransform" RenderTransformOrigin="50%, 0%">
-              <Border
+              <shadui:SmoothBorder
                 MinWidth="{CompiledBinding #PART_TextBox.Bounds.Width}"
                 Margin="2,0,2,4" shadui:ScrollEventAssist.PreventScrollPropagation="True"
                 Background="{DynamicResource PopupBackgroundColor}"
@@ -198,7 +198,7 @@
                     </ItemsPanelTemplate>
                   </ListBox.ItemsPanel>
                 </ListBox>
-              </Border>
+              </shadui:SmoothBorder>
             </LayoutTransformControl>
           </Popup>
         </Panel>

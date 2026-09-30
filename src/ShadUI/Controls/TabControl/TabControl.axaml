@@ -56,7 +56,8 @@
   <ControlTheme
     x:Key="TabControlTheme" TargetType="TabControl">
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-    <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
+    <Setter Property="Background" Value="{DynamicResource LightCardBackgroundColor}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="ItemsPanel">
       <Setter.Value>
         <ItemsPanelTemplate>
@@ -67,45 +68,39 @@
     </Setter>
     <Setter Property="Template">
       <ControlTemplate>
-        <Border
-          HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-          VerticalAlignment="{TemplateBinding VerticalAlignment}"
-          Background="{TemplateBinding Background}"
-          BorderBrush="{TemplateBinding BorderBrush}"
-          BorderThickness="{TemplateBinding BorderThickness}"
-          CornerRadius="{TemplateBinding CornerRadius}">
-          <Grid
-            ColumnDefinitions="Auto,*" ColumnSpan="4"
-            RowDefinitions="Auto,*" RowSpacing="8">
-            <LayoutTransformControl
-              x:Name="LayoutTransform" Grid.Row="0"
-              Grid.Column="0"
-              DockPanel.Dock="{TemplateBinding TabStripPlacement}"
-              HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
-              <Border
-                Padding="2,4,2,0" HorizontalAlignment="Left"
-                Background="{DynamicResource CardBackgroundColor}"
-                CornerRadius="{DynamicResource LgCornerRadius}">
-                <ItemsPresenter
-                  x:Name="PART_ItemsPresenter"
-                  ItemsPanel="{TemplateBinding ItemsPanel}"/>
-              </Border>
-            </LayoutTransformControl>
+        <Grid
+          ColumnDefinitions="Auto,*" ColumnSpan="4"
+          RowDefinitions="Auto,*" RowSpacing="8">
+          <LayoutTransformControl
+            x:Name="LayoutTransform" Grid.Row="0"
+            Grid.Column="0"
+            DockPanel.Dock="{TemplateBinding TabStripPlacement}"
+            HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+            <shadui:SmoothBorder
+              Padding="4" HorizontalAlignment="Left"
+              Background="{TemplateBinding Background}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="{TemplateBinding CornerRadius}">
+              <ItemsPresenter
+                x:Name="PART_ItemsPresenter"
+                ItemsPanel="{TemplateBinding ItemsPanel}"/>
+            </shadui:SmoothBorder>
+          </LayoutTransformControl>
 
-            <ContentControl
-              Grid.Row="0" Grid.Column="1"
-              Content="{TemplateBinding shadui:TabControlAssist.HeaderContent}"/>
+          <ContentControl
+            Grid.Row="0" Grid.Column="1"
+            Content="{TemplateBinding shadui:TabControlAssist.HeaderContent}"/>
 
-            <ContentPresenter
-              x:Name="PART_SelectedContentHost" Grid.Row="1"
-              Grid.Column="0" Grid.ColumnSpan="2"
-              Margin="{TemplateBinding Padding}"
-              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-              Content="{TemplateBinding SelectedContent}"
-              ContentTemplate="{TemplateBinding SelectedContentTemplate}"/>
-          </Grid>
-        </Border>
+          <ContentPresenter
+            x:Name="PART_SelectedContentHost" Grid.Row="1"
+            Grid.Column="0" Grid.ColumnSpan="2"
+            Margin="{TemplateBinding Padding}"
+            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+            Content="{TemplateBinding SelectedContent}"
+            ContentTemplate="{TemplateBinding SelectedContentTemplate}"/>
+        </Grid>
       </ControlTemplate>
     </Setter>
     <Style Selector="^[TabStripPlacement=Left] /template/ LayoutTransformControl#LayoutTransform">

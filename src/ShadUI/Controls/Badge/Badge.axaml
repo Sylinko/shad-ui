@@ -126,8 +126,8 @@
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Border
-          Name="Container"
+        <shadui:SmoothBorder
+          x:Name="Container"
           Padding="{TemplateBinding Padding}"
           Background="{TemplateBinding Background}"
           BorderBrush="{TemplateBinding BorderBrush}"
@@ -141,7 +141,7 @@
             FontWeight="{TemplateBinding FontWeight}"
             Foreground="{TemplateBinding Foreground}"
             TextElement.Foreground="{TemplateBinding Foreground}"/>
-        </Border>
+        </shadui:SmoothBorder>
       </ControlTemplate>
     </Setter>
 

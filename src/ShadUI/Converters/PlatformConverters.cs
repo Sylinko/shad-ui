@@ -16,7 +16,7 @@ public static class PlatformConverters
 
     private sealed class WindowBackgroundConverterImpl : IMultiValueConverter
     {
-        private static double Opacity => OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000) ? 0.0 : // full mica
+        private static double Opacity => OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000) ? 0.5 : // mica
             OperatingSystem.IsWindows() ? 0.8 :
             OperatingSystem.IsMacOS() ? 0.95 :
             1.0;

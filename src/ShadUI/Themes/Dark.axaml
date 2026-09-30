@@ -3,13 +3,13 @@
 
   <!--  basic colors  -->
   <Color x:Key="TransparentColor">#00000000</Color>
-  <Color x:Key="ForegroundColor">#E5E5E5</Color>
+  <Color x:Key="ForegroundColor">#FFFFFF</Color>
   <Color x:Key="ForegroundLeadColor">#A1A1AA</Color>
   <Color x:Key="BackgroundColor">#00000000</Color>
   <Color x:Key="MutedColor">#A0A0A9</Color>
-  <Color x:Key="BorderColor">#353535</Color>
-  <Color x:Key="BorderColor60">#9C353535</Color>
-  <Color x:Key="BorderColor30">#4C353535</Color>
+  <Color x:Key="BorderColor">#90353535</Color>
+  <Color x:Key="BorderColor60">#60353535</Color>
+  <Color x:Key="BorderColor30">#30353535</Color>
   <Color x:Key="OutlineColor">#3E3E3E</Color>
   <Color x:Key="GhostColor">#454545</Color>
   <Color x:Key="GhostHoverColor">#7F454545</Color>
@@ -54,9 +54,9 @@
   <!--  specific control colors  -->
   <Color x:Key="BadgeForegroundColor">#FAFAFA</Color>
   <Color x:Key="BusyAreaOverlayColor">#1971717A</Color>
-  <Color x:Key="NavigationBarBackgroundColor">#171717</Color>
-  <Color x:Key="SettingsItemBackgroundColor">#0DFFFFFF</Color>
-  <Color x:Key="SettingsItemHoverBackgroundColor">#1AFFFFFF</Color>
+  <Color x:Key="NavigationBarBackgroundColor">#0DA1A1A1</Color>
+  <Color x:Key="SettingsItemBackgroundColor">#0DA1A1A1</Color>
+  <Color x:Key="SettingsItemHoverBackgroundColor">#1AA1A1A1</Color>
 
   <Color x:Key="CardBackgroundColor">#661A1A1A</Color>
   <Color x:Key="LightCardBackgroundColor">#0DFFFFFF</Color>

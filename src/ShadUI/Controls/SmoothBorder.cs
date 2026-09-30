@@ -2,20 +2,57 @@
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Metadata;
 
 namespace ShadUI;
 
 /// <summary>
-/// Border-like decorator with Figma-style corner smoothing.
+/// Selects how <see cref="SmoothBorder"/> clips its child when ClipToBounds is enabled.
+/// </summary>
+public enum ClipToBoundsMode
+{
+    /// <summary>
+    /// Clips content to the inner edge of the border using the same smooth geometry as the border.
+    /// This is the default and gives the best visual separation between content and border.
+    /// </summary>
+    Inner,
+
+    /// <summary>
+    /// Clips content to the outer smooth edge of the control.
+    /// Content may therefore render underneath the border.
+    /// </summary>
+    Outer,
+
+    /// <summary>
+    /// Clips content to the inner edge using Avalonia's native rounded-rectangle clip.
+    /// This is faster than a smooth geometry clip, but does not preserve continuous corners.
+    /// </summary>
+    FastInner,
+}
+
+/// <summary>
+/// Border-like control with Figma-style continuous corners.
+///
+/// The control itself owns background/border/shadow rendering. User content is hosted in an
+/// internal Avalonia Border so that child clipping is independent from the outer border drawing.
+/// This avoids clipping the border itself with the same antialiased path used for its content.
 ///
 /// Notes:
 /// - CornerSmoothing is clamped to [0, 1]. 0 is a normal rounded corner; 0.6 is the iOS/Figma preset.
-/// - Clip is internally managed when ClipToBounds is enabled. Do not set Visual.Clip manually on this control.
-/// - Uniform BorderThickness is the fast/most accurate path. Non-uniform thickness uses an approximated inner offset.
+/// - ClipToBoundsMode.Inner is the default and clips to the border's inner edge.
+/// - ClipToBoundsMode.FastInner uses Avalonia's native rounded-rectangle clipping as a cheaper fallback.
+/// - Uniform BorderThickness remains the fastest drawing path except when exact Inner clipping is active,
+///   where the border is filled as a ring so its inner edge exactly matches the content clip.
 /// - BoxShadow intentionally uses a normal RoundedRect because blur hides the small geometric difference.
 /// </summary>
-public class SmoothBorder : Decorator
+public class SmoothBorder : Control
 {
+    public static readonly StyledProperty<Control?> ChildProperty =
+        Decorator.ChildProperty.AddOwner<SmoothBorder>();
+
+    public static readonly StyledProperty<Thickness> PaddingProperty =
+        Decorator.PaddingProperty.AddOwner<SmoothBorder>();
+
     public static readonly StyledProperty<IBrush?> BackgroundProperty =
         AvaloniaProperty.Register<SmoothBorder, IBrush?>(nameof(Background));
 
@@ -41,7 +78,15 @@ public class SmoothBorder : Decorator
     public static readonly StyledProperty<BoxShadows> BoxShadowProperty =
         AvaloniaProperty.Register<SmoothBorder, BoxShadows>(nameof(BoxShadow));
 
+    public static readonly StyledProperty<ClipToBoundsMode> ClipToBoundsModeProperty =
+        AvaloniaProperty.Register<SmoothBorder, ClipToBoundsMode>(nameof(ClipToBoundsMode));
+
     private const double Epsilon = 1e-6;
+    private static readonly Geometry EmptyClipGeometry = new RectangleGeometry(new Rect());
+
+    // The internal Border is deliberately kept visually empty. It exists only to host the user's
+    // child and to use Avalonia's native rounded clip in FastInner mode.
+    private readonly Border _contentHost;
 
     private StreamGeometry? _outerGeometry;
     private StreamGeometry? _centerGeometry;
@@ -70,10 +115,53 @@ public class SmoothBorder : Decorator
             BorderThicknessProperty,
             CornerRadiusProperty,
             CornerSmoothingProperty,
-            BoxShadowProperty);
+            BoxShadowProperty,
+            ClipToBoundsModeProperty,
+            ClipToBoundsProperty);
 
-        AffectsMeasure<SmoothBorder>(BorderThicknessProperty);
+        // Mode/ClipToBounds/CornerRadius can switch the internal host between full-bounds and
+        // inner-bounds layout for native rectangular clipping, so treating them as measure-affecting
+        // keeps the host layout coherent without ad-hoc arrange invalidation.
+        AffectsMeasure<SmoothBorder>(
+            ChildProperty,
+            PaddingProperty,
+            BorderThicknessProperty,
+            ClipToBoundsModeProperty,
+            ClipToBoundsProperty,
+            CornerRadiusProperty);
+    }
 
+    public SmoothBorder()
+    {
+        _contentHost = new Border
+        {
+            // Local values prevent ordinary Border styles from accidentally making this implementation
+            // detail visible. These values are also refreshed when layout/clipping mode changes.
+            Background = null,
+            BorderBrush = null,
+            BorderThickness = default,
+            BoxShadow = default,
+            Padding = default,
+            CornerRadius = default,
+            Clip = null,
+            ClipToBounds = false,
+        };
+
+        LogicalChildren.Add(_contentHost);
+        VisualChildren.Add(_contentHost);
+    }
+
+    [Content]
+    public Control? Child
+    {
+        get => GetValue(ChildProperty);
+        set => SetValue(ChildProperty, value);
+    }
+
+    public Thickness Padding
+    {
+        get => GetValue(PaddingProperty);
+        set => SetValue(PaddingProperty, value);
     }
 
     public IBrush? Background
@@ -122,9 +210,21 @@ public class SmoothBorder : Decorator
         set => SetValue(BoxShadowProperty, value);
     }
 
+    /// <summary>
+    /// Chooses which edge is used for child clipping when ClipToBounds is true.
+    /// </summary>
+    public ClipToBoundsMode ClipToBoundsMode
+    {
+        get => GetValue(ClipToBoundsModeProperty);
+        set => SetValue(ClipToBoundsModeProperty, value);
+    }
+
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
+
+        if (change.Property == ChildProperty)
+            _contentHost.Child = Child;
 
         if (change.Property == BorderThicknessProperty ||
             change.Property == CornerRadiusProperty ||
@@ -140,16 +240,25 @@ public class SmoothBorder : Decorator
             _layoutThickness = null;
         }
 
-        // Radius/smoothing are visual-only. Update the cached path and clip immediately instead of
-        // invalidating arrangement, which keeps animated corner changes out of the layout pipeline.
+        if (change.Property == PaddingProperty ||
+            change.Property == BorderThicknessProperty ||
+            change.Property == ClipToBoundsModeProperty ||
+            change.Property == ClipToBoundsProperty ||
+            change.Property == CornerRadiusProperty)
+        {
+            ConfigureContentHostLayout();
+        }
+
         if (change.Property == CornerRadiusProperty ||
             change.Property == CornerSmoothingProperty ||
-            change.Property == ClipToBoundsProperty)
+            change.Property == ClipToBoundsProperty ||
+            change.Property == ClipToBoundsModeProperty ||
+            change.Property == BorderThicknessProperty)
         {
             if (Bounds is { Width: > Epsilon, Height: > Epsilon })
                 EnsureGeometry(Bounds.Size);
 
-            UpdateManagedClip();
+            UpdateContentClip();
         }
     }
 
@@ -157,8 +266,8 @@ public class SmoothBorder : Decorator
     {
         EnsureGeometry(Bounds.Size);
 
-        // Shadow deliberately uses a normal rounded rectangle. It is much cheaper and the blur
-        // makes the difference from a continuous corner practically invisible.
+        // Shadow deliberately uses a normal rounded rectangle. It is cheaper, and after blur the
+        // difference from the continuous outline is effectively invisible.
         if (BoxShadow.Count > 0)
         {
             context.DrawRectangle(
@@ -169,65 +278,89 @@ public class SmoothBorder : Decorator
         }
 
         var thickness = GetLayoutThickness();
+        var hasBorder = HasVisibleThickness(thickness) && BorderBrush is not null;
 
-        if (thickness.IsUniform)
+        // Exact inner clipping intentionally uses the ring path even for a uniform border. This makes
+        // the border's visual inner edge and the content clip derive from exactly the same geometry.
+        // Non-uniform borders also require the ring path because a single Pen cannot represent them.
+        var useBorderRing =
+            !thickness.IsUniform ||
+            (ClipToBounds && ClipToBoundsMode == ClipToBoundsMode.Inner);
+
+        if (useBorderRing)
         {
-            var t = Math.Max(0, thickness.Top);
-            var pen = GetPen(t);
             var backgroundGeometry = GetBackgroundGeometry();
 
-            // CenterBorder can be submitted as a single fill+stroke command. The other sizing
-            // modes use a different fill path, so they need a second draw for the stroke.
-            if (BackgroundSizing == BackgroundSizing.CenterBorder && _centerGeometry is not null)
-            {
-                context.DrawGeometry(Background, pen, _centerGeometry);
-            }
-            else
-            {
-                if (backgroundGeometry is not null)
-                    context.DrawGeometry(Background, null, backgroundGeometry);
+            if (backgroundGeometry is not null && Background is not null)
+                context.DrawGeometry(Background, null, backgroundGeometry);
 
-                if (_centerGeometry is not null && pen is not null)
-                    context.DrawGeometry(null, pen, _centerGeometry);
-            }
+            if (hasBorder && _borderGeometry is not null)
+                context.DrawGeometry(BorderBrush, null, _borderGeometry);
 
-            // If an absurdly thick border collapses the centerline geometry, fill the outer
-            // shape instead of silently dropping the border.
-            if (_centerGeometry is null && pen is not null && _outerGeometry is not null)
-                context.DrawGeometry(BorderBrush, null, _outerGeometry);
+            return;
+        }
+
+        // Fast path: uniform thickness can use one cached center path and a Pen.
+        var t = Math.Max(0, thickness.Top);
+        var pen = GetPen(t);
+        var background = GetBackgroundGeometry();
+
+        if (BackgroundSizing == BackgroundSizing.CenterBorder && _centerGeometry is not null)
+        {
+            context.DrawGeometry(Background, pen, _centerGeometry);
         }
         else
         {
-            var backgroundGeometry = GetBackgroundGeometry();
+            if (background is not null && Background is not null)
+                context.DrawGeometry(Background, null, background);
 
-            if (backgroundGeometry is not null)
-                context.DrawGeometry(Background, null, backgroundGeometry);
-
-            if (_borderGeometry is not null && BorderBrush is not null)
-                context.DrawGeometry(BorderBrush, null, _borderGeometry);
+            if (_centerGeometry is not null && pen is not null)
+                context.DrawGeometry(null, pen, _centerGeometry);
         }
+
+        // If an absurdly thick border collapses the centerline path, fill the outer shape instead
+        // of silently dropping the border.
+        if (_centerGeometry is null && pen is not null && _outerGeometry is not null)
+            context.DrawGeometry(BorderBrush, null, _outerGeometry);
     }
 
     protected override Size MeasureOverride(Size availableSize)
     {
-        return LayoutHelper.MeasureChild(Child, availableSize, Padding, BorderThickness);
+        var thickness = GetLayoutThickness();
+        ConfigureContentHostLayout();
+
+        if (UsesInsetContentHost())
+        {
+            _contentHost.Measure(availableSize.Deflate(thickness));
+            return _contentHost.DesiredSize.Inflate(thickness);
+        }
+
+        _contentHost.Measure(availableSize);
+        return _contentHost.DesiredSize;
     }
 
     protected override Size ArrangeOverride(Size finalSize)
     {
-        var result = LayoutHelper.ArrangeChild(Child, finalSize, Padding, BorderThickness);
+        var thickness = GetLayoutThickness();
+        ConfigureContentHostLayout();
+
+        if (UsesInsetContentHost())
+        {
+            var innerRect = InsetRect(new Rect(finalSize), thickness);
+            _contentHost.Arrange(innerRect);
+        }
+        else
+        {
+            _contentHost.Arrange(new Rect(finalSize));
+        }
 
         EnsureGeometry(finalSize);
+        UpdateContentClip();
 
-        // Visual.Clip becomes a geometry clip (SKPath clip on the Skia backend).
-        // ClipToBounds itself still contributes the normal rectangular clip; the intersection is cheap.
-        UpdateManagedClip();
-
-        return result;
+        return finalSize;
     }
 
-
-    private StreamGeometry? GetBackgroundGeometry()
+    private Geometry? GetBackgroundGeometry()
     {
         return BackgroundSizing switch
         {
@@ -237,11 +370,111 @@ public class SmoothBorder : Decorator
         };
     }
 
-    private void UpdateManagedClip()
+    /// <summary>
+    /// Returns true when the host itself is arranged at the inner border edge. This is required by
+    /// FastInner, because Avalonia's native Border clip always clips to its own bounds. It is also a
+    /// useful zero-radius fast path for exact Inner clipping: a native rectangular clip is exact there.
+    /// </summary>
+    private bool UsesInsetContentHost()
     {
-        var desired = ClipToBounds ? _outerGeometry : null;
-        if (!ReferenceEquals(Clip, desired))
-            Clip = desired;
+        if (!ClipToBounds)
+            return false;
+
+        if (ClipToBoundsMode == ClipToBoundsMode.FastInner)
+            return true;
+
+        return ClipToBoundsMode == ClipToBoundsMode.Inner &&
+            IsZeroCornerRadius(SanitizeCornerRadius(CornerRadius));
+    }
+
+    private void ConfigureContentHostLayout()
+    {
+        // Keep all visually meaningful Border properties pinned to local values so an application-wide
+        // Border style cannot leak into this implementation detail.
+        _contentHost.Background = null;
+        _contentHost.BorderBrush = null;
+        _contentHost.BoxShadow = default;
+        _contentHost.Padding = Padding;
+
+        if (UsesInsetContentHost())
+        {
+            _contentHost.BorderThickness = default;
+        }
+        else
+        {
+            // A full-size host uses an invisible border solely for layout, placing the user child at
+            // exactly the same position as a normal Avalonia Border would.
+            _contentHost.BorderThickness = GetLayoutThickness();
+        }
+    }
+
+    private void UpdateContentClip()
+    {
+        if (!ClipToBounds)
+        {
+            _contentHost.Clip = null;
+            _contentHost.ClipToBounds = false;
+            _contentHost.CornerRadius = default;
+            return;
+        }
+
+        var outerRadius = SanitizeCornerRadius(CornerRadius);
+        var smoothing = Clamp01(CornerSmoothing);
+
+        switch (ClipToBoundsMode)
+        {
+            case ClipToBoundsMode.Outer:
+                // SmoothBorder.ClipToBounds already contributes the normal axis-aligned bounds clip.
+                // Therefore an all-zero outer radius needs no second clip on the content host.
+                if (IsZeroCornerRadius(outerRadius))
+                {
+                    _contentHost.Clip = null;
+                    _contentHost.ClipToBounds = false;
+                    _contentHost.CornerRadius = default;
+                }
+                else if (smoothing <= Epsilon)
+                {
+                    // No smoothing means the exact geometry is a normal rounded rectangle, so use
+                    // Avalonia's native rounded-rect clip rather than a generic geometry clip.
+                    _contentHost.Clip = null;
+                    _contentHost.CornerRadius = outerRadius;
+                    _contentHost.ClipToBounds = true;
+                }
+                else
+                {
+                    _contentHost.ClipToBounds = false;
+                    _contentHost.CornerRadius = default;
+                    _contentHost.Clip = _outerGeometry;
+                }
+                break;
+
+            case ClipToBoundsMode.FastInner:
+                _contentHost.Clip = null;
+                _contentHost.CornerRadius = InsetCornerRadiusConservative(
+                    outerRadius,
+                    GetLayoutThickness());
+                _contentHost.ClipToBounds = true;
+                break;
+
+            default:
+                if (UsesInsetContentHost())
+                {
+                    // Exact zero-radius Inner mode. The host already occupies the inner rectangle,
+                    // so Avalonia's native rectangular ClipToBounds is both exact and maximally cheap.
+                    _contentHost.Clip = null;
+                    _contentHost.CornerRadius = default;
+                    _contentHost.ClipToBounds = true;
+                }
+                else
+                {
+                    // The full-size host lets us reuse the exact same positioned inner geometry that
+                    // also defines the border ring's inner edge.
+                    _contentHost.ClipToBounds = false;
+                    _contentHost.CornerRadius = default;
+                    _contentHost.Clip = _innerGeometry ?? EmptyClipGeometry;
+                }
+                break;
+        }
     }
 
     private Thickness GetLayoutThickness()
@@ -317,6 +550,15 @@ public class SmoothBorder : Decorator
         var outerRect = new Rect(size);
         _outerGeometry = CreateSmoothRectGeometry(outerRect, radius, smoothing);
 
+        if (!HasVisibleThickness(thickness))
+        {
+            // Reuse the same immutable path references when all three edges coincide.
+            _centerGeometry = _outerGeometry;
+            _innerGeometry = _outerGeometry;
+            _borderGeometry = null;
+            return;
+        }
+
         var halfThickness = ScaleThickness(thickness, 0.5);
         var centerRect = InsetRect(outerRect, halfThickness);
         var centerRadius = InsetCornerRadius(radius, halfThickness);
@@ -326,19 +568,12 @@ public class SmoothBorder : Decorator
         var innerRadius = InsetCornerRadius(radius, thickness);
         _innerGeometry = CreateSmoothRectGeometry(innerRect, innerRadius, smoothing);
 
-        if (!thickness.IsUniform && HasVisibleThickness(thickness))
-        {
-            _borderGeometry = CreateBorderRingGeometry(
-                outerRect,
-                radius,
-                innerRect,
-                innerRadius,
-                smoothing);
-        }
-        else
-        {
-            _borderGeometry = null;
-        }
+        _borderGeometry = CreateBorderRingGeometry(
+            outerRect,
+            radius,
+            innerRect,
+            innerRadius,
+            smoothing);
     }
 
     private static StreamGeometry? CreateSmoothRectGeometry(
@@ -378,15 +613,9 @@ public class SmoothBorder : Decorator
     }
 
     /// <summary>
-    /// Builds a clockwise rectangle using the same geometric construction described by Figma:
-    /// smoothing cubic -> circular arc -> smoothing cubic.
-    ///
-    /// For a right-angle corner:
-    ///   q = R
-    ///   p = (1 + xi) * q
-    ///   beta = pi/4 * xi
-    ///   t = R * tan(beta/2)
-    /// The two smoothing cubics use a 2:1 split for their collinear control distances.
+    /// Builds a clockwise rectangle using Figma's smoothing-cubic -> circular-arc -> smoothing-cubic
+    /// construction. This intentionally keeps the v1/v1.1 Figma-compatible curve unchanged so v3's
+    /// clipping/layout changes can be evaluated independently from curve-profile experiments.
     /// </summary>
     private static void AppendSmoothRectFigure(
         StreamGeometryContext ctx,
@@ -396,13 +625,13 @@ public class SmoothBorder : Decorator
     {
         smoothing = Clamp01(smoothing);
 
-        Span<double> radii = stackalloc double[4]
-        {
+        Span<double> radii =
+        [
             SanitizeRadius(radius.TopLeft),
             SanitizeRadius(radius.TopRight),
             SanitizeRadius(radius.BottomRight),
             SanitizeRadius(radius.BottomLeft),
-        };
+        ];
 
         Span<double> budgets = stackalloc double[4];
         ResolveCornerBudgets(rect.Width, rect.Height, radii, smoothing, budgets);
@@ -447,7 +676,6 @@ public class SmoothBorder : Decorator
             smoothing,
             budgets[3]);
 
-        // Start immediately after the top-left corner and walk clockwise.
         ctx.BeginFigure(tl.End);
 
         LineToIfNeeded(ctx, tl.End, tr.Start);
@@ -465,11 +693,6 @@ public class SmoothBorder : Decorator
         ctx.EndFigure(true);
     }
 
-    /// <summary>
-    /// Figma reduces smoothing/radius when adjacent corners do not fit on an edge.
-    /// Each edge independently splits the available length proportionally to the two corners'
-    /// requested p values; a corner's final budget is the tighter of its two adjacent edges.
-    /// </summary>
     private static void ResolveCornerBudgets(
         double width,
         double height,
@@ -484,22 +707,10 @@ public class SmoothBorder : Decorator
             budgets[i] = demand[i];
         }
 
-        LimitEdge(0, 1, Math.Max(0, width), demand, budgets); // top
-        LimitEdge(1, 2, Math.Max(0, height), demand, budgets); // right
-        LimitEdge(2, 3, Math.Max(0, width), demand, budgets); // bottom
-        LimitEdge(3, 0, Math.Max(0, height), demand, budgets); // left
-    }
-
-    private static void LineToIfNeeded(
-        StreamGeometryContext ctx,
-        Point from,
-        Point to)
-    {
-        var dx = to.X - from.X;
-        var dy = to.Y - from.Y;
-
-        if (dx * dx + dy * dy > Epsilon * Epsilon)
-            ctx.LineTo(to);
+        LimitEdge(0, 1, Math.Max(0, width), demand, budgets);
+        LimitEdge(1, 2, Math.Max(0, height), demand, budgets);
+        LimitEdge(2, 3, Math.Max(0, width), demand, budgets);
+        LimitEdge(3, 0, Math.Max(0, height), demand, budgets);
     }
 
     private static void LimitEdge(
@@ -538,8 +749,7 @@ public class SmoothBorder : Decorator
         if (q <= Epsilon || budget <= Epsilon)
             return CornerGeometry.Sharp(vertex);
 
-        // First preserve ordinary rounding. Only after q fits do we spend remaining edge
-        // length on smoothing. This is the behavior Figma uses when a rectangle gets cramped.
+        // Preserve ordinary rounding first. Only remaining edge budget is spent on smoothing.
         if (q > budget)
         {
             q = budget;
@@ -619,7 +829,6 @@ public class SmoothBorder : Decorator
         {
             var arcK = (4.0 / 3.0) * Math.Tan(sweep / 4.0) * radius;
 
-            // Tangent directions at the trimmed circular-arc endpoints.
             var tanStartX = inX * cosBeta + outX * sinBeta;
             var tanStartY = inY * cosBeta + outY * sinBeta;
             var tanEndX = inX * sinBeta + outX * cosBeta;
@@ -646,6 +855,15 @@ public class SmoothBorder : Decorator
             true,
             outControl1,
             outControl2);
+    }
+
+    private static void LineToIfNeeded(StreamGeometryContext ctx, Point from, Point to)
+    {
+        var dx = to.X - from.X;
+        var dy = to.Y - from.Y;
+
+        if (dx * dx + dy * dy > Epsilon * Epsilon)
+            ctx.LineTo(to);
     }
 
     private static void AppendCorner(StreamGeometryContext ctx, in CornerGeometry corner)
@@ -689,35 +907,69 @@ public class SmoothBorder : Decorator
             Math.Max(0, rect.Height - top - bottom));
     }
 
-    // Exact for uniform thickness. For a non-uniform border the true constant-offset curve
-    // is no longer represented by a single scalar corner radius, so use the adjacent-side mean.
-    private static CornerRadius InsetCornerRadius(CornerRadius radius, Thickness inset) => new(
-        Math.Max(0, radius.TopLeft - (inset.Left + inset.Top) * 0.5),
-        Math.Max(0, radius.TopRight - (inset.Right + inset.Top) * 0.5),
-        Math.Max(0, radius.BottomRight - (inset.Right + inset.Bottom) * 0.5),
-        Math.Max(0, radius.BottomLeft - (inset.Left + inset.Bottom) * 0.5));
+    private static CornerRadius InsetCornerRadius(CornerRadius radius, Thickness inset)
+    {
+        // Exact for uniform thickness. For a non-uniform border the true constant-offset curve is
+        // not representable by one scalar radius per corner, so use the adjacent-side mean.
+        return new CornerRadius(
+            Math.Max(0, radius.TopLeft - (inset.Left + inset.Top) * 0.5),
+            Math.Max(0, radius.TopRight - (inset.Right + inset.Top) * 0.5),
+            Math.Max(0, radius.BottomRight - (inset.Right + inset.Bottom) * 0.5),
+            Math.Max(0, radius.BottomLeft - (inset.Left + inset.Bottom) * 0.5));
+    }
 
-    private static Thickness ScaleThickness(Thickness value, double scale) => new(
-        value.Left * scale,
-        value.Top * scale,
-        value.Right * scale,
-        value.Bottom * scale);
+    private static CornerRadius InsetCornerRadiusConservative(CornerRadius radius, Thickness inset)
+    {
+        // FastInner only has one scalar radius per corner. With a non-uniform border, subtracting the
+        // larger adjacent thickness keeps content conservatively inside the visible border.
+        return new CornerRadius(
+            Math.Max(0, radius.TopLeft - Math.Max(inset.Left, inset.Top)),
+            Math.Max(0, radius.TopRight - Math.Max(inset.Right, inset.Top)),
+            Math.Max(0, radius.BottomRight - Math.Max(inset.Right, inset.Bottom)),
+            Math.Max(0, radius.BottomLeft - Math.Max(inset.Left, inset.Bottom)));
+    }
 
-    private static Thickness SanitizeThickness(Thickness value) => new(
-        SanitizeNonNegative(value.Left),
-        SanitizeNonNegative(value.Top),
-        SanitizeNonNegative(value.Right),
-        SanitizeNonNegative(value.Bottom));
+    private static Thickness ScaleThickness(Thickness value, double scale)
+    {
+        return new Thickness(
+            value.Left * scale,
+            value.Top * scale,
+            value.Right * scale,
+            value.Bottom * scale);
+    }
 
-    private static CornerRadius SanitizeCornerRadius(CornerRadius value) => new(
-        SanitizeRadius(value.TopLeft),
-        SanitizeRadius(value.TopRight),
-        SanitizeRadius(value.BottomRight),
-        SanitizeRadius(value.BottomLeft));
+    private static Thickness SanitizeThickness(Thickness value)
+    {
+        return new Thickness(
+            SanitizeNonNegative(value.Left),
+            SanitizeNonNegative(value.Top),
+            SanitizeNonNegative(value.Right),
+            SanitizeNonNegative(value.Bottom));
+    }
 
-    private static double SanitizeRadius(double value) => SanitizeNonNegative(value);
+    private static CornerRadius SanitizeCornerRadius(CornerRadius value)
+    {
+        return new CornerRadius(
+            SanitizeRadius(value.TopLeft),
+            SanitizeRadius(value.TopRight),
+            SanitizeRadius(value.BottomRight),
+            SanitizeRadius(value.BottomLeft));
+    }
 
-    private static double SanitizeNonNegative(double value) => double.IsFinite(value) ? Math.Max(0, value) : 0;
+    private static bool IsZeroCornerRadius(CornerRadius value)
+    {
+        return value is { TopLeft: <= Epsilon, TopRight: <= Epsilon, BottomRight: <= Epsilon, BottomLeft: <= Epsilon };
+    }
+
+    private static double SanitizeRadius(double value)
+    {
+        return SanitizeNonNegative(value);
+    }
+
+    private static double SanitizeNonNegative(double value)
+    {
+        return double.IsFinite(value) ? Math.Max(0, value) : 0;
+    }
 
     private static double Clamp01(double value)
     {
@@ -730,48 +982,33 @@ public class SmoothBorder : Decorator
         return value;
     }
 
-    private static bool HasVisibleThickness(Thickness value) =>
-        value.Left > Epsilon ||
-        value.Top > Epsilon ||
-        value.Right > Epsilon ||
-        value.Bottom > Epsilon;
+    private static bool HasVisibleThickness(Thickness value)
+    {
+        return value.Left > Epsilon ||
+            value.Top > Epsilon ||
+            value.Right > Epsilon ||
+            value.Bottom > Epsilon;
+    }
 
-    private static Point Offset(Point point, double x, double y) =>
-        new(point.X + x, point.Y + y);
+    private static Point Offset(Point point, double x, double y)
+        => new(point.X + x, point.Y + y);
 
-    private readonly struct CornerGeometry(
-        Point start,
-        Point end,
-        bool hasInRamp,
-        Point inControl1,
-        Point inControl2,
-        Point arcStart,
-        bool hasArc,
-        Point arcControl1,
-        Point arcControl2,
-        Point arcEnd,
-        bool hasOutRamp,
-        Point outControl1,
-        Point outControl2
+    private readonly record struct CornerGeometry(
+        Point Start,
+        Point End,
+        bool HasInRamp,
+        Point InControl1,
+        Point InControl2,
+        Point ArcStart,
+        bool HasArc,
+        Point ArcControl1,
+        Point ArcControl2,
+        Point ArcEnd,
+        bool HasOutRamp,
+        Point OutControl1,
+        Point OutControl2
     )
     {
-        public Point Start { get; } = start;
-        public Point End { get; } = end;
-
-        public bool HasInRamp { get; } = hasInRamp;
-        public Point InControl1 { get; } = inControl1;
-        public Point InControl2 { get; } = inControl2;
-        public Point ArcStart { get; } = arcStart;
-
-        public bool HasArc { get; } = hasArc;
-        public Point ArcControl1 { get; } = arcControl1;
-        public Point ArcControl2 { get; } = arcControl2;
-        public Point ArcEnd { get; } = arcEnd;
-
-        public bool HasOutRamp { get; } = hasOutRamp;
-        public Point OutControl1 { get; } = outControl1;
-        public Point OutControl2 { get; } = outControl2;
-
         public static CornerGeometry Sharp(Point point) => new(
             point,
             point,

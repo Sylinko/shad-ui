@@ -3,7 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 
-namespace ShadUI.Controls;
+namespace ShadUI;
 
 public class DataValidationGrid : DataGrid
 {

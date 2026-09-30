@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:collections="using:Avalonia.Collections" xmlns:controls="clr-namespace:ShadUI.Controls;assembly=ShadUI"
-  xmlns:shadui="clr-namespace:ShadUI">
+  xmlns:collections="using:Avalonia.Collections" xmlns:shadui="clr-namespace:ShadUI">
   <ControlTheme
     x:Key="{x:Type DataGridCell}"
     TargetType="DataGridCell">
@@ -28,7 +27,7 @@
                 ContentTemplate="{TemplateBinding ContentTemplate}"
                 Foreground="{TemplateBinding Foreground}"/>
               <Rectangle
-                Name="PART_RightGridLine" Grid.Column="1"
+                x:Name="PART_RightGridLine" Grid.Column="1"
                 Width="1" VerticalAlignment="Stretch"/>
             </Grid>
           </Border>
@@ -67,7 +66,7 @@
                 Content="{TemplateBinding Content}"
                 ContentTemplate="{TemplateBinding ContentTemplate}"/>
               <Path
-                Name="SortIcon" Grid.Column="1"
+                x:Name="SortIcon" Grid.Column="1"
                 Height="12" Margin="8,0,0,0"
                 HorizontalAlignment="Left" VerticalAlignment="Center"
                 Data="{x:Static shadui:Icons.ArrowDown}"
@@ -82,7 +81,7 @@
               </Path>
             </Grid>
             <Rectangle
-              Name="VerticalSeparator" Grid.Column="1"
+              x:Name="VerticalSeparator" Grid.Column="1"
               Width="1" VerticalAlignment="Stretch"
               Fill="{TemplateBinding SeparatorBrush}"
               IsVisible="{TemplateBinding AreSeparatorsVisible}"/>
@@ -156,23 +155,23 @@
           BorderThickness="{TemplateBinding BorderThickness}"
           CornerRadius="{TemplateBinding CornerRadius}">
           <DataGridFrozenGrid
-            Name="PART_Root" ColumnDefinitions="Auto,*"
+            x:Name="PART_Root" ColumnDefinitions="Auto,*"
             RowDefinitions="*,Auto,Auto">
             <Rectangle
-              Name="BackgroundRectangle" Grid.RowSpan="2"
+              x:Name="BackgroundRectangle" Grid.RowSpan="2"
               Grid.ColumnSpan="2"/>
             <DataGridRowHeader
-              Name="PART_RowHeader" Grid.Row="0"
+              x:Name="PART_RowHeader" Grid.Row="0"
               Grid.RowSpan="3" Grid.Column="0"
               DataGridFrozenGrid.IsFrozen="True"/>
             <DataGridCellsPresenter
-              Name="PART_CellsPresenter" Grid.Row="0"
+              x:Name="PART_CellsPresenter" Grid.Row="0"
               Grid.Column="1" DataGridFrozenGrid.IsFrozen="True"/>
             <DataGridDetailsPresenter
-              Name="PART_DetailsPresenter" Grid.Row="1"
+              x:Name="PART_DetailsPresenter" Grid.Row="1"
               Grid.Column="1"/>
             <Rectangle
-              Name="PART_BottomGridLine" Grid.Row="2"
+              x:Name="PART_BottomGridLine" Grid.Row="2"
               Grid.Column="1" Height="0.5"
               HorizontalAlignment="Stretch"/>
           </DataGridFrozenGrid>
@@ -204,7 +203,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Border>
-          <Viewbox Name="ExpanderIcon">
+          <Viewbox x:Name="ExpanderIcon">
             <Viewbox.Transitions>
               <Transitions>
                 <TransformOperationsTransition
@@ -235,14 +234,14 @@
     <Setter Property="Template">
       <ControlTemplate x:DataType="collections:DataGridCollectionViewGroup">
         <DataGridFrozenGrid
-          Name="PART_Root"
+          x:Name="PART_Root"
           MinHeight="{TemplateBinding MinHeight}"
           Background="{TemplateBinding Background}"
           ColumnDefinitions="Auto,Auto,Auto,Auto,*" RowDefinitions="*,Auto">
           <Rectangle
-            Name="PART_IndentSpacer" Grid.Column="1"/>
+            x:Name="PART_IndentSpacer" Grid.Column="1"/>
           <ToggleButton
-            Name="PART_ExpanderButton" Grid.Row="0"
+            x:Name="PART_ExpanderButton" Grid.Row="0"
             Grid.Column="2" Width="12"
             Height="12" Margin="12,0,0,0"
             Background="{TemplateBinding Background}"
@@ -254,7 +253,7 @@
             Margin="12,0,0,0" VerticalAlignment="Center"
             Orientation="Horizontal">
             <TextBlock
-              Name="PART_PropertyNameElement" Margin="4,0,0,0"
+              x:Name="PART_PropertyNameElement" Margin="4,0,0,0"
               Foreground="{TemplateBinding Foreground}"
               IsVisible="{TemplateBinding IsPropertyNameVisible}"/>
             <TextBlock
@@ -262,12 +261,12 @@
               Foreground="{TemplateBinding Foreground}"
               Text="{Binding Key}"/>
             <TextBlock
-              Name="PART_ItemCountElement" Margin="4,0,0,0"
+              x:Name="PART_ItemCountElement" Margin="4,0,0,0"
               Foreground="{TemplateBinding Foreground}"
               IsVisible="{TemplateBinding IsItemCountVisible}"/>
           </StackPanel>
           <Rectangle
-            Name="CurrencyVisual" Grid.Row="0"
+            x:Name="CurrencyVisual" Grid.Row="0"
             Grid.Column="0" Grid.ColumnSpan="5"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
             Fill="Transparent" IsHitTestVisible="False"
@@ -275,11 +274,11 @@
             Stroke="{TemplateBinding BorderBrush}"
             StrokeThickness="1"/>
           <DataGridRowHeader
-            Name="PART_RowHeader" Grid.Row="0"
+            x:Name="PART_RowHeader" Grid.Row="0"
             Grid.RowSpan="2" Grid.Column="0"
             DataGridFrozenGrid.IsFrozen="True"/>
           <Rectangle
-            Name="PART_BottomGridLine" Grid.Row="1"
+            x:Name="PART_BottomGridLine" Grid.Row="1"
             Grid.Column="0" Grid.ColumnSpan="5"
             Height="0.5"
             Fill="{TemplateBinding BorderBrush}"/>
@@ -313,7 +312,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <DataValidationErrors Focusable="False">
-          <Border
+          <shadui:SmoothBorder
             x:Name="DataGridBorder"
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
@@ -331,12 +330,12 @@
                   Background="{DynamicResource CardBackgroundColor}"
                   BorderBrush="{DynamicResource BorderColor}"
                   BorderThickness="0,0,0,1">
-                  <DataGridColumnHeadersPresenter Name="PART_ColumnHeadersPresenter"/>
+                  <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter"/>
                 </Border>
                 <ScrollViewer
                   Grid.Row="1" Margin="0,0,0,-2">
                   <DataGridRowsPresenter
-                    Name="PART_RowsPresenter"
+                    x:Name="PART_RowsPresenter"
                     ScrollViewer.IsScrollInertiaEnabled="{TemplateBinding IsScrollInertiaEnabled}">
                     <DataGridRowsPresenter.GestureRecognizers>
                       <ScrollGestureRecognizer
@@ -347,7 +346,7 @@
                 </ScrollViewer>
               </Grid>
             </Border>
-          </Border>
+          </shadui:SmoothBorder>
         </DataValidationErrors>
       </ControlTemplate>
     </Setter>
@@ -355,13 +354,13 @@
       <Setter Property="Background" Value="{DynamicResource GhostHoverColor}"/>
     </Style>
     <Style Selector="^:error">
-      <Style Selector="^/template/ Border#DataGridBorder">
+      <Style Selector="^/template/ shadui|SmoothBorder#DataGridBorder">
         <Setter Property="BorderBrush" Value="{DynamicResource ErrorColor}"/>
       </Style>
     </Style>
   </ControlTheme>
   <ControlTheme
-    x:Key="{x:Type controls:DataValidationGrid}"
+    x:Key="{x:Type shadui:DataValidationGrid}"
     BasedOn="{StaticResource {x:Type DataGrid}}"
-    TargetType="controls:DataValidationGrid"/>
+    TargetType="shadui:DataValidationGrid"/>
 </ResourceDictionary>

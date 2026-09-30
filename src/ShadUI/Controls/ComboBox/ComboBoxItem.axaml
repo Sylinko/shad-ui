@@ -1,89 +1,56 @@
 ﻿<ResourceDictionary
-  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI">
   <ControlTheme
     x:Key="ComboBoxItemTheme" TargetType="ComboBoxItem">
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
     <Setter Property="Padding" Value="10,8"/>
     <Setter Property="Margin" Value="1"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource MdCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}"/>
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
     <Setter Property="HorizontalContentAlignment" Value="Left"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
-    <Setter Property="FontWeight" Value="Medium"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <DockPanel
-          MinHeight="{TemplateBinding MinHeight}"
-          Margin="{TemplateBinding Margin}">
-          <Border
-            x:Name="SelectedBorder" DockPanel.Dock="Left"
-            Width="4" Margin="0,2,2,2"
-            Background="{DynamicResource PrimaryColor}"
-            CornerRadius="2" Opacity="0"/>
+        <shadui:SmoothBorder
+          x:Name="BackgroundBorder"
+          Background="{DynamicResource TransparentColor}"
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}"
+          CornerRadius="{TemplateBinding CornerRadius}">
+          <shadui:SmoothBorder.Transitions>
+            <Transitions>
+              <TransformOperationsTransition
+                Property="RenderTransform" Duration="0:0:0.10"/>
+              <BrushTransition
+                Property="Background" Duration="0:0:0.2"/>
+            </Transitions>
+          </shadui:SmoothBorder.Transitions>
 
-          <Panel>
-            <Border
-              Name="BaseBackground"
-              Background="{TemplateBinding Background}"
-              BorderBrush="{TemplateBinding BorderBrush}"
-              BorderThickness="{TemplateBinding BorderThickness}"
-              CornerRadius="{TemplateBinding CornerRadius}"
-              Opacity="1"/>
-            <Border
-              Name="HoverBackground"
-              Background="{DynamicResource GhostHoverColor}"
-              BorderBrush="{TemplateBinding BorderBrush}"
-              BorderThickness="{TemplateBinding BorderThickness}"
-              CornerRadius="{TemplateBinding CornerRadius}"
-              Opacity="0"/>
-            <Border
-              Name="SelectionBackground"
-              Background="{DynamicResource GhostColor}"
-              BorderBrush="{TemplateBinding BorderBrush}"
-              BorderThickness="{TemplateBinding BorderThickness}"
-              CornerRadius="{TemplateBinding CornerRadius}"
-              Opacity="0"/>
-            <ContentPresenter
-              Name="PART_ContentPresenter"
-              Margin="{TemplateBinding Padding}"
-              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-              Content="{TemplateBinding Content}"
-              ContentTemplate="{TemplateBinding ContentTemplate}"
-              CornerRadius="{TemplateBinding CornerRadius}"/>
-          </Panel>
-        </DockPanel>
+          <ContentPresenter
+            x:Name="PART_ContentPresenter"
+            Margin="{TemplateBinding Padding}"
+            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+            Background="Transparent"
+            Content="{TemplateBinding Content}"
+            ContentTemplate="{TemplateBinding ContentTemplate}"
+            CornerRadius="{TemplateBinding CornerRadius}"/>
+        </shadui:SmoothBorder>
       </ControlTemplate>
     </Setter>
-    <Style Selector="^ /template/ Border">
-      <Setter Property="Transitions">
-        <Transitions>
-          <DoubleTransition
-            Property="Opacity" Duration="0:0:0.20"/>
-        </Transitions>
-      </Setter>
+    <Style Selector="^:pointerover /template/ shadui|SmoothBorder#BackgroundBorder">
+      <Setter Property="Background" Value="{DynamicResource GhostColor}"/>
     </Style>
-    <Style Selector="^ /template/ Border#SelectedBorder">
-      <Setter Property="Opacity" Value="0"/>
+    <Style Selector="^:selected /template/ shadui|SmoothBorder#BackgroundBorder">
+      <Setter Property="Background" Value="{DynamicResource PrimaryColor25}"/>
     </Style>
-    <Style Selector="^:selected /template/ Border#SelectedBorder">
-      <Setter Property="Opacity" Value="1"/>
+    <Style Selector="^:selected:pointerover /template/ shadui|SmoothBorder#BackgroundBorder">
+      <Setter Property="Background" Value="{DynamicResource PrimaryColor50}"/>
     </Style>
-    <Style Selector="^:selected:not(:pointerover) /template/ Border#SelectionBackground">
-      <Setter Property="Opacity" Value="1"/>
-    </Style>
-    <Style Selector="^:focus /template/ Border#HoverBackground">
-      <Setter Property="Opacity" Value="1"/>
-    </Style>
-    <Style Selector="^:pointerover /template/ Border#HoverBackground">
-      <Setter Property="Opacity" Value="1"/>
-    </Style>
-    <Style Selector="^:focus:pointerover /template/ Border#HoverBackground">
-      <Setter Property="Opacity" Value="1"/>
-    </Style>
-    <Style Selector="^:not(:focus):not(:pointerover) /template/ Border#HoverBackground">
-      <Setter Property="Opacity" Value="0"/>
+    <Style Selector="^:pressed /template/ shadui|SmoothBorder#BackgroundBorder">
+      <Setter Property="RenderTransform" Value="scale(0.99, 0.99)"/>
     </Style>
   </ControlTheme>
 

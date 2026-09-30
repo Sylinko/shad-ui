@@ -3,7 +3,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 
-namespace ShadUI.Controls;
+namespace ShadUI;
 
 [TemplatePart("PART_RemoveButton", typeof(Button))]
 public class DataListItem : ListBoxItem

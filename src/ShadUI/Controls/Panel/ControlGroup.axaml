@@ -1,10 +1,10 @@
 ﻿<ResourceDictionary
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:shadui="clr-namespace:ShadUI.Controls;assembly=ShadUI">
+  xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI">
   <ControlTheme
     x:Key="{x:Type shadui:ControlGroup}"
     TargetType="shadui:ControlGroup">
-    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
   </ControlTheme>

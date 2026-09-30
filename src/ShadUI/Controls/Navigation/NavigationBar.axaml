@@ -53,8 +53,7 @@
   <ControlTheme
     x:Key="{x:Type shadui:NavigationBar}"
     TargetType="{x:Type shadui:NavigationBar}">
-    <Setter Property="Background" Value="{DynamicResource TransparentColor}"/>
-    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Background" Value="{DynamicResource NavigationBarBackgroundColor}"/>
     <Setter Property="CornerRadius" Value="{DynamicResource 3XlCornerRadius}"/>
     <Setter Property="MinWidth" Value="52"/>
     <Setter Property="MinHeight" Value="52"/>
@@ -109,19 +108,22 @@
               x:Name="PART_FooterPresenter" DockPanel.Dock="Bottom"
               Content="{TemplateBinding Footer}"/>
 
-            <Border
+            <shadui:SmoothBorder
               x:Name="PART_ItemsBorder"
               Padding="{TemplateBinding Padding}"
               VerticalAlignment="Top"
-              Background="{TemplateBinding Background}"
-              BorderBrush="{TemplateBinding BorderBrush}"
-              BorderThickness="{TemplateBinding BorderThickness}"
+              Background="{DynamicResource TransparentColor}"
               CornerRadius="{TemplateBinding CornerRadius}">
-              <Border.Transitions>
+              <shadui:SmoothBorder.Transitions>
                 <Transitions>
-                  <BrushTransition Property="Background" Duration="0:0:0.25" Easing="QuadraticEaseInOut"/>
+                  <ThicknessTransition
+                    Easing="CubicEaseOut" Property="BorderThickness"
+                    Duration="0:0:0.25"/>
+                  <BrushTransition
+                    Easing="QuadraticEaseInOut" Property="Background"
+                    Duration="0:0:0.25"/>
                 </Transitions>
-              </Border.Transitions>
+              </shadui:SmoothBorder.Transitions>
               <ScrollViewer
                 Classes.Stack="{TemplateBinding IsExpanded, Converter={x:Static BoolConverters.Not}}"
                 HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
@@ -129,7 +131,7 @@
                   x:Name="PART_ItemsPresenter" Grid.IsSharedSizeScope="True"
                   ItemsPanel="{TemplateBinding ItemsPanel}"/>
               </ScrollViewer>
-            </Border>
+            </shadui:SmoothBorder>
           </DockPanel>
         </shadui:ExpandableDecorator>
       </ControlTemplate>
@@ -139,8 +141,8 @@
       <Style Selector="^ /template/ shadui|ExpandableDecorator#PART_ExpandableDecorator">
         <Setter Property="Orientation" Value="Horizontal"/>
       </Style>
-      <Style Selector="^ /template/ shadui|ExpandableDecorator#PART_ExpandableDecorator[IsExpanded=True] Border#PART_ItemsBorder">
-        <Setter Property="Background" Value="{DynamicResource NavigationBarBackgroundColor}"/>
+      <Style Selector="^ /template/ shadui|ExpandableDecorator#PART_ExpandableDecorator[IsExpanded=True] shadui|SmoothBorder#PART_ItemsBorder">
+        <Setter Property="Background" Value="{TemplateBinding Background}"/>
       </Style>
     </Style>
 

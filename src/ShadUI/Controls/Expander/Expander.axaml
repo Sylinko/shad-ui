@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:shadui="clr-namespace:ShadUI.Controls;assembly=ShadUI">
+  xmlns:shadui="clr-namespace:ShadUI">
   <ControlTheme
     x:Key="{x:Type Expander}"
     TargetType="Expander">
@@ -12,11 +12,12 @@
     <Setter Property="shadui:ExpanderAssist.HeaderBackground" Value="{DynamicResource TransparentColor}"/>
     <Setter Property="Template">
       <ControlTemplate TargetType="Expander">
-        <Border
+        <shadui:SmoothBorder
           x:Name="RootBorder"
           Background="{TemplateBinding Background}"
           BorderBrush="{TemplateBinding BorderBrush}"
           BorderThickness="{TemplateBinding BorderThickness}"
+          ClipToBounds="True"
           CornerRadius="{TemplateBinding CornerRadius}">
           <DockPanel>
             <LayoutTransformControl
@@ -82,7 +83,7 @@
                 IsVisible="{TemplateBinding IsExpanded}"/>
             </Border>
           </DockPanel>
-        </Border>
+        </shadui:SmoothBorder>
       </ControlTemplate>
     </Setter>
 

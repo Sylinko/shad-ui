@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Layout;
 
-namespace ShadUI.Controls;
+namespace ShadUI;
 
 /// <summary>
 /// Virtualizing wrap panel with uniform-cell estimation and container recycling.
