@@ -12,11 +12,6 @@
         FadeInEasing="CubicEaseInOut" FadeOutEasing="CubicEaseInOut"
         Duration="0:0:0.4"/>
     </Setter>
-    <Setter Property="CompactPageTransition">
-      <CrossFade
-        FadeInEasing="CubicEaseInOut" FadeOutEasing="CubicEaseInOut"
-        Duration="0:0:0.2"/>
-    </Setter>
     <Setter Property="Template">
       <ControlTemplate>
         <Grid

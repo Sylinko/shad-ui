@@ -51,10 +51,14 @@
             <ContentPresenter
               x:Name="DialogTitle" DockPanel.Dock="Top"
               Content="{TemplateBinding Title}"
-              FontSize="{DynamicResource FontSizeL}"
-              FontWeight="DemiBold"
+              FontSize="{DynamicResource FontSizeXl}"
+              FontWeight="Bold"
               IsVisible="{TemplateBinding Title, Converter={x:Static ObjectConverters.IsNotNull}}"
-              TextWrapping="Wrap"/>
+              TextTrimming="CharacterEllipsis">
+              <Interaction.Behaviors>
+                <shadui:TextTrimmedToolTipBehavior/>
+              </Interaction.Behaviors>
+            </ContentPresenter>
 
             <StackPanel
               x:Name="ButtonContainer" DockPanel.Dock="Bottom"
@@ -84,8 +88,7 @@
             </StackPanel>
 
             <ScrollViewer
-              Margin="0,0,-12,0" ClipToBounds="False"
-              HorizontalScrollBarVisibility="Disabled">
+              Margin="0,0,-12,0" HorizontalScrollBarVisibility="Disabled">
               <ContentPresenter
                 Margin="0,0,12,0"
                 Content="{TemplateBinding Content}"

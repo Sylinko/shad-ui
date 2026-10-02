@@ -160,11 +160,19 @@
       <Setter Property="shadui:ButtonAssist.CheckedBackground" Value="{DynamicResource SecondaryColor50}"/>
     </Style>
 
-    <!--  Compact  -->
     <Style Selector="^.Compact">
+      <Setter Property="Padding" Value="6,4"/>
+      <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+
+      <Style Selector="^ /template/ DockPanel#PART_Container">
+        <Setter Property="HorizontalSpacing" Value="2"/>
+      </Style>
+    </Style>
+
+    <Style Selector="^.Minimal">
       <Setter Property="Padding" Value="4"/>
       <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
-      <Setter Property="FontWeight" Value="Light"/>
       <Setter Property="VerticalAlignment" Value="Center"/>
 
       <Style Selector="^ /template/ DockPanel#PART_Container">
