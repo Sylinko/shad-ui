@@ -7,13 +7,17 @@
       <ControlTemplate>
         <Panel>
           <Panel x:Name="InnerPanel">
-            <Panel.OpacityMask>
-              <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Horizontal}">
-                <Binding Path="#PART_HorizontalScrollBar.Value"/>
-                <Binding Path="#PART_HorizontalScrollBar.Minimum"/>
-                <Binding Path="#PART_HorizontalScrollBar.Maximum"/>
-              </MultiBinding>
-            </Panel.OpacityMask>
+            <Interaction.Behaviors>
+              <shadui:ScrollEdgeFadeBehavior
+                Presenter="{Binding #PART_ContentPresenter}"
+                ScrollViewer="{Binding #InnerPanel.TemplatedParent}"/>
+            </Interaction.Behaviors>
+            <Panel.Transitions>
+              <Transitions>
+                <BrushTransition
+                  Property="OpacityMask" Duration="0:0:0.2"/>
+              </Transitions>
+            </Panel.Transitions>
             <ScrollContentPresenter
               x:Name="PART_ContentPresenter"
               Padding="{TemplateBinding Padding}"
@@ -25,13 +29,6 @@
               ScrollViewer.IsScrollInertiaEnabled="{TemplateBinding IsScrollInertiaEnabled}"
               VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
               VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}">
-              <ScrollContentPresenter.OpacityMask>
-                <MultiBinding Converter="{x:Static shadui:ScrollerToOpacityMask.Vertical}">
-                  <Binding Path="#PART_VerticalScrollBar.Value"/>
-                  <Binding Path="#PART_VerticalScrollBar.Minimum"/>
-                  <Binding Path="#PART_VerticalScrollBar.Maximum"/>
-                </MultiBinding>
-              </ScrollContentPresenter.OpacityMask>
               <ScrollContentPresenter.Transitions>
                 <Transitions>
                   <BrushTransition
