@@ -145,15 +145,15 @@
                     IsLightDismissEnabled="True"
                     IsOpen="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
                     PlacementTarget="{Binding #BackgroundBorder}"
-                    VerticalOffset="5">
+                    VerticalOffset="5" WindowManagerAddShadowHint="False">
                     <LayoutTransformControl
                       x:Name="LayoutTransform" RenderTransformOrigin="50%, 0%">
                       <shadui:SmoothBorder
                         MinWidth="{Binding #BackgroundBorder.Bounds.Width}"
-                        Margin="2,0,2,4"
+                        Margin="{DynamicResource PopupCompactShadowMargin}"
                         Background="{DynamicResource PopupBackgroundColor}"
                         BorderBrush="{DynamicResource BorderColor}"
-                        BorderThickness="1"
+                        BorderThickness="{DynamicResource PopupBorderThickness}"
                         BoxShadow="{DynamicResource Shadow}"
                         CornerRadius="{DynamicResource 2XlCornerRadius}">
                         <DockPanel>

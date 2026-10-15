@@ -61,14 +61,15 @@
               IsOpen="{Binding #DropDownButton.IsChecked, Mode=TwoWay}"
               Placement="BottomEdgeAlignedLeft"
               PlacementTarget="{Binding #DropDownButton}"
-              VerticalOffset="5">
+              VerticalOffset="5" WindowManagerAddShadowHint="False">
               <LayoutTransformControl
                 Name="LayoutTransform" RenderTransformOrigin="50%, 0%">
                 <Border
-                  Margin="2,0,2,4" shadui:ScrollEventAssist.PreventScrollPropagation="True"
+                  Margin="{DynamicResource PopupCompactShadowMargin}"
+                  shadui:ScrollEventAssist.PreventScrollPropagation="True"
                   Background="{DynamicResource CardBackgroundColor}"
                   BorderBrush="{DynamicResource BorderColor}"
-                  BorderThickness="1"
+                  BorderThickness="{DynamicResource PopupBorderThickness}"
                   BoxShadow="{DynamicResource Shadow}"
                   CornerRadius="{TemplateBinding CornerRadius}">
                   <Grid RowDefinitions="Auto,Auto">

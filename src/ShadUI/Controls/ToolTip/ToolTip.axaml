@@ -38,8 +38,10 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Border
-          x:Name="PART_LayoutRoot" Margin="6"
-          BoxShadow="0 0 11 0 #66000000" CacheMode="BitmapCache"
+          x:Name="PART_LayoutRoot"
+          Margin="{DynamicResource PopupShadowMargin}"
+          BoxShadow="{DynamicResource PopupShadow}"
+          CacheMode="BitmapCache"
           CornerRadius="{TemplateBinding CornerRadius}"
           Opacity="0" RenderTransform="scale(0.8,0.8)">
           <Border.Transitions>

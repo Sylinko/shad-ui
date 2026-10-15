@@ -191,9 +191,9 @@
                 DataValidationErrors.Errors="{TemplateBinding DataValidationErrors.Errors}"
                 IsHitTestVisible="{TemplateBinding shadui:ControlAssist.ReadOnly, Converter={x:Static BoolConverters.Not}}"
                 IsReadOnly="{TemplateBinding shadui:ControlAssist.ReadOnly}"
+                PlaceholderText="{TemplateBinding PlaceholderText}"
                 Theme="{StaticResource InnerTextBoxTheme}"
-                UseFloatingPlaceholder="False"
-                PlaceholderText="{TemplateBinding PlaceholderText}"/>
+                UseFloatingPlaceholder="False"/>
               <Border
                 Width="40" HorizontalAlignment="Right"
                 Background="Transparent"
@@ -206,7 +206,7 @@
                 IsOpen="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
                 Placement="BottomEdgeAlignedLeft"
                 PlacementTarget="{CompiledBinding #PART_TextBox}"
-                VerticalOffset="5">
+                VerticalOffset="5" WindowManagerAddShadowHint="False">
                 <LayoutTransformControl
                   Name="PART_LayoutTransform" RenderTransformOrigin="50%, 0%">
                   <Calendar

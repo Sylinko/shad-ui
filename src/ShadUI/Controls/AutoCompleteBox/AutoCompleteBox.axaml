@@ -171,12 +171,13 @@
             MinWidth="{CompiledBinding #PART_TextBox.Bounds.Width}"
             MaxHeight="{TemplateBinding MaxDropDownHeight}"
             IsLightDismissEnabled="True" PlacementTarget="PART_TextBox"
-            VerticalOffset="5">
+            VerticalOffset="5" WindowManagerAddShadowHint="False">
             <LayoutTransformControl
               x:Name="LayoutTransform" RenderTransformOrigin="50%, 0%">
               <shadui:SmoothBorder
                 MinWidth="{CompiledBinding #PART_TextBox.Bounds.Width}"
-                Margin="2,0,2,4" shadui:ScrollEventAssist.PreventScrollPropagation="True"
+                Margin="{DynamicResource PopupCompactShadowMargin}"
+                shadui:ScrollEventAssist.PreventScrollPropagation="True"
                 Background="{DynamicResource PopupBackgroundColor}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"

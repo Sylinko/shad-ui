@@ -6,17 +6,14 @@
     TargetType="FlyoutPresenter">
     <Setter Property="Background" Value="{DynamicResource PopupBackgroundColor}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderThickness" Value="{DynamicResource PopupBorderThickness}"/>
     <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
-    <Setter Property="shadui:TopLevelAssist.TransparencyLevelHint" Value="Transparent"/>
-    <Setter Property="shadui:TopLevelAssist.WindowDecorations" Value="None"/>
-    <Setter Property="shadui:TopLevelAssist.CanResize" Value="False"/>
-    <Setter Property="shadui:TopLevelAssist.ExtendClientAreaToDecorationsHint" Value="True"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Border
-          x:Name="LayoutRoot" Margin="6"
-          BoxShadow="0 0 11 0 #66000000"
+          x:Name="LayoutRoot"
+          Margin="{DynamicResource PopupShadowMargin}"
+          BoxShadow="{DynamicResource PopupShadow}"
           CornerRadius="{TemplateBinding CornerRadius}">
           <shadui:SmoothBorder
             Background="{TemplateBinding Background}"

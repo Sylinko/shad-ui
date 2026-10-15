@@ -117,14 +117,14 @@
               IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
               Opacity="0"
               OverlayInputPassThroughElement="{CompiledBinding $parent[MenuBase]}"
-              Placement="RightEdgeAlignedTop">
+              Placement="RightEdgeAlignedTop" WindowManagerAddShadowHint="False">
               <LayoutTransformControl
                 Name="LayoutTransform" RenderTransformOrigin="0%, 0%">
                 <Border
                   Margin="24,0,2,4"
                   Background="{DynamicResource PopupBackgroundColor}"
                   BorderBrush="{DynamicResource BorderColor}"
-                  BorderThickness="1"
+                  BorderThickness="{DynamicResource PopupBorderThickness}"
                   BoxShadow="{DynamicResource Shadow}"
                   CornerRadius="{DynamicResource LgCornerRadius}">
                   <StackPanel Margin="0,3">

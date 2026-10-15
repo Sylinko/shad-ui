@@ -7,20 +7,17 @@
     <Setter Property="Background" Value="{DynamicResource PopupBackgroundColor}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
-    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderThickness" Value="{DynamicResource PopupBorderThickness}"/>
     <Setter Property="Padding" Value="2,4"/>
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
     <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
     <Setter Property="TextBlock.FontSize" Value="{DynamicResource FontSizeM}"/>
-    <Setter Property="shadui:TopLevelAssist.TransparencyLevelHint" Value="Transparent"/>
-    <Setter Property="shadui:TopLevelAssist.WindowDecorations" Value="None"/>
-    <Setter Property="shadui:TopLevelAssist.CanResize" Value="False"/>
-    <Setter Property="shadui:TopLevelAssist.ExtendClientAreaToDecorationsHint" Value="True"/>
     <Setter Property="Template">
       <ControlTemplate>
         <Border
-          x:Name="LayoutRoot" Margin="6"
-          BoxShadow="0 0 11 0 #66000000"
+          x:Name="LayoutRoot"
+          Margin="{DynamicResource PopupShadowMargin}"
+          BoxShadow="{DynamicResource PopupShadow}"
           CornerRadius="{TemplateBinding CornerRadius}">
           <shadui:SmoothBorder
             Background="{TemplateBinding Background}"

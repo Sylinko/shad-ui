@@ -78,15 +78,17 @@
               Opacity="0"
               OverlayInputPassThroughElement="{CompiledBinding $parent[Menu]}"
               Placement="{TemplateBinding shadui:MenuItemAssist.PopupPlacement}"
-              VerticalOffset="{TemplateBinding shadui:MenuItemAssist.PopupVerticalOffset}">
+              VerticalOffset="{TemplateBinding shadui:MenuItemAssist.PopupVerticalOffset}"
+              WindowManagerAddShadowHint="False">
               <LayoutTransformControl
                 Name="LayoutTransform" Margin="-1,0,0,0"
                 RenderTransformOrigin="50%, 0%">
                 <Border
-                  Margin="2,0,2,4" shadui:ScrollEventAssist.PreventScrollPropagation="True"
+                  Margin="{DynamicResource PopupCompactShadowMargin}"
+                  shadui:ScrollEventAssist.PreventScrollPropagation="True"
                   Background="{DynamicResource PopupBackgroundColor}"
                   BorderBrush="{DynamicResource BorderColor}"
-                  BorderThickness="1"
+                  BorderThickness="{DynamicResource PopupBorderThickness}"
                   BoxShadow="{DynamicResource Shadow}"
                   CornerRadius="{DynamicResource LgCornerRadius}">
                   <StackPanel Margin="0,3">
