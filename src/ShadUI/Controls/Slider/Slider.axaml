@@ -143,6 +143,7 @@
     TargetType="Slider">
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="ClipToBounds" Value="False"/>
     <Setter Property="Foreground" Value="{DynamicResource PrimaryColor}"/>
     <Style Selector="^:horizontal">
       <Setter Property="Template">

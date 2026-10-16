@@ -41,7 +41,6 @@
           x:Name="PART_LayoutRoot"
           Margin="{DynamicResource PopupShadowMargin}"
           BoxShadow="{DynamicResource PopupShadow}"
-          CacheMode="BitmapCache"
           CornerRadius="{TemplateBinding CornerRadius}"
           Opacity="0" RenderTransform="scale(0.8,0.8)">
           <Border.Transitions>

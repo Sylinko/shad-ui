@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Media;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
@@ -29,6 +30,26 @@ public static class MenuItemAssist
     /// <param name="ctrl">The menu item.</param>
     /// <param name="value">The label value to set.</param>
     public static void SetLabel(MenuItem ctrl, object value) => ctrl.SetValue(LabelProperty, value);
+
+    /// <summary>
+    ///     Attached property for setting the hover background brush of a <see cref="MenuItem" />.
+    /// </summary>
+    public static readonly AttachedProperty<IBrush?> HoverBackgroundProperty =
+        AvaloniaProperty.RegisterAttached<MenuItem, IBrush?>("HoverBackground", typeof(MenuItem));
+
+    /// <summary>
+    ///     Sets the hover background brush for the specified <see cref="MenuItem" />.
+    /// </summary>
+    /// <param name="menuItem">The MenuItem to set the hover background for.</param>
+    /// <param name="value">The brush to use as the hover background.</param>
+    public static void SetHoverBackground(MenuItem menuItem, IBrush? value) => menuItem.SetValue(HoverBackgroundProperty, value);
+
+    /// <summary>
+    ///     Gets the hover background brush for the specified <see cref="MenuItem" />.
+    /// </summary>
+    /// <param name="menuItem">The MenuItem to get the hover background from.</param>
+    /// <returns>The brush used as the hover background.</returns>
+    public static IBrush? GetHoverBackground(MenuItem menuItem) => menuItem.GetValue(HoverBackgroundProperty);
 
     /// <summary>
     ///     Defines an attached property for setting the horizontal offset of a popup.

@@ -1,7 +1,13 @@
 ﻿<ResourceDictionary
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls" xmlns:shadui="clr-namespace:ShadUI"
-  xmlns:system="clr-namespace:System;assembly=netstandard">
+  xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls" xmlns:shadui="clr-namespace:ShadUI">
+  <Design.PreviewWith>
+    <MenuItem
+      Header="Menu Item"
+      Icon="{LucideIconContent Check}"
+      InputGesture="Ctrl+Shift+M"/>
+  </Design.PreviewWith>
+
   <converters:PlatformKeyGestureConverter x:Key="KeyGestureConverter"/>
   <ControlTheme
     x:Key="{x:Type MenuItem}"
@@ -13,6 +19,7 @@
     <Setter Property="Padding" Value="8,4"/>
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
     <Setter Property="shadui:MenuItemAssist.Label" Value="{x:Null}"/>
+    <Setter Property="shadui:MenuItemAssist.HoverBackground" Value="{DynamicResource GhostColor}"/>
     <Setter Property="Transitions">
       <Setter.Value>
         <Transitions>
@@ -23,126 +30,100 @@
     </Setter>
     <Setter Property="Template">
       <ControlTemplate>
-        <Panel Background="Transparent">
-          <Border
-            Name="BaseBackground" Margin="4,2"
+        <Panel Margin="4,2">
+          <shadui:SmoothBorder
+            x:Name="BackgroundBorder"
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
-            CornerRadius="{TemplateBinding CornerRadius}"
-            Opacity="1">
-            <Border.Transitions>
+            ClipToBounds="True"
+            CornerRadius="{TemplateBinding CornerRadius}">
+            <shadui:SmoothBorder.Transitions>
               <Transitions>
-                <DoubleTransition
-                  Property="Opacity" Duration="0:0:0.20"/>
+                <BrushTransition
+                  Property="Background" Duration="0:0:0.15"/>
               </Transitions>
-            </Border.Transitions>
-          </Border>
-          <Border
-            Name="HoverBackground" Margin="4,2"
-            Background="{DynamicResource GhostColor}"
-            CornerRadius="{TemplateBinding CornerRadius}"
-            Opacity="0">
-            <Border.Transitions>
-              <Transitions>
-                <DoubleTransition
-                  Property="Opacity" Duration="0:0:0.20"/>
-              </Transitions>
-            </Border.Transitions>
-          </Border>
-          <Panel Margin="4,2">
-            <Border
-              Name="BorderContainer" Background="Transparent"
-              ClipToBounds="True"
-              CornerRadius="{TemplateBinding CornerRadius}">
-              <Grid
-                Margin="{TemplateBinding Padding}"
-                ColumnSpacing="4">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition
-                    Width="Auto" SharedSizeGroup="A"/>
-                  <ColumnDefinition
-                    Width="Auto" SharedSizeGroup="B"/>
-                  <ColumnDefinition Width="*"/>
-                  <ColumnDefinition Width="Auto"/>
-                  <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            </shadui:SmoothBorder.Transitions>
 
-                <PathIcon
-                  x:Name="PART_Check" Grid.Column="0"
-                  Width="14" Height="14"
-                  VerticalAlignment="Center"
-                  Data="{x:Static shadui:Icons.Check}"
-                  Foreground="{DynamicResource PrimaryColor}"
-                  IsVisible="{TemplateBinding IsChecked}"/>
-                <ContentPresenter
-                  x:Name="PART_Icon" Grid.Column="1"
-                  Height="16" HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  Content="{TemplateBinding Icon}"
-                  IsVisible="{TemplateBinding Icon, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-                <ContentPresenter
-                  x:Name="PART_HeaderPresenter" Grid.Column="2"
-                  HorizontalAlignment="Left" VerticalAlignment="Center"
-                  Content="{TemplateBinding Header}">
-                  <ContentPresenter.DataTemplates>
-                    <DataTemplate DataType="system:String">
-                      <TextBlock
-                        FontSize="{DynamicResource FontSizeM}"
-                        FontWeight="Medium"
-                        Text="{CompiledBinding}"/>
-                    </DataTemplate>
-                  </ContentPresenter.DataTemplates>
-                </ContentPresenter>
-                <PathIcon
-                  x:Name="PART_RightArrow" Grid.Column="3"
-                  Width="10" Height="10"
-                  Margin="8,0,0,0" HorizontalAlignment="Right"
-                  VerticalAlignment="Center"
-                  Data="{x:Static shadui:Icons.ChevronRight}"
-                  Foreground="{DynamicResource ForegroundColor}"/>
-                <TextBlock
-                  x:Name="PART_InputGestureT" Grid.Column="4"
-                  VerticalAlignment="Center"
-                  FontSize="{DynamicResource FontSizeS}"
-                  IsVisible="{TemplateBinding InputGesture, Converter={x:Static ObjectConverters.IsNotNull}}"
-                  Opacity="0.5"
-                  Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"/>
-              </Grid>
-            </Border>
-            <!--  Menu items may be hosted by either Menu or MenuFlyoutPresenter.  -->
-            <Popup
-              Name="PART_Popup" HorizontalOffset="-24"
-              IsLightDismissEnabled="False"
-              IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
-              Opacity="0"
-              OverlayInputPassThroughElement="{CompiledBinding $parent[MenuBase]}"
-              Placement="RightEdgeAlignedTop" WindowManagerAddShadowHint="False">
-              <LayoutTransformControl
-                Name="LayoutTransform" RenderTransformOrigin="0%, 0%">
-                <Border
-                  Margin="24,0,2,4"
-                  Background="{DynamicResource PopupBackgroundColor}"
-                  BorderBrush="{DynamicResource BorderColor}"
-                  BorderThickness="{DynamicResource PopupBorderThickness}"
-                  BoxShadow="{DynamicResource Shadow}"
-                  CornerRadius="{DynamicResource LgCornerRadius}">
-                  <StackPanel Margin="0,3">
-                    <Border
-                      Padding="16,8"
-                      IsVisible="{TemplateBinding shadui:MenuItemAssist.Label, Converter={x:Static ObjectConverters.IsNotNull}}">
-                      <ContentPresenter Content="{TemplateBinding shadui:MenuItemAssist.Label}"/>
-                    </Border>
-                    <ScrollViewer ClipToBounds="True">
-                      <ItemsPresenter
-                        Name="ItemsPresenter" Grid.IsSharedSizeScope="True"
-                        ItemsPanel="{TemplateBinding ItemsPanel}"/>
-                    </ScrollViewer>
-                  </StackPanel>
-                </Border>
-              </LayoutTransformControl>
-            </Popup>
-          </Panel>
+            <Grid
+              Margin="{TemplateBinding Padding}"
+              ColumnSpacing="4">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                  Width="Auto" SharedSizeGroup="A"/>
+                <ColumnDefinition
+                  Width="Auto" SharedSizeGroup="B"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+
+              <PathIcon
+                x:Name="PART_Check" Grid.Column="0"
+                Width="14" Height="14"
+                VerticalAlignment="Center"
+                Data="{x:Static shadui:Icons.Check}"
+                Foreground="{DynamicResource PrimaryColor}"
+                IsVisible="{TemplateBinding IsChecked}"/>
+              <ContentPresenter
+                x:Name="PART_Icon" Grid.Column="1"
+                Height="16" HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="{TemplateBinding Icon}"
+                IsVisible="{TemplateBinding Icon, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+              <ContentPresenter
+                x:Name="PART_HeaderPresenter" Grid.Column="2"
+                HorizontalAlignment="Left" VerticalAlignment="Center"
+                Content="{TemplateBinding Header}"/>
+              <PathIcon
+                x:Name="PART_RightArrow" Grid.Column="3"
+                Width="10" Height="10"
+                Margin="8,0,0,0" HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Data="{x:Static shadui:Icons.ChevronRight}"
+                Foreground="{DynamicResource ForegroundColor}"/>
+              <TextBlock
+                x:Name="PART_InputGestureT" Grid.Column="4"
+                VerticalAlignment="Center"
+                FontSize="{DynamicResource FontSizeS}"
+                IsVisible="{TemplateBinding InputGesture, Converter={x:Static ObjectConverters.IsNotNull}}"
+                Opacity="0.5"
+                Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"/>
+            </Grid>
+          </shadui:SmoothBorder>
+
+          <!--  Menu items may be hosted by either Menu or MenuFlyoutPresenter.  -->
+          <Popup
+            x:Name="PART_Popup" HorizontalOffset="-24"
+            IsLightDismissEnabled="False"
+            IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
+            Opacity="0"
+            OverlayInputPassThroughElement="{CompiledBinding $parent[MenuBase]}"
+            Placement="RightEdgeAlignedTop" WindowManagerAddShadowHint="False">
+            <LayoutTransformControl
+              x:Name="LayoutTransform" RenderTransformOrigin="0%,0%">
+              <shadui:SmoothBorder
+                Margin="24,0,2,4"
+                Background="{DynamicResource PopupBackgroundColor}"
+                BorderBrush="{DynamicResource BorderColor}"
+                BorderThickness="{DynamicResource PopupBorderThickness}"
+                BoxShadow="{DynamicResource Shadow}"
+                CornerRadius="{DynamicResource LgCornerRadius}">
+                <StackPanel Margin="0,3">
+                  <Border
+                    Padding="16,8"
+                    IsVisible="{TemplateBinding shadui:MenuItemAssist.Label, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <ContentPresenter Content="{TemplateBinding shadui:MenuItemAssist.Label}"/>
+                  </Border>
+                  <ScrollViewer ClipToBounds="True">
+                    <ItemsPresenter
+                      x:Name="ItemsPresenter" Grid.IsSharedSizeScope="True"
+                      ItemsPanel="{TemplateBinding ItemsPanel}"/>
+                  </ScrollViewer>
+                </StackPanel>
+              </shadui:SmoothBorder>
+            </LayoutTransformControl>
+          </Popup>
         </Panel>
       </ControlTemplate>
     </Setter>
@@ -159,17 +140,11 @@
     <Style Selector="^[FlowDirection=RightToLeft] /template/ Popup#Popup">
       <Setter Property="HorizontalOffset" Value="25"/>
     </Style>
-    <Style Selector="^:pointerover /template/ Border#HoverBackground">
-      <Setter Property="Opacity" Value="1"/>
+    <Style Selector="^:pointerover /template/ shadui|SmoothBorder#BackgroundBorder">
+      <Setter Property="Background" Value="{TemplateBinding shadui:MenuItemAssist.HoverBackground}"/>
     </Style>
-    <Style Selector="^:pointerover /template/ Border#BaseBackground">
-      <Setter Property="Opacity" Value="0"/>
-    </Style>
-    <Style Selector="^:open /template/ Border#HoverBackground">
-      <Setter Property="Opacity" Value="1"/>
-    </Style>
-    <Style Selector="^:open /template/ Border#BaseBackground">
-      <Setter Property="Opacity" Value="0"/>
+    <Style Selector="^:open /template/ shadui|SmoothBorder#BackgroundBorder">
+      <Setter Property="Background" Value="{TemplateBinding shadui:MenuItemAssist.HoverBackground}"/>
     </Style>
 
     <Style Selector="^:open /template/ LayoutTransformControl#LayoutTransform">
@@ -193,9 +168,7 @@
 
     <Style Selector="^.Destructive">
       <Setter Property="Foreground" Value="{DynamicResource DestructiveColor}"/>
-      <Style Selector="^ /template/ Border#HoverBackground">
-        <Setter Property="Background" Value="{DynamicResource DestructiveColor10}"/>
-      </Style>
+      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource DestructiveColor10}"/>
     </Style>
   </ControlTheme>
 </ResourceDictionary>
