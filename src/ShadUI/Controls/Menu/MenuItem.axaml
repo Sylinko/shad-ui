@@ -168,7 +168,7 @@
 
     <Style Selector="^.Destructive">
       <Setter Property="Foreground" Value="{DynamicResource DestructiveColor}"/>
-      <Setter Property="shadui:ButtonAssist.HoverBackground" Value="{DynamicResource DestructiveColor10}"/>
+      <Setter Property="shadui:MenuItemAssist.HoverBackground" Value="{DynamicResource DestructiveColor10}"/>
     </Style>
   </ControlTheme>
 </ResourceDictionary>
