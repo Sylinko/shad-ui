@@ -23,6 +23,13 @@ public static class ToastManager
 {
     private static readonly TopLevelHostRegistry<ToastHost> Hosts = new();
 
+    /// <summary>
+    ///     Raised on the UI thread when a host is registered or unregistered.
+    ///     Application owners that present long-lived toasts can use this signal to release a
+    ///     reference to a disappearing host and re-present the toast on an available host.
+    /// </summary>
+    public static event EventHandler? HostsChanged;
+
     #region Internal — Registration (called by ToastHost)
 
     /// <summary>
@@ -34,6 +41,7 @@ public static class ToastManager
         Dispatcher.UIThread.CheckAccess();
 
         Hosts.Register(host);
+        HostsChanged?.Invoke(host, EventArgs.Empty);
     }
 
     /// <summary>
@@ -45,6 +53,7 @@ public static class ToastManager
         Dispatcher.UIThread.CheckAccess();
 
         Hosts.Unregister(host);
+        HostsChanged?.Invoke(host, EventArgs.Empty);
     }
 
     /// <summary>

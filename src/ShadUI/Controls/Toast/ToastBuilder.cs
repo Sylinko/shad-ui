@@ -100,6 +100,29 @@ public readonly ref struct ToastBuilder
         return this;
     }
 
+    /// <summary>
+    ///     Keeps the toast open when its action button is clicked. The action command still runs,
+    ///     but the toast remains visible so its content and action can track a long-running operation.
+    ///     Action clicks dismiss the toast by default.
+    /// </summary>
+    /// <returns>The current <see cref="ToastBuilder" /> instance for fluent chaining.</returns>
+    public ToastBuilder KeepOpenOnAction()
+    {
+        _toast.CanDismissOnAction = false;
+        return this;
+    }
+
+    /// <summary>
+    ///     Protects the toast from capacity eviction. Use this for toasts that represent an active
+    ///     operation whose presentation must survive unrelated notifications.
+    /// </summary>
+    /// <returns>The current <see cref="ToastBuilder" /> instance for fluent chaining.</returns>
+    public ToastBuilder PreventEviction()
+    {
+        _toast.CanBeEvicted = false;
+        return this;
+    }
+
     public ToastBuilder WithPosition(ToastPosition position)
     {
         _toast.Position = position;

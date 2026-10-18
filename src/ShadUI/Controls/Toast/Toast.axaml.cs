@@ -175,15 +175,50 @@ public sealed class Toast : ContentControl
     }
 
     /// <summary>
+    ///     Defines the <see cref="CanDismissOnAction" /> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> CanDismissOnActionProperty =
+        AvaloniaProperty.Register<Toast, bool>(nameof(CanDismissOnAction), true);
+
+    /// <summary>
+    ///     Gets or sets a value indicating whether clicking the action button closes the toast.
+    ///     When <c>false</c>, the action command still runs but the toast stays open, allowing its
+    ///     content and action to be updated until the operation reaches a terminal state.
+    /// </summary>
+    public bool CanDismissOnAction
+    {
+        get => GetValue(CanDismissOnActionProperty);
+        set => SetValue(CanDismissOnActionProperty, value);
+    }
+
+    /// <summary>
+    ///     Defines the <see cref="CanBeEvicted" /> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> CanBeEvictedProperty =
+        AvaloniaProperty.Register<Toast, bool>(nameof(CanBeEvicted), true);
+
+    /// <summary>
+    ///     Gets or sets a value indicating whether the host may remove this toast when the visible
+    ///     toast count exceeds <see cref="ToastHost.MaxToasts" />. Protected toasts keep their
+    ///     presentation until their owner dismisses them or the operation reaches a terminal state.
+    /// </summary>
+    public bool CanBeEvicted
+    {
+        get => GetValue(CanBeEvictedProperty);
+        set => SetValue(CanBeEvictedProperty, value);
+    }
+
+    /// <summary>
     ///     Defines the <see cref="Command"/> property.
     /// </summary>
     public static readonly StyledProperty<ICommand?> CommandProperty =
         AvaloniaProperty.Register<Toast, ICommand?>(nameof(Command));
 
     /// <summary>
-    ///     Gets or sets the command to execute when the toast is closed
-    ///     (via close button, card click with <see cref="CanDismissByClicking" />, or programmatic dismiss).
-    ///     The command receives the associated <see cref="ToastResult" /> as its parameter.
+    ///     Gets or sets the command to execute when the toast reaches its terminal closed state
+    ///     (via close button, card click with <see cref="CanDismissByClicking" />, action dismissal,
+    ///     or programmatic dismiss). The command receives the associated <see cref="ToastResult" />
+    ///     as its parameter and runs exactly once per toast.
     /// </summary>
     public ICommand? Command
     {
@@ -199,6 +234,7 @@ public sealed class Toast : ContentControl
 
     /// <summary>
     ///     Gets or sets the command to execute when the action button is clicked.
+    ///     It runs exactly once per click, whether or not the click also dismisses the toast.
     /// </summary>
     public ICommand? ActionCommand
     {
@@ -228,7 +264,9 @@ public sealed class Toast : ContentControl
         AvaloniaProperty.Register<Toast, ICommand?>(nameof(DismissCommand));
 
     /// <summary>
-    ///     Gets or sets the command to execute when the toast is dismissed (via close button, card click with <see cref="CanDismissByClicking" />, or programmatic dismiss).
+    ///     Gets or sets the command to execute when the user dismisses the toast
+    ///     (via close button, card click with <see cref="CanDismissByClicking" />, or programmatic dismiss).
+    ///     It is not executed for an action-button click unless that click also dismisses the toast.
     /// </summary>
     public ICommand? DismissCommand
     {
@@ -302,6 +340,7 @@ public sealed class Toast : ContentControl
     private IDisposable? _cardPressDisposable;
     private IDisposable? _actionButtonClickDisposable;
     private IDisposable? _closeButtonClickDisposable;
+    private bool _isCloseRequested;
 
     #endregion
 
@@ -322,8 +361,7 @@ public sealed class Toast : ContentControl
                 Button.ClickEvent,
                 (_, _) =>
                 {
-                    if (Command is { } command && command.CanExecute(ToastResult.ActionButtonClicked))
-                        command.Execute(ToastResult.ActionButtonClicked);
+                    if (_isCloseRequested) return;
 
                     if (ActionCommand is { } actionCommand && actionCommand.CanExecute(ActionCommandParameter))
                         actionCommand.Execute(ActionCommandParameter);
@@ -332,7 +370,10 @@ public sealed class Toast : ContentControl
                 });
 
         _closeButtonClickDisposable = e.NameScope.Get<Button>("PART_CloseButton")
-            .AddDisposableHandler(Button.ClickEvent, (_, _) => RequestClose(ToastResult.Dismissed));
+            .AddDisposableHandler(Button.ClickEvent, (_, _) =>
+            {
+                if (!_isCloseRequested) RequestClose(ToastResult.Dismissed);
+            });
     }
 
     /// <inheritdoc />
@@ -340,34 +381,32 @@ public sealed class Toast : ContentControl
     {
         base.OnDetachedFromVisualTree(e);
 
-        _cardPressDisposable?.Dispose();
-        _actionButtonClickDisposable?.Dispose();
-        _closeButtonClickDisposable?.Dispose();
-
-        _cardPressDisposable = null;
-        _actionButtonClickDisposable = null;
-        _closeButtonClickDisposable = null;
+        // Template handlers are owned by the Toast and its template children. Keep them across
+        // detach/reattach so a toast that is moved between hosts does not lose its interactions;
+        // OnApplyTemplate replaces them if the template itself is rebuilt.
     }
 
     #region Internal Helpers
 
     /// <summary>
-    ///     Raises <see cref="CloseRequested" /> and executes <see cref="Command" />.
-    ///     Called by <see cref="ToastHost" /> or by internal button handlers.
+    ///     Raises <see cref="CloseRequested" /> and executes the terminal close commands.
+    ///     Called by <see cref="ToastHost" /> or by internal button handlers. Terminal closure is
+    ///     idempotent, so callers can safely request it from both a user interaction and the host's
+    ///     dismissal path without replaying callbacks.
     /// </summary>
     /// <param name="result">The reason for the close request.</param>
     internal void RequestClose(ToastResult result)
     {
+        if (_isCloseRequested) return;
+        _isCloseRequested = true;
+
         if (Command is { } command && command.CanExecute(result)) command.Execute(result);
 
-        switch (result)
+        if (result == ToastResult.Dismissed &&
+            DismissCommand is { } dismissCommand &&
+            dismissCommand.CanExecute(DismissCommandParameter))
         {
-            case ToastResult.ActionButtonClicked when ActionCommand is { } actionCommand && actionCommand.CanExecute(ActionCommandParameter):
-                actionCommand.Execute(ActionCommandParameter);
-                break;
-            case ToastResult.Dismissed when DismissCommand is { } dismissCommand && dismissCommand.CanExecute(DismissCommandParameter):
-                dismissCommand.Execute(DismissCommandParameter);
-                break;
+            dismissCommand.Execute(DismissCommandParameter);
         }
 
         CloseRequested?.Invoke(this, result);
@@ -394,7 +433,7 @@ public sealed class Toast : ContentControl
 
     private void ToastCardClickedHandler(object? sender, PointerPressedEventArgs e)
     {
-        if (CanDismissByClicking) RequestClose(ToastResult.Dismissed);
+        if (CanDismissByClicking && !_isCloseRequested) RequestClose(ToastResult.Dismissed);
     }
 
     #endregion

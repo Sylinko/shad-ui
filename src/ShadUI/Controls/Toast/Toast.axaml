@@ -78,15 +78,7 @@
               IsIndeterminate="{TemplateBinding ProgressValue, Converter={x:Static shadui:DoubleConverters.IsNaN}}"
               IsVisible="{TemplateBinding Progress, Converter={x:Static ObjectConverters.IsNotNull}}"
               Maximum="1" Minimum="0"
-              Value="{TemplateBinding ProgressValue}">
-              <ProgressBar.Transitions>
-                <Transitions>
-                  <DoubleTransition
-                    Easing="CubicEaseInOut" Property="Value"
-                    Duration="0:0:0.1"/>
-                </Transitions>
-              </ProgressBar.Transitions>
-            </ProgressBar>
+              Value="{TemplateBinding ProgressValue}"/>
 
             <Button
               x:Name="PART_CloseButton" Width="20"

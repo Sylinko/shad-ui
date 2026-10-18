@@ -133,6 +133,8 @@ public sealed class ToastHost : TemplatedControl
     private ToastCornerHost? _bottomLeft;
     private ToastCornerHost? _bottomRight;
     private readonly List<Toast> _queuedToasts = [];
+    private readonly HashSet<Toast> _subscribedToasts = [];
+    private readonly HashSet<Toast> _shownToasts = [];
 
     /// <inheritdoc />
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -143,6 +145,15 @@ public sealed class ToastHost : TemplatedControl
         _topRight = e.NameScope.Get<ToastCornerHost>("PART_TopRight");
         _bottomLeft = e.NameScope.Get<ToastCornerHost>("PART_BottomLeft");
         _bottomRight = e.NameScope.Get<ToastCornerHost>("PART_BottomRight");
+
+        // Toasts may be queued before the host template has been applied. Present them now that
+        // the corner hosts exist, and re-present them if a template rebuild replaced the corners.
+        foreach (var toast in _queuedToasts.ToArray())
+        {
+            ShowToastInternal(toast);
+        }
+
+        EnsureMaximum(MaxToasts);
     }
 
     /// <inheritdoc />
@@ -182,11 +193,7 @@ public sealed class ToastHost : TemplatedControl
         if (SingleToast) DismissAll();
 
         _queuedToasts.Add(toast);
-
-        var corner = GetCornerHost(toast.Position ?? ToastPosition.BottomRight);
-        if (corner is null) return;
-
-        ShowToastInternal(corner, toast);
+        ShowToastInternal(toast);
         EnsureMaximum(MaxToasts);
     }
 
@@ -209,6 +216,8 @@ public sealed class ToastHost : TemplatedControl
             // Remove from whichever corner host it's in
             foreach (var corner in GetAllCornerHosts())
                 corner.Items.Remove(toast);
+
+            CleanupToast(toast);
         });
     }
 
@@ -224,15 +233,26 @@ public sealed class ToastHost : TemplatedControl
     #endregion
 
     /// <summary>
-    ///     Ensures the number of toasts does not exceed <paramref name="maxAllowed" />
-    ///     by dismissing the oldest ones.
+    ///     Ensures the number of toasts does not exceed <paramref name="maxAllowed" /> by dismissing
+    ///     the oldest evictable toast. Toasts marked <see cref="Toast.CanBeEvicted" /> as
+    ///     <c>false</c> are never removed by capacity management; if every remaining toast is
+    ///     protected, the host temporarily exceeds the limit rather than dismissing active work.
     /// </summary>
     private void EnsureMaximum(int maxAllowed)
     {
         while (_queuedToasts.Count > maxAllowed)
         {
-            var oldest = _queuedToasts[0];
-            DismissToast(oldest, ToastResult.Dismissed);
+            Toast? oldestEvictable = null;
+            foreach (var toast in _queuedToasts)
+            {
+                if (!toast.CanBeEvicted) continue;
+                oldestEvictable = toast;
+                break;
+            }
+
+            if (oldestEvictable is null) return;
+
+            DismissToast(oldestEvictable, ToastResult.Dismissed);
         }
     }
 
@@ -255,20 +275,27 @@ public sealed class ToastHost : TemplatedControl
         if (_bottomRight is not null) yield return _bottomRight;
     }
 
-    private void ShowToastInternal(ToastCornerHost corner, Toast toast)
+    private void ShowToastInternal(Toast toast)
     {
-        corner.Items.Add(toast);
+        var corner = GetCornerHost(toast.Position ?? ToastPosition.BottomRight);
+        if (corner is null) return;
 
-        // Subscribe to toast events
-        toast.CloseRequested += HandleToastCloseRequested;
-        toast.ActionButtonClicked += HandleToastActionButtonClicked;
-        toast.PointerEntered += HandleToastPointerEntered;
-        toast.PointerExited += HandleToastPointerExited;
+        if (!corner.Items.Contains(toast))
+        {
+            corner.Items.Add(toast);
+        }
 
-        // Play enter animation
+        if (_subscribedToasts.Add(toast))
+        {
+            toast.CloseRequested += HandleToastCloseRequested;
+            toast.ActionButtonClicked += HandleToastActionButtonClicked;
+            toast.PointerEntered += HandleToastPointerEntered;
+            toast.PointerExited += HandleToastPointerExited;
+        }
+
+        if (!_shownToasts.Add(toast)) return;
+
         AnimateShow(toast);
-
-        // Start auto-dismiss timer if duration is set
         StartAutoDismissTimer(toast);
     }
 
@@ -276,16 +303,14 @@ public sealed class ToastHost : TemplatedControl
     {
         if (sender is Toast toast)
         {
-            toast.CloseRequested -= HandleToastCloseRequested;
             DismissToast(toast, result);
         }
     }
 
     private void HandleToastActionButtonClicked(object? sender, EventArgs e)
     {
-        if (sender is Toast toast)
+        if (sender is Toast toast && toast.CanDismissOnAction && _queuedToasts.Contains(toast))
         {
-            toast.ActionButtonClicked -= HandleToastActionButtonClicked;
             DismissToast(toast, ToastResult.ActionButtonClicked);
         }
     }
@@ -300,6 +325,23 @@ public sealed class ToastHost : TemplatedControl
     {
         if (sender is Toast toast)
             StartAutoDismissTimer(toast);
+    }
+
+    private void CleanupToast(Toast toast)
+    {
+        toast.CloseRequested -= HandleToastCloseRequested;
+        toast.ActionButtonClicked -= HandleToastActionButtonClicked;
+        toast.PointerEntered -= HandleToastPointerEntered;
+        toast.PointerExited -= HandleToastPointerExited;
+
+        // Release the caller's progress source so a completed operation does not keep receiving
+        // UI-thread progress notifications, and clear timers owned by this host.
+        toast.Progress = null;
+        CancelAutoDismissTimer(toast);
+        CancelDismissCts(toast);
+
+        _subscribedToasts.Remove(toast);
+        _shownToasts.Remove(toast);
     }
 
     private static void AnimateShow(Toast toast)
