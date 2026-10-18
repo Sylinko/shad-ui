@@ -1,0 +1,17 @@
+﻿<ResourceDictionary
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI">
+  <ControlTheme
+    x:Key="{x:Type shadui:ProgressRing}"
+    TargetType="shadui:ProgressRing">
+    <Setter Property="Size" Value="24"/>
+    <Setter Property="StrokeThickness" Value="2"/>
+    <Setter Property="TrackBrush" Value="{DynamicResource BorderColor}"/>
+    <Setter Property="IndicatorBrush" Value="{DynamicResource PrimaryColor}"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel/>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>
