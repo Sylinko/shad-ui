@@ -15,20 +15,14 @@ namespace ShadUI;
 ///         the router selects the best available host (active window &gt; visible window &gt; any host).
 ///     </para>
 ///     <para>
-///         Thread-safe: calling <see cref="Create" /> from a background thread is valid —
-///         the thread switch to the UI dispatcher happens inside <see cref="ToastBuilder.Show" />.
+///         Background calls are supported. Creating and configuring a toast dispatches synchronously
+///         to the UI thread; Show queues its presentation. Do not block the UI thread waiting for a
+///         background caller. Properties on a returned Toast must be modified on the UI thread.
 ///     </para>
 /// </remarks>
 public static class ToastManager
 {
     private static readonly TopLevelHostRegistry<ToastHost> Hosts = new();
-
-    /// <summary>
-    ///     Raised on the UI thread when a host is registered or unregistered.
-    ///     Application owners that present long-lived toasts can use this signal to release a
-    ///     reference to a disappearing host and re-present the toast on an available host.
-    /// </summary>
-    public static event EventHandler? HostsChanged;
 
     #region Internal — Registration (called by ToastHost)
 
@@ -41,7 +35,6 @@ public static class ToastManager
         Dispatcher.UIThread.CheckAccess();
 
         Hosts.Register(host);
-        HostsChanged?.Invoke(host, EventArgs.Empty);
     }
 
     /// <summary>
@@ -53,7 +46,6 @@ public static class ToastManager
         Dispatcher.UIThread.CheckAccess();
 
         Hosts.Unregister(host);
-        HostsChanged?.Invoke(host, EventArgs.Empty);
     }
 
     /// <summary>

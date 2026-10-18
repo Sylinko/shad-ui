@@ -25,11 +25,11 @@ public readonly ref struct ToastBuilder
     internal ToastBuilder(ToastHost? host, string title, object? content = null)
     {
         _host = host;
-        _toast = new Toast
+        _toast = Dispatcher.UIThread.Invoke(() => new Toast
         {
             Title = title,
             Content = content
-        };
+        });
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public readonly ref struct ToastBuilder
     /// <returns>The current <see cref="ToastBuilder" /> instance for fluent chaining.</returns>
     public ToastBuilder WithContent(object content)
     {
-        _toast.Content = content;
+        Configure(toast => toast.Content = content);
         return this;
     }
 
@@ -50,7 +50,7 @@ public readonly ref struct ToastBuilder
     /// <returns>The current <see cref="ToastBuilder" /> instance for fluent chaining.</returns>
     public ToastBuilder WithDurationSeconds(double durationInSeconds)
     {
-        _toast.Duration = TimeSpan.FromSeconds(durationInSeconds);
+        Configure(toast => toast.Duration = TimeSpan.FromSeconds(durationInSeconds));
         return this;
     }
 
@@ -61,7 +61,7 @@ public readonly ref struct ToastBuilder
     /// <returns>The current <see cref="ToastBuilder" /> instance for fluent chaining.</returns>
     public ToastBuilder WithDuration(TimeSpan duration)
     {
-        _toast.Duration = duration;
+        Configure(toast => toast.Duration = duration);
         return this;
     }
 
@@ -73,8 +73,11 @@ public readonly ref struct ToastBuilder
     /// <returns>The current <see cref="ToastBuilder" /> instance for fluent chaining.</returns>
     public ToastBuilder WithAction(object content, ButtonStyle style = ButtonStyle.Primary)
     {
-        _toast.ActionButtonContent = content;
-        _toast.ActionButtonStyle = style;
+        Configure(toast =>
+        {
+            toast.ActionButtonContent = content;
+            toast.ActionButtonStyle = style;
+        });
         return this;
     }
 
@@ -85,7 +88,7 @@ public readonly ref struct ToastBuilder
     /// <returns>The current <see cref="ToastBuilder" /> instance for fluent chaining.</returns>
     public ToastBuilder WithProgress(Progress<double> progress)
     {
-        _toast.Progress = progress;
+        Configure(toast => toast.Progress = progress);
         return this;
     }
 
@@ -96,36 +99,24 @@ public readonly ref struct ToastBuilder
     /// <returns>The current <see cref="ToastBuilder" /> instance for fluent chaining.</returns>
     public ToastBuilder WithCancellationTokenSource(CancellationTokenSource cancellationTokenSource)
     {
-        _toast.DismissCts = cancellationTokenSource;
+        Configure(toast => toast.DismissCts = cancellationTokenSource);
         return this;
     }
 
     /// <summary>
-    ///     Keeps the toast open when its action button is clicked. The action command still runs,
-    ///     but the toast remains visible so its content and action can track a long-running operation.
-    ///     Action clicks dismiss the toast by default.
+    ///     Closes the toast when the token is cancelled. An already cancelled token prevents
+    ///     presentation. Cancellation completes ShowAsync with ToastResult.Dismissed.
+    ///     This does not cancel application work unless WithCancellationTokenSource is also used.
     /// </summary>
-    /// <returns>The current <see cref="ToastBuilder" /> instance for fluent chaining.</returns>
-    public ToastBuilder KeepOpenOnAction()
+    public ToastBuilder WithCancellationToken(CancellationToken cancellationToken)
     {
-        _toast.CanDismissOnAction = false;
-        return this;
-    }
-
-    /// <summary>
-    ///     Protects the toast from capacity eviction. Use this for toasts that represent an active
-    ///     operation whose presentation must survive unrelated notifications.
-    /// </summary>
-    /// <returns>The current <see cref="ToastBuilder" /> instance for fluent chaining.</returns>
-    public ToastBuilder PreventEviction()
-    {
-        _toast.CanBeEvicted = false;
+        Configure(toast => toast.CloseToken = cancellationToken);
         return this;
     }
 
     public ToastBuilder WithPosition(ToastPosition position)
     {
-        _toast.Position = position;
+        Configure(toast => toast.Position = position);
         return this;
     }
 
@@ -134,7 +125,7 @@ public readonly ref struct ToastBuilder
     /// </summary>
     public ToastBuilder OnTopLeft()
     {
-        _toast.Position = ToastPosition.TopLeft;
+        Configure(toast => toast.Position = ToastPosition.TopLeft);
         return this;
     }
 
@@ -143,7 +134,7 @@ public readonly ref struct ToastBuilder
     /// </summary>
     public ToastBuilder OnTopCenter()
     {
-        _toast.Position = ToastPosition.TopCenter;
+        Configure(toast => toast.Position = ToastPosition.TopCenter);
         return this;
     }
 
@@ -152,7 +143,7 @@ public readonly ref struct ToastBuilder
     /// </summary>
     public ToastBuilder OnTopRight()
     {
-        _toast.Position = ToastPosition.TopRight;
+        Configure(toast => toast.Position = ToastPosition.TopRight);
         return this;
     }
 
@@ -161,7 +152,7 @@ public readonly ref struct ToastBuilder
     /// </summary>
     public ToastBuilder OnBottomLeft()
     {
-        _toast.Position = ToastPosition.BottomLeft;
+        Configure(toast => toast.Position = ToastPosition.BottomLeft);
         return this;
     }
 
@@ -170,7 +161,7 @@ public readonly ref struct ToastBuilder
     /// </summary>
     public ToastBuilder OnBottomCenter()
     {
-        _toast.Position = ToastPosition.BottomCenter;
+        Configure(toast => toast.Position = ToastPosition.BottomCenter);
         return this;
     }
 
@@ -179,7 +170,7 @@ public readonly ref struct ToastBuilder
     /// </summary>
     public ToastBuilder OnBottomRight()
     {
-        _toast.Position = ToastPosition.BottomRight;
+        Configure(toast => toast.Position = ToastPosition.BottomRight);
         return this;
     }
 
@@ -188,7 +179,7 @@ public readonly ref struct ToastBuilder
     /// </summary>
     public ToastBuilder DismissOnClick()
     {
-        _toast.CanDismissByClicking = true;
+        Configure(toast => toast.CanDismissByClicking = true);
         return this;
     }
 
@@ -198,42 +189,48 @@ public readonly ref struct ToastBuilder
     ///     Thread-safe: may be called from any thread.
     /// </summary>
     /// <param name="type">The notification style. Defaults to <see cref="Notification.Basic" />.</param>
-    public void Show(Notification type = Notification.Basic)
+    /// <returns>The displayed toast. Modify its properties only on the UI thread.</returns>
+    public Toast Show(Notification type = Notification.Basic)
     {
-        _toast.Notification = type;
-
         // Capture references to escape the ref struct
         var toast = _toast;
         if (Dispatcher.UIThread.CheckAccess())
         {
-            (_host ?? ToastManager.ResolveHost())?.QueueToast(toast);
+            toast.Notification = type;
+            QueueToast(_host, toast);
         }
         else
         {
-            Dispatcher.UIThread.Post(host => (host as ToastHost ?? ToastManager.ResolveHost())?.QueueToast(toast), _host);
+            Dispatcher.UIThread.Post(host =>
+            {
+                toast.Notification = type;
+                QueueToast(host as ToastHost, toast);
+            }, _host);
         }
+
+        return toast;
     }
 
     /// <summary>
     ///     Shows an info-styled toast notification.
     /// </summary>
-    public void ShowInfo() => Show(Notification.Info);
+    public Toast ShowInfo() => Show(Notification.Info);
 
     /// <summary>
     ///     Shows a success-styled toast notification.
     /// </summary>
     /// <param name="delayInSeconds">Auto-dismiss delay in seconds. Defaults to 5.</param>
-    public void ShowSuccess(double delayInSeconds = 5d) => WithDurationSeconds(delayInSeconds).Show(Notification.Success);
+    public Toast ShowSuccess(double delayInSeconds = 5d) => WithDurationSeconds(delayInSeconds).Show(Notification.Success);
 
     /// <summary>
     ///     Shows a warning-styled toast notification.
     /// </summary>
-    public void ShowWarning() => Show(Notification.Warning);
+    public Toast ShowWarning() => Show(Notification.Warning);
 
     /// <summary>
     ///     Shows an error-styled toast notification.
     /// </summary>
-    public void ShowError() => Show(Notification.Error);
+    public Toast ShowError() => Show(Notification.Error);
 
     /// <summary>
     ///     Shows the toast notification asynchronously and returns a task that completes
@@ -247,39 +244,42 @@ public readonly ref struct ToastBuilder
     /// </returns>
     public Task<ToastResult> ShowAsync(Notification type = Notification.Basic)
     {
-        _toast.Notification = type;
-
         var tcs = new TaskCompletionSource<ToastResult>();
-        _toast.CloseRequested += (_, result) => tcs.TrySetResult(result);
-
         var toast = _toast;
-        if (Dispatcher.UIThread.CheckAccess())
-        {
-            var host = _host ?? ToastManager.ResolveHost();
-            if (host is null)
-            {
-                tcs.TrySetResult(ToastResult.HostNotFound);
-                return tcs.Task;
-            }
-
-            host.QueueToast(toast);
-        }
-        else
-        {
-            Dispatcher.UIThread.Post(h =>
-            {
-                var host = h as ToastHost ?? ToastManager.ResolveHost();
-                if (host is null)
-                {
-                    tcs.TrySetResult(ToastResult.HostNotFound);
-                    return;
-                }
-
-                host.QueueToast(toast);
-            }, _host);
-        }
+        toast.CloseRequested += HandleClosed;
+        Show(type);
 
         return tcs.Task;
+
+        void HandleClosed(object? sender, ToastResult result)
+        {
+            toast.CloseRequested -= HandleClosed;
+            tcs.TrySetResult(result);
+        }
+    }
+
+    private void Configure(Action<Toast> configure)
+    {
+        var toast = _toast;
+        toast.Dispatcher.Invoke(() => configure(toast));
+    }
+
+    private static void QueueToast(ToastHost? host, Toast toast)
+    {
+        if (toast.CloseToken.IsCancellationRequested)
+        {
+            toast.RequestClose(ToastResult.Dismissed);
+            return;
+        }
+
+        host ??= ToastManager.ResolveHost();
+        if (host is null)
+        {
+            toast.RequestClose(ToastResult.HostNotFound);
+            return;
+        }
+
+        host.QueueToast(toast);
     }
 
     /// <summary>

@@ -175,40 +175,6 @@ public sealed class Toast : ContentControl
     }
 
     /// <summary>
-    ///     Defines the <see cref="CanDismissOnAction" /> property.
-    /// </summary>
-    public static readonly StyledProperty<bool> CanDismissOnActionProperty =
-        AvaloniaProperty.Register<Toast, bool>(nameof(CanDismissOnAction), true);
-
-    /// <summary>
-    ///     Gets or sets a value indicating whether clicking the action button closes the toast.
-    ///     When <c>false</c>, the action command still runs but the toast stays open, allowing its
-    ///     content and action to be updated until the operation reaches a terminal state.
-    /// </summary>
-    public bool CanDismissOnAction
-    {
-        get => GetValue(CanDismissOnActionProperty);
-        set => SetValue(CanDismissOnActionProperty, value);
-    }
-
-    /// <summary>
-    ///     Defines the <see cref="CanBeEvicted" /> property.
-    /// </summary>
-    public static readonly StyledProperty<bool> CanBeEvictedProperty =
-        AvaloniaProperty.Register<Toast, bool>(nameof(CanBeEvicted), true);
-
-    /// <summary>
-    ///     Gets or sets a value indicating whether the host may remove this toast when the visible
-    ///     toast count exceeds <see cref="ToastHost.MaxToasts" />. Protected toasts keep their
-    ///     presentation until their owner dismisses them or the operation reaches a terminal state.
-    /// </summary>
-    public bool CanBeEvicted
-    {
-        get => GetValue(CanBeEvictedProperty);
-        set => SetValue(CanBeEvictedProperty, value);
-    }
-
-    /// <summary>
     ///     Defines the <see cref="Command"/> property.
     /// </summary>
     public static readonly StyledProperty<ICommand?> CommandProperty =
@@ -328,6 +294,13 @@ public sealed class Toast : ContentControl
     internal CancellationTokenSource? DismissCts { get; set; }
 
     /// <summary>
+    ///     Caller-owned lifetime token; cancellation requests terminal closure, not task cancellation.
+    /// </summary>
+    internal CancellationToken CloseToken { get; set; }
+
+    internal CancellationTokenRegistration CloseRegistration { get; set; }
+
+    /// <summary>
     ///     Cancellation token source for the auto-dismiss timer.
     ///     Managed exclusively by <see cref="ToastHost" />.
     /// </summary>
@@ -399,6 +372,8 @@ public sealed class Toast : ContentControl
     {
         if (_isCloseRequested) return;
         _isCloseRequested = true;
+        CloseRegistration.Dispose();
+        Progress = null;
 
         if (Command is { } command && command.CanExecute(result)) command.Execute(result);
 

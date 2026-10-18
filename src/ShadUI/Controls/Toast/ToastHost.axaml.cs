@@ -188,11 +188,19 @@ public sealed class ToastHost : TemplatedControl
     /// <param name="toast">The toast to display.</param>
     public void QueueToast(Toast toast)
     {
-        if (MaxToasts <= 0) return;
+        if (MaxToasts <= 0 || toast.CloseToken.IsCancellationRequested)
+        {
+            toast.RequestClose(ToastResult.Dismissed);
+            return;
+        }
 
         if (SingleToast) DismissAll();
 
         _queuedToasts.Add(toast);
+        // Always post: a token can cancel synchronously during registration. The registration
+        // must be assigned before dismissal releases it, and callbacks must never wait for the UI.
+        toast.CloseRegistration = toast.CloseToken.Register(() =>
+            Dispatcher.UIThread.Post(() => DismissToast(toast, ToastResult.Dismissed)));
         ShowToastInternal(toast);
         EnsureMaximum(MaxToasts);
     }
@@ -233,26 +241,13 @@ public sealed class ToastHost : TemplatedControl
     #endregion
 
     /// <summary>
-    ///     Ensures the number of toasts does not exceed <paramref name="maxAllowed" /> by dismissing
-    ///     the oldest evictable toast. Toasts marked <see cref="Toast.CanBeEvicted" /> as
-    ///     <c>false</c> are never removed by capacity management; if every remaining toast is
-    ///     protected, the host temporarily exceeds the limit rather than dismissing active work.
+    ///     Dismisses the oldest notifications when the host exceeds its capacity.
     /// </summary>
     private void EnsureMaximum(int maxAllowed)
     {
         while (_queuedToasts.Count > maxAllowed)
         {
-            Toast? oldestEvictable = null;
-            foreach (var toast in _queuedToasts)
-            {
-                if (!toast.CanBeEvicted) continue;
-                oldestEvictable = toast;
-                break;
-            }
-
-            if (oldestEvictable is null) return;
-
-            DismissToast(oldestEvictable, ToastResult.Dismissed);
+            DismissToast(_queuedToasts[0], ToastResult.Dismissed);
         }
     }
 
@@ -309,7 +304,7 @@ public sealed class ToastHost : TemplatedControl
 
     private void HandleToastActionButtonClicked(object? sender, EventArgs e)
     {
-        if (sender is Toast toast && toast.CanDismissOnAction && _queuedToasts.Contains(toast))
+        if (sender is Toast toast && _queuedToasts.Contains(toast))
         {
             DismissToast(toast, ToastResult.ActionButtonClicked);
         }
@@ -334,9 +329,7 @@ public sealed class ToastHost : TemplatedControl
         toast.PointerEntered -= HandleToastPointerEntered;
         toast.PointerExited -= HandleToastPointerExited;
 
-        // Release the caller's progress source so a completed operation does not keep receiving
-        // UI-thread progress notifications, and clear timers owned by this host.
-        toast.Progress = null;
+        // The toast releases its progress source and close registration at terminal closure.
         CancelAutoDismissTimer(toast);
         CancelDismissCts(toast);
 

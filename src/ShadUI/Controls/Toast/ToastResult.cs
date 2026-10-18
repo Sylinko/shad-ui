@@ -11,7 +11,7 @@ public enum ToastResult
     HostNotFound = -1,
 
     /// <summary>
-    ///     The toast was dismissed by the user.
+    ///     The toast was dismissed by the user or programmatically.
     /// </summary>
     Dismissed,
 
