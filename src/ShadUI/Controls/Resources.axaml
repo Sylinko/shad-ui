@@ -55,6 +55,7 @@
     <ResourceInclude Source="avares://ShadUI/Controls/Skeleton/Skeleton.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Slider/Slider.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/Switch/Switch.axaml"/>
+    <ResourceInclude Source="avares://ShadUI/Controls/AsyncToggleSwitch/AsyncToggleSwitch.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/TabControl/TabControl.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/TabControl/TabItem.axaml"/>
     <ResourceInclude Source="avares://ShadUI/Controls/TextBox/EditableTextBlock.axaml"/>

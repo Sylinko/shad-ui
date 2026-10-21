@@ -1,0 +1,122 @@
+﻿<ResourceDictionary
+  xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:shadui="clr-namespace:ShadUI">
+  <ControlTheme
+    x:Key="{x:Type shadui:AsyncToggleSwitch}"
+    TargetType="shadui:AsyncToggleSwitch">
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <!--  Keep the track and thumb in the same fractional coordinate space at non-integer display scales.  -->
+        <Panel
+          x:Name="PART_Root" Width="36"
+          Height="32" Background="Transparent"
+          UseLayoutRounding="False">
+          <Border
+            Height="20" VerticalAlignment="Center"
+            Background="{DynamicResource SwitchBackgroundColor}"
+            CornerRadius="{DynamicResource FullCornerRadius}"/>
+          <Border
+            x:Name="PART_CheckedTrack" Height="20"
+            VerticalAlignment="Center"
+            Background="{DynamicResource PrimaryColor}"
+            CornerRadius="{DynamicResource FullCornerRadius}"
+            Opacity="0">
+            <Border.Transitions>
+              <Transitions>
+                <DoubleTransition
+                  Property="Opacity" Duration="0:0:0.15"/>
+              </Transitions>
+            </Border.Transitions>
+          </Border>
+          <shadui:SwitchThumbPresenter
+            x:Name="PART_ThumbPresenter" Height="16"
+            Padding="2,0" VerticalAlignment="Center"
+            IsHitTestVisible="False">
+            <shadui:SwitchThumbPresenter.Transitions>
+              <Transitions>
+                <DoubleTransition
+                  Easing="QuarticEaseOut" Property="Position"
+                  Duration="0:0:0.15"/>
+              </Transitions>
+            </shadui:SwitchThumbPresenter.Transitions>
+            <Border
+              x:Name="PART_Thumb" Width="16"
+              Height="16"
+              Background="{DynamicResource SwitchForegroundColor}"
+              CornerRadius="{DynamicResource FullCornerRadius}">
+              <Border.Transitions>
+                <Transitions>
+                  <DoubleTransition
+                    Easing="QuadraticEaseOut" Property="Width"
+                    Duration="0:0:0.08"/>
+                  <DoubleTransition
+                    Property="Opacity" Duration="0:0:0.1"/>
+                  <BrushTransition
+                    Property="Background" Duration="0:0:0.15"/>
+                </Transitions>
+              </Border.Transitions>
+            </Border>
+          </shadui:SwitchThumbPresenter>
+          <PathIcon
+            x:Name="PART_Loading" HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="14" Height="14"
+            Data="{StaticResource Spinner}"
+            Foreground="{DynamicResource ForegroundColor}"
+            IsHitTestVisible="False" Opacity="0">
+            <PathIcon.Transitions>
+              <Transitions>
+                <DoubleTransition
+                  Property="Opacity" Duration="0:0:0.1"/>
+              </Transitions>
+            </PathIcon.Transitions>
+          </PathIcon>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:checked /template/ Border#PART_CheckedTrack">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
+    <Style Selector="^:checked /template/ Border#PART_Thumb">
+      <Setter Property="Background" Value="{DynamicResource PrimaryForegroundColor}"/>
+    </Style>
+    <Style Selector="^:checked /template/ shadui|SwitchThumbPresenter#PART_ThumbPresenter">
+      <Setter Property="Position" Value="1"/>
+    </Style>
+    <Style Selector="^:checked /template/ PathIcon#PART_Loading">
+      <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
+    </Style>
+
+    <Style Selector="^:pressed /template/ Border#PART_Thumb, ^:pending /template/ Border#PART_Thumb">
+      <Setter Property="Width" Value="22"/>
+    </Style>
+    <Style Selector="^:loading /template/ Border#PART_Thumb">
+      <Setter Property="Opacity" Value="0"/>
+    </Style>
+    <Style Selector="^:loading /template/ PathIcon#PART_Loading">
+      <Setter Property="Opacity" Value="1"/>
+      <Style.Animations>
+        <Animation IterationCount="Infinite" Duration="0:0:1">
+          <KeyFrame Cue="0%">
+            <Setter Property="RotateTransform.Angle" Value="0"/>
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="RotateTransform.Angle" Value="360"/>
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <Style Selector="^:disabled:not(:busy) /template/ Panel#PART_Root">
+      <Setter Property="Opacity" Value="0.5"/>
+    </Style>
+    <Style Selector="^[IsEnabled=False] /template/ Panel#PART_Root">
+      <Setter Property="Opacity" Value="0.5"/>
+    </Style>
+    <Style Selector="^:pointerover:not(:disabled)">
+      <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+  </ControlTheme>
+</ResourceDictionary>
