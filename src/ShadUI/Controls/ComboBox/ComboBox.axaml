@@ -31,16 +31,18 @@
   </Design.PreviewWith>
   <ControlTheme
     x:Key="ComboBoxControlTheme" TargetType="ComboBox">
-    <Setter Property="BorderThickness" Value="1,1,1,1"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-    <Setter Property="PlaceholderForeground" Value="{DynamicResource MutedColor}"/>
-    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-    <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
     <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="FontWeight" Value="Medium"/>
+    <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+    <Setter Property="Padding" Value="12,4"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
+    <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    <Setter Property="MaxDropDownHeight" Value="244"/>
+    <Setter Property="shadui:ControlAssist.ShowProgress" Value="False"/>
     <Setter Property="shadui:ControlAssist.MinHeight" Value="36"/>
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
     <Setter Property="ItemsPanel">
@@ -77,10 +79,10 @@
                   </Transitions>
                 </shadui:SmoothBorder.Transitions>
                 <Grid
-                  Background="Transparent" ColumnDefinitions="*,Auto">
+                  Background="Transparent" ColumnDefinitions="*,Auto"
+                  ColumnSpacing="6">
                   <TextBlock
                     x:Name="PlaceholderTextBlock" Grid.Column="0"
-                    Margin="12,0,0,0"
                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                     VerticalAlignment="Center"
                     Foreground="{TemplateBinding PlaceholderForeground}"
@@ -98,7 +100,7 @@
                     </TextBlock.IsVisible>
                   </TextBlock>
                   <ContentControl
-                    Grid.Column="0" Margin="12,0,0,0"
+                    Grid.Column="0"
                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                     Content="{TemplateBinding SelectionBoxItem}"
@@ -110,7 +112,6 @@
                     TextBlock.Foreground="{TemplateBinding Foreground}"/>
                   <TextBox
                     x:Name="PART_EditableTextBox" Grid.Column="0"
-                    Margin="12,0,0,0"
                     Padding="{TemplateBinding Padding}"
                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -126,15 +127,15 @@
                   </TextBox>
                   <Path
                     x:Name="Icon" Grid.Column="1"
-                    Width="8" Margin="5,0,16,0"
-                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Width="8" HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
                     Data="{x:Static shadui:Icons.ChevronUpDown}"
                     Fill="{DynamicResource MutedColor}"
                     Stretch="Uniform">
                     <Path.Transitions>
                       <Transitions>
                         <BrushTransition
-                          Property="Fill" Duration="0:0:0.20"/>
+                          Property="Fill" Duration="0:0:0.15"/>
                       </Transitions>
                     </Path.Transitions>
                   </Path>
@@ -208,7 +209,7 @@
         </Style.Animations>
       </Style>
     </Style>
-    <Style Selector="^:pointerover /template/ Border#BackgroundBorder">
+    <Style Selector="^:pointerover /template/ shadui|SmoothBorder#BackgroundBorder">
       <Setter Property="BorderBrush" Value="{DynamicResource OutlineColor}"/>
       <Setter Property="Background" Value="{DynamicResource SelectionHoverColor}"/>
       <Setter Property="Cursor" Value="Hand"/>
@@ -217,7 +218,7 @@
       <Setter Property="Opacity" Value="0.50"/>
     </Style>
     <Style Selector="^:error">
-      <Style Selector="^/template/ Border#BackgroundBorder">
+      <Style Selector="^/template/ shadui|SmoothBorder#BackgroundBorder">
         <Setter Property="BorderBrush" Value="{DynamicResource ErrorColor}"/>
       </Style>
       <Style Selector="^/template/ Path#Icon">

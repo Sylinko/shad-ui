@@ -158,7 +158,16 @@
                 FontWeight="{TemplateBinding FontWeight}"
                 InnerLeftContent="{TemplateBinding InnerLeftContent}"
                 InnerRightContent="{TemplateBinding InnerRightContent}"
-                PlaceholderText="{TemplateBinding PlaceholderText}"/>
+                PlaceholderText="{TemplateBinding PlaceholderText}">
+                <TextBox.Transitions>
+                  <Transitions>
+                    <BrushTransition
+                      Property="Background" Duration="0:0:0.15"/>
+                    <BrushTransition
+                      Property="BorderBrush" Duration="0:0:0.15"/>
+                  </Transitions>
+                </TextBox.Transitions>
+              </TextBox>
               <TextBlock
                 Classes="Caption Muted" Margin="0,4,0,0"
                 Cursor="Arrow"
@@ -206,25 +215,9 @@
       </ControlTemplate>
     </Setter>
     <Style Selector="^:pointerover /template/ TextBox#PART_TextBox">
-      <Setter Property="Transitions">
-        <Setter.Value>
-          <Transitions>
-            <BrushTransition
-              Property="BorderBrush" Duration="0:0:0.20"/>
-          </Transitions>
-        </Setter.Value>
-      </Setter>
       <Setter Property="BorderBrush" Value="{DynamicResource PrimaryColor}"/>
     </Style>
     <Style Selector="^:focus /template/ TextBox#PART_TextBox">
-      <Setter Property="Transitions">
-        <Setter.Value>
-          <Transitions>
-            <BrushTransition
-              Property="BorderBrush" Duration="0:0:0.20"/>
-          </Transitions>
-        </Setter.Value>
-      </Setter>
       <Setter Property="BorderBrush" Value="{DynamicResource PrimaryColor}"/>
     </Style>
     <Style Selector="^:error">

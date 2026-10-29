@@ -47,7 +47,7 @@
 
             <Grid
               Margin="{TemplateBinding Padding}"
-              ColumnSpacing="4">
+              ColumnSpacing="6">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition
                   Width="Auto" SharedSizeGroup="A"/>

@@ -63,7 +63,7 @@
   <Color x:Key="SecondaryCardBackgroundColor">#99E0E0E0</Color>
 
   <Color x:Key="DialogOverlayColor">#000000</Color>
-  <Color x:Key="DialogBackgroundColor">#F2F2F2</Color>
+  <Color x:Key="DialogBackgroundColor">#F5F5F5</Color>
 
   <Color x:Key="TitleBarBackgroundColor">#66FFFFFF</Color>
   <Color x:Key="PopupBackgroundColor">#EAEAEA</Color>
