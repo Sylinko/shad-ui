@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 
 namespace ShadUI;
 
@@ -18,7 +19,13 @@ namespace ShadUI;
 /// The responsive behavior only changes the <see cref="Drawer.Placement"/> property.
 /// All other drawer properties remain available and can be customized as usual.
 /// </para>
+/// <para>
+/// The <c>:wide</c> pseudo-class is active when the available width exceeds
+/// <see cref="ResponsiveWidth"/>; otherwise, <c>:narrow</c> is active.
+/// These states follow the width threshold, independently of the configured placements.
+/// </para>
 /// </remarks>
+[PseudoClasses(":narrow", ":wide")]
 public sealed class ResponsiveDrawer : Drawer
 {
     /// <summary>
@@ -73,6 +80,14 @@ public sealed class ResponsiveDrawer : Drawer
         set => SetValue(VerticalPlacementProperty, value);
     }
 
+    /// <summary>
+    /// Initializes the responsive state for the drawer's initial bounds.
+    /// </summary>
+    public ResponsiveDrawer()
+    {
+        UpdatePlacement(Bounds.Width);
+    }
+
     /// <inheritdoc />
     protected override void OnSizeChanged(SizeChangedEventArgs e)
     {
@@ -97,7 +112,11 @@ public sealed class ResponsiveDrawer : Drawer
 
     private void UpdatePlacement(double width)
     {
-        var newPlacement = width > ResponsiveWidth
+        var isWide = width > ResponsiveWidth;
+        PseudoClasses.Set(":narrow", !isWide);
+        PseudoClasses.Set(":wide", isWide);
+
+        var newPlacement = isWide
             ? HorizontalPlacement
             : VerticalPlacement;
 
