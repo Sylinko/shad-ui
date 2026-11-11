@@ -7,11 +7,9 @@ namespace ShadUI.Demo.ViewModels.Examples.Input;
 
 public sealed partial class FormInputViewModel : ViewModelBase
 {
-    private readonly ToastManager _toastManager;
 
-    public FormInputViewModel(ToastManager toastManager)
+    public FormInputViewModel()
     {
-        _toastManager = toastManager;
 
         var xamlPath = Path.Combine(AppContext.BaseDirectory, "views", "Examples", "Input",
             "FormInputContent.axaml");
@@ -66,7 +64,7 @@ public sealed partial class FormInputViewModel : ViewModelBase
 
         if (HasErrors) return;
 
-        _toastManager.CreateToast("Submission Successful")
+        ToastManager.Create("Submission Successful")
             .WithContent("Your form has been submitted successfully! All data has been processed and saved.")
             .DismissOnClick()
             .ShowSuccess();

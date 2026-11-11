@@ -57,7 +57,6 @@ namespace ShadUI.Demo;
 [Transient<SelectableTextBlockViewModel>]
 [Transient<LabelViewModel>]
 [Transient<MainWindowViewModel>]
-[Import<IUtilitiesModule>]
 [Singleton<IMessenger, WeakReferenceMessenger>]
 [Singleton(typeof(ThemeManager), Factory = nameof(ThemeWatcherFactory))]
 [Singleton(typeof(ILogger), Factory = nameof(LoggerFactory))]

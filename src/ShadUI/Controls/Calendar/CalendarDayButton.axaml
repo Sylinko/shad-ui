@@ -1,4 +1,5 @@
 ﻿<ResourceDictionary
+  xmlns:shadui="clr-namespace:ShadUI"
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:shaui="clr-namespace:ShadUI" x:ClassModifier="internal">
   <Design.PreviewWith>
@@ -25,32 +26,32 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Panel>
-          <Border
+          <shadui:SmoothBorder
             Name="BaseBackground"
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
             CornerRadius="{TemplateBinding CornerRadius}"
             Opacity="1">
-            <Border.Transitions>
+            <shadui:SmoothBorder.Transitions>
               <Transitions>
                 <DoubleTransition
                   Property="Opacity" Duration="0:0:0.20"/>
               </Transitions>
-            </Border.Transitions>
-          </Border>
-          <Border
+            </shadui:SmoothBorder.Transitions>
+          </shadui:SmoothBorder>
+          <shadui:SmoothBorder
             Name="HoverBackground"
             Background="{DynamicResource GhostColor}"
             CornerRadius="{TemplateBinding CornerRadius}"
             Opacity="0">
-            <Border.Transitions>
+            <shadui:SmoothBorder.Transitions>
               <Transitions>
                 <DoubleTransition
                   Property="Opacity" Duration="0:0:0.20"/>
               </Transitions>
-            </Border.Transitions>
-          </Border>
+            </shadui:SmoothBorder.Transitions>
+          </shadui:SmoothBorder>
           <ContentPresenter
             Name="ContentPresenter"
             Margin="{TemplateBinding Padding}"
@@ -77,39 +78,39 @@
         </Panel>
       </ControlTemplate>
     </Setter>
-    <Style Selector="^:pointerover /template/ Border#HoverBackground">
+    <Style Selector="^:pointerover /template/ shadui|SmoothBorder#HoverBackground">
       <Setter Property="Opacity" Value="1"/>
     </Style>
-    <Style Selector="^:pointerover /template/ Border#BaseBackground">
+    <Style Selector="^:pointerover /template/ shadui|SmoothBorder#BaseBackground">
       <Setter Property="Opacity" Value="0"/>
     </Style>
     <Style Selector="^:selected">
       <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
       <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
-      <Style Selector="^ /template/ Border#BaseBackground">
+      <Style Selector="^ /template/ shadui|SmoothBorder#BaseBackground">
         <Setter Property="Opacity" Value="1"/>
       </Style>
-      <Style Selector="^ /template/ Border#HoverBackground">
+      <Style Selector="^ /template/ shadui|SmoothBorder#HoverBackground">
         <Setter Property="Opacity" Value="0"/>
       </Style>
     </Style>
 
     <Style Selector="^:dayfocused">
-      <Style Selector="^ /template/ Border#BaseBackground">
+      <Style Selector="^ /template/ shadui|SmoothBorder#BaseBackground">
         <Setter Property="Background" Value="{DynamicResource OutlineColor}"/>
         <Setter Property="Opacity" Value="1"/>
       </Style>
-      <Style Selector="^ /template/ Border#HoverBackground">
+      <Style Selector="^ /template/ shadui|SmoothBorder#HoverBackground">
         <Setter Property="Opacity" Value="0"/>
       </Style>
     </Style>
 
     <Style Selector="^:today:not(:selected)">
-      <Style Selector="^ /template/ Border#BaseBackground">
+      <Style Selector="^ /template/ shadui|SmoothBorder#BaseBackground">
         <Setter Property="Background" Value="{DynamicResource PrimaryColor10}"/>
         <Setter Property="Opacity" Value="1"/>
       </Style>
-      <Style Selector="^ /template/ Border#HoverBackground">
+      <Style Selector="^ /template/ shadui|SmoothBorder#HoverBackground">
         <Setter Property="Opacity" Value="0"/>
       </Style>
     </Style>

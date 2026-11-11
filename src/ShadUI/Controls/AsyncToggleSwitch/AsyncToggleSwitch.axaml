@@ -80,9 +80,6 @@
     <Style Selector="^:checked /template/ Border#PART_CheckedTrack">
       <Setter Property="Opacity" Value="1"/>
     </Style>
-    <Style Selector="^:checked /template/ Border#PART_Thumb">
-      <Setter Property="Background" Value="{DynamicResource PrimaryForegroundColor}"/>
-    </Style>
     <Style Selector="^:checked /template/ shadui|SwitchThumbPresenter#PART_ThumbPresenter">
       <Setter Property="Position" Value="1"/>
     </Style>

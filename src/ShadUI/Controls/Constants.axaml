@@ -10,6 +10,7 @@
   <CornerRadius x:Key="4XlCornerRadius">32</CornerRadius>
   <CornerRadius x:Key="FullCornerRadius">999</CornerRadius>
   <BoxShadows x:Key="Shadow">0 2 4 0 #20000000</BoxShadows>
+  <BoxShadows x:Key="CardShadow">0 2 10 0 #20000000</BoxShadows>
   <BoxShadows x:Key="PopupShadow">0 0 11 0 #66000000</BoxShadows>
   <Thickness x:Key="PopupShadowMargin">6</Thickness>
   <Thickness x:Key="PopupCompactShadowMargin">2,0,2,4</Thickness>

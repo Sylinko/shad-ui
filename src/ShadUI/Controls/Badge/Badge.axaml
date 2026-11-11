@@ -1,4 +1,4 @@
-<ResourceDictionary
+﻿<ResourceDictionary
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:shadui="clr-namespace:ShadUI">
   <Design.PreviewWith>
@@ -119,7 +119,7 @@
     <Setter Property="FontSize" Value="{DynamicResource FontSizeS}"/>
     <Setter Property="FontWeight" Value="Medium"/>
     <Setter Property="Padding" Value="6,2"/>
-    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+    <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
     <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
     <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
     <Setter Property="HorizontalContentAlignment" Value="Center"/>

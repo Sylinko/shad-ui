@@ -12,9 +12,9 @@ public sealed partial class MenuViewModel : ViewModelBase, INavigable
     {
         _pageManager = pageManager;
         var path = Path.Combine(AppContext.BaseDirectory, "views", "MenuPage.axaml");
-        SimpleDropdownCode = path.ExtractByLineRange(58, 189).CleanIndentation();
-        MenuBarCode = path.ExtractByLineRange(192, 267).CleanIndentation();
-        DropDownCode = path.ExtractByLineRange(271, 434).CleanIndentation();
+        MenuFlyoutCode = path.ExtractByLineRange(58, 199).CleanIndentation();
+        MenuBarCode = path.ExtractByLineRange(202, 277).CleanIndentation();
+        DropDownCode = path.ExtractByLineRange(281, 444).CleanIndentation();
     }
 
     [RelayCommand]
@@ -30,7 +30,7 @@ public sealed partial class MenuViewModel : ViewModelBase, INavigable
     }
 
     [ObservableProperty]
-    private string _simpleDropdownCode = string.Empty;
+    private string _menuFlyoutCode = string.Empty;
 
     [ObservableProperty]
     private string _menuBarCode = string.Empty;

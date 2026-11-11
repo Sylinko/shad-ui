@@ -13,7 +13,7 @@
     TargetType="ToggleButton">
     <Setter Property="Padding" Value="12,8"/>
     <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
     <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -27,7 +27,7 @@
     <Setter Property="shadui:ButtonAssist.CheckedBackground" Value="{DynamicResource PrimaryColor75}"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <Border
+        <shadui:SmoothBorder
           x:Name="BackgroundBorder"
           Padding="{TemplateBinding Padding}"
           Background="{TemplateBinding Background}"
@@ -37,7 +37,7 @@
           CornerRadius="{TemplateBinding CornerRadius}"
           Cursor="Hand"
           TextElement.Foreground="{TemplateBinding Foreground}">
-          <Border.Transitions>
+          <shadui:SmoothBorder.Transitions>
             <Transitions>
               <TransformOperationsTransition
                 Property="RenderTransform" Duration="0:0:0.10"/>
@@ -46,7 +46,7 @@
               <BrushTransition
                 Property="TextElement.Foreground" Duration="0:0:0.15"/>
             </Transitions>
-          </Border.Transitions>
+          </shadui:SmoothBorder.Transitions>
 
           <shadui:ButtonContentPresenter
             x:Name="PART_Container"
@@ -67,7 +67,7 @@
                 RecognizesAccessKey="True"/>
             </shadui:ButtonContentPresenter.Child>
           </shadui:ButtonContentPresenter>
-        </Border>
+        </shadui:SmoothBorder>
       </ControlTemplate>
     </Setter>
 
@@ -143,23 +143,20 @@
     <Style Selector="^:disabled">
       <Setter Property="Opacity" Value="0.5"/>
     </Style>
-    <Style Selector="^:pointerover">
+    <Style Selector="^:pointerover:not(:checked)">
       <Setter Property="Foreground" Value="{Binding (shadui:ButtonAssist.HoverForeground), RelativeSource={RelativeSource Self}}"/>
-      <Style Selector="^ /template/ Border#BackgroundBorder">
+      <Style Selector="^ /template/ shadui|SmoothBorder#BackgroundBorder">
         <Setter Property="Background" Value="{TemplateBinding shadui:ButtonAssist.HoverBackground}"/>
       </Style>
     </Style>
-    <Style Selector="^:pressed:not(.NoScale) /template/ Border#BackgroundBorder">
+    <Style Selector="^:pressed:not(.NoScale) /template/ shadui|SmoothBorder#BackgroundBorder">
       <Setter Property="RenderTransform" Value="scale(0.95, 0.95)"/>
     </Style>
     <Style Selector="^:checked">
       <Setter Property="Foreground" Value="{Binding (shadui:ButtonAssist.CheckedForeground), RelativeSource={RelativeSource Self}}"/>
-      <Style Selector="^ /template/ Border#BackgroundBorder">
+      <Style Selector="^ /template/ shadui|SmoothBorder#BackgroundBorder">
         <Setter Property="Background" Value="{TemplateBinding shadui:ButtonAssist.CheckedBackground}"/>
         <Setter Property="BorderBrush" Value="{TemplateBinding shadui:ButtonAssist.CheckedBackground}"/>
-      </Style>
-      <Style Selector="^:pointerover /template/ Border#BackgroundBorder">
-        <Setter Property="Background" Value="{TemplateBinding shadui:ButtonAssist.HoverBackground}"/>
       </Style>
     </Style>
   </ControlTheme>

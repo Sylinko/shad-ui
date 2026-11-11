@@ -103,12 +103,12 @@
             <LayoutTransformControl
               x:Name="LayoutTransform" RenderTransformOrigin="0%,0%">
               <shadui:SmoothBorder
-                Margin="24,0,2,4"
+                Margin="24,4,6,8"
                 Background="{DynamicResource PopupBackgroundColor}"
                 BorderBrush="{DynamicResource BorderColor}"
                 BorderThickness="{DynamicResource PopupBorderThickness}"
                 BoxShadow="{DynamicResource Shadow}"
-                CornerRadius="{DynamicResource LgCornerRadius}">
+                CornerRadius="{DynamicResource 2XlCornerRadius}">
                 <StackPanel Margin="0,3">
                   <Border
                     Padding="16,8"

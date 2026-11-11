@@ -5,6 +5,7 @@
     xmlns:controls="clr-namespace:ShadUI.Demo.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
     xmlns:viewModels="clr-namespace:ShadUI.Demo.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -26,7 +27,7 @@
                         Width="28"
                         Height="28"
                         Background="{DynamicResource GhostHoverColor}"
-                        Classes="Icon"
+                        Classes="Icon NoPadding"
                         Command="{Binding BackPageCommand}">
                         <Viewbox Margin="6">
                             <TextBlock Classes="LucideIcon" Text="&#57420;" />
@@ -36,7 +37,7 @@
                         Width="28"
                         Height="28"
                         Background="{DynamicResource GhostHoverColor}"
-                        Classes="Icon"
+                        Classes="Icon NoPadding"
                         Command="{Binding NextPageCommand}">
                         <Viewbox Margin="6">
                             <TextBlock Classes="LucideIcon" Text="&#57421;" />
@@ -46,7 +47,7 @@
             </Grid>
             <TextBlock
                 Classes="p"
-                Text="Colors and resources used to create a cohesive visual identity for application."
+                Text="Warm surfaces, readable text, and an accent that follows your system."
                 TextWrapping="Wrap" />
         </StackPanel>
         <ScrollViewer>
@@ -54,6 +55,83 @@
                 MaxWidth="{StaticResource PageMaxWidth}"
                 Margin="{StaticResource PageMargin}"
                 Spacing="32">
+                <StackPanel Spacing="16">
+                    <TextBlock Classes="h4" Text="Palette in context"/>
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+                        <Border Padding="16" Background="{DynamicResource DialogBackgroundColor}"
+                                BorderBrush="{DynamicResource BorderColor}" BorderThickness="1"
+                                CornerRadius="{DynamicResource XlCornerRadius}">
+                            <StackPanel Spacing="4">
+                                <TextBlock FontWeight="SemiBold" Text="Window"/>
+                                <TextBlock Foreground="{DynamicResource ForegroundLeadColor}" Text="A quiet foundation"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="1" Padding="16" Background="{DynamicResource InputBackgroundColor}"
+                                BorderBrush="{DynamicResource BorderColor}" BorderThickness="1"
+                                CornerRadius="{DynamicResource XlCornerRadius}">
+                            <StackPanel Spacing="4">
+                                <TextBlock FontWeight="SemiBold" Text="Raised"/>
+                                <TextBlock Foreground="{DynamicResource ForegroundLeadColor}" Text="Inputs and foreground surfaces" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="2" Padding="16" Background="{DynamicResource SecondaryColor}"
+                                CornerRadius="{DynamicResource XlCornerRadius}">
+                            <StackPanel Spacing="4">
+                                <TextBlock FontWeight="SemiBold" Text="Secondary"/>
+                                <TextBlock Foreground="{DynamicResource ForegroundLeadColor}" Text="Groups, chips and quiet actions" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    <Border Padding="24" Background="{DynamicResource CardBackgroundColor}"
+                            BorderBrush="{DynamicResource BorderColor}" BorderThickness="1"
+                            CornerRadius="{DynamicResource XlCornerRadius}">
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="24">
+                            <StackPanel Spacing="16">
+                                <StackPanel Spacing="4">
+                                    <TextBlock FontSize="18" FontWeight="SemiBold" Text="Project settings"/>
+                                    <TextBlock Foreground="{DynamicResource ForegroundLeadColor}"
+                                               Text="A small form to compare surfaces and states." TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <TextBox shadui:ControlAssist.Label="Project name" Text="Everywhere"/>
+                                <ComboBox HorizontalAlignment="Stretch" SelectedIndex="0" shadui:ControlAssist.Label="Visibility">
+                                    <ComboBoxItem Content="Private workspace"/>
+                                    <ComboBoxItem Content="Shared workspace"/>
+                                </ComboBox>
+                                <WrapPanel Orientation="Horizontal">
+                                    <Button Classes="Primary" Margin="0,0,8,8" Content="Save changes" Command="{Binding PreviewDialogCommand}"/>
+                                    <Button Classes="Secondary" Margin="0,0,8,8" Content="Cancel"/>
+                                    <Button Classes="Secondary Compact" Margin="0,0,0,8" Content="Saving"
+                                            shadui:ButtonAssist.ShowProgress="True"/>
+                                </WrapPanel>
+                            </StackPanel>
+                            <Border Grid.Column="1" Padding="20" Background="{DynamicResource SelectionColor}"
+                                    CornerRadius="{DynamicResource LgCornerRadius}">
+                                <StackPanel Spacing="16">
+                                    <TextBlock FontWeight="SemiBold" Text="Preferences"/>
+                                    <ToggleSwitch Content="Desktop notifications" IsChecked="True"/>
+                                    <ToggleSwitch Content="Email summaries" IsChecked="False"/>
+                                    <TabControl>
+                                        <TabItem Header="General">
+                                            <TextBlock Text="Keep the main action easy to find." TextWrapping="Wrap"/>
+                                        </TabItem>
+                                        <TabItem Header="Advanced">
+                                            <TextBlock Text="The same palette adapts to secondary content." TextWrapping="Wrap"/>
+                                        </TabItem>
+                                    </TabControl>
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="Changes are saved to your workspace." Foreground="{DynamicResource ForegroundLeadColor}" TextWrapping="Wrap"/>
+                                        <TextBlock Text="Updated just now" Foreground="{DynamicResource MutedColor}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                        <shadui:Toast Title="Changes saved" Content="Your workspace is ready." Notification="Success" CanDismiss="False"/>
+                        <shadui:Toast Grid.Column="1" Title="Storage is nearly full" Content="Your chats remain on this device."
+                                      Notification="Warning" CanDismiss="False" ActionButtonContent="Manage"/>
+                    </Grid>
+                </StackPanel>
                 <StackPanel Spacing="16">
                     <TextBlock Classes="h4" Text="Basic Colors" />
                     <Grid IsSharedSizeScope="True">
@@ -124,6 +202,7 @@
                             </Grid>
                             <Separator />
                             <controls:ThemeColor Title="PrimaryColor" Background="{DynamicResource PrimaryColor}" />
+                            <controls:ThemeColor Title="PrimaryHoverColor" Background="{DynamicResource PrimaryHoverColor}" />
                             <controls:ThemeColor Title="PrimaryColor75" Background="{DynamicResource PrimaryColor75}" />
                             <controls:ThemeColor Title="PrimaryColor50" Background="{DynamicResource PrimaryColor50}" />
                             <controls:ThemeColor Title="PrimaryColor10" Background="{DynamicResource PrimaryColor10}" />
@@ -226,8 +305,8 @@
                             <controls:ThemeColor Title="SidebarBackgroundColor" Background="{DynamicResource SidebarBackgroundColor}" />
                             <controls:ThemeColor Title="SwitchBackgroundColor" Background="{DynamicResource SwitchBackgroundColor}" />
                             <controls:ThemeColor Title="SwitchForegroundColor" Background="{DynamicResource SwitchForegroundColor}" />
-                            <controls:ThemeColor Title="TabItemSelectedColor" Background="{DynamicResource TabItemSelectedColor}" />
-                            <controls:ThemeColor Title="TabItemsBackgroundColor" Background="{DynamicResource TabItemsBackgroundColor}" />
+                            <controls:ThemeColor Title="SelectedTabBackgroundColor" Background="{DynamicResource SelectedTabBackgroundColor}" />
+                            <controls:ThemeColor Title="InputBackgroundColor" Background="{DynamicResource InputBackgroundColor}" />
                         </StackPanel>
                     </Grid>
                 </StackPanel>

@@ -113,7 +113,7 @@
   <ControlTheme
     x:Key="{x:Type NumericUpDown}"
     TargetType="NumericUpDown">
-    <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
+    <Setter Property="Background" Value="{DynamicResource InputBackgroundColor}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
 

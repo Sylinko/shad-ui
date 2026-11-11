@@ -1,10 +1,10 @@
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
 // using HotAvalonia;
 
 namespace ShadUI.Demo;
 
-public partial class MainWindow : Window
+public partial class MainWindow : ShadWindow
 {
     public MainWindow()
     {
@@ -23,6 +23,7 @@ public partial class MainWindow : Window
     {
         if (WindowState == WindowState.FullScreen)
         {
+            WindowState = WindowState.Normal;
             ToolTip.SetTip(FullscreenButton, "Fullscreen");
         }
         else

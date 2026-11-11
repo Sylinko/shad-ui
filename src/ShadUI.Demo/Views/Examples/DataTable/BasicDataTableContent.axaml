@@ -120,24 +120,23 @@
                     <DataGridTemplateColumn CanUserResize="False" CanUserSort="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate DataType="viewModel:DataGridItem">
-                                <shadui:SimpleDropdown
+                                <Button
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Classes="Icon Grid"
-                                    CornerRadius="{DynamicResource MdCornerRadius}"
-                                    PopupPlacement="BottomEdgeAlignedLeft"
-                                    PopupWidth="190">
-                                    <shadui:SimpleDropdown.TriggerContent>
+                                    CornerRadius="{DynamicResource MdCornerRadius}">
+                                    <Button.Content>
                                         <TextBlock Classes="LucideIcon" Text="&#57530;" />
-                                    </shadui:SimpleDropdown.TriggerContent>
-                                    <shadui:SimpleDropdown.MenuLabel>
-                                        <TextBlock Classes="Caption Muted" Text="Actions" />
-                                    </shadui:SimpleDropdown.MenuLabel>
-                                    <Separator />
-                                    <Button Content="Copy payment ID" />
-                                    <Button Content="View customer" />
-                                    <Button Content="View payment details" />
-                                </shadui:SimpleDropdown>
+                                    </Button.Content>
+                                    <Button.Flyout>
+                                        <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                                            <MenuItem MinWidth="190" Header="Copy payment ID" />
+                                            <MenuItem Header="View customer" />
+                                            <MenuItem Header="View payment details" />
+
+                                        </MenuFlyout>
+                                    </Button.Flyout>
+                                </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

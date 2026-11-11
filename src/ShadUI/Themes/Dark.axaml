@@ -53,6 +53,7 @@
   <Color x:Key="ErrorColor5">#0DFF1744</Color>
 
   <!--  specific control colors  -->
+  <Color x:Key="InputBackgroundColor">#6609090B</Color>
   <Color x:Key="BadgeForegroundColor">#FAFAFA</Color>
   <Color x:Key="BusyAreaOverlayColor">#1971717A</Color>
   <Color x:Key="NavigationBarBackgroundColor">#0DA1A1A1</Color>

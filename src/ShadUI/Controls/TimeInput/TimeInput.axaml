@@ -104,9 +104,9 @@
     TargetType="{x:Type shadui:TimeInput}">
     <Setter Property="Padding" Value="4"/>
     <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
-    <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
+    <Setter Property="Background" Value="{DynamicResource InputBackgroundColor}"/>
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="shadui:ElementAssist.FocusOnLoad" Value="False"/>
@@ -121,7 +121,7 @@
             Text="{TemplateBinding shadui:ControlAssist.Label}"/>
           <DataValidationErrors Focusable="False">
             <StackPanel>
-              <Border
+              <shadui:SmoothBorder
                 Name="Container"
                 Padding="{TemplateBinding Padding}"
                 HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
@@ -170,7 +170,7 @@
                     IsVisible="{TemplateBinding ClockIdentifier, Converter={x:Static shadui:StringConverters.IsMatch}, ConverterParameter='12HourClock'}"
                     Theme="{StaticResource ToggleButtonTheme}"/>
                 </Grid>
-              </Border>
+              </shadui:SmoothBorder>
               <TextBlock
                 Classes="Caption Muted" Margin="0,4,0,0"
                 IsVisible="{TemplateBinding shadui:ControlAssist.Hint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
@@ -186,7 +186,7 @@
     <Style Selector="^[InputFocus=True]">
       <Setter Property="BorderBrush" Value="{DynamicResource PrimaryColor}"/>
     </Style>
-    <Style Selector="^:focus /template/ Border#Container">
+    <Style Selector="^:focus /template/ shadui|SmoothBorder#Container">
       <Setter Property="Transitions">
         <Transitions>
           <BrushTransition
@@ -200,7 +200,7 @@
       <Setter Property="CaretBrush" Value="{DynamicResource PrimaryForegroundColor}"/>
       <Setter Property="SelectionBrush" Value="{DynamicResource MutedColor}"/>
     </Style>
-    <Style Selector="^:pointerover /template/ Border#Container">
+    <Style Selector="^:pointerover /template/ shadui|SmoothBorder#Container">
       <Setter Property="Transitions">
         <Transitions>
           <BrushTransition
@@ -210,7 +210,7 @@
       <Setter Property="BorderBrush" Value="{DynamicResource PrimaryColor}"/>
     </Style>
     <Style Selector="^:error">
-      <Style Selector="^/template/ Border#Container">
+      <Style Selector="^/template/ shadui|SmoothBorder#Container">
         <Setter Property="BorderBrush" Value="{DynamicResource ErrorColor}"/>
       </Style>
       <Style Selector="^/template/ TextBlock#Label">
@@ -218,7 +218,7 @@
       </Style>
     </Style>
 
-    <Style Selector="^:disabled /template/ Border#Container">
+    <Style Selector="^:disabled /template/ shadui|SmoothBorder#Container">
       <Setter Property="Opacity" Value="0.5"/>
     </Style>
   </ControlTheme>

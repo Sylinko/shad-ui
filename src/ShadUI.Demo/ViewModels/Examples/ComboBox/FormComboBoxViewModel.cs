@@ -6,11 +6,9 @@ namespace ShadUI.Demo.ViewModels.Examples.ComboBox;
 
 public sealed partial class FormComboBoxViewModel : ViewModelBase
 {
-    private readonly ToastManager _toastManager;
 
-    public FormComboBoxViewModel(ToastManager toastManager)
+    public FormComboBoxViewModel()
     {
-        _toastManager = toastManager;
 
         var xamlPath = Path.Combine(AppContext.BaseDirectory, "views", "Examples", "ComboBox",
             "FormComboBoxContent.axaml");
@@ -62,7 +60,7 @@ public sealed partial class FormComboBoxViewModel : ViewModelBase
 
         if (HasErrors) return;
 
-        _toastManager.CreateToast("Submission Successful")
+        ToastManager.Create("Submission Successful")
             .WithContent($"Your selection ({SelectedItem}) has been submitted successfully!")
             .DismissOnClick()
             .ShowSuccess();

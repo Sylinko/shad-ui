@@ -28,7 +28,7 @@
                 Width="28"
                 Height="28"
                 Background="{DynamicResource GhostHoverColor}"
-                Classes="Icon"
+                Classes="Icon NoPadding"
                 Command="{Binding NextPageCommand}">
                 <Viewbox Margin="6">
                     <TextBlock Classes="LucideIcon" Text="&#57421;" />
@@ -177,7 +177,7 @@
                                                 Background="{DynamicResource CardBackgroundColor}"
                                                 BorderBrush="{DynamicResource BorderColor}"
                                                 BorderThickness="1"
-                                                BoxShadow="{DynamicResource Shadow}"
+                                                BoxShadow="{DynamicResource CardShadow}"
                                                 CornerRadius="{DynamicResource 2XlCornerRadius}">
                                                 <DockPanel>
                                                     <TextBlock
@@ -186,14 +186,14 @@
                                                         FontSize="16"
                                                         FontWeight="DemiBold"
                                                         Text="Overview" />
-                                                    <!-- <avalonia:CartesianChart -->
-                                                    <!--     Name="CartesianChart1" -->
-                                                    <!--     Margin="12,0,12,12" -->
-                                                    <!--     Series="{Binding Series}" -->
-                                                    <!--     TooltipTextPaint="{Binding TooltipTextPaint}" -->
-                                                    <!--     TooltipTextSize="14" -->
-                                                    <!--     XAxes="{Binding XAxes}" -->
-                                                    <!--     YAxes="{Binding YAxes}" /> -->
+                                                    <avalonia:CartesianChart
+                                                        Name="CartesianChart1"
+                                                        Margin="12,0,12,12"
+                                                        Series="{Binding Series}"
+                                                        TooltipTextPaint="{Binding TooltipTextPaint}"
+                                                        TooltipTextSize="14"
+                                                        XAxes="{Binding XAxes}"
+                                                        YAxes="{Binding YAxes}" />
                                                 </DockPanel>
                                             </Border>
                                             <Border
@@ -202,7 +202,7 @@
                                                 Background="{DynamicResource CardBackgroundColor}"
                                                 BorderBrush="{DynamicResource BorderColor}"
                                                 BorderThickness="1"
-                                                BoxShadow="{DynamicResource Shadow}"
+                                                BoxShadow="{DynamicResource CardShadow}"
                                                 CornerRadius="{DynamicResource 2XlCornerRadius}">
                                                 <DockPanel>
                                                     <StackPanel
@@ -319,7 +319,7 @@
                                                 Background="{DynamicResource CardBackgroundColor}"
                                                 BorderBrush="{DynamicResource BorderColor}"
                                                 BorderThickness="1"
-                                                BoxShadow="{DynamicResource Shadow}"
+                                                BoxShadow="{DynamicResource CardShadow}"
                                                 CornerRadius="{DynamicResource 2XlCornerRadius}">
                                                 <DockPanel>
                                                     <TextBlock
@@ -328,14 +328,14 @@
                                                         FontSize="16"
                                                         FontWeight="DemiBold"
                                                         Text="Overview" />
-                                                    <!-- <avalonia:CartesianChart -->
-                                                    <!--     Name="CartesianChart2" -->
-                                                    <!--     Margin="12,0,12,12" -->
-                                                    <!--     Series="{Binding Series}" -->
-                                                    <!--     TooltipTextPaint="{Binding TooltipTextPaint}" -->
-                                                    <!--     TooltipTextSize="14" -->
-                                                    <!--     XAxes="{Binding XAxes}" -->
-                                                    <!--     YAxes="{Binding YAxes}" /> -->
+                                                    <avalonia:CartesianChart
+                                                        Name="CartesianChart2"
+                                                        Margin="12,0,12,12"
+                                                        Series="{Binding Series}"
+                                                        TooltipTextPaint="{Binding TooltipTextPaint}"
+                                                        TooltipTextSize="14"
+                                                        XAxes="{Binding XAxes}"
+                                                        YAxes="{Binding YAxes}" />
                                                 </DockPanel>
                                             </Border>
                                             <Border
@@ -344,7 +344,7 @@
                                                 Background="{DynamicResource CardBackgroundColor}"
                                                 BorderBrush="{DynamicResource BorderColor}"
                                                 BorderThickness="1"
-                                                BoxShadow="{DynamicResource Shadow}"
+                                                BoxShadow="{DynamicResource CardShadow}"
                                                 CornerRadius="{DynamicResource 2XlCornerRadius}">
                                                 <DockPanel>
                                                     <StackPanel

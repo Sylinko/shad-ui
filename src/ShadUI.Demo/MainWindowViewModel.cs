@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -43,8 +43,6 @@ public sealed partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel(
         PageManager pageManager,
-        DialogManager dialogManager,
-        ToastManager toastManager,
         ThemeManager themeManager,
         AboutViewModel aboutViewModel,
         DashboardViewModel dashboardViewModel,
@@ -74,8 +72,6 @@ public sealed partial class MainWindowViewModel : ViewModelBase
         ToolTipViewModel toolTipViewModel,
         MiscellaneousViewModel miscellaneousViewModel)
     {
-        _dialogManager = dialogManager;
-        _toastManager = toastManager;
         _themeManager = themeManager;
         _aboutViewModel = aboutViewModel;
         _dashboardViewModel = dashboardViewModel;
@@ -109,13 +105,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase
     }
 
     [ObservableProperty]
-    private string _currentRoute = "dashboard";
-
-    [ObservableProperty]
-    private DialogManager _dialogManager;
-
-    [ObservableProperty]
-    private ToastManager _toastManager;
+    private string _currentRoute = "theme";
 
     [ObservableProperty]
     private object? _selectedPage;
@@ -350,29 +340,31 @@ public sealed partial class MainWindowViewModel : ViewModelBase
 
     public void Initialize()
     {
-        SwitchPage(_dashboardViewModel);
+        _themeManager.SwitchTheme(ThemeMode.Light);
+        CurrentTheme = ThemeMode.Light;
+        SwitchPage(_themeViewModel);
     }
 
     [RelayCommand]
     private void ShowAbout()
     {
-        DialogManager.CreateDialog(new AboutContent
+        DialogManager.CreateCustomDialog(new AboutContent
             {
                 DataContext = _aboutViewModel
             })
             .WithMinWidth(300)
             .Dismissible()
-            .ShowAsync();
+            .Show(CancellationToken.None);
     }
 
     [RelayCommand]
     private async Task TryClose()
     {
-        var result = await DialogManager.CreateDialog("Close", "Do you really want to exit?")
+        var result = await DialogManager.CreateDialog("Do you really want to exit?", "Close")
             .WithPrimaryButton("Yes")
             .WithCancelButton("No")
             .WithMinWidth(300)
-            .ShowAsync();
+            .ShowAsync(CancellationToken.None);
 
         if (result == DialogResult.Primary) Environment.Exit(0);
     }

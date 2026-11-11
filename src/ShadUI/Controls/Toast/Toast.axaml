@@ -29,77 +29,81 @@
     <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="Template">
       <ControlTemplate>
-        <shadui:SmoothBorder
-          x:Name="PART_ToastCard"
-          Background="{TemplateBinding Background}"
-          BorderBrush="{TemplateBinding BorderBrush}"
-          BorderThickness="{TemplateBinding BorderThickness}"
+        <!-- Keep the shadow outside the clipped status background and progress bar. -->
+        <Border
           BoxShadow="{DynamicResource Shadow}"
-          ClipToBounds="True"
           CornerRadius="{TemplateBinding CornerRadius}">
-          <Panel x:Name="PART_InnerPanel">
-            <Grid
-              Margin="{TemplateBinding Padding}"
-              ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
-              <PathIcon
-                x:Name="PART_Icon" Width="20"
-                Height="20"
-                Data="{x:Static shadui:Icons.Warning}"
-                Foreground="{DynamicResource ForegroundColor}"
-                IsVisible="{CompiledBinding Data, ElementName=PART_Icon, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-              <StackPanel
-                Grid.Column="1" VerticalAlignment="Center"
-                Spacing="4">
-                <TextBlock
-                  x:Name="PART_Title"
-                  FontSize="{TemplateBinding FontSize}"
-                  FontWeight="SemiBold"
-                  IsVisible="{TemplateBinding Title, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                  Text="{TemplateBinding Title}"
-                  TextWrapping="Wrap"/>
-                <ContentPresenter
-                  x:Name="PART_Content"
-                  Content="{TemplateBinding Content}"
-                  FontSize="{TemplateBinding FontSize}"
-                  IsVisible="{TemplateBinding Content, Converter={x:Static ObjectConverters.IsNotNull}}"
-                  TextBlock.TextWrapping="Wrap"/>
-              </StackPanel>
+          <shadui:SmoothBorder
+            x:Name="PART_ToastCard"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            ClipToBounds="True"
+            CornerRadius="{TemplateBinding CornerRadius}">
+            <Panel x:Name="PART_InnerPanel">
+              <Grid
+                Margin="{TemplateBinding Padding}"
+                ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                <PathIcon
+                  x:Name="PART_Icon" Width="20"
+                  Height="20"
+                  Data="{x:Static shadui:Icons.Warning}"
+                  Foreground="{DynamicResource ForegroundColor}"
+                  IsVisible="{CompiledBinding Data, ElementName=PART_Icon, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                <StackPanel
+                  Grid.Column="1" VerticalAlignment="Center"
+                  Spacing="4">
+                  <TextBlock
+                    x:Name="PART_Title"
+                    FontSize="{TemplateBinding FontSize}"
+                    FontWeight="SemiBold"
+                    IsVisible="{TemplateBinding Title, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    Text="{TemplateBinding Title}"
+                    TextWrapping="Wrap"/>
+                  <ContentPresenter
+                    x:Name="PART_Content"
+                    Content="{TemplateBinding Content}"
+                    FontSize="{TemplateBinding FontSize}"
+                    IsVisible="{TemplateBinding Content, Converter={x:Static ObjectConverters.IsNotNull}}"
+                    TextBlock.TextWrapping="Wrap"/>
+                </StackPanel>
+                <Button
+                  x:Name="PART_ActionButton" Grid.Column="2"
+                  shadui:ElementAssist.Classes="{TemplateBinding ActionButtonStyle, Converter={x:Static shadui:ButtonStyleConverters.ToClass}}"
+                  Content="{TemplateBinding ActionButtonContent}"
+                  IsVisible="{TemplateBinding ActionButtonContent, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+              </Grid>
+
+              <ProgressBar
+                x:Name="PART_ProgressBar" Height="6"
+                VerticalAlignment="Bottom"
+                IsIndeterminate="{TemplateBinding ProgressValue, Converter={x:Static shadui:DoubleConverters.IsNaN}}"
+                IsVisible="{TemplateBinding Progress, Converter={x:Static ObjectConverters.IsNotNull}}"
+                Maximum="1" Minimum="0"
+                Value="{TemplateBinding ProgressValue}"/>
+
               <Button
-                x:Name="PART_ActionButton" Grid.Column="2"
-                shadui:ElementAssist.Classes="{TemplateBinding ActionButtonStyle, Converter={x:Static shadui:ButtonStyleConverters.ToClass}}"
-                Content="{TemplateBinding ActionButtonContent}"
-                IsVisible="{TemplateBinding ActionButtonContent, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-            </Grid>
-
-            <ProgressBar
-              x:Name="PART_ProgressBar" Height="6"
-              VerticalAlignment="Bottom"
-              IsIndeterminate="{TemplateBinding ProgressValue, Converter={x:Static shadui:DoubleConverters.IsNaN}}"
-              IsVisible="{TemplateBinding Progress, Converter={x:Static ObjectConverters.IsNotNull}}"
-              Maximum="1" Minimum="0"
-              Value="{TemplateBinding ProgressValue}"/>
-
-            <Button
-              x:Name="PART_CloseButton" Width="20"
-              MinHeight="20" Margin="4"
-              Padding="0" HorizontalAlignment="Right"
-              VerticalAlignment="Top"
-              CornerRadius="{DynamicResource FullCornerRadius}"
-              IsVisible="{TemplateBinding CanDismiss}"
-              Opacity="0">
-              <Button.Transitions>
-                <Transitions>
-                  <DoubleTransition
-                    Property="Opacity" Duration="0:0:0.20"/>
-                </Transitions>
-              </Button.Transitions>
-              <PathIcon
-                x:Name="PART_CloseButtonIcon" Width="8"
-                Height="8"
-                Data="{x:Static shadui:Icons.WindowClose}"/>
-            </Button>
-          </Panel>
-        </shadui:SmoothBorder>
+                x:Name="PART_CloseButton" Width="20"
+                MinHeight="20" Margin="4"
+                Padding="0" HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                CornerRadius="{DynamicResource FullCornerRadius}"
+                IsVisible="{TemplateBinding CanDismiss}"
+                Opacity="0">
+                <Button.Transitions>
+                  <Transitions>
+                    <DoubleTransition
+                      Property="Opacity" Duration="0:0:0.20"/>
+                  </Transitions>
+                </Button.Transitions>
+                <PathIcon
+                  x:Name="PART_CloseButtonIcon" Width="8"
+                  Height="8"
+                  Data="{x:Static shadui:Icons.WindowClose}"/>
+              </Button>
+            </Panel>
+          </shadui:SmoothBorder>
+        </Border>
       </ControlTemplate>
     </Setter>
     <Style Selector="^ /template/ TextBlock#PART_Title">
@@ -159,7 +163,7 @@
         <Setter Property="Foreground" Value="{DynamicResource SuccessColor}"/>
       </Style>
       <Style Selector="^ /template/ ContentPresenter#PART_Content">
-        <Setter Property="TextBlock.Foreground" Value="{DynamicResource SuccessColor60}"/>
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource ForegroundLeadColor}"/>
         <Setter Property="TextBlock.FontSize" Value="{DynamicResource FontSizeS}"/>
         <Setter Property="TextBlock.FontWeight" Value="Medium"/>
       </Style>
@@ -189,7 +193,7 @@
         <Setter Property="Foreground" Value="{DynamicResource InfoColor}"/>
       </Style>
       <Style Selector="^ /template/ ContentPresenter#PART_Content">
-        <Setter Property="TextBlock.Foreground" Value="{DynamicResource InfoColor60}"/>
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource ForegroundLeadColor}"/>
         <Setter Property="TextBlock.FontSize" Value="{DynamicResource FontSizeS}"/>
         <Setter Property="TextBlock.FontWeight" Value="Medium"/>
       </Style>
@@ -219,7 +223,7 @@
         <Setter Property="Foreground" Value="{DynamicResource WarningColor}"/>
       </Style>
       <Style Selector="^ /template/ ContentPresenter#PART_Content">
-        <Setter Property="TextBlock.Foreground" Value="{DynamicResource WarningColor60}"/>
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource ForegroundLeadColor}"/>
         <Setter Property="TextBlock.FontSize" Value="{DynamicResource FontSizeS}"/>
         <Setter Property="TextBlock.FontWeight" Value="Medium"/>
       </Style>
@@ -249,7 +253,7 @@
         <Setter Property="Foreground" Value="{DynamicResource ErrorColor}"/>
       </Style>
       <Style Selector="^ /template/ ContentPresenter#PART_Content">
-        <Setter Property="TextBlock.Foreground" Value="{DynamicResource ErrorColor60}"/>
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource ForegroundLeadColor}"/>
         <Setter Property="TextBlock.FontSize" Value="{DynamicResource FontSizeS}"/>
         <Setter Property="TextBlock.FontWeight" Value="Medium"/>
       </Style>

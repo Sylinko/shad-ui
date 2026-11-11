@@ -8,25 +8,19 @@ namespace ShadUI.Demo.ViewModels;
 public sealed partial class DialogViewModel : ViewModelBase, INavigable
 {
     private readonly PageManager _pageManager;
-    private readonly DialogManager _dialogManager;
-    private readonly ToastManager _toastManager;
     private readonly LoginViewModel _loginViewModel;
 
     public DialogViewModel(
         PageManager pageManager,
-        DialogManager dialogManager,
-        ToastManager toastManager,
         LoginViewModel loginViewModel)
     {
         _pageManager = pageManager;
-        _dialogManager = dialogManager;
-        _toastManager = toastManager;
         _loginViewModel = loginViewModel;
 
         var path = Path.Combine(AppContext.BaseDirectory, "viewModels", "DialogViewModel.cs");
-        AlertDialogCode = WrapCode(path.ExtractByLineRange(62, 78).CleanIndentation());
-        DestructiveAlertDialogCode = WrapCode(path.ExtractByLineRange(83, 100).CleanIndentation());
-        CustomDialogCode = WrapCode(path.ExtractByLineRange(105, 122).CleanIndentation());
+        AlertDialogCode = WrapCode(path.ExtractByLineRange(55, 73).CleanIndentation());
+        DestructiveAlertDialogCode = WrapCode(path.ExtractByLineRange(78, 96).CleanIndentation());
+        CustomDialogCode = WrapCode(path.ExtractByLineRange(101, 126).CleanIndentation());
     }
 
     [RelayCommand]
@@ -61,18 +55,18 @@ public sealed partial class DialogViewModel : ViewModelBase, INavigable
     [RelayCommand]
     private async Task ShowDialog()
     {
-        var result = await _dialogManager
+        var result = await DialogManager
             .CreateDialog(
-                "Are you absolutely sure?",
-                "This action cannot be undone. This will permanently delete your account and remove your data from our servers.")
+                "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
+                "Are you absolutely sure?")
             .WithPrimaryButton("Continue")
             .WithCancelButton("Cancel")
             .WithMaxWidth(512)
             .Dismissible()
-            .ShowAsync();
+            .ShowAsync(CancellationToken.None);
 
         if (result == DialogResult.Primary)
-            _toastManager.CreateToast("Delete account")
+            ToastManager.Create("Delete account")
                 .WithContent("Account deleted successfully!")
                 .DismissOnClick()
                 .ShowSuccess();
@@ -84,18 +78,18 @@ public sealed partial class DialogViewModel : ViewModelBase, INavigable
     [RelayCommand]
     private async Task ShowDestructiveStyleDialog()
     {
-        var result = await _dialogManager
+        var result = await DialogManager
             .CreateDialog(
-                "Are you absolutely sure?",
-                "This action cannot be undone. This will permanently delete your account and remove your data from our servers.")
+                "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
+                "Are you absolutely sure?")
             .WithPrimaryButton("Continue", buttonStyle: ButtonStyle.Destructive)
             .WithCancelButton("Cancel")
             .WithMaxWidth(512)
             .Dismissible()
-            .ShowAsync();
+            .ShowAsync(CancellationToken.None);
 
         if (result == DialogResult.Primary)
-            _toastManager.CreateToast("Delete account")
+            ToastManager.Create("Delete account")
                 .WithContent("Account deleted successfully!")
                 .DismissOnClick()
                 .ShowSuccess();
@@ -108,23 +102,23 @@ public sealed partial class DialogViewModel : ViewModelBase, INavigable
     private async Task ShowCustomDialog()
     {
         _loginViewModel.Initialize();
-        var result = await _dialogManager.CreateDialog(new LoginContent
+        var result = await DialogManager.CreateCustomDialog(new LoginContent
             {
                 DataContext = _loginViewModel
             })
             .Dismissible()
-            .ShowAsync();
+            .ShowAsync(CancellationToken.None);
 
         if (result == DialogResult.Cancel)
         {
-            _toastManager.CreateToast("Sign in cancelled")
+            ToastManager.Create("Sign in cancelled")
                 .WithContent("Please sign in to continue.")
                 .DismissOnClick()
                 .ShowWarning();
         }
         else
         {
-            _toastManager.CreateToast("Sign in successful")
+            ToastManager.Create("Sign in successful")
                 .WithContent($"Hi {_loginViewModel.Email}, welcome back!")
                 .DismissOnClick()
                 .ShowSuccess();

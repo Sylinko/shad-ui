@@ -7,13 +7,11 @@
     <Design.PreviewWith>
         <Border Width="500" Height="250">
             <controls:CodeTextBlock>
-                <Run Text="&lt;controls:Window.Hosts&gt;" />
-                <LineBreak />
-                <Run Text="    &lt;dialogs:DialogHost Manager=&quot;{Binding DialogManager}&quot;" />
-                <LineBreak />
-                <Run Text="                        Owner=&quot;{Binding RelativeSource={RelativeSource AncestorType=controls:Window}}&quot; /&gt;" />
-                <LineBreak />
-                <Run Text="&lt;/controls:Window.Hosts&gt;" />
+                <Run Text="&lt;shadui:ShadWindow.Hosts&gt;"/>
+                <LineBreak/>
+                <Run Text="    &lt;shadui:DialogHost /&gt;"/>
+                <LineBreak/>
+                <Run Text="&lt;/shadui:ShadWindow.Hosts&gt;"/>
             </controls:CodeTextBlock>
         </Border>
     </Design.PreviewWith>

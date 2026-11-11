@@ -27,7 +27,7 @@
                         Width="28"
                         Height="28"
                         Background="{DynamicResource GhostHoverColor}"
-                        Classes="Icon"
+                        Classes="Icon NoPadding"
                         Command="{Binding BackPageCommand}">
                         <Viewbox Margin="6">
                             <TextBlock Classes="LucideIcon" Text="&#57420;" />
@@ -37,7 +37,7 @@
                         Width="28"
                         Height="28"
                         Background="{DynamicResource GhostHoverColor}"
-                        Classes="Icon"
+                        Classes="Icon NoPadding"
                         Command="{Binding NextPageCommand}">
                         <Viewbox Margin="6">
                             <TextBlock Classes="LucideIcon" Text="&#57421;" />
@@ -56,34 +56,15 @@
                 Margin="{StaticResource PageMargin}"
                 Spacing="32">
                 <StackPanel Orientation="Vertical" Spacing="8">
-                    <TextBlock Classes="h4" Text="Installation" />
-                    <Separator Margin="0" />
-                    <TextBlock
-                        Classes="Small"
-                        Text="Place ToastHost to any part of the application, preferably in main content of the MainWindow and should be on top of other elements."
-                        TextWrapping="Wrap" />
-                    <controls:CodeTextBlock>
-                        <Run Text="    &lt;!-- rest of the codes --&gt;" />
-                        <LineBreak />
-                        <Run Text="    &lt;toasts:ToastHost Manager=&quot;{Binding ToastManager}&quot; /&gt;" />
-                    </controls:CodeTextBlock>
-                    <TextBlock
-                        Margin="0,12,0,0"
-                        Classes="Small"
-                        Text="Resolve ToastManager using dependency injection framework for easy access. Make sure to have only one instance of ToastManager."
-                        TextWrapping="Wrap" />
-                    <controls:CodeTextBlock Language="cs">
-                        <Run Text="public static void AddServices(this IServiceCollection collection)" />
-                        <LineBreak />
-                        <Run Text="\{" />
-                        <LineBreak />
-                        <Run Text="    //...other service injection" />
-                        <LineBreak />
-                        <Run Text="    " />
-                        <LineBreak />
-                        <Run Text="    collection.AddSingleton&lt;ToastManager&gt;();" />
-                        <LineBreak />
-                        <Run Text="}" />
+                    <TextBlock Classes="h4" Text="Installation"/>
+                    <Separator Margin="0"/>
+                    <TextBlock Classes="Small" Text="Add a ToastHost to the window's Hosts collection. It registers automatically while attached. ToastManager.Create resolves the current host when the toast is shown." TextWrapping="Wrap"/>
+                    <controls:CodeTextBlock Language="xaml">
+                        <Run Text="&lt;shadui:ShadWindow.Hosts&gt;"/>
+                        <LineBreak/>
+                        <Run Text="    &lt;shadui:ToastHost /&gt;"/>
+                        <LineBreak/>
+                        <Run Text="&lt;/shadui:ShadWindow.Hosts&gt;"/>
                     </controls:CodeTextBlock>
                 </StackPanel>
                 <controls:ControlBlock Title="Simple" CSharp="{Binding SimpleToastCode}">

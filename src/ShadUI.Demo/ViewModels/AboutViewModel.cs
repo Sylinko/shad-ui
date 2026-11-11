@@ -4,12 +4,12 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ShadUI.Demo.ViewModels;
 
-public sealed partial class AboutViewModel(DialogManager dialogManager) : ViewModelBase
+public sealed partial class AboutViewModel : ViewModelBase
 {
     [RelayCommand]
     private void Close()
     {
-        dialogManager.CloseAll();
+        DialogManager.CloseAll();
     }
 
     [ObservableProperty]

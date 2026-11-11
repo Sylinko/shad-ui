@@ -26,7 +26,7 @@
                         Width="28"
                         Height="28"
                         Background="{DynamicResource GhostHoverColor}"
-                        Classes="Icon"
+                        Classes="Icon NoPadding"
                         Command="{Binding BackPageCommand}">
                         <Viewbox Margin="6">
                             <TextBlock Classes="LucideIcon" Text="&#57420;" />
@@ -36,7 +36,7 @@
                         Width="28"
                         Height="28"
                         Background="{DynamicResource GhostHoverColor}"
-                        Classes="Icon"
+                        Classes="Icon NoPadding"
                         Command="{Binding NextPageCommand}">
                         <Viewbox Margin="6">
                             <TextBlock Classes="LucideIcon" Text="&#57421;" />
@@ -71,7 +71,6 @@
                             Content="Edit">
                             <shadui:ButtonAssist.Icon>
                                 <TextBlock
-                                    Margin="0,0,6,0"
                                     Classes="LucideIcon"
                                     Text="&#57849;" />
                             </shadui:ButtonAssist.Icon>
@@ -99,7 +98,6 @@
                             Content="Edit">
                             <shadui:ButtonAssist.Icon>
                                 <TextBlock
-                                    Margin="0,0,6,0"
                                     Classes="LucideIcon"
                                     Text="&#57849;" />
                             </shadui:ButtonAssist.Icon>
@@ -127,7 +125,6 @@
                             Content="Delete">
                             <shadui:ButtonAssist.Icon>
                                 <TextBlock
-                                    Margin="0,0,6,0"
                                     Classes="LucideIcon"
                                     Text="&#57741;" />
                             </shadui:ButtonAssist.Icon>
@@ -155,7 +152,6 @@
                             Content="Edit">
                             <shadui:ButtonAssist.Icon>
                                 <TextBlock
-                                    Margin="0,0,6,0"
                                     Classes="LucideIcon"
                                     Text="&#57849;" />
                             </shadui:ButtonAssist.Icon>
@@ -183,7 +179,6 @@
                             Content="Edit">
                             <shadui:ButtonAssist.Icon>
                                 <TextBlock
-                                    Margin="0,0,6,0"
                                     Classes="LucideIcon"
                                     Text="&#57849;" />
                             </shadui:ButtonAssist.Icon>
@@ -206,7 +201,6 @@
                             Command="{Binding SubmitCommand}">
                             <shadui:ButtonAssist.Icon>
                                 <TextBlock
-                                    Margin="0,8"
                                     Classes="LucideIcon"
                                     Text="&#57849;" />
                             </shadui:ButtonAssist.Icon>
@@ -217,7 +211,6 @@
                             IsEnabled="False">
                             <shadui:ButtonAssist.Icon>
                                 <TextBlock
-                                    Margin="0,8"
                                     Classes="LucideIcon"
                                     Text="&#57849;" />
                             </shadui:ButtonAssist.Icon>
@@ -235,7 +228,6 @@
                             Command="{Binding SubmitCommand}">
                             <shadui:ButtonAssist.Icon>
                                 <TextBlock
-                                    Margin="0,8"
                                     Classes="LucideIcon"
                                     Text="&#57741;" />
                             </shadui:ButtonAssist.Icon>
@@ -243,7 +235,6 @@
                         <Button Classes="DestructiveIcon" IsEnabled="False">
                             <shadui:ButtonAssist.Icon>
                                 <TextBlock
-                                    Margin="0,8"
                                     Classes="LucideIcon"
                                     Text="&#57741;" />
                             </shadui:ButtonAssist.Icon>

@@ -35,7 +35,7 @@
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="FontWeight" Value="Medium"/>
-    <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
+    <Setter Property="Background" Value="{DynamicResource InputBackgroundColor}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="Padding" Value="12,4"/>

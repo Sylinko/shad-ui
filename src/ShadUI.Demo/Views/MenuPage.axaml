@@ -26,7 +26,7 @@
                         Width="28"
                         Height="28"
                         Background="{DynamicResource GhostHoverColor}"
-                        Classes="Icon"
+                        Classes="Icon NoPadding"
                         Command="{Binding BackPageCommand}">
                         <Viewbox Margin="6">
                             <TextBlock Classes="LucideIcon" Text="&#57420;" />
@@ -36,7 +36,7 @@
                         Width="28"
                         Height="28"
                         Background="{DynamicResource GhostHoverColor}"
-                        Classes="Icon"
+                        Classes="Icon NoPadding"
                         Command="{Binding NextPageCommand}">
                         <Viewbox Margin="6">
                             <TextBlock Classes="LucideIcon" Text="&#57421;" />
@@ -54,142 +54,152 @@
                 MaxWidth="{StaticResource PageMaxWidth}"
                 Margin="{StaticResource PageMargin}"
                 Spacing="32">
-                <controls:ControlBlock Title="Simple Dropdown" Xaml="{Binding SimpleDropdownCode}">
+                <controls:ControlBlock Title="Menu flyout" Xaml="{Binding MenuFlyoutCode}">
                     <StackPanel
                         HorizontalAlignment="Center"
                         Orientation="Horizontal"
                         Spacing="16">
-                        <shadui:SimpleDropdown
+                        <Button
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Classes="Primary"
-                            TriggerContent="Primary">
-                            <shadui:SimpleDropdown.MenuLabel>
-                                <TextBlock Classes="Caption  Muted" Text="Actions" />
-                            </shadui:SimpleDropdown.MenuLabel>
-                            <Button Content="Add New">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57665;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                            <Button Content="Edit" IsEnabled="False">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57849;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                            <Separator />
-                            <Button Classes="DestructiveMenu" Content="Delete">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57741;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                        </shadui:SimpleDropdown>
-                        <shadui:SimpleDropdown
+                            Content="Primary">
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuItem Header="Add New">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57665;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Edit" IsEnabled="False">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57849;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <Separator />
+                                    <MenuItem Classes="Destructive" Header="Delete">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57741;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
+                        <Button
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Classes="Secondary"
-                            TriggerContent="Secondary">
-                            <shadui:SimpleDropdown.MenuLabel>
-                                <TextBlock Classes="Caption  Muted" Text="Actions" />
-                            </shadui:SimpleDropdown.MenuLabel>
-                            <Button Content="Add New">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57665;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                            <Button Content="Edit" IsEnabled="False">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57849;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                            <Separator />
-                            <Button Classes="DestructiveMenu" Content="Delete">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57741;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                        </shadui:SimpleDropdown>
-                        <shadui:SimpleDropdown
+                            Content="Secondary">
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuItem Header="Add New">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57665;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Edit" IsEnabled="False">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57849;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <Separator />
+                                    <MenuItem Classes="Destructive" Header="Delete">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57741;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
+                        <Button
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Classes="Outline"
-                            TriggerContent="Outline">
-                            <shadui:SimpleDropdown.MenuLabel>
-                                <TextBlock Classes="Caption  Muted" Text="Actions" />
-                            </shadui:SimpleDropdown.MenuLabel>
-                            <Button Content="Add New">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57665;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                            <Button Content="Edit" IsEnabled="False">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57849;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                            <Separator />
-                            <Button Classes="DestructiveMenu" Content="Delete">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57741;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                        </shadui:SimpleDropdown>
-                        <shadui:SimpleDropdown
+                            Content="Outline">
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuItem Header="Add New">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57665;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Edit" IsEnabled="False">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57849;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <Separator />
+                                    <MenuItem Classes="Destructive" Header="Delete">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57741;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
+                        <Button
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Classes="Ghost"
-                            TriggerContent="Ghost">
-                            <shadui:SimpleDropdown.MenuLabel>
-                                <TextBlock Classes="Caption  Muted" Text="Actions" />
-                            </shadui:SimpleDropdown.MenuLabel>
-                            <Button Content="Add New">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57665;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                            <Button Content="Edit" IsEnabled="False">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57849;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                            <Separator />
-                            <Button Classes="DestructiveMenu" Content="Delete">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57741;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                        </shadui:SimpleDropdown>
-                        <shadui:SimpleDropdown
+                            Content="Ghost">
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuItem Header="Add New">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57665;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Edit" IsEnabled="False">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57849;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <Separator />
+                                    <MenuItem Classes="Destructive" Header="Delete">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57741;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
+                        <Button
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Classes="Icon">
-                            <shadui:SimpleDropdown.TriggerContent>
+                            <Button.Content>
                                 <TextBlock Classes="LucideIcon" Text="&#57530;" />
-                            </shadui:SimpleDropdown.TriggerContent>
-                            <shadui:SimpleDropdown.MenuLabel>
-                                <TextBlock Classes="Caption  Muted" Text="Actions" />
-                            </shadui:SimpleDropdown.MenuLabel>
-                            <Button Content="Add New">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57665;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                            <Button Content="Edit" IsEnabled="False">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57849;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                            <Separator />
-                            <Button Classes="DestructiveMenu" Content="Delete">
-                                <shadui:ButtonAssist.Icon>
-                                    <TextBlock Classes="LucideIcon" Text="&#57741;" />
-                                </shadui:ButtonAssist.Icon>
-                            </Button>
-                        </shadui:SimpleDropdown>
+                            </Button.Content>
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuItem Header="Add New">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57665;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Edit" IsEnabled="False">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57849;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <Separator />
+                                    <MenuItem Classes="Destructive" Header="Delete">
+                                        <MenuItem.Icon>
+                                            <TextBlock Classes="LucideIcon" Text="&#57741;" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
                     </StackPanel>
                 </controls:ControlBlock>
                 <controls:ControlBlock Title="Menu Bar" Xaml="{Binding MenuBarCode}">
-                    <Border
+                    <shadui:SmoothBorder
                         Padding="4"
                         HorizontalAlignment="Center"
                         BorderBrush="{DynamicResource BorderColor}"
@@ -264,7 +274,7 @@
                                 <MenuItem Header="Add Profile..." />
                             </MenuItem>
                         </Menu>
-                    </Border>
+                    </shadui:SmoothBorder>
                 </controls:ControlBlock>
                 <StackPanel>
                     <controls:ControlBlock Title="Dropdown Menu" Xaml="{Binding DropDownCode}">
@@ -444,7 +454,7 @@
                             Margin="8,0,0,0"
                             VerticalAlignment="Center"
                             Classes="Small"
-                            Text="Performance Alert: Complex MenuItems in collection controls (DataGrid/ItemsControl) may impact performance with large datasets. Consider using SimpleDropdown for better performance."
+                            Text="Use Button.Flyout with MenuFlyout for row actions; use Menu for a persistent menu bar."
                             TextWrapping="Wrap" />
                     </Grid>
                 </StackPanel>

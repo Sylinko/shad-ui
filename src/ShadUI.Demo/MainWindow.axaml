@@ -1,4 +1,4 @@
-﻿<shadui:Window
+﻿<shadui:ShadWindow
   x:Class="ShadUI.Demo.MainWindow" xmlns="https://github.com/avaloniaui"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converters="clr-namespace:ShadUI.Demo.Converters"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:demo="clr-namespace:ShadUI.Demo"
@@ -8,49 +8,53 @@
   Title="ShadUI App" Width="1024"
   Height="768" x:DataType="demo:MainWindowViewModel"
   Icon="/Assets/favicon.ico"
-  TitleFontWeight="SemiBold" TransparencyLevelHint="Mica,Blur,None"
+  Background="{DynamicResource DialogBackgroundColor}" TransparencyLevelHint="None"
   WindowStartupLocation="CenterScreen" mc:Ignorable="d">
-  <shadui:Window.LogoContent>
-    <PathIcon
-      Width="14" Height="14"
-      Margin="8,8,0,8"
-      Data="{x:Static shadui:Icons.Logo}"/>
-  </shadui:Window.LogoContent>
 
-  <shadui:Window.Hosts>
-    <shadui:DialogHost Manager="{Binding DialogManager}"/>
-    <shadui:ToastHost Manager="{Binding ToastManager}"/>
-  </shadui:Window.Hosts>
 
-  <shadui:Window.RightWindowTitleBarContent>
-    <StackPanel
-      Orientation="Horizontal" Spacing="8">
-      <Button
-        Width="30" Height="30"
-        Command="{Binding SwitchThemeCommand}"
-        CornerRadius="{DynamicResource MdCornerRadius}"
-        ToolTip.Tip="Switch Theme">
-        <TextBlock
-          Classes="LucideIcon"
-          Text="{Binding CurrentTheme, Converter={x:Static converters:ThemeModeConverters.ToLucideIcon}}"/>
-      </Button>
-      <Button
-        x:Name="FullscreenButton" Width="30"
-        Height="30"
-        CornerRadius="{DynamicResource MdCornerRadius}">
-        <Panel>
+  <shadui:ShadWindow.Hosts>
+    <shadui:DialogHost/>
+    <shadui:ToastHost/>
+  </shadui:ShadWindow.Hosts>
+
+  <shadui:ShadWindow.TitleBarContent>
+    <!-- Keep palette review independent of the desktop backdrop and native caption-button placement. -->
+    <DockPanel LastChildFill="True">
+      <DockPanel.Margin>
+        <OnPlatform x:TypeArguments="Thickness" Windows="16,0,148,0" macOS="76,0,16,0" Linux="16,0"/>
+      </DockPanel.Margin>
+      <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Orientation="Horizontal" Spacing="8">
+        <Button
+          Width="30" Height="30" Padding="0"
+          Command="{Binding SwitchThemeCommand}"
+          CornerRadius="{DynamicResource MdCornerRadius}"
+          ToolTip.Tip="Switch Theme">
           <TextBlock
             Classes="LucideIcon"
-            IsVisible="{Binding #Window.WindowState, Converter={x:Static converters:WindowStateConverters.IsNotFullScreen}}"
-            Text="&#58681;"/>
-          <TextBlock
-            Classes="LucideIcon"
-            IsVisible="{Binding #Window.WindowState, Converter={x:Static converters:WindowStateConverters.IsFullScreen}}"
-            Text="&#57631;"/>
-        </Panel>
-      </Button>
-    </StackPanel>
-  </shadui:Window.RightWindowTitleBarContent>
+            Text="{Binding CurrentTheme, Converter={x:Static converters:ThemeModeConverters.ToLucideIcon}}"/>
+        </Button>
+        <Button
+          x:Name="FullscreenButton" Width="30"
+          Height="30" Padding="0"
+          CornerRadius="{DynamicResource MdCornerRadius}">
+          <Panel>
+            <TextBlock
+              Classes="LucideIcon"
+              IsVisible="{Binding #Window.WindowState, Converter={x:Static converters:WindowStateConverters.IsNotFullScreen}}"
+              Text="&#58681;"/>
+            <TextBlock
+              Classes="LucideIcon"
+              IsVisible="{Binding #Window.WindowState, Converter={x:Static converters:WindowStateConverters.IsFullScreen}}"
+              Text="&#57631;"/>
+          </Panel>
+        </Button>
+      </StackPanel>
+      <StackPanel VerticalAlignment="Center" Orientation="Horizontal" Spacing="8" IsHitTestVisible="False">
+        <PathIcon Width="16" Height="16" Data="{x:Static shadui:Icons.Logo}"/>
+        <TextBlock FontWeight="SemiBold" Text="ShadUI"/>
+      </StackPanel>
+    </DockPanel>
+  </shadui:ShadWindow.TitleBarContent>
 
   <Grid ColumnDefinitions="Auto *">
     <shadui:NavigationBar
@@ -58,11 +62,11 @@
       CurrentRoute="{Binding CurrentRoute, Mode=TwoWay}">
       <shadui:NavigationBarItem
         Content="Dashboard" Icon="LayoutDashboard"
-        IsChecked="True" Route="dashboard"
+        Route="dashboard"
         ToolTip="Dashboard"/>
       <shadui:NavigationBarItem
         Content="Theming" Icon="PaintbrushVertical"
-        Route="theme" ToolTip="Theming"/>
+        IsChecked="True" Route="theme" ToolTip="Theming"/>
       <shadui:NavigationBarItem
         Content="Typography" Icon="Type"
         Route="typography" ToolTip="Typography"/>
@@ -318,4 +322,4 @@
       Grid.Column="1"
       Content="{Binding SelectedPage}"/>
   </Grid>
-</shadui:Window>
+</shadui:ShadWindow>

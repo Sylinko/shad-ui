@@ -69,7 +69,7 @@
   <ControlTheme
     x:Key="{x:Type ButtonSpinner}"
     TargetType="ButtonSpinner">
-    <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
+    <Setter Property="Background" Value="{DynamicResource InputBackgroundColor}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>

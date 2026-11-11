@@ -1,6 +1,6 @@
 ﻿<Application
     Name="ShadUI App"
-    RequestedThemeVariant="Default"
+    RequestedThemeVariant="Light"
     x:Class="ShadUI.Demo.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:demo="clr-namespace:ShadUI.Demo"

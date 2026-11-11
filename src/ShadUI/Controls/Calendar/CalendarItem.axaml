@@ -11,7 +11,7 @@
   <ControlTheme
     x:Key="{x:Type CalendarItem}"
     TargetType="CalendarItem">
-    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
     <Setter Property="BorderThickness" Value="1"/>
@@ -19,7 +19,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Panel>
-          <Border
+          <shadui:SmoothBorder
             Margin="{DynamicResource PopupCompactShadowMargin}"
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
@@ -42,7 +42,8 @@
                   </Style>
                   <Style Selector="Button.CalendarNavigation">
                     <Setter Property="Height" Value="20"/>
-                    <Setter Property="Width" Value="28"/>
+                    <Setter Property="Padding" Value="0"/>
+      <Setter Property="Width" Value="28"/>
                   </Style>
                   <Style Selector="Button.CalendarNavigation &gt; Path">
                     <Setter Property="Fill" Value="{DynamicResource ThemeForegroundBrush}"/>
@@ -130,8 +131,8 @@
                 </Grid>
               </Grid>
             </Border>
-          </Border>
-          <Border
+          </shadui:SmoothBorder>
+          <shadui:SmoothBorder
             Name="DisabledVisual"
             Margin="{TemplateBinding Padding}"
             Background="{DynamicResource GhostColor}"
@@ -141,12 +142,13 @@
       </ControlTemplate>
     </Setter>
     <Style Selector="^ /template/ Button.Icon">
+      <Setter Property="Padding" Value="0"/>
       <Setter Property="Width" Value="28"/>
       <Setter Property="Height" Value="28"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="Background" Value="{DynamicResource CardBackgroundColor}"/>
       <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-      <Style Selector="^ /template/ Border#RootBorder">
+      <Style Selector="^ /template/ shadui|SmoothBorder#BackgroundBorder">
         <Setter Property="Transitions">
           <Transitions>
             <BrushTransition
@@ -174,7 +176,7 @@
           </Transitions>
         </Setter>
       </Style>
-      <Style Selector="^:pointerover /template/ Border#RootBorder">
+      <Style Selector="^:pointerover /template/ shadui|SmoothBorder#BackgroundBorder">
         <Setter Property="Background" Value="{DynamicResource OutlineColor}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource OutlineColor}"/>
       </Style>
@@ -199,7 +201,7 @@
       </Template>
     </Setter>
 
-    <Style Selector="^:calendardisabled /template/ Border#DisabledVisual">
+    <Style Selector="^:calendardisabled /template/ shadui|SmoothBorder#DisabledVisual">
       <Setter Property="IsVisible" Value="True"/>
     </Style>
   </ControlTheme>

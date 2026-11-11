@@ -7,11 +7,9 @@ namespace ShadUI.Demo.ViewModels.Examples.Time;
 
 public sealed partial class FormTimeInputViewModel : ViewModelBase
 {
-    private readonly ToastManager _toastManager;
 
-    public FormTimeInputViewModel(ToastManager toastManager)
+    public FormTimeInputViewModel()
     {
-        _toastManager = toastManager;
 
         var xamlPath = Path.Combine(AppContext.BaseDirectory, "views", "Examples", "Time",
             "FormTimeInputContent.axaml");
@@ -65,7 +63,7 @@ public sealed partial class FormTimeInputViewModel : ViewModelBase
         ValidateProperty(EndTime, nameof(EndTime));
         if (HasErrors) return;
 
-        _toastManager.CreateToast("Submission Successful")
+        ToastManager.Create("Submission Successful")
             .WithContent(
                 $"Your schedule has been created successfully! The start time is {StartTime:hh:mm tt} and the end time is {EndTime:hh:mm tt}.")
             .DismissOnClick()

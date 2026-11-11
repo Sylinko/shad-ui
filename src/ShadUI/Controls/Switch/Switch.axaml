@@ -108,6 +108,7 @@
                   </shadui:SwitchThumbPresenter.Transitions>
                   <Border
                     x:Name="SwitchKnob" Width="16"
+                    Background="{DynamicResource SwitchForegroundColor}"
                     Height="16" ClipToBounds="True"
                     CornerRadius="{DynamicResource FullCornerRadius}">
                     <Border.Transitions>
@@ -120,38 +121,6 @@
                         </DoubleTransition>
                       </Transitions>
                     </Border.Transitions>
-                    <Panel>
-                      <Border
-                        x:Name="KnobOff"
-                        Background="{DynamicResource SwitchForegroundColor}"
-                        Opacity="1">
-                        <Border.Transitions>
-                          <Transitions>
-                            <DoubleTransition
-                              Property="Opacity" Duration="0:0:0.05">
-                              <DoubleTransition.Easing>
-                                <QuadraticEaseOut/>
-                              </DoubleTransition.Easing>
-                            </DoubleTransition>
-                          </Transitions>
-                        </Border.Transitions>
-                      </Border>
-                      <Border
-                        x:Name="KnobOn"
-                        Background="{DynamicResource PrimaryForegroundColor}"
-                        Opacity="0">
-                        <Border.Transitions>
-                          <Transitions>
-                            <DoubleTransition
-                              Property="Opacity" Duration="0:0:0.05">
-                              <DoubleTransition.Easing>
-                                <QuadraticEaseOut/>
-                              </DoubleTransition.Easing>
-                            </DoubleTransition>
-                          </Transitions>
-                        </Border.Transitions>
-                      </Border>
-                    </Panel>
                   </Border>
                 </shadui:SwitchThumbPresenter>
                 <Grid x:Name="PART_MovingKnobs"/>
@@ -187,12 +156,6 @@
       <Style Selector="^ /template/ ContentPresenter#PART_OnContentPresenter">
         <Setter Property="IsVisible" Value="False"/>
       </Style>
-      <Style Selector="^ /template/ Border#KnobOff">
-        <Setter Property="Opacity" Value="1"/>
-      </Style>
-      <Style Selector="^ /template/ Border#KnobOn">
-        <Setter Property="Opacity" Value="0"/>
-      </Style>
     </Style>
 
     <Style Selector="^:checked">
@@ -201,19 +164,12 @@
       </Style>
       <Style Selector="^/template/ Border#SwitchKnob">
         <Setter Property="Width" Value="16"/>
-        <Setter Property="Background" Value="{DynamicResource PrimaryForegroundColor}"/>
       </Style>
       <Style Selector="^ /template/ ContentPresenter#PART_OffContentPresenter">
         <Setter Property="IsVisible" Value="False"/>
       </Style>
       <Style Selector="^ /template/ ContentPresenter#PART_OnContentPresenter">
         <Setter Property="IsVisible" Value="True"/>
-      </Style>
-      <Style Selector="^ /template/ Border#KnobOff">
-        <Setter Property="Opacity" Value="0"/>
-      </Style>
-      <Style Selector="^ /template/ Border#KnobOn">
-        <Setter Property="Opacity" Value="1"/>
       </Style>
     </Style>
 

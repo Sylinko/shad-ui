@@ -4,7 +4,7 @@ using ShadUI.Demo.Validators;
 
 namespace ShadUI.Demo.ViewModels;
 
-public sealed partial class LoginViewModel(DialogManager dialogManager) : ViewModelBase
+public sealed partial class LoginViewModel : ViewModelBase
 {
     private string _email = string.Empty;
 
@@ -46,12 +46,12 @@ public sealed partial class LoginViewModel(DialogManager dialogManager) : ViewMo
         ValidateAllProperties();
 
         if (HasErrors) return;
-        dialogManager.CloseAll(DialogResult.Primary);
+        DialogManager.CloseAll(DialogResult.Primary);
     }
 
     [RelayCommand]
     private void Cancel()
     {
-        dialogManager.CloseAll();
+        DialogManager.CloseAll();
     }
 }

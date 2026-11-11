@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace ShadUI.Demo.ViewModels;
@@ -12,13 +12,13 @@ public sealed partial class ButtonViewModel : ViewModelBase, INavigable
     {
         _pageManager = pageManager;
         var path = Path.Combine(AppContext.BaseDirectory, "views", "ButtonPage.axaml");
-        PrimaryCode = path.ExtractByLineRange(58, 83).CleanIndentation();
-        SecondaryCode = path.ExtractByLineRange(86, 111).CleanIndentation();
-        DestructiveCode = path.ExtractByLineRange(114, 139).CleanIndentation();
-        OutlineCode = path.ExtractByLineRange(142, 167).CleanIndentation();
-        GhostCode = path.ExtractByLineRange(170, 195).CleanIndentation();
-        IconCode = path.ExtractByLineRange(198, 225).CleanIndentation();
-        DestructiveIconCode = path.ExtractByLineRange(228, 251).CleanIndentation();
+        PrimaryCode = path.ExtractByLineRange(58, 82).CleanIndentation();
+        SecondaryCode = path.ExtractByLineRange(85, 109).CleanIndentation();
+        DestructiveCode = path.ExtractByLineRange(112, 136).CleanIndentation();
+        OutlineCode = path.ExtractByLineRange(139, 163).CleanIndentation();
+        GhostCode = path.ExtractByLineRange(166, 190).CleanIndentation();
+        IconCode = path.ExtractByLineRange(193, 218).CleanIndentation();
+        DestructiveIconCode = path.ExtractByLineRange(221, 242).CleanIndentation();
     }
 
     [RelayCommand]

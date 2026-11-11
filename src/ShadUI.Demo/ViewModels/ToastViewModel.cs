@@ -8,22 +8,20 @@ namespace ShadUI.Demo.ViewModels;
 public sealed partial class ToastViewModel : ViewModelBase, INavigable
 {
     private readonly PageManager _pageManager;
-    private readonly ToastManager _toastManager;
 
-    public ToastViewModel(PageManager pageManager, ToastManager toastManager)
+    public ToastViewModel(PageManager pageManager)
     {
         _pageManager = pageManager;
-        _toastManager = toastManager;
         var path = Path.Combine(AppContext.BaseDirectory, "viewModels", "ToastViewModel.cs");
-        SimpleToastCode = WrapCode(path.ExtractByLineRange(54, 58).CleanIndentation());
-        WithTitleToastCode = WrapCode(path.ExtractByLineRange(63, 69).CleanIndentation());
-        WithActionToastCode = WrapCode(path.ExtractByLineRange(74, 81).CleanIndentation());
-        WithDelayToastCode = WrapCode(path.ExtractByLineRange(86, 93).CleanIndentation());
-        InfoToastCode = WrapCode(path.ExtractByLineRange(98, 105).CleanIndentation());
-        SuccessToastCode = WrapCode(path.ExtractByLineRange(110, 117).CleanIndentation());
-        WarningToastCode = WrapCode(path.ExtractByLineRange(122, 129).CleanIndentation());
-        ErrorToastCode = WrapCode(path.ExtractByLineRange(134, 141).CleanIndentation());
-        DynamicToastCode = WrapCode(path.ExtractByLineRange(148, 173).CleanIndentation());
+        SimpleToastCode = WrapCode(path.ExtractByLineRange(52, 56).CleanIndentation());
+        WithTitleToastCode = WrapCode(path.ExtractByLineRange(61, 67).CleanIndentation());
+        WithActionToastCode = WrapCode(path.ExtractByLineRange(72, 84).CleanIndentation());
+        WithDelayToastCode = WrapCode(path.ExtractByLineRange(89, 96).CleanIndentation());
+        InfoToastCode = WrapCode(path.ExtractByLineRange(101, 108).CleanIndentation());
+        SuccessToastCode = WrapCode(path.ExtractByLineRange(113, 120).CleanIndentation());
+        WarningToastCode = WrapCode(path.ExtractByLineRange(125, 132).CleanIndentation());
+        ErrorToastCode = WrapCode(path.ExtractByLineRange(137, 149).CleanIndentation());
+        DynamicToastCode = WrapCode(path.ExtractByLineRange(170, 183).CleanIndentation());
     }
 
     [RelayCommand]
@@ -54,7 +52,7 @@ public sealed partial class ToastViewModel : ViewModelBase, INavigable
     [RelayCommand]
     private void ShowSimpleToast()
     {
-        _toastManager.CreateToast("Your message has been sent.").Show();
+        ToastManager.Create("Your message has been sent.").Show();
     }
 
     [ObservableProperty]
@@ -63,7 +61,7 @@ public sealed partial class ToastViewModel : ViewModelBase, INavigable
     [RelayCommand]
     private void ShowToastWithTitle()
     {
-        _toastManager.CreateToast("Uh oh! Something went wrong.")
+        ToastManager.Create("Uh oh! Something went wrong.")
             .WithContent("There was a problem with your request.")
             .Show();
     }
@@ -74,14 +72,14 @@ public sealed partial class ToastViewModel : ViewModelBase, INavigable
     [RelayCommand]
     private async Task ShowToastWithActionAsync()
     {
-        var result = await _toastManager.CreateToast("Uh oh! Something went wrong.")
+        var result = await ToastManager.Create("Uh oh! Something went wrong.")
             .WithContent("There was a problem with your request.")
             .WithAction("Try again")
             .ShowAsync();
 
         if (result == ToastResult.ActionButtonClicked)
         {
-            await _toastManager.CreateToast("Retry clicked").ShowAsync();
+            await ToastManager.Create("Retry clicked").ShowAsync();
         }
     }
 
@@ -91,9 +89,9 @@ public sealed partial class ToastViewModel : ViewModelBase, INavigable
     [RelayCommand]
     private void ShowToastWithDelay()
     {
-        _toastManager.CreateToast("This toast will disappear in 5 seconds.")
+        ToastManager.Create("This toast will disappear in 5 seconds.")
             .WithContent("You can hover over it to prevent it from disappearing.")
-            .WithDelay(5)
+            .WithDurationSeconds(5)
             .Show();
     }
 
@@ -103,7 +101,7 @@ public sealed partial class ToastViewModel : ViewModelBase, INavigable
     [RelayCommand]
     private void ShowInfoToast()
     {
-        _toastManager.CreateToast("Event has been created")
+        ToastManager.Create("Event has been created")
             .WithContent($"{DateTime.Now:dddd, MMMM d 'at' h:mm tt}")
             .DismissOnClick()
             .ShowInfo();
@@ -115,7 +113,7 @@ public sealed partial class ToastViewModel : ViewModelBase, INavigable
     [RelayCommand]
     private void ShowSuccessToast()
     {
-        _toastManager.CreateToast("Event has been created successfully")
+        ToastManager.Create("Event has been created successfully")
             .WithContent($"{DateTime.Now:dddd, MMMM d 'at' h:mm tt}")
             .DismissOnClick()
             .ShowSuccess();
@@ -127,7 +125,7 @@ public sealed partial class ToastViewModel : ViewModelBase, INavigable
     [RelayCommand]
     private void ShowWarningToast()
     {
-        _toastManager.CreateToast("Event has been created with warnings")
+        ToastManager.Create("Event has been created with warnings")
             .WithContent($"{DateTime.Now:dddd, MMMM d 'at' h:mm tt}")
             .DismissOnClick()
             .ShowWarning();
@@ -139,14 +137,14 @@ public sealed partial class ToastViewModel : ViewModelBase, INavigable
     [RelayCommand]
     private async Task ShowErrorToastAsync()
     {
-        var result = await _toastManager.CreateToast("Failed to create event")
+        var result = await ToastManager.Create("Failed to create event")
             .WithContent("Unable to connect to the server.")
             .WithAction("Retry")
             .ShowErrorAsync();
 
         if (result == ToastResult.ActionButtonClicked)
         {
-            await _toastManager.CreateToast("Retry clicked").ShowAsync();
+            await ToastManager.Create("Retry clicked").ShowAsync();
         }
     }
 
@@ -172,7 +170,7 @@ public sealed partial class ToastViewModel : ViewModelBase, INavigable
     [RelayCommand]
     private async Task ShowToastWithTypeAsync()
     {
-        var result = await _toastManager.CreateToast("Your message has been sent.")
+        var result = await ToastManager.Create("Your message has been sent.")
             .WithContent($"{DateTime.Now:dddd, MMMM d 'at' h:mm tt}")
             .WithAction("Retry")
             .DismissOnClick()
@@ -180,7 +178,7 @@ public sealed partial class ToastViewModel : ViewModelBase, INavigable
 
         if (result == ToastResult.ActionButtonClicked)
         {
-            await _toastManager.CreateToast("Retry clicked").ShowAsync(Notification.Success);
+            await ToastManager.Create("Retry clicked").ShowAsync(Notification.Success);
         }
     }
 }

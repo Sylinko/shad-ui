@@ -1,83 +1,85 @@
 ﻿<ResourceDictionary
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-  <!--  basic colors  -->
+  <!-- Warm neutral surfaces; keep opaque text separate from translucent overlays. -->
   <Color x:Key="TransparentColor">#00FFFFFF</Color>
-  <Color x:Key="ForegroundColor">#08080B</Color>
-  <Color x:Key="ForegroundLeadColor">#212121</Color>
+  <Color x:Key="ForegroundColor">#101014</Color>
+  <Color x:Key="ForegroundLeadColor">#4F4C55</Color>
   <Color x:Key="BackgroundColor">#00FFFFFF</Color>
-  <Color x:Key="MutedColor">#212121</Color>
-  <Color x:Key="BorderColor">#DEDEDE</Color>
-  <Color x:Key="BorderColor60">#9CDEDEDE</Color>
-  <Color x:Key="BorderColor30">#4CDEDEDE</Color>
-  <Color x:Key="OutlineColor">#E5E5E5</Color>
-  <Color x:Key="GhostColor">#E6E6E6</Color>
-  <Color x:Key="GhostHoverColor">#7FE6E6E6</Color>
-  <Color x:Key="GhostHoverColor50">#33E6E6E6</Color>
-  <Color x:Key="SelectedTabBackgroundColor">#FFFFFF</Color>
-  <Color x:Key="SelectionColor">#F5F5F5</Color>
-  <Color x:Key="SelectionHoverColor">#EBEBEB</Color>
+  <Color x:Key="MutedColor">#68646D</Color>
+  <Color x:Key="BorderColor">#D9D5CC</Color>
+  <Color x:Key="BorderColor60">#9CD9D5CC</Color>
+  <Color x:Key="BorderColor30">#4CD9D5CC</Color>
+  <Color x:Key="OutlineColor">#DAD6CE</Color>
+  <Color x:Key="GhostColor">#E6E3DC</Color>
+  <Color x:Key="GhostHoverColor">#7FE6E3DC</Color>
+  <Color x:Key="GhostHoverColor50">#33E6E3DC</Color>
+  <Color x:Key="SelectedTabBackgroundColor">#FDFCF9</Color>
+  <Color x:Key="SelectionColor">#F1EFEA</Color>
+  <Color x:Key="SelectionHoverColor">#E9E6DF</Color>
 
   <!--  theme colors  -->
-  <Color x:Key="SecondaryColor">#EFEFEF</Color>
-  <Color x:Key="SecondaryColor75">#BFEFEFEF</Color>
-  <Color x:Key="SecondaryColor50">#80EFEFEF</Color>
-  <Color x:Key="SecondaryColor10">#19EFEFEF</Color>
-  <Color x:Key="SecondaryForegroundColor">#08080B</Color>
-  <Color x:Key="DestructiveColor">#E7000B</Color>
-  <Color x:Key="DestructiveColor75">#BFE7000B</Color>
-  <Color x:Key="DestructiveColor50">#80E7000B</Color>
-  <Color x:Key="DestructiveColor10">#19E7000B</Color>
-  <Color x:Key="DestructiveForegroundColor">#FAFAFA</Color>
+  <Color x:Key="SecondaryColor">#ECE9E2</Color>
+  <Color x:Key="SecondaryColor75">#BFECE9E2</Color>
+  <Color x:Key="SecondaryColor50">#80ECE9E2</Color>
+  <Color x:Key="SecondaryColor10">#19ECE9E2</Color>
+  <Color x:Key="SecondaryForegroundColor">#101014</Color>
+  <Color x:Key="DestructiveColor">#B4232E</Color>
+  <Color x:Key="DestructiveColor75">#BFB4232E</Color>
+  <Color x:Key="DestructiveColor50">#80B4232E</Color>
+  <Color x:Key="DestructiveColor10">#19B4232E</Color>
+  <Color x:Key="DestructiveForegroundColor">#FDFCF9</Color>
 
   <!--  notification colors  -->
-  <Color x:Key="InfoColor">#0288D1</Color>
-  <Color x:Key="InfoColor60">#990288D1</Color>
-  <Color x:Key="InfoColor20">#330288D1</Color>
-  <Color x:Key="InfoColor10">#190288D1</Color>
-  <Color x:Key="InfoColor5">#0D0288D1</Color>
-  <Color x:Key="SuccessColor">#28A745</Color>
-  <Color x:Key="SuccessColor60">#9928A745</Color>
-  <Color x:Key="SuccessColor20">#3328A745</Color>
-  <Color x:Key="SuccessColor10">#1928A745</Color>
-  <Color x:Key="SuccessColor5">#0D2E7D32</Color>
-  <Color x:Key="WarningColor">#ED6C02</Color>
-  <Color x:Key="WarningColor60">#99ED6C02</Color>
-  <Color x:Key="WarningColor20">#33ED6C02</Color>
-  <Color x:Key="WarningColor10">#19ED6C02</Color>
-  <Color x:Key="WarningColor5">#0DED6C02</Color>
-  <Color x:Key="ErrorColor">#D32F2F</Color>
-  <Color x:Key="ErrorColor60">#99D32F2F</Color>
-  <Color x:Key="ErrorColor20">#33D32F2F</Color>
-  <Color x:Key="ErrorColor10">#19D32F2F</Color>
-  <Color x:Key="ErrorColor5">#0DD32F2F</Color>
+  <Color x:Key="InfoColor">#2B5E9E</Color>
+  <Color x:Key="InfoColor60">#992B5E9E</Color>
+  <Color x:Key="InfoColor20">#332B5E9E</Color>
+  <Color x:Key="InfoColor10">#192B5E9E</Color>
+  <Color x:Key="InfoColor5">#0D2B5E9E</Color>
+  <Color x:Key="SuccessColor">#26774A</Color>
+  <Color x:Key="SuccessColor60">#9926774A</Color>
+  <Color x:Key="SuccessColor20">#3326774A</Color>
+  <Color x:Key="SuccessColor10">#1926774A</Color>
+  <Color x:Key="SuccessColor5">#0D26774A</Color>
+  <Color x:Key="WarningColor">#9A520C</Color>
+  <Color x:Key="WarningColor60">#999A520C</Color>
+  <Color x:Key="WarningColor20">#339A520C</Color>
+  <Color x:Key="WarningColor10">#199A520C</Color>
+  <Color x:Key="WarningColor5">#0D9A520C</Color>
+  <Color x:Key="ErrorColor">#B4232E</Color>
+  <Color x:Key="ErrorColor60">#99B4232E</Color>
+  <Color x:Key="ErrorColor20">#33B4232E</Color>
+  <Color x:Key="ErrorColor10">#19B4232E</Color>
+  <Color x:Key="ErrorColor5">#0DB4232E</Color>
 
   <!--  specific control colors  -->
-  <Color x:Key="BadgeForegroundColor">#FAFAFA</Color>
-  <Color x:Key="BusyAreaOverlayColor">#F2F2F2</Color>
-  <Color x:Key="NavigationBarBackgroundColor">#66FFFFFF</Color>
-  <Color x:Key="SettingsItemBackgroundColor">#B3FFFFFF</Color>
-  <Color x:Key="SettingsItemHoverBackgroundColor">#99FAFAFA</Color>
+  <!-- Inputs stay raised while selections and secondary panels remain sunken. -->
+  <Color x:Key="InputBackgroundColor">#FBFAF7</Color>
+  <Color x:Key="BadgeForegroundColor">#FDFCF9</Color>
+  <Color x:Key="BusyAreaOverlayColor">#F5F3EE</Color>
+  <Color x:Key="NavigationBarBackgroundColor">#66FBFAF7</Color>
+  <Color x:Key="SettingsItemBackgroundColor">#B3FBFAF7</Color>
+  <Color x:Key="SettingsItemHoverBackgroundColor">#99F1EFEA</Color>
 
-  <Color x:Key="CardBackgroundColor">#66FFFFFF</Color>
-  <Color x:Key="LightCardBackgroundColor">#B3FFFFFF</Color>
-  <Color x:Key="SecondaryCardBackgroundColor">#99E0E0E0</Color>
+  <Color x:Key="CardBackgroundColor">#66FBFAF7</Color>
+  <Color x:Key="LightCardBackgroundColor">#B3FDFCF9</Color>
+  <Color x:Key="SecondaryCardBackgroundColor">#99E3E0D9</Color>
 
   <Color x:Key="DialogOverlayColor">#000000</Color>
-  <Color x:Key="DialogBackgroundColor">#F5F5F5</Color>
+  <Color x:Key="DialogBackgroundColor">#F5F3EE</Color>
 
-  <Color x:Key="TitleBarBackgroundColor">#66FFFFFF</Color>
-  <Color x:Key="PopupBackgroundColor">#EAEAEA</Color>
-  <Color x:Key="ToolTipBackgroundColor">#EAEAEA</Color>
-  <Color x:Key="WindowBackgroundColor">#DEF5F5F5</Color>
-  <Color x:Key="WindowButtonHoverColor">#0D09090B</Color>
+  <Color x:Key="TitleBarBackgroundColor">#66F5F3EE</Color>
+  <Color x:Key="PopupBackgroundColor">#FDFCF9</Color>
+  <Color x:Key="ToolTipBackgroundColor">#FDFCF9</Color>
+  <Color x:Key="WindowBackgroundColor">#DEF5F3EE</Color>
+  <Color x:Key="WindowButtonHoverColor">#0D101014</Color>
 
-  <Color x:Key="SidebarBackgroundColor">#66FFFFFF</Color>
-  <Color x:Key="SliderThumbBackgroundColor">#FFFAFAFA</Color>
+  <Color x:Key="SidebarBackgroundColor">#66F5F3EE</Color>
+  <Color x:Key="SliderThumbBackgroundColor">#FFFDFCF9</Color>
 
-  <Color x:Key="SwitchBackgroundColor">#FFE5E5E5</Color>
-  <Color x:Key="SwitchForegroundColor">#FFFFFFFF</Color>
+  <Color x:Key="SwitchBackgroundColor">#FFCBC7BE</Color>
+  <Color x:Key="SwitchForegroundColor">#FFFDFCF9</Color>
 
-  <Color x:Key="AcrylicWindowBackgroundColor">#EEFFFFFF</Color>
-  <Color x:Key="QuoteColor">#CA5010</Color>
+  <Color x:Key="AcrylicWindowBackgroundColor">#EEF5F3EE</Color>
+  <Color x:Key="QuoteColor">#9A520C</Color>
 </ResourceDictionary>

@@ -202,12 +202,24 @@ public class NavigationBar : ItemsControl
             if (change.NewValue is NavigationBarItem newItem)
             {
                 newItem.IsChecked = true;
-                CurrentRoute = newItem.Route;
+                SetCurrentValue(CurrentRouteProperty, newItem.Route);
             }
             else
             {
-                CurrentRoute = null;
+                SetCurrentValue(CurrentRouteProperty, null);
             }
+        }
+
+        if (change.Property != CurrentRouteProperty)
+        {
+            return;
+        }
+
+        var item = Items.OfType<NavigationBarItem>().FirstOrDefault(item => Equals(item.Route, CurrentRoute));
+        if (item is not null || CurrentRoute is null)
+        {
+            // Preserve the two-way binding when selection and the application's route update each other.
+            SetCurrentValue(SelectedItemProperty, item);
         }
     }
 

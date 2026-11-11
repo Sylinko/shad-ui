@@ -6,11 +6,9 @@ namespace ShadUI.Demo.ViewModels.Examples.Numeric;
 
 public sealed partial class FormNumericViewModel : ViewModelBase
 {
-    private readonly ToastManager _toastManager;
 
-    public FormNumericViewModel(ToastManager toastManager)
+    public FormNumericViewModel()
     {
-        _toastManager = toastManager;
 
         var xamlPath = Path.Combine(AppContext.BaseDirectory, "views", "Examples", "Numeric",
             "FormNumericContent.axaml");
@@ -44,7 +42,7 @@ public sealed partial class FormNumericViewModel : ViewModelBase
 
         if (HasErrors) return;
 
-        _toastManager.CreateToast("Submission Successful")
+        ToastManager.Create("Submission Successful")
             .WithContent($"Your age ({Age}) has been submitted successfully!")
             .DismissOnClick()
             .ShowSuccess();

@@ -106,7 +106,7 @@
     TargetType="TextBox">
     <Setter Property="FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="Cursor" Value="IBeam"/>
-    <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
+    <Setter Property="Background" Value="{DynamicResource InputBackgroundColor}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="ContextFlyout" Value="{StaticResource SimpleTextBoxContextFlyout}"/>

@@ -1,8 +1,9 @@
-﻿using Avalonia.Interactivity;
+﻿using Avalonia.Controls;
+using Avalonia.Interactivity;
 
 namespace ShadUI.Demo;
 
-public partial class InstanceDialog : Window
+public partial class InstanceDialog : ShadWindow
 {
     public InstanceDialog()
     {

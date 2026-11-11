@@ -25,7 +25,7 @@
                         Width="28"
                         Height="28"
                         Background="{DynamicResource GhostHoverColor}"
-                        Classes="Icon"
+                        Classes="Icon NoPadding"
                         Command="{Binding BackPageCommand}">
                         <Viewbox Margin="6">
                             <TextBlock Classes="LucideIcon" Text="&#57420;" />
@@ -35,7 +35,7 @@
                         Width="28"
                         Height="28"
                         Background="{DynamicResource GhostHoverColor}"
-                        Classes="Icon"
+                        Classes="Icon NoPadding"
                         Command="{Binding NextPageCommand}">
                         <Viewbox Margin="6">
                             <TextBlock Classes="LucideIcon" Text="&#57421;" />
@@ -54,82 +54,17 @@
                 Margin="{StaticResource PageMargin}"
                 Spacing="32">
                 <StackPanel Orientation="Vertical" Spacing="8">
-                    <TextBlock Classes="h4" Text="Installation" />
-                    <Separator Margin="0" />
-                    <TextBlock
-                        Classes="Small"
-                        Text="Make sure to add DialogHost as the top most element in a window and supply its DialogManager and Window owner"
-                        TextWrapping="Wrap" />
+                    <TextBlock Classes="h4" Text="Installation"/>
+                    <Separator Margin="0"/>
+                    <TextBlock Classes="Small" Text="Add a DialogHost to the window's Hosts collection. It registers automatically while attached; no manager registration or view-model mapping is needed." TextWrapping="Wrap"/>
                     <controls:CodeTextBlock Language="xaml">
-                        <Run Text="&lt;controls:Window.Hosts&gt;" />
-                        <LineBreak />
-                        <Run Text="    &lt;dialogs:DialogHost Manager=&quot;{Binding DialogManager}&quot;" />
-                        <LineBreak />
-                        <Run Text="                        Owner=&quot;{Binding RelativeSource={RelativeSource AncestorType=controls:Window}}&quot; /&gt;" />
-                        <LineBreak />
-                        <Run Text="&lt;/controls:Window.Hosts&gt;" />
+                        <Run Text="&lt;shadui:ShadWindow.Hosts&gt;"/>
+                        <LineBreak/>
+                        <Run Text="    &lt;shadui:DialogHost /&gt;"/>
+                        <LineBreak/>
+                        <Run Text="&lt;/shadui:ShadWindow.Hosts&gt;"/>
                     </controls:CodeTextBlock>
-                    <TextBlock
-                        Margin="0,12,0,0"
-                        Classes="Small"
-                        Text="Resolve DialogManager using dependency injection framework for easy access. Make sure to have only one instance of DialogManager."
-                        TextWrapping="Wrap" />
-                    <controls:CodeTextBlock Language="cs">
-                        <Run Text="public static void AddServices(this IServiceCollection collection)" />
-                        <LineBreak />
-                        <Run Text="\{" />
-                        <LineBreak />
-                        <Run Text="    //...other service injection" />
-                        <LineBreak />
-                        <Run Text="    " />
-                        <LineBreak />
-                        <Run Text="    collection.AddSingleton&lt;DialogManager&gt;();" />
-                        <LineBreak />
-                        <Run Text="}" />
-                    </controls:CodeTextBlock>
-                    <TextBlock
-                        Margin="0,12,0,0"
-                        Classes="Small"
-                        Text="When showing a custom dialog, make sure to register all dialog views with its related DataContext type." />
-                    <controls:CodeTextBlock Language="cs">
-                        <Run Text="// example of extension method to register dialogs" />
-                        <LineBreak />
-                        <Run Text="public static IServiceProvider RegisterDialogs(this IServiceProvider service)" />
-                        <LineBreak />
-                        <Run Text="\{" />
-                        <LineBreak />
-                        <Run Text="    var dialogService = service.GetRequiredService&lt;DialogManager&gt;();" />
-                        <LineBreak />
-                        <Run Text="    dialogService.Register&lt;LoginContent, LoginViewModel&gt;();" />
-                        <LineBreak />
-                        <Run Text="    " />
-                        <LineBreak />
-                        <Run Text="    return service;" />
-                        <LineBreak />
-                        <Run Text="}" />
-                        <LineBreak />
-                        <LineBreak />
-                        <LineBreak />
-                        <Run Text="// in the method where the DI framework is setup" />
-                        <LineBreak />
-                        <Run Text="\{" />
-                        <LineBreak />
-                        <LineBreak />
-                        <Run Text="// ..other code" />
-                        <LineBreak />
-                        <LineBreak />
-                        <Run Text="    var serviceProvider = serviceCollection" />
-                        <LineBreak />
-                        <Run Text="        .BuildServiceProvider()" />
-                        <LineBreak />
-                        <Run Text="        .RegisterDialogs(); // to register all dialogs" />
-                        <LineBreak />
-                        <LineBreak />
-                        <Run Text="// ..the rest of the code" />
-                        <LineBreak />
-                        <LineBreak />
-                        <Run Text="}" />
-                    </controls:CodeTextBlock>
+                    <TextBlock Classes="Small" Text="Use DialogManager.CreateDialog(content, title) for a simple dialog, or CreateCustomDialog(control) for custom content." TextWrapping="Wrap"/>
                 </StackPanel>
                 <controls:ControlBlock Title="Alert Dialog" CSharp="{Binding AlertDialogCode}">
                     <StackPanel>

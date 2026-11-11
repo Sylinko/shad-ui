@@ -7,11 +7,9 @@ namespace ShadUI.Demo.ViewModels.Examples.Date;
 
 public sealed partial class FormDateInputViewModel : ViewModelBase
 {
-    private readonly ToastManager _toastManager;
 
-    public FormDateInputViewModel(ToastManager toastManager)
+    public FormDateInputViewModel()
     {
-        _toastManager = toastManager;
 
         var xamlPath = Path.Combine(AppContext.BaseDirectory, "views", "Examples", "Date",
             "FormDateInputContent.axaml");
@@ -65,7 +63,7 @@ public sealed partial class FormDateInputViewModel : ViewModelBase
         ValidateProperty(EndDate, nameof(EndDate));
         if (HasErrors) return;
 
-        _toastManager.CreateToast("Submission Successful")
+        ToastManager.Create("Submission Successful")
             .WithContent(
                 $"Your schedule has been created successfully! The start date is {StartDate:MMM dd, yyyy} and the end date is {EndDate:MMM dd, yyyy}.")
             .DismissOnClick()

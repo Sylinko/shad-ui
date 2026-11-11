@@ -21,34 +21,34 @@
                 Property="RenderTransform" Duration="0:0:0.10"/>
             </Transitions>
           </Panel.Transitions>
-          <Border
+          <shadui:SmoothBorder
             Name="BaseBackground"
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
             CornerRadius="{TemplateBinding CornerRadius}"
             Opacity="1">
-            <Border.Transitions>
+            <shadui:SmoothBorder.Transitions>
               <Transitions>
                 <DoubleTransition
                   Property="Opacity" Duration="0:0:0.20"/>
               </Transitions>
-            </Border.Transitions>
-          </Border>
-          <Border
+            </shadui:SmoothBorder.Transitions>
+          </shadui:SmoothBorder>
+          <shadui:SmoothBorder
             Name="HoverBackground"
             Background="{DynamicResource GhostColor}"
             CornerRadius="{TemplateBinding CornerRadius}"
             Opacity="0">
-            <Border.Transitions>
+            <shadui:SmoothBorder.Transitions>
               <Transitions>
                 <DoubleTransition
                   Property="Opacity" Duration="0:0:0.20"/>
               </Transitions>
-            </Border.Transitions>
-          </Border>
+            </shadui:SmoothBorder.Transitions>
+          </shadui:SmoothBorder>
           <Panel>
-            <Border
+            <shadui:SmoothBorder
               Name="BorderContainer" Background="Transparent"
               ClipToBounds="True"
               CornerRadius="{TemplateBinding CornerRadius}">
@@ -69,7 +69,7 @@
                   </DataTemplate>
                 </ContentPresenter.DataTemplates>
               </ContentPresenter>
-            </Border>
+            </shadui:SmoothBorder>
             <Popup
               Name="PART_Popup"
               HorizontalOffset="{TemplateBinding shadui:MenuItemAssist.PopupHorizontalOffset}"
@@ -83,14 +83,14 @@
               <LayoutTransformControl
                 Name="LayoutTransform" Margin="-1,0,0,0"
                 RenderTransformOrigin="50%, 0%">
-                <Border
-                  Margin="{DynamicResource PopupCompactShadowMargin}"
+                <shadui:SmoothBorder
+                  Margin="{DynamicResource PopupShadowMargin}"
                   shadui:ScrollEventAssist.PreventScrollPropagation="True"
                   Background="{DynamicResource PopupBackgroundColor}"
                   BorderBrush="{DynamicResource BorderColor}"
                   BorderThickness="{DynamicResource PopupBorderThickness}"
                   BoxShadow="{DynamicResource Shadow}"
-                  CornerRadius="{DynamicResource LgCornerRadius}">
+                  CornerRadius="{DynamicResource 2XlCornerRadius}">
                   <StackPanel Margin="0,3">
                     <Border
                       Padding="12,8"
@@ -105,7 +105,7 @@
                         ItemsPanel="{TemplateBinding ItemsPanel}"/>
                     </ScrollViewer>
                   </StackPanel>
-                </Border>
+                </shadui:SmoothBorder>
               </LayoutTransformControl>
             </Popup>
           </Panel>
@@ -115,16 +115,16 @@
     <Style Selector="^:disabled">
       <Setter Property="Opacity" Value="0.5"/>
     </Style>
-    <Style Selector="^:pointerover /template/ Border#HoverBackground">
+    <Style Selector="^:pointerover /template/ shadui|SmoothBorder#HoverBackground">
       <Setter Property="Opacity" Value="1"/>
     </Style>
-    <Style Selector="^:pointerover /template/ Border#BaseBackground">
+    <Style Selector="^:pointerover /template/ shadui|SmoothBorder#BaseBackground">
       <Setter Property="Opacity" Value="0"/>
     </Style>
-    <Style Selector="^:open /template/ Border#HoverBackground">
+    <Style Selector="^:open /template/ shadui|SmoothBorder#HoverBackground">
       <Setter Property="Opacity" Value="1"/>
     </Style>
-    <Style Selector="^:open /template/ Border#BaseBackground">
+    <Style Selector="^:open /template/ shadui|SmoothBorder#BaseBackground">
       <Setter Property="Opacity" Value="0"/>
     </Style>
     <Style Selector="^:open /template/ LayoutTransformControl#LayoutTransform">
@@ -160,10 +160,10 @@
       <Style Selector="^ /template/ ContentPresenter#HeaderPresenter">
         <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
       </Style>
-      <Style Selector="^ /template/ Border#BorderContainer:pointerover">
+      <Style Selector="^ /template/ shadui|SmoothBorder#BorderContainer:pointerover">
         <Setter Property="Cursor" Value="Hand"/>
       </Style>
-      <Style Selector="^ /template/ Border#HoverBackground">
+      <Style Selector="^ /template/ shadui|SmoothBorder#HoverBackground">
         <Setter Property="Background" Value="{DynamicResource PrimaryColor50}"/>
       </Style>
     </Style>
@@ -178,10 +178,10 @@
       <Style Selector="^ /template/ ContentPresenter#HeaderPresenter">
         <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundColor}"/>
       </Style>
-      <Style Selector="^ /template/ Border#BorderContainer:pointerover">
+      <Style Selector="^ /template/ shadui|SmoothBorder#BorderContainer:pointerover">
         <Setter Property="Cursor" Value="Hand"/>
       </Style>
-      <Style Selector="^ /template/ Border#HoverBackground">
+      <Style Selector="^ /template/ shadui|SmoothBorder#HoverBackground">
         <Setter Property="Background" Value="{DynamicResource SecondaryColor50}"/>
       </Style>
     </Style>
@@ -197,20 +197,20 @@
       <Style Selector="^ /template/ ContentPresenter#HeaderPresenter">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
       </Style>
-      <Style Selector="^ /template/ Border#BorderContainer:pointerover">
+      <Style Selector="^ /template/ shadui|SmoothBorder#BorderContainer:pointerover">
         <Setter Property="Cursor" Value="Hand"/>
       </Style>
-      <Style Selector="^ /template/ Border#HoverBackground">
+      <Style Selector="^ /template/ shadui|SmoothBorder#HoverBackground">
         <Setter Property="Background" Value="{DynamicResource OutlineColor}"/>
       </Style>
     </Style>
 
     <!--  Ghost  -->
     <Style Selector="^.Ghost">
-      <Style Selector="^ /template/ Border#HoverBackground">
+      <Style Selector="^ /template/ shadui|SmoothBorder#HoverBackground">
         <Setter Property="Background" Value="{DynamicResource GhostHoverColor}"/>
       </Style>
-      <Style Selector="^ /template/ Border#BorderContainer:pointerover">
+      <Style Selector="^ /template/ shadui|SmoothBorder#BorderContainer:pointerover">
         <Setter Property="Cursor" Value="Hand"/>
       </Style>
     </Style>
@@ -219,10 +219,10 @@
     <Style Selector="^.Icon">
       <Setter Property="Width" Value="36"/>
       <Setter Property="Background" Value="{DynamicResource GhostHoverColor50}"/>
-      <Style Selector="^ /template/ Border#HoverBackground">
+      <Style Selector="^ /template/ shadui|SmoothBorder#HoverBackground">
         <Setter Property="Background" Value="{DynamicResource GhostColor}"/>
       </Style>
-      <Style Selector="^ /template/ Border#BorderContainer:pointerover">
+      <Style Selector="^ /template/ shadui|SmoothBorder#BorderContainer:pointerover">
         <Setter Property="Cursor" Value="Hand"/>
       </Style>
     </Style>

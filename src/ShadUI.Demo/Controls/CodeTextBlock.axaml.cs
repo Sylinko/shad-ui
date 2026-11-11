@@ -1,6 +1,5 @@
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input.Platform;
@@ -142,13 +141,7 @@ public class CodeTextBlock : TemplatedControl
 
     private void ShowCopyNotification()
     {
-        if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop) return;
-
-        var window = desktop.MainWindow as Window;
-        var viewModel = window?.DataContext as MainWindowViewModel;
-
-        viewModel?.ToastManager
-            .CreateToast("Code copied successfully!")
+        ToastManager.Create("Code copied successfully!")
             .WithContent("The code snippet has been copied to your clipboard and is ready to paste.")
             .DismissOnClick()
             .Show();

@@ -33,7 +33,7 @@
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="Padding" Value="12,4"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="SelectionBrush" Value="{DynamicResource PrimaryColor}"/>
     <Setter Property="SelectionForegroundBrush" Value="{DynamicResource PrimaryForegroundColor}"/>
     <Setter Property="CaretBrush" Value="{DynamicResource ForegroundColor}"/>
@@ -45,7 +45,7 @@
       <ControlTemplate>
         <StackPanel
           Background="Transparent" Focusable="False">
-          <Border
+          <shadui:SmoothBorder
             Height="{TemplateBinding shadui:ControlAssist.Height}"
             MinHeight="{TemplateBinding shadui:ControlAssist.MinHeight}"
             Background="{TemplateBinding Background}"
@@ -121,7 +121,7 @@
                 Fill="{DynamicResource MutedColor}"
                 Stretch="Uniform"/>
             </Grid>
-          </Border>
+          </shadui:SmoothBorder>
         </StackPanel>
       </ControlTemplate>
     </Setter>
@@ -144,12 +144,12 @@
     x:Key="{x:Type CalendarDatePicker}"
     TargetType="CalendarDatePicker">
     <Setter Property="BorderThickness" Value="1,1,1,1"/>
-    <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}"/>
+    <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-    <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
+    <Setter Property="Background" Value="{DynamicResource InputBackgroundColor}"/>
     <Setter Property="FontSize" Value="14"/>
     <Setter Property="Padding" Value="12,4"/>
     <Setter Property="FontWeight" Value="Medium"/>
@@ -166,7 +166,7 @@
               IsVisible="{TemplateBinding shadui:ControlAssist.Label, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
               Text="{TemplateBinding shadui:ControlAssist.Label}"/>
             <Panel>
-              <Border
+              <shadui:SmoothBorder
                 Name="PART_Background"
                 Background="{DynamicResource GhostColor}"
                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -174,13 +174,13 @@
                 CornerRadius="{TemplateBinding CornerRadius}"
                 IsVisible="{TemplateBinding shadui:ControlAssist.ReadOnly}"
                 Opacity="0">
-                <Border.Transitions>
+                <shadui:SmoothBorder.Transitions>
                   <Transitions>
                     <DoubleTransition
                       Property="Opacity" Duration="0:0:0.20"/>
                   </Transitions>
-                </Border.Transitions>
-              </Border>
+                </shadui:SmoothBorder.Transitions>
+              </shadui:SmoothBorder>
               <TextBox
                 Name="PART_TextBox"
                 Padding="{TemplateBinding Padding}"
@@ -211,6 +211,7 @@
                   Name="PART_LayoutTransform" RenderTransformOrigin="50%, 0%">
                   <Calendar
                     Name="PART_Calendar" Margin="-2,0,0,0"
+                    Background="{DynamicResource PopupBackgroundColor}"
                     shadui:ElementAssist.FocusOnLoad="True" shadui:ScrollEventAssist.PreventScrollPropagation="True"
                     CornerRadius="{TemplateBinding CornerRadius}"
                     DisplayDate="{TemplateBinding DisplayDate}"
@@ -270,7 +271,7 @@
       <Setter Property="BorderBrush" Value="{DynamicResource OutlineColor}"/>
       <Setter Property="Cursor" Value="Hand"/>
     </Style>
-    <Style Selector="^:pointerover /template/ Border#PART_Background">
+    <Style Selector="^:pointerover /template/ shadui|SmoothBorder#PART_Background">
       <Setter Property="Opacity" Value="1"/>
     </Style>
     <Style Selector="^:disabled">

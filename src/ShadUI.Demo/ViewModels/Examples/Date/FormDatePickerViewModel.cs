@@ -6,11 +6,9 @@ namespace ShadUI.Demo.ViewModels.Examples.Date;
 
 public sealed partial class FormDatePickerViewModel : ViewModelBase
 {
-    private readonly ToastManager _toastManager;
 
-    public FormDatePickerViewModel(ToastManager toastManager)
+    public FormDatePickerViewModel()
     {
-        _toastManager = toastManager;
 
         var xamlPath = Path.Combine(AppContext.BaseDirectory, "views", "Examples", "Date",
             "FormDatePickerContent.axaml");
@@ -44,7 +42,7 @@ public sealed partial class FormDatePickerViewModel : ViewModelBase
         ValidateProperty(SelectedDate, nameof(SelectedDate));
         if (HasErrors) return;
 
-        _toastManager.CreateToast("Submission Successful")
+        ToastManager.Create("Submission Successful")
             .WithContent($"Your date of birth ({SelectedDate:MMM dd, yyyy}) has been submitted successfully!")
             .DismissOnClick()
             .ShowSuccess();
