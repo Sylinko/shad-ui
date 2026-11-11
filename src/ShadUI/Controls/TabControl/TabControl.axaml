@@ -56,7 +56,7 @@
   <ControlTheme
     x:Key="TabControlTheme" TargetType="TabControl">
     <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-    <Setter Property="Background" Value="{DynamicResource LightCardBackgroundColor}"/>
+    <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
     <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="ItemsPanel">
       <Setter.Value>
@@ -115,9 +115,6 @@
       <Style Selector="^ ItemsPresenter#PART_ItemsPresenter WrapPanel">
         <Setter Property="Orientation" Value="Horizontal"/>
       </Style>
-    </Style>
-    <Style Selector="^[TabStripPlacement=Top] /template/ ItemsPresenter#PART_ItemsPresenter">
-      <Setter Property="Margin" Value="{DynamicResource TabControlTopPlacementItemMargin}"/>
     </Style>
     <Style Selector="^.HorizontalTabs">
       <Style Selector="^[TabStripPlacement=Left] /template/ LayoutTransformControl#LayoutTransform">

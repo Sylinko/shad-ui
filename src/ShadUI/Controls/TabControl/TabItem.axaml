@@ -70,7 +70,6 @@
         <shadui:SmoothBorder
           x:Name="BackgroundBorder"
           Background="{DynamicResource TransparentColor}"
-          BoxShadow="{DynamicResource Shadow}"
           ClipToBounds="True"
           CornerRadius="{TemplateBinding CornerRadius}">
           <shadui:SmoothBorder.Transitions>
@@ -106,9 +105,9 @@
       <Setter Property="Opacity" Value="0.50"/>
     </Style>
     <Style Selector="^:selected">
-      <Setter Property="Foreground" Value="{DynamicResource PrimaryColor}"/>
+      <Setter Property="FontWeight" Value="DemiBold"/>
       <Style Selector="^ /template/ shadui|SmoothBorder#BackgroundBorder">
-        <Setter Property="Background" Value="{DynamicResource SelectionColor}"/>
+        <Setter Property="Background" Value="{DynamicResource SelectedTabBackgroundColor}"/>
       </Style>
     </Style>
     <Style Selector="^[TabStripPlacement=Right]">

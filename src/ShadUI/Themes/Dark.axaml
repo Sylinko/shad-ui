@@ -14,6 +14,7 @@
   <Color x:Key="GhostColor">#454545</Color>
   <Color x:Key="GhostHoverColor">#7F454545</Color>
   <Color x:Key="GhostHoverColor50">#33454545</Color>
+  <Color x:Key="SelectedTabBackgroundColor">#3E3E3E</Color>
   <Color x:Key="SelectionColor">#6609090B</Color>
   <Color x:Key="SelectionHoverColor">#3309090B</Color>
 

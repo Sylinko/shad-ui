@@ -132,7 +132,7 @@ public sealed class Toast : ContentControl
     ///     Defines the <see cref="ActionButtonStyle" /> property.
     /// </summary>
     public static readonly StyledProperty<ButtonStyle> ActionButtonStyleProperty =
-        AvaloniaProperty.Register<Toast, ButtonStyle>(nameof(ActionButtonStyle));
+        AvaloniaProperty.Register<Toast, ButtonStyle>(nameof(ActionButtonStyle), ButtonStyle.Secondary);
 
     /// <summary>
     ///     Gets or sets the visual style of the action button.

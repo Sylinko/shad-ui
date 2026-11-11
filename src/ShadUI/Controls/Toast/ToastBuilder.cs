@@ -69,9 +69,9 @@ public readonly ref struct ToastBuilder
     ///     Sets the content and style for the toast's action button.
     /// </summary>
     /// <param name="content">The content displayed on the action button.</param>
-    /// <param name="style">The visual style of the action button. Defaults to <see cref="ButtonStyle.Primary" />.</param>
+    /// <param name="style">The visual style of the action button. Defaults to <see cref="ButtonStyle.Secondary" />.</param>
     /// <returns>The current <see cref="ToastBuilder" /> instance for fluent chaining.</returns>
-    public ToastBuilder WithAction(object content, ButtonStyle style = ButtonStyle.Primary)
+    public ToastBuilder WithAction(object content, ButtonStyle style = ButtonStyle.Secondary)
     {
         Configure(toast =>
         {
