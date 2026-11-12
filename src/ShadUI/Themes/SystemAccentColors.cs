@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Avalonia.Styling;
 
 namespace ShadUI.Themes;
 
@@ -26,12 +27,13 @@ public sealed class SystemAccentColors : ResourceDictionary
     }
 
     private const string PrimaryKey = "PrimaryColor";
-    private const string PrimaryHoverKey = "PrimaryHoverColor";
     private const string Primary75Key = "PrimaryColor75";
     private const string Primary50Key = "PrimaryColor50";
     private const string Primary25Key = "PrimaryColor25";
     private const string Primary10Key = "PrimaryColor10";
     private const string PrimaryForegroundKey = "PrimaryForegroundColor";
+    private const string PrimaryHoverKey = "PrimaryHoverColor";
+    private const double ForegroundPreference = 1.15;
 
     private static SystemAccentColors? _instance;
     
@@ -66,26 +68,42 @@ public sealed class SystemAccentColors : ResourceDictionary
         // text for medium blue and green accents. The system/user accent itself remains unchanged.
         var darkContrast = GetContrast(luminance, GetRelativeLuminance(darkForeground));
         var lightContrast = GetContrast(luminance, GetRelativeLuminance(lightForeground));
-        var shouldUseDarkForeground = darkContrast > lightContrast;
-        var systemAccentForegroundColor = shouldUseDarkForeground ? darkForeground : lightForeground;
-        var hoverTarget = shouldUseDarkForeground ? Colors.White : Colors.Black;
-        var hoverColor = new Color(
-            systemAccentColor.A,
-            MixChannel(systemAccentColor.R, hoverTarget.R),
-            MixChannel(systemAccentColor.G, hoverTarget.G),
-            MixChannel(systemAccentColor.B, hoverTarget.B));
 
         SetItems(
         [
             new KeyValuePair<object, object?>(PrimaryKey, systemAccentColor),
-            // A solid hover surface preserves contrast; a translucent accent can wash out light text.
-            new KeyValuePair<object, object?>(PrimaryHoverKey, hoverColor),
             new KeyValuePair<object, object?>(Primary75Key, d1),
             new KeyValuePair<object, object?>(Primary50Key, d2),
             new KeyValuePair<object, object?>(Primary25Key, d3),
             new KeyValuePair<object, object?>(Primary10Key, d4),
-            new KeyValuePair<object, object?>(PrimaryForegroundKey, systemAccentForegroundColor),
         ]);
+
+        // Give the theme's preferred text color a 15% advantage: light in dark themes,
+        // dark in light themes. This visual preference can accept contrast below 4.5:1
+        // for boundary colors instead of always maximizing contrast.
+        ThemeDictionaries[ThemeVariant.Dark] = CreateThemeColors(
+            systemAccentColor,
+            darkContrast > lightContrast * ForegroundPreference ? darkForeground : lightForeground);
+        ThemeDictionaries[ThemeVariant.Light] = CreateThemeColors(
+            systemAccentColor,
+            darkContrast * ForegroundPreference > lightContrast ? darkForeground : lightForeground);
+    }
+
+    private static ResourceDictionary CreateThemeColors(Color accentColor, Color foregroundColor)
+    {
+        var hoverTarget = foregroundColor == Colors.Black ? Colors.White : Colors.Black;
+        // A solid hover surface preserves contrast; a translucent accent can wash out light text.
+        var hoverColor = new Color(
+            accentColor.A,
+            MixChannel(accentColor.R, hoverTarget.R),
+            MixChannel(accentColor.G, hoverTarget.G),
+            MixChannel(accentColor.B, hoverTarget.B));
+
+        return new ResourceDictionary
+        {
+            [PrimaryForegroundKey] = foregroundColor,
+            [PrimaryHoverKey] = hoverColor
+        };
     }
 
     private static double GetRelativeLuminance(Color color)

@@ -78,7 +78,7 @@
   <Color x:Key="SliderThumbBackgroundColor">#FFFDFCF9</Color>
 
   <Color x:Key="SwitchBackgroundColor">#FFCBC7BE</Color>
-  <Color x:Key="SwitchForegroundColor">#FFFDFCF9</Color>
+  <Color x:Key="SwitchForegroundColor">#FDFCF9</Color>
 
   <Color x:Key="AcrylicWindowBackgroundColor">#EEF5F3EE</Color>
   <Color x:Key="QuoteColor">#9A520C</Color>
