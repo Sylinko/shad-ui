@@ -1,16 +1,17 @@
 ﻿<ResourceDictionary
   xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI" x:ClassModifier="internal">
+  <!--  Both popup menu types share their shell and reset text-host cursor inheritance at the root.  -->
   <ControlTheme
-    x:Key="{x:Type MenuFlyoutPresenter}"
-    TargetType="MenuFlyoutPresenter">
+    x:Key="PopupMenuTheme" TargetType="MenuBase">
+    <Setter Property="Cursor" Value="Arrow"/>
     <Setter Property="Background" Value="{DynamicResource PopupBackgroundColor}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="CornerRadius" Value="{DynamicResource 2XlCornerRadius}"/>
     <Setter Property="BorderThickness" Value="{DynamicResource PopupBorderThickness}"/>
     <Setter Property="Padding" Value="2,4"/>
-    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
-    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
     <Setter Property="TextBlock.FontSize" Value="{DynamicResource FontSizeM}"/>
     <Setter Property="Template">
       <ControlTemplate>
@@ -25,14 +26,30 @@
             BorderThickness="{TemplateBinding BorderThickness}"
             ClipToBounds="True"
             CornerRadius="{TemplateBinding CornerRadius}">
-            <ItemsPresenter
-              Margin="{TemplateBinding Padding}"
-              Grid.IsSharedSizeScope="True"
-              ItemsPanel="{TemplateBinding ItemsPanel}"
-              KeyboardNavigation.TabNavigation="Continue"/>
+            <ScrollViewer
+              HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+              VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+              <ItemsPresenter
+                Margin="{TemplateBinding Padding}"
+                Grid.IsSharedSizeScope="True"
+                ItemsPanel="{TemplateBinding ItemsPanel}"
+                KeyboardNavigation.TabNavigation="Continue"/>
+            </ScrollViewer>
           </shadui:SmoothBorder>
         </Border>
       </ControlTemplate>
     </Setter>
+  </ControlTheme>
+
+  <ControlTheme
+    x:Key="{x:Type MenuFlyoutPresenter}"
+    BasedOn="{StaticResource PopupMenuTheme}"
+    TargetType="MenuFlyoutPresenter"/>
+
+  <ControlTheme
+    x:Key="{x:Type ContextMenu}"
+    BasedOn="{StaticResource PopupMenuTheme}"
+    TargetType="ContextMenu">
+    <Setter Property="Focusable" Value="True"/>
   </ControlTheme>
 </ResourceDictionary>
