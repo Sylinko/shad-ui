@@ -327,7 +327,7 @@
                 RowDefinitions="Auto,*">
                 <Border
                   x:Name="PART_HeaderBackground"
-                  Background="{DynamicResource CardBackgroundColor}"
+                  Background="{DynamicResource LightCardBackgroundColor}"
                   BorderBrush="{DynamicResource BorderColor}"
                   BorderThickness="0,0,0,1">
                   <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter"/>
@@ -350,9 +350,6 @@
         </DataValidationErrors>
       </ControlTemplate>
     </Setter>
-    <Style Selector="^ /template/ Border#PART_HeaderBackground:pointerover">
-      <Setter Property="Background" Value="{DynamicResource GhostHoverColor}"/>
-    </Style>
     <Style Selector="^:error">
       <Style Selector="^/template/ shadui|SmoothBorder#DataGridBorder">
         <Setter Property="BorderBrush" Value="{DynamicResource ErrorColor}"/>
