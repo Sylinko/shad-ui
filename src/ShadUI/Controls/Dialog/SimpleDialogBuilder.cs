@@ -1,4 +1,9 @@
 ﻿using System.ComponentModel;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Primitives;
+using Avalonia.Media;
 
 // ReSharper disable once CheckNamespace
 namespace ShadUI;
@@ -18,7 +23,21 @@ public readonly ref struct SimpleDialogBuilder
         _dialog = new SimpleDialog
         {
             Title = title,
-            Content = content
+            Content = content switch
+            {
+                Control control => control,
+                _ => new ScrollViewer
+                {
+                    Margin = new Thickness(0, 0, -12, 0),
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    Content = new ContentPresenter
+                    {
+                        Content = content.ToString(),
+                        TextWrapping = TextWrapping.Wrap
+                    }
+                }
+            }
         };
     }
 

@@ -125,20 +125,16 @@ internal class SimpleDialog : TemplatedControl
         set => SetValue(CancelButtonStyleProperty, value);
     }
 
-    static SimpleDialog()
+    /// <inheritdoc />
+    protected override void OnKeyDown(KeyEventArgs e)
     {
-        KeyDownEvent.AddClassHandler<SimpleDialog>(
-            HandleKeyDownEvent,
-            RoutingStrategies.Tunnel | RoutingStrategies.Bubble | RoutingStrategies.Direct,
-            true);
-    }
+        base.OnKeyDown(e);
+        if (e.Handled || e.Key != Key.Escape) return;
 
-    private static void HandleKeyDownEvent(SimpleDialog sender, KeyEventArgs args)
-    {
-        if (args.Key is Key.Escape)
-        {
-            sender._cancelHandler?.Invoke(sender, args);
-        }
+        // Consume Escape before closing. The same routed event must not reach
+        // the host and dismiss the newly exposed parent (or bypass a veto).
+        e.Handled = true;
+        _cancelHandler?.Invoke(this, e);
     }
 
     private EventHandler<RoutedEventArgs>? _cancelHandler;

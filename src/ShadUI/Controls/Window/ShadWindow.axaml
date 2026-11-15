@@ -28,32 +28,49 @@
           CornerRadius="{TemplateBinding CornerRadius}">
           <VisualLayerManager x:Name="PART_VisualLayerManager">
             <Panel x:Name="PART_Root">
-              <ContentPresenter
-                Margin="{TemplateBinding WindowDecorationMargin}"
-                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                Content="{TemplateBinding Content}"
-                ContentTemplate="{TemplateBinding ContentTemplate}"/>
+              <Panel x:Name="PART_DialogBackgroundRoot">
+                <Panel.Transitions>
+                  <Transitions>
+                    <EffectTransition
+                      Easing="CubicEaseOut" Property="Effect"
+                      Duration="0:0:0.15"/>
+                  </Transitions>
+                </Panel.Transitions>
+
+                <ContentPresenter
+                  Margin="{TemplateBinding WindowDecorationMargin}"
+                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                  Content="{TemplateBinding Content}"
+                  ContentTemplate="{TemplateBinding ContentTemplate}"/>
+
+                <Panel
+                  x:Name="PART_TitleBar"
+                  MinHeight="{Binding WindowDecorationMargin.Top, RelativeSource={RelativeSource TemplatedParent}}"
+                  VerticalAlignment="Top" Background="Transparent"
+                  WindowDecorationProperties.ElementRole="TitleBar">
+                  <ContentPresenter
+                    Content="{TemplateBinding TitleBarContent}"
+                    WindowDecorationProperties.ElementRole="User"/>
+                </Panel>
+              </Panel>
 
               <ItemsControl
                 x:Name="PART_HostsRoot"
                 ItemsSource="{TemplateBinding Hosts}">
+                <ItemsControl.Styles>
+                  <Style Selector="shadui|DialogHost">
+                    <Setter Property="BackgroundRoot" Value="{Binding #PART_DialogBackgroundRoot}"/>
+                    <Setter Property="TitleBarHeight" Value="{Binding #PART_TitleBar.Bounds.Height}"/>
+                  </Style>
+                </ItemsControl.Styles>
+
                 <ItemsControl.ItemsPanel>
                   <ItemsPanelTemplate>
                     <Panel/>
                   </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
               </ItemsControl>
-
-              <Panel
-                x:Name="PART_TitleBar"
-                MinHeight="{Binding WindowDecorationMargin.Top, RelativeSource={RelativeSource TemplatedParent}}"
-                VerticalAlignment="Top" Background="Transparent"
-                WindowDecorationProperties.ElementRole="TitleBar">
-                <ContentPresenter
-                  Content="{TemplateBinding TitleBarContent}"
-                  WindowDecorationProperties.ElementRole="User"/>
-              </Panel>
 
               <Border
                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -64,6 +81,10 @@
         </Border>
       </ControlTemplate>
     </Setter>
+
+    <Style Selector="^ /template/ Panel#PART_DialogBackgroundRoot.DialogBackgroundCovered">
+      <Setter Property="Effect" Value="blur(7)"/>
+    </Style>
   </ControlTheme>
 
   <ControlTheme

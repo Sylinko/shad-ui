@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 using Avalonia.Threading;
 
 // ReSharper disable once CheckNamespace
@@ -13,8 +13,7 @@ namespace ShadUI;
 ///     Hosts the dialog stack belonging to one TopLevel and participates in global routing through
 ///     <see cref="DialogManager"/> while attached to the visual tree.
 /// </summary>
-[TemplatePart("PART_DialogBackground", typeof(Border))]
-[TemplatePart("PART_CloseButton", typeof(Button))]
+[TemplatePart("PART_Layers", typeof(Panel))]
 public class DialogHost : TemplatedControl
 {
     /// <summary>
@@ -122,9 +121,37 @@ public class DialogHost : TemplatedControl
         set => SetValue(CanDismissWithBackgroundClickProperty, value);
     }
 
-    private readonly List<DialogEntry> _dialogs = [];
-    private Border? _dialogBackground;
-    private Button? _closeButton;
+    /// <summary>
+    /// The page behind the host, never a visual ancestor of it. ShadWindow supplies
+    /// its page root; other layouts can bind their own sibling explicitly.
+    /// </summary>
+    public static readonly StyledProperty<Control?> BackgroundRootProperty =
+        AvaloniaProperty.Register<DialogHost, Control?>(nameof(BackgroundRoot));
+
+    /// <inheritdoc cref="BackgroundRootProperty"/>
+    public Control? BackgroundRoot
+    {
+        get => GetValue(BackgroundRootProperty);
+        set => SetValue(BackgroundRootProperty, value);
+    }
+
+    /// <summary>
+    /// Defines the height of the window title bar covered by this host.
+    /// </summary>
+    public static readonly StyledProperty<double> TitleBarHeightProperty =
+        AvaloniaProperty.Register<DialogHost, double>(nameof(TitleBarHeight));
+
+    /// <summary>
+    /// The height of the draggable strip at the top of the backdrop. Zero for hosts outside the title bar.
+    /// </summary>
+    public double TitleBarHeight
+    {
+        get => GetValue(TitleBarHeightProperty);
+        set => SetValue(TitleBarHeightProperty, value);
+    }
+
+    private readonly List<DialogLayer> _dialogs = [];
+    private Panel? _layers;
 
     /// <summary>Creates a simple dialog pinned to this host.</summary>
     public SimpleDialogBuilder CreateDialog(object content, object? title = null) => new(this, content, title);
@@ -135,15 +162,58 @@ public class DialogHost : TemplatedControl
     /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
-        if (_dialogBackground is not null) _dialogBackground.PointerPressed -= HandleBackgroundPointerPressed;
-        if (_closeButton is not null) _closeButton.Click -= HandleCloseButtonClick;
+        if (_layers is not null)
+        {
+            foreach (var layer in _layers.Children.OfType<DialogLayer>().ToArray())
+            {
+                if (!_dialogs.Contains(layer)) ReleaseLayer(layer);
+            }
+
+            _layers.Children.Clear();
+        }
 
         base.OnApplyTemplate(e);
+        _layers = e.NameScope.Get<Panel>("PART_Layers");
+        foreach (var layer in _dialogs) _layers.Children.Add(layer);
+    }
 
-        _dialogBackground = e.NameScope.Find<Border>("PART_DialogBackground");
-        _closeButton = e.NameScope.Find<Button>("PART_CloseButton");
-        if (_dialogBackground is not null) _dialogBackground.PointerPressed += HandleBackgroundPointerPressed;
-        if (_closeButton is not null) _closeButton.Click += HandleCloseButtonClick;
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+        if (change.Property == BackgroundRootProperty)
+        {
+            if (change.OldValue is Control oldRoot)
+            {
+                oldRoot.Classes.Remove("DialogBackgroundCovered");
+                oldRoot.Classes.Remove("DialogBackgroundRoot");
+            }
+            if (BackgroundRoot is { } root)
+            {
+                root.Classes.Add("DialogBackgroundRoot");
+                root.Classes.Set("DialogBackgroundCovered", HasOpenedDialog);
+            }
+        }
+        else if (change.Property == HasOpenedDialogProperty)
+        {
+            BackgroundRoot?.Classes.Set("DialogBackgroundCovered", HasOpenedDialog);
+        }
+        else if (_dialogs is { Count: > 0 } &&
+                 (change.Property == DismissibleProperty ||
+                     change.Property == DialogMinWidthProperty ||
+                     change.Property == DialogMaxWidthProperty))
+        {
+            var layer = _dialogs[^1];
+            if (change.Property == DismissibleProperty) layer.Options.Dismissible = Dismissible;
+            if (change.Property == DialogMinWidthProperty) layer.Options.MinWidth = DialogMinWidth;
+            if (change.Property == DialogMaxWidthProperty) layer.Options.MaxWidth = DialogMaxWidth;
+            layer.ApplyOptions();
+        }
+        else if (change.Property == DialogProperty && change.NewValue is null && change.OldValue is Control previous)
+        {
+            // Clearing the presented content explicitly also releases its exiting visual.
+            ReleaseClosingLayer(previous);
+        }
     }
 
     /// <inheritdoc/>
@@ -157,135 +227,184 @@ public class DialogHost : TemplatedControl
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         DialogManager.Unregister(this);
+        // No animation can finish on a detached host. Release controls for reuse by another window.
+        CloseAll(DialogResult.Cancel, false);
 
-        // A detached host can no longer receive user input. Complete every pending builder now so
-        // callers never retain a task and an arbitrary dialog control after its window closes.
-        CloseAll();
+        if (_layers is not null)
+        {
+            foreach (var layer in _layers.Children.OfType<DialogLayer>().ToArray()) ReleaseLayer(layer);
+        }
+
         base.OnDetachedFromVisualTree(e);
     }
 
-    private void HandleBackgroundPointerPressed(object? sender, PointerPressedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnKeyDown(KeyEventArgs e)
     {
-        if (CanDismissWithBackgroundClick) CloseCurrent();
+        base.OnKeyDown(e);
+        if (e is { Handled: false, Key: Key.Escape } && HasOpenedDialog && Dismissible)
+        {
+            Close(_dialogs[^1].View);
+            e.Handled = true;
+        }
     }
 
-    private void HandleCloseButtonClick(object? sender, RoutedEventArgs e) =>
-        CloseCurrent();
-
-    private void CloseCurrent()
+    internal void RequestDismiss(DialogLayer layer)
     {
-        if (!Dismissible || _dialogs.Count == 0) return;
-        Close(_dialogs[^1].Control);
+        if (_dialogs.Count > 0 && ReferenceEquals(_dialogs[^1], layer) && Dismissible) Close(layer.View);
     }
 
-    /// <summary>Adds a dialog to this host's stack and presents it as the current entry.</summary>
+    /// <summary>Adds a dialog above the current entry without detaching its parent.</summary>
     internal bool Show(Control control, Action<DialogResult>? callback, DialogOptions options)
     {
-        Dispatcher.UIThread.CheckAccess();
+        Dispatcher.UIThread.VerifyAccess();
+        if (_dialogs.Any(layer => ReferenceEquals(layer.View, control))) return false;
 
-        if (_dialogs.Any(entry => ReferenceEquals(entry.Control, control))) return false;
+        if (_layers is not null)
+        {
+            foreach (var closing in _layers.Children.OfType<DialogLayer>().Where(layer => layer.IsClosing).ToArray())
+            {
+                ReleaseLayer(closing);
+            }
+        }
 
-        if (_dialogs.Count > 0) IsDialogOpen = false;
+        var opener = TopLevel.GetTopLevel(this)?.FocusManager.GetFocusedElement();
+        if (_dialogs.Count > 0) _dialogs[^1].SetCovered(true);
 
-        var entry = new DialogEntry(control, options, callback);
-        _dialogs.Add(entry);
-        if (control is SimpleDialog simpleDialog)
-            simpleDialog.CloseRequested = result => Close(simpleDialog, result);
+        var layer = new DialogLayer(this, control, options, callback, opener);
+        layer.Classes.Set("first", _dialogs.Count == 0);
+        _dialogs.Add(layer);
 
-        Present(entry);
+        if (control is SimpleDialog dialog) dialog.CloseRequested = result => Close(control, result);
+        Present(layer);
+        _layers?.Children.Add(layer);
         return true;
     }
 
-    private void Present(DialogEntry entry)
+    private void Present(DialogLayer layer)
     {
-        Dialog = entry.Control;
-        DialogMaxWidth = entry.Options.MaxWidth;
-        DialogMinWidth = entry.Options.MinWidth;
-        Dismissible = entry.Options.Dismissible;
+        Dialog = layer.View;
+        DialogMaxWidth = layer.Options.MaxWidth;
+        DialogMinWidth = layer.Options.MinWidth;
+        Dismissible = layer.Options.Dismissible;
         HasOpenedDialog = true;
         IsDialogOpen = true;
     }
 
-    /// <summary>Closes a specific dialog owned by this host.</summary>
-    public void Close(Control control, DialogResult result = DialogResult.Cancel)
+    /// <summary>Closes a specific entry, keeping the visible card for its exit animation.</summary>
+    public void Close(Control control, DialogResult result = DialogResult.Cancel) => Close(control, result, true);
+
+    /// <summary>Skip the exit when the caller needs to move the same control to another host immediately.</summary>
+    public void Close(Control control, DialogResult result, bool shouldAnimate)
     {
-        Dispatcher.UIThread.CheckAccess();
-
-        var index = _dialogs.FindIndex(entry => ReferenceEquals(entry.Control, control));
-        if (index < 0) return;
-
-        var entry = _dialogs[index];
-        var wasCurrent = index == _dialogs.Count - 1;
-        _dialogs.RemoveAt(index);
-        if (control is SimpleDialog simpleDialog) simpleDialog.CloseRequested = null;
-
-        if (wasCurrent)
+        Dispatcher.UIThread.VerifyAccess();
+        var index = _dialogs.FindIndex(layer => ReferenceEquals(layer.View, control));
+        if (index < 0)
         {
-            IsDialogOpen = false;
-            if (_dialogs.Count > 0)
-            {
-                Present(_dialogs[^1]);
-            }
-            else
-            {
-                HasOpenedDialog = false;
-                ClearDialogAfterAnimation(control);
-            }
+            if (!shouldAnimate) ReleaseClosingLayer(control);
+            return;
         }
 
-        // Restore the host to a coherent visual state before invoking application code. A callback
-        // may immediately open another dialog, and that new entry must not be overwritten here.
-        entry.Callback?.Invoke(result);
+        var layer = _dialogs[index];
+        var wasCurrent = index == _dialogs.Count - 1;
+        _dialogs.RemoveAt(index);
+        if (control is SimpleDialog dialog) dialog.CloseRequested = null;
+        if (!wasCurrent)
+        {
+            // Preserve the way back if a cancelled parent disappears under an open child.
+            _dialogs[index].Opener = layer.Opener;
+        }
+        else if (_dialogs.Count > 0)
+        {
+            var parent = _dialogs[^1];
+            parent.SetCovered(false);
+            Present(parent);
+        }
+        else
+        {
+            IsDialogOpen = false;
+            HasOpenedDialog = false;
+        }
+
+        Retire(layer, wasCurrent && shouldAnimate);
+        if (wasCurrent) RestoreFocus(layer.Opener);
+        // Complete only after state is coherent: callbacks can open another dialog immediately.
+        layer.Complete(result);
     }
 
-    /// <summary>Closes every dialog owned by this host and completes each callback once.</summary>
-    public void CloseAll(DialogResult result = DialogResult.Cancel)
+    /// <summary>Closes every entry owned by this host and completes each callback once.</summary>
+    public void CloseAll(DialogResult result = DialogResult.Cancel) => CloseAll(result, true);
+
+    private void CloseAll(DialogResult result, bool shouldAnimate)
     {
-        Dispatcher.UIThread.CheckAccess();
+        Dispatcher.UIThread.VerifyAccess();
         if (_dialogs.Count == 0) return;
 
-        var closedDialog = Dialog;
         var entries = _dialogs.ToArray();
         _dialogs.Clear();
         IsDialogOpen = false;
         HasOpenedDialog = false;
-
-        foreach (var entry in entries)
+        foreach (var layer in entries)
         {
-            if (entry.Control is SimpleDialog simpleDialog) simpleDialog.CloseRequested = null;
-            entry.Callback?.Invoke(result);
+            if (layer.View is SimpleDialog dialog) dialog.CloseRequested = null;
+            Retire(layer, shouldAnimate && ReferenceEquals(layer, entries[^1]));
         }
 
-        if (closedDialog is not null) ClearDialogAfterAnimation(closedDialog);
+        if (shouldAnimate) RestoreFocus(entries[0].Opener);
+        foreach (var layer in entries) layer.Complete(result);
     }
 
-    /// <summary>
-    ///     Restores the current dialog's configured dismissibility after a temporary override.
-    /// </summary>
+    private void RestoreFocus(IInputElement? opener)
+    {
+        // The command that opened a child can still be disabled until ShowAsync completes.
+        // Let its continuation run first, without stealing focus from a replacement dialog.
+        var target = _dialogs.LastOrDefault();
+        Dispatcher.UIThread.Post(
+            () =>
+            {
+                if (!ReferenceEquals(target, _dialogs.LastOrDefault()) || !this.IsAttachedToVisualTree()) return;
+                if (opener is Control control && TopLevel.GetTopLevel(control) == TopLevel.GetTopLevel(this) && control.Focus()) return;
+                target?.Focus();
+            },
+            DispatcherPriority.Background);
+    }
+
+    private void Retire(DialogLayer layer, bool shouldAnimate)
+    {
+        if (!shouldAnimate)
+        {
+            ReleaseLayer(layer);
+            return;
+        }
+
+        // Keep Dialog readable until the final fade completes, including for unthemed hosts.
+        layer.StartExit(!HasOpenedDialog, () => ReleaseLayer(layer));
+    }
+
+    private void ReleaseClosingLayer(Control view)
+    {
+        if (_layers?.Children.OfType<DialogLayer>().FirstOrDefault(l => l.IsClosing && ReferenceEquals(l.View, view)) is { } layer)
+        {
+            ReleaseLayer(layer);
+        }
+    }
+
+    private void ReleaseLayer(DialogLayer layer)
+    {
+        layer.Release();
+        _layers?.Children.Remove(layer);
+        if (!HasOpenedDialog && ReferenceEquals(Dialog, layer.View)) Dialog = null;
+    }
+
+    /// <summary>Prevents dismissal of the current entry by the host chrome.</summary>
     public void PreventDismissal()
     {
         if (_dialogs.Count > 0) Dismissible = false;
     }
 
-    /// <summary>Temporarily enables host-chrome dismissal for the current dialog.</summary>
+    /// <summary>Allows dismissal of the current entry by the host chrome.</summary>
     public void AllowDismissal()
     {
         if (_dialogs.Count > 0) Dismissible = true;
     }
-
-    private async void ClearDialogAfterAnimation(object closedDialog)
-    {
-        try
-        {
-            await Task.Delay(200);
-            if (_dialogs.Count == 0 && !IsDialogOpen && ReferenceEquals(Dialog, closedDialog))
-                Dialog = null;
-        }
-        catch
-        {
-            // The delayed clear is purely visual cleanup and must not surface an async-void error.
-        }
-    }
-
-    private readonly record struct DialogEntry(Control Control, DialogOptions Options, Action<DialogResult>? Callback);
 }

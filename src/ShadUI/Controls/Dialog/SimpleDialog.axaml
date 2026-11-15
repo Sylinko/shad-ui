@@ -87,16 +87,9 @@
                 IsVisible="{TemplateBinding PrimaryButtonContent, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
             </StackPanel>
 
-            <ScrollViewer
-              Margin="0,0,-12,0" HorizontalScrollBarVisibility="Disabled">
-              <ContentPresenter
-                Margin="0,0,12,0"
-                Content="{TemplateBinding Content}"
-                FontSize="{DynamicResource FontSizeM}"
-                FontWeight="Medium"
-                Foreground="{DynamicResource MutedColor}"
-                TextWrapping="Wrap"/>
-            </ScrollViewer>
+            <ContentPresenter
+              ClipToBounds="False"
+              Content="{TemplateBinding Content}"/>
           </DockPanel>
         </ControlTemplate>
       </Setter.Value>
