@@ -10,6 +10,7 @@
     <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
     <Setter Property="CornerRadius" Value="{DynamicResource XlCornerRadius}"/>
     <Setter Property="shadui:ExpanderAssist.HeaderBackground" Value="{DynamicResource TransparentColor}"/>
+    <Setter Property="shadui:ExpanderAssist.HeaderHoverBackground" Value="{DynamicResource SecondaryColor50}"/>
     <Setter Property="Template">
       <ControlTemplate TargetType="Expander">
         <shadui:SmoothBorder
@@ -29,7 +30,7 @@
                 HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                 shadui:ButtonAssist.CheckedBackground="{TemplateBinding shadui:ExpanderAssist.HeaderBackground}"
                 shadui:ButtonAssist.CheckedForeground="{DynamicResource ForegroundColor}"
-                shadui:ButtonAssist.HoverBackground="{DynamicResource SecondaryColor50}"
+                shadui:ButtonAssist.HoverBackground="{TemplateBinding shadui:ExpanderAssist.HeaderHoverBackground}"
                 Background="{TemplateBinding shadui:ExpanderAssist.HeaderBackground}"
                 BorderThickness="0"
                 CornerRadius="{TemplateBinding CornerRadius}"
@@ -113,6 +114,12 @@
         <Style Selector="^ PathIcon#PART_Icon">
           <Setter Property="RenderTransform" Value="Rotate(0deg)"/>
         </Style>
+      </Style>
+    </Style>
+
+    <Style Selector="^.NoIcon">
+      <Style Selector="^ PathIcon#PART_Icon">
+        <Setter Property="IsVisible" Value="False"/>
       </Style>
     </Style>
 
