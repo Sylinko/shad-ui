@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Metadata;
+using Avalonia.Rendering;
 
 namespace ShadUI;
 
@@ -45,7 +46,7 @@ public enum ClipToBoundsMode
 ///   where the border is filled as a ring so its inner edge exactly matches the content clip.
 /// - BoxShadow intentionally uses a normal RoundedRect because blur hides the small geometric difference.
 /// </summary>
-public class SmoothBorder : Control
+public class SmoothBorder : Control, ICustomHitTest
 {
     public static readonly StyledProperty<Control?> ChildProperty =
         Decorator.ChildProperty.AddOwner<SmoothBorder>();
@@ -358,6 +359,81 @@ public class SmoothBorder : Control
         UpdateContentClip();
 
         return finalSize;
+    }
+
+    /// <summary>
+    /// Matches <see cref="Border"/> hit-testing against the rendered background or border bounds
+    /// so pointer events inside padding or translucent regions hit the enclosing control across all render backends.
+    /// </summary>
+    public bool HitTest(Point point)
+    {
+        var rect = new Rect(Bounds.Size);
+        if (!rect.Contains(point))
+            return false;
+
+        var radius = SanitizeCornerRadius(CornerRadius);
+        if (Background is not null)
+            return ContainsRoundedRect(rect, radius, point);
+
+        if (BorderBrush is not null && HasVisibleThickness(GetLayoutThickness()))
+        {
+            if (!ContainsRoundedRect(rect, radius, point))
+                return false;
+
+            var thickness = GetLayoutThickness();
+            var innerRect = InsetRect(rect, thickness);
+            if (innerRect.Width <= Epsilon || innerRect.Height <= Epsilon)
+                return true;
+
+            var innerRadius = InsetCornerRadius(radius, thickness);
+            return !ContainsRoundedRect(innerRect, innerRadius, point);
+        }
+
+        return false;
+    }
+
+    private static bool ContainsRoundedRect(Rect rect, CornerRadius radius, Point point)
+    {
+        if (!rect.Contains(point))
+            return false;
+
+        if (radius == default)
+            return true;
+
+        var tl = Math.Min(SanitizeRadius(radius.TopLeft), Math.Min(rect.Width, rect.Height) * 0.5);
+        var tr = Math.Min(SanitizeRadius(radius.TopRight), Math.Min(rect.Width, rect.Height) * 0.5);
+        var br = Math.Min(SanitizeRadius(radius.BottomRight), Math.Min(rect.Width, rect.Height) * 0.5);
+        var bl = Math.Min(SanitizeRadius(radius.BottomLeft), Math.Min(rect.Width, rect.Height) * 0.5);
+
+        if (tl > 0 && point.X < rect.Left + tl && point.Y < rect.Top + tl)
+        {
+            var dx = rect.Left + tl - point.X;
+            var dy = rect.Top + tl - point.Y;
+            return dx * dx + dy * dy <= tl * tl;
+        }
+
+        if (tr > 0 && point.X > rect.Right - tr && point.Y < rect.Top + tr)
+        {
+            var dx = point.X - (rect.Right - tr);
+            var dy = rect.Top + tr - point.Y;
+            return dx * dx + dy * dy <= tr * tr;
+        }
+
+        if (br > 0 && point.X > rect.Right - br && point.Y > rect.Bottom - br)
+        {
+            var dx = point.X - (rect.Right - br);
+            var dy = point.Y - (rect.Bottom - br);
+            return dx * dx + dy * dy <= br * br;
+        }
+
+        if (bl > 0 && point.X < rect.Left + bl && point.Y > rect.Bottom - bl)
+        {
+            var dx = rect.Left + bl - point.X;
+            var dy = point.Y - (rect.Bottom - bl);
+            return dx * dx + dy * dy <= bl * bl;
+        }
+
+        return true;
     }
 
     private Geometry? GetBackgroundGeometry()
